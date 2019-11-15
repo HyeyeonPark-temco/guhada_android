@@ -204,40 +204,44 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 
     private fun checkDuplicateEmail() {
         if (mEmail.isNotEmpty()) {
-            UserServer.checkEmail(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            mIsEmailDuplicate.set(false)
-                            notifyPropertyChanged(BR.mIsEmailDuplicate)
+            if(CommonUtil.validateEmail(mEmail)){
+                UserServer.checkEmail(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                mIsEmailDuplicate.set(false)
+                                notifyPropertyChanged(BR.mIsEmailDuplicate)
 
 //                            mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_verifyemail))
 //                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
 
-                            /**
-                             * [19.11.14] 이메일 인증 제외로 결정 (cto님 피셜)
-                             * @author Hyeyeon Park
-                             */
-                            mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_finishcheck))
+                                /**
+                                 * [19.11.14] 이메일 인증 제외로 결정 (cto님 피셜)
+                                 * @author Hyeyeon Park
+                                 */
+                                mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_finishcheck))
 
-                            mResetVerifyNumberTask()
+                                mResetVerifyNumberTask()
 
-                            mIsEmailVerified = ObservableBoolean(true)
-                            notifyPropertyChanged(BR.mIsEmailVerified)
-                        },
-                        alreadyExistEmailTask = {
-                            // 중복 이메일
-                            val message = if (o is BaseModel<*>) o.message else BaseApplication.getInstance().getString(R.string.common_message_servererror)
-                            ToastUtil.showMessage(message)
+                                mIsEmailVerified = ObservableBoolean(true)
+                                notifyPropertyChanged(BR.mIsEmailVerified)
+                            },
+                            alreadyExistEmailTask = {
+                                // 중복 이메일
+                                val message = if (o is BaseModel<*>) o.message else BaseApplication.getInstance().getString(R.string.common_message_servererror)
+                                ToastUtil.showMessage(message)
 
-                            mIsEmailDuplicate.set(true)
-                            notifyPropertyChanged(BR.mIsEmailDuplicate)
+                                mIsEmailDuplicate.set(true)
+                                notifyPropertyChanged(BR.mIsEmailDuplicate)
 
-                            mIsEmailVerified = ObservableBoolean(false)
-                            notifyPropertyChanged(BR.mEmailVerifyVisible)
+                                mIsEmailVerified = ObservableBoolean(false)
+                                notifyPropertyChanged(BR.mEmailVerifyVisible)
 
 //                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.mypage_userinfo_hint_errornickname))
-                        })
-            }, email = mEmail)
+                            })
+                }, email = mEmail)
+            }else {
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.findpwd_message_invalidemailformat))
+            }
         }
     }
 
