@@ -86,6 +86,7 @@ class LuckyDrawEditActivity : BindActivity<ActivityLuckydrawEditBinding>() {
                     mViewModel.mIsEmailDuplicate = ObservableBoolean(true)
                 }
 
+                mViewModel.mIsMobileVerified = ObservableBoolean(it.identityVerify.identityVerifyMethod != Verification.IdentityVerifyMethod.NONE.code)
                 mViewModel.mIsPasswordVerified = ObservableBoolean(true)
                 mViewModel.mIsPasswordConfirmVerified = ObservableBoolean(true)
 

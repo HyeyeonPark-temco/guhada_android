@@ -33,6 +33,7 @@ class LuckyDrawEditViewModel : LuckyDrawJoinViewModel() {
 
     fun updateEventUser() {
         if (mEventUser.value != null) {
+            mEventUser.value?.email = mEmail
             ServerCallbackUtil.callWithToken(task = { accessToken ->
                 UserServer.updateEventUser(OnServerListener { success, o ->
                     if (success && o is BaseModel<*>)
