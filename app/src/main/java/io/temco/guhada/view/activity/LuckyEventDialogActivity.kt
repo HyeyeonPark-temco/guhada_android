@@ -72,6 +72,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
 
         when (requestCode) {
             Flag.RequestCode.LOGIN -> if (resultCode == Activity.RESULT_OK) requestLuckyDraw() else onBackPressed()
+            else -> onBackPressed()
         }
     }
 
