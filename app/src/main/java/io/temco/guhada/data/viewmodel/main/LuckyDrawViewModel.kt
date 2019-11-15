@@ -8,6 +8,7 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.Deal
+import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.event.LuckyEvent
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.server.ProductServer
@@ -34,32 +35,37 @@ class LuckyDrawViewModel(val context: Context) : BaseObservableViewModel() {
 
     fun getLuckyDraws(listener: OnCallBackListener) {
         if (listData.isNotEmpty()) listData.clear()
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            getLuckyDrawList(accessToken, listener)
+        },invalidTokenTask = {
+            getLuckyDrawList(listener)
+        })
+    }
+
+
+    private fun getLuckyDrawList(accessToken: String,listener: OnCallBackListener){
         ProductServer.getLuckyDraws(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         val data = it.data as LuckyEvent
-                        if(data.luckyDrawList.size > 0){
-                            if(CustomLog.flag)CustomLog.L("LuckyDrawViewModel","data",data)
-                            val current = Calendar.getInstance().timeInMillis/* - (data.luckyDrawList[0].now*1000 - Calendar.getInstance().timeInMillis)*/
-                            val time = (data.luckyDrawList[0].remainedTimeForEnd) * 1000L
-                            listData.add(LuckyDrawTitle(0,HomeType.LuckyDrawTitle,data.titleList,
-                                    LuckyDrawTimeData(data.luckyDrawList[0].now,data.luckyDrawList[0].remainedTimeForStart,
-                                            data.luckyDrawList[0].remainedTimeForEnd,data.luckyDrawList[0].dealId,0),
-                                    current + time,0L))
-                            var index = 1
-                            Observable.fromIterable(data.luckyDrawList).map { event ->
-                                val current = Calendar.getInstance().timeInMillis
-                                val time = (event.remainedTimeForEnd) * 1000L
-                                LuckyDrawEvent(index = index++, type = HomeType.LuckyDrawEvent, eventData = event, endTime = event.remainedTimeForEnd * 1000L, expiredTimeLong = current + time)
-                            }.subscribe { event ->
-                                listData.add(event)
-                            }
+                        setLuckyEventData(data, listener)
+                    },
+                    dataNotFoundTask = {
+                        listener.callBackListener(false, "")
+                    },
+                    failedTask = {
+                        listener.callBackListener(false, "")
+                    }
+            )
+        },accessToken)
+    }
 
-                            listData.add(LuckyDrawEventFooter(index, HomeType.LuckyDrawFooter))
-                            listener.callBackListener(true, "")
-                        }else{
-                            listener.callBackListener(false, "")
-                        }
+    private fun getLuckyDrawList(listener: OnCallBackListener){
+        ProductServer.getLuckyDraws(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        val data = it.data as LuckyEvent
+                        setLuckyEventData(data, listener)
                     },
                     dataNotFoundTask = {
                         listener.callBackListener(false, "")
@@ -69,5 +75,31 @@ class LuckyDrawViewModel(val context: Context) : BaseObservableViewModel() {
                     }
             )
         })
+    }
+
+
+    private fun setLuckyEventData(data : LuckyEvent, listener: OnCallBackListener){
+        if(data.luckyDrawList.size > 0){
+            if(CustomLog.flag)CustomLog.L("LuckyDrawViewModel","data",data)
+            val current = Calendar.getInstance().timeInMillis/* - (data.luckyDrawList[0].now*1000 - Calendar.getInstance().timeInMillis)*/
+            val time = (data.luckyDrawList[0].remainedTimeForEnd) * 1000L
+            listData.add(LuckyDrawTitle(0,HomeType.LuckyDrawTitle,data.titleList,
+                    LuckyDrawTimeData(data.luckyDrawList[0].now,data.luckyDrawList[0].remainedTimeForStart,
+                            data.luckyDrawList[0].remainedTimeForEnd,data.luckyDrawList[0].dealId,0),
+                    current + time,0L))
+            var index = 1
+            Observable.fromIterable(data.luckyDrawList).map { event ->
+                val current = Calendar.getInstance().timeInMillis
+                val time = (event.remainedTimeForEnd) * 1000L
+                LuckyDrawEvent(index = index++, type = HomeType.LuckyDrawEvent, eventData = event, endTime = event.remainedTimeForEnd * 1000L, expiredTimeLong = current + time)
+            }.subscribe { event ->
+                listData.add(event)
+            }
+
+            listData.add(LuckyDrawEventFooter(index, HomeType.LuckyDrawFooter))
+            listener.callBackListener(true, "")
+        }else{
+            listener.callBackListener(false, "")
+        }
     }
 }

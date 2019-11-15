@@ -58,7 +58,8 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
                                 if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data",data)
                                 listener.callBackListener(true, data)
                             }else{
-                                if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data o ",o.toString())
+                                if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data o ",(o as BaseModel<*>).message.toString())
+                                if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data o ",(o as BaseModel<*>).errorModel.Message.message.toString())
                                 listener.callBackListener(false, (o as BaseModel<*>).message)
                             }
                         },
@@ -72,8 +73,9 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
                             listener.callBackListener(false, "") },
                         serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw serverRuntimeErrorTask ")
                             listener.callBackListener(false, "") },
-                        dataIsNull = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataIsNull ")
-                            listener.callBackListener(false, "")}
+                        dataIsNull = {o->
+                            if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataIsNull ",o)
+                            listener.callBackListener(false, (o as BaseModel<*>).message)}
                     )
             },accessToken = accessToken, id = dealId)
         })

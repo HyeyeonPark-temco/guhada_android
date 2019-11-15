@@ -1,8 +1,10 @@
 package io.temco.guhada.view.custom.layout.main
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.ViewCompat
@@ -97,9 +99,7 @@ class LuckyDrawListLayout constructor(
             }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(CustomLog.flag)CustomLog.L("LuckyDrawListLayout","onScrolled dy",dy)
                 if((dy > 0 && mBinding.layoutBottom.visibility == View.GONE) ||  (dy < 0 && mBinding.layoutBottom.visibility == View.VISIBLE)){
-                    if(CustomLog.flag)CustomLog.L("LuckyDrawListLayout","onScrolled changeLastView",dy)
                     changeLastView(mBinding.layoutBottom, dy > 0, true)
                 }
             }
@@ -125,6 +125,7 @@ class LuckyDrawListLayout constructor(
             (context as Activity).startActivity(Intent.createChooser(sendIntent, "공유"))
         }
         //getRecentProductCount()
+        setEventBus()
     }
 
     private fun scrollToTop(isSmooth: Boolean) {
@@ -298,6 +299,19 @@ class LuckyDrawListLayout constructor(
                 (mBinding.recyclerView.adapter as LuckyDrawAdapter).notifyDataSetChanged()
             }
         })
+    }
+
+
+
+    @SuppressLint("CheckResult")
+    private fun setEventBus() {
+        EventBusHelper.mSubject.subscribe {
+            if (it.requestCode == Flag.RequestCode.LUCKY_DRAW_EVENT) {
+                if (CustomLog.flag) CustomLog.L("LuckyDrawListLayout", "setEventBus --- ")
+                scrollToTop(false)
+                loadLuckyDrawsData()
+            }
+        }
     }
 
     // viewpager의 화면 진입시

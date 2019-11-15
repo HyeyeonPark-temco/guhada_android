@@ -97,6 +97,14 @@ interface ProductService {
     @GET("lucky-draws")
     fun getLuckyDraws(): Call<BaseModel<LuckyEvent>>
 
+    /**
+     * @author park jungho
+     * 19.11.13
+     * 럭키드로우 리스트
+     */
+    @GET("lucky-draws")
+    fun getLuckyDraws(@Header("Authorization") accessToken: String): Call<BaseModel<LuckyEvent>>
+
 
     @POST("lucky-draws/request/{dealId}")
     fun getRequestLuckyDraw(@Header("Authorization") accessToken: String, @Path("dealId") id: String): Call<BaseModel<LuckyDrawList>>

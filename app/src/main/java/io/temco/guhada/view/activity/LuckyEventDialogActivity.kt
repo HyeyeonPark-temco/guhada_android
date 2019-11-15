@@ -93,18 +93,23 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
             mLoadingIndicatorUtil.show()
             mViewModel.getEventUser(object : OnCallBackListener {
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    if(!resultFlag) mLoadingIndicatorUtil.dismiss()
-                    var eventUser = value as EventUser
-                    if (eventUser.isUserLuckyEventCheck()) {
-                        // 인증 및 럭키드로우 이벤트 응모 가능
-                        requestLuckyDraw()
-                    } else {
+                    if(!resultFlag){
                         mLoadingIndicatorUtil.dismiss()
-                        // 회원 수정 화면
-                        moveEdit()
+                        finish()
                     }
-                    if (CustomLog.flag) CustomLog.L("LuckyEventDialogActivity", "eventUser", eventUser)
-                    if (CustomLog.flag) CustomLog.L("LuckyEventDialogActivity", "eventUser isUserLuckyEventCheck", eventUser.isUserLuckyEventCheck())
+                    else{
+                        var eventUser = value as EventUser
+                        if (eventUser.isUserLuckyEventCheck()) {
+                            // 인증 및 럭키드로우 이벤트 응모 가능
+                            requestLuckyDraw()
+                        } else {
+                            mLoadingIndicatorUtil.dismiss()
+                            // 회원 수정 화면
+                            moveEdit()
+                        }
+                        if (CustomLog.flag) CustomLog.L("LuckyEventDialogActivity", "eventUser", eventUser)
+                        if (CustomLog.flag) CustomLog.L("LuckyEventDialogActivity", "eventUser isUserLuckyEventCheck", eventUser.isUserLuckyEventCheck())
+                    }
                 }
             })
         } else {
@@ -145,7 +150,9 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
         mBinding.date1 = DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerAnnouncementAt)
         mBinding.date2 = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerBuyFromAt) + " - " +
                 DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerBuyToAt))
-        mBinding.setClickCloseListener { onBackPressed() }
+        mBinding.setClickCloseListener {
+            setResult(Activity.RESULT_OK)
+            onBackPressed() }
     }
 
     // 로그인 페이지 이동

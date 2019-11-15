@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/greyish_brown_two"
                     android:layout_marginTop="30dp"
-                    android:text="당첨자 응모기간"
+                    android:text="이벤트 응모기간"
                     android:textSize="@dimen/text_14" />
 
                 <TextView
