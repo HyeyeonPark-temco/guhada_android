@@ -38,24 +38,28 @@ class LuckyDrawViewModel(val context: Context) : BaseObservableViewModel() {
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         val data = it.data as LuckyEvent
-                        if(CustomLog.flag)CustomLog.L("LuckyDrawViewModel","data",data)
-                        val current = Calendar.getInstance().timeInMillis/* - (data.luckyDrawList[0].now*1000 - Calendar.getInstance().timeInMillis)*/
-                        val time = (data.luckyDrawList[0].remainedTimeForEnd) * 1000L
-                        listData.add(LuckyDrawTitle(0,HomeType.LuckyDrawTitle,data.titleList,
-                                LuckyDrawTimeData(data.luckyDrawList[0].now,data.luckyDrawList[0].remainedTimeForStart,
-                                        data.luckyDrawList[0].remainedTimeForEnd,data.luckyDrawList[0].dealId,0),
-                                current + time,0L))
-                        var index = 1
-                        Observable.fromIterable(data.luckyDrawList).map { event ->
-                            val current = Calendar.getInstance().timeInMillis
-                            val time = (event.remainedTimeForEnd) * 1000L
-                            LuckyDrawEvent(index = index++, type = HomeType.LuckyDrawEvent, eventData = event, endTime = event.remainedTimeForEnd * 1000L, expiredTimeLong = current + time)
-                        }.subscribe { event ->
-                            listData.add(event)
-                        }
+                        if(data.luckyDrawList.size > 0){
+                            if(CustomLog.flag)CustomLog.L("LuckyDrawViewModel","data",data)
+                            val current = Calendar.getInstance().timeInMillis/* - (data.luckyDrawList[0].now*1000 - Calendar.getInstance().timeInMillis)*/
+                            val time = (data.luckyDrawList[0].remainedTimeForEnd) * 1000L
+                            listData.add(LuckyDrawTitle(0,HomeType.LuckyDrawTitle,data.titleList,
+                                    LuckyDrawTimeData(data.luckyDrawList[0].now,data.luckyDrawList[0].remainedTimeForStart,
+                                            data.luckyDrawList[0].remainedTimeForEnd,data.luckyDrawList[0].dealId,0),
+                                    current + time,0L))
+                            var index = 1
+                            Observable.fromIterable(data.luckyDrawList).map { event ->
+                                val current = Calendar.getInstance().timeInMillis
+                                val time = (event.remainedTimeForEnd) * 1000L
+                                LuckyDrawEvent(index = index++, type = HomeType.LuckyDrawEvent, eventData = event, endTime = event.remainedTimeForEnd * 1000L, expiredTimeLong = current + time)
+                            }.subscribe { event ->
+                                listData.add(event)
+                            }
 
-                        listData.add(LuckyDrawEventFooter(index, HomeType.LuckyDrawFooter))
-                        listener.callBackListener(true, "")
+                            listData.add(LuckyDrawEventFooter(index, HomeType.LuckyDrawFooter))
+                            listener.callBackListener(true, "")
+                        }else{
+                            listener.callBackListener(false, "")
+                        }
                     },
                     dataNotFoundTask = {
                         listener.callBackListener(false, "")
