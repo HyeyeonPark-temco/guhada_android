@@ -85,6 +85,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
 
                     }
                     if(CustomLog.flag)CustomLog.L("LuckyEventDialogActivity","eventUser",eventUser)
+                    if(CustomLog.flag)CustomLog.L("LuckyEventDialogActivity","eventUser isUserLuckyEventCheck",eventUser.isUserLuckyEventCheck())
                 }
             })
         }else{

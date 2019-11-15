@@ -55,13 +55,20 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
                         successTask = {
                             var data = (o as BaseModel<*>).data
                             if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data",data)
-
+                            listener.callBackListener(true, data)
                         },
-                        dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataNotFoundTask ") },
-                        failedTask = {if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw failedTask ") },
-                        userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw userLikeNotFoundTask ") },
-                        serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw serverRuntimeErrorTask ") },
-                        dataIsNull = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataIsNull ") }
+                        dataNotFoundTask = {
+                            if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataNotFoundTask ")
+                            listener.callBackListener(false, "")
+                        },
+                        failedTask = {if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw failedTask ")
+                            listener.callBackListener(false, "") },
+                        userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw userLikeNotFoundTask ")
+                            listener.callBackListener(false, "") },
+                        serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw serverRuntimeErrorTask ")
+                            listener.callBackListener(false, "") },
+                        dataIsNull = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataIsNull ")
+                            listener.callBackListener(false, "")}
                     )
             },accessToken = accessToken, id = dealId)
         })

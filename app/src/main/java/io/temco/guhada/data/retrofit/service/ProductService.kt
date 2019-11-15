@@ -1,11 +1,13 @@
 package io.temco.guhada.data.retrofit.service
 
+import com.google.gson.JsonObject
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.event.LuckyEvent
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.data.model.product.Product
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -95,7 +97,11 @@ interface ProductService {
     fun getLuckyDraws(): Call<BaseModel<LuckyEvent>>
 
 
-    // http://dev.product.guhada.com/products/{productId}?viewType=LIST
     @POST("lucky-draws/request/{dealId}")
-    fun getRequestLuckyDraw(@Header("Authorization") accessToken: String, @Path("dealId") id: String): Call<BaseModel<ProductByList>>
+    fun getRequestLuckyDraw(@Header("Authorization") accessToken: String, @Path("dealId") id: String): Call<BaseModel<JSONObject>>
+
+
+
+    @POST("/lucky-draws/winner")
+    fun getRequestLuckyDrawWinner(@Header("Authorization") accessToken: String,@Body luckyDrawWinner : LuckyDrawWinner): Call<BaseModel<JSONObject>>
 }
