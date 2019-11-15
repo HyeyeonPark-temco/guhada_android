@@ -7,9 +7,7 @@ import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.data.model.product.Product
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ProductService {
 
@@ -96,4 +94,8 @@ interface ProductService {
     @GET("lucky-draws")
     fun getLuckyDraws(): Call<BaseModel<LuckyEvent>>
 
+
+    // http://dev.product.guhada.com/products/{productId}?viewType=LIST
+    @POST("lucky-draws/request/{dealId}")
+    fun getRequestLuckyDraw(@Header("Authorization") accessToken: String, @Path("dealId") id: String): Call<BaseModel<ProductByList>>
 }

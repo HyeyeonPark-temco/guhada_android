@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.event
 
+import android.text.TextUtils
+import io.temco.guhada.common.util.CustomLog
 import  io.temco.guhada.data.model.Verification.Gender
 import io.temco.guhada.data.model.user.UserProfile
 import java.io.Serializable
@@ -26,10 +28,16 @@ class EventUser {
     var validEmail = false                  // 유효한 이메일 format 여부 (false: 이메일 필드 지우고 새로 입력받아야 함; sns의 경우 KAKAO:12345 로 email이 저장되는 경우가 있음)
     var verifiedIdentityUpdated = false
 
+
     open class UserSignUp : AcceptTerms(), Serializable {
 
         var email = ""
         var password = ""
+
+        override fun toString(): String {
+            if(CustomLog.flag)return "UserSignUp(email='$email', password='$password')"
+            else return ""
+        }
     }
 
     open class AcceptTerms : Serializable {
@@ -38,6 +46,10 @@ class EventUser {
         var agreePurchaseTos = false
         var agreeSaleTos = false
         var agreeSmsReception = false
+        override fun toString(): String {
+            if(CustomLog.flag)return "AcceptTerms(agreeCollectPersonalInfoTos=$agreeCollectPersonalInfoTos, agreeEmailReception=$agreeEmailReception, agreePurchaseTos=$agreePurchaseTos, agreeSaleTos=$agreeSaleTos, agreeSmsReception=$agreeSmsReception)"
+            else return ""
+        }
     }
 
     /**
@@ -51,6 +63,10 @@ class EventUser {
         var identityVerifyMethod = ""
         var mobile = ""
         var name = ""
+        override fun toString(): String {
+            if(CustomLog.flag)return "IdentityVerify(birth='$birth', diCode='$diCode', gender='$gender', identityVerifyMethod='$identityVerifyMethod', mobile='$mobile', name='$name')"
+            else return ""
+        }
     }
 
     /**
@@ -60,14 +76,41 @@ class EventUser {
         var verificationNumber = 0
         var verificationTarget = ""
         var verificationTargetType = ""
+        override fun toString(): String {
+            if(CustomLog.flag)return "Verification(verificationNumber=$verificationNumber, verificationTarget='$verificationTarget', verificationTargetType='$verificationTargetType')"
+            else return ""
+        }
     }
 
     /**
      * @see io.temco.guhada.common.enum.SnsLoginType
+     *
      */
     open class SnsSignUp : UserSignUp(), Serializable {
         var snsId = ""
         var snsType = ""
         var profileJson = UserProfile()
+        override fun toString(): String {
+            if(CustomLog.flag)return "SnsSignUp(snsId='$snsId', snsType='$snsType', profileJson=$profileJson)"
+            else return ""
+        }
     }
+
+    override fun toString(): String {
+        if(CustomLog.flag)return "EventUser(identityVerify=$identityVerify, userSignUp=$userSignUp, snsSignUp=$snsSignUp, acceptTerms=$acceptTerms, email='$email', emailVerified=$emailVerified, validEmail=$validEmail, verifiedIdentityUpdated=$verifiedIdentityUpdated)"
+        else return ""
+    }
+
+
+    fun isUserLuckyEventCheck() : Boolean{
+        var isFalg = false
+        if(this.acceptTerms.agreeEmailReception && this.acceptTerms.agreeSmsReception && this.acceptTerms.agreeSaleTos &&
+                this.emailVerified && this.validEmail && (!TextUtils.isEmpty(this.identityVerify.identityVerifyMethod) && !"NONE".equals(this.identityVerify.identityVerifyMethod, true))){
+            isFalg = true
+        }
+
+        return isFalg
+    }
+
+
 }

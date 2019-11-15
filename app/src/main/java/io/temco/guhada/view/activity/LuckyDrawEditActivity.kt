@@ -25,6 +25,7 @@ import java.net.URLDecoder
 
 /**
  * 럭키드로우 회원정보 수정 Activity
+ *
  * @author Hyeyeon Park
  * @since 2019.11.12
  */
@@ -33,9 +34,7 @@ class LuckyDrawEditActivity : BindActivity<ActivityLuckydrawEditBinding>() {
     private lateinit var mTermsViewModel: TermsViewModel
 
     override fun getBaseTag(): String = LuckyDrawEditActivity::class.java.simpleName
-
     override fun getLayoutId(): Int = R.layout.activity_luckydraw_edit
-
     override fun getViewType(): Type.View = Type.View.LUCKY_DRAW_JOIN
 
     override fun init() {

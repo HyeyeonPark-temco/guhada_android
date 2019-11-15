@@ -272,7 +272,7 @@ class ProductServer {
         /**
          * @author park jungho
          * 19.09.19
-         * 핫키워드 목록 조회
+         * 럭키드로우 목록 조회
          */
         @JvmStatic
         fun getLuckyDraws(listener: OnServerListener?) {
@@ -286,6 +286,28 @@ class ProductServer {
                         listener.onResult(false, t.message)
                     }
                 })
+            }
+        }
+
+
+        /**
+         * @author park jungho
+         *
+         * 럭키드로우 응모하기
+         */
+        @JvmStatic
+        fun getRequestLuckyDraw(listener: OnServerListener?,accessToken: String,id: String) {
+            if (listener != null) {
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false)
+                        .getRequestLuckyDraw(accessToken, id)
+                        .enqueue(object : Callback<BaseModel<ProductByList>> {
+                            override fun onResponse(call: Call<BaseModel<ProductByList>>, response: Response<BaseModel<ProductByList>>) {
+                                listener.onResult(response.isSuccessful, response.body())
+                            }
+                            override fun onFailure(call: Call<BaseModel<ProductByList>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
             }
         }
 

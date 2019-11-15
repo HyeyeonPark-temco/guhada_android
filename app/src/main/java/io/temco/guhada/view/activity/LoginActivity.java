@@ -36,13 +36,12 @@ import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.model.event.EventUser;
+import io.temco.guhada.data.model.event.LuckyDrawList;
 import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.user.SnsUser;
 import io.temco.guhada.data.viewmodel.account.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 
 public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     private LoginViewModel mViewModel;
@@ -78,7 +77,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             public void redirectTermsActivity(int type, Object data, String email) {
                 mViewModel.setSnsUser(data);
 
-                if (mViewModel.getMIsEvent()) {
+                if (mViewModel.getEventData() != null) {
                     String snsId = "", name = "", familyName = "", givenName = "", imageUrl = "", snsType = "";
 
                     switch (type) {
@@ -239,7 +238,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
-                if (mViewModel.getMIsEvent()) {
+                if (mViewModel.getEventData() != null) {
                     Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
                     startActivity(intent);
                 } else {
@@ -248,7 +247,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 }
             }
         });
-        mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", true));
+        mViewModel.setEventData((LuckyDrawList) getIntent().getSerializableExtra("eventData"));
         mViewModel.setToolBarTitle(getResources().getString(R.string.login_title));
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);
@@ -273,8 +272,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         SnsLoginModule.handleActivityResultForKakao(requestCode, resultCode, data);
 
         if (mViewModel.getSnsUser() == null) {
-            if (CustomLog.INSTANCE.getFlag())
-                CustomLog.INSTANCE.L("onActivityResult", "getSnsUser ", "null -----");
+            if (CustomLog.getFlag())CustomLog.L("onActivityResult", "getSnsUser ", "null -----");
             SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener, getSnsLoginServerListener());
         }
 
@@ -299,8 +297,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     if (mViewModel.getSnsUser() == null)
-                        if (CustomLog.INSTANCE.getFlag())
-                            CustomLog.INSTANCE.L("onActivityResult RC_GOOGLE_LOGIN", "getSnsUser ", "null -----");
+                        if (CustomLog.getFlag())CustomLog.L("onActivityResult RC_GOOGLE_LOGIN", "getSnsUser ", "null -----");
                     mViewModel.getTempSnsUser().setSnsType("GOOGLE");
                     SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
@@ -321,7 +318,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
                     case Flag.ResultCode.SUCCESS:
-                        if (mViewModel.getMIsEvent()) {
+                        if (mViewModel.getEventData()!=null) {
 
                         } else {
                             // SNS 로그인
