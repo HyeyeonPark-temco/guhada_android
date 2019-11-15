@@ -128,6 +128,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                 } else {
                     CommonViewUtil.showDialog(this@LuckyEventDialogActivity, value.toString(), false, object : OnBaseDialogListener {
                         override fun onClickOk() {
+                            setResult(Activity.RESULT_OK)
                             onBackPressed()
                         }
                     })
@@ -152,7 +153,8 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                 DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerBuyToAt))
         mBinding.setClickCloseListener {
             setResult(Activity.RESULT_OK)
-            onBackPressed() }
+            onBackPressed()
+        }
     }
 
     // 로그인 페이지 이동
