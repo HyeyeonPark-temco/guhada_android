@@ -243,8 +243,13 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             @Override
             public void closeActivity(int resultCode) {
                 if (mViewModel.getEventData() != null) {
-                    Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
-                    startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
+                    if(resultCode == RESULT_CANCELED){
+                        setResult(resultCode);
+                        finish();
+                    }else{
+                        Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
+                        startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
+                    }
                 } else {
                     setResult(resultCode);
                     finish();
