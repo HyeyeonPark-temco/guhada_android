@@ -46,11 +46,11 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                 Status.START.code -> {
                     userCheck()
                 }
-                Status.WINNER_ANNOUNCEMENT.code->{
-                    if(CommonUtil.checkToken()){
+                Status.WINNER_ANNOUNCEMENT.code -> {
+                    if (CommonUtil.checkToken()) {
                         mLoadingIndicatorUtil.show()
                         getLuckyDrawWinner()
-                    }else{
+                    } else {
                         CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                                 cancelButtonVisible = true,
                                 confirmTask = {
@@ -117,10 +117,10 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
         mViewModel.getRequestLuckyDraw(eventData.dealId.toString(), object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mLoadingIndicatorUtil.dismiss()
-                if(resultFlag){
+                if (resultFlag) {
                     setRequestOkPopup()
-                }else{
-                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false, object:OnBaseDialogListener{
+                } else {
+                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity, value.toString(), false, object : OnBaseDialogListener {
                         override fun onClickOk() {
                             onBackPressed()
                         }
@@ -162,19 +162,19 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
     }
 
     // 유저의 사용자 정보 확인
-    private fun getLuckyDrawWinner(){
-        mViewModel.getRequestLuckyDrawWinner(eventData.dealId, object : OnCallBackListener{
+    private fun getLuckyDrawWinner() {
+        mViewModel.getRequestLuckyDrawWinner(eventData.dealId, object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mLoadingIndicatorUtil.dismiss()
-                if(resultFlag){
+                if (resultFlag) {
                     var data = value as JsonObject
                     mBinding.layoutLuckydrawContent.visibility = View.VISIBLE
                     mBinding.layoutLuckydrawWinner.visibility = View.VISIBLE
                     mBinding.winnerTitle = data.get("title").asString
                     mBinding.winnerUser = data.get("userName").asString
                     mBinding.setClickCloseListener { onBackPressed() }
-                }else{
-                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false,true)
+                } else {
+                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity, value.toString(), false, true)
                 }
             }
         })
