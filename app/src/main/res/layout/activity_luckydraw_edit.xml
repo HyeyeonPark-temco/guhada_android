@@ -5,7 +5,6 @@
     <data>
 
         <import type="android.view.View" />
-        <import type="io.temco.guhada.data.model.Verification.IdentityVerifyMethod"/>
 
         <variable
             name="eventUser"
@@ -212,7 +211,7 @@
                         android:background="@drawable/border_all_whitefour"
                         android:gravity="center"
                         android:onClick="@{()->viewModel.onClickVerifyMobile()}"
-                        android:text="@{eventUser.identityVerify.identityVerifyMethod != IdentityVerifyMethod.NONE.code ? @string/luckydraw_finishverify : @string/luckydraw_verifymobile, default =  @string/luckydraw_verifymobile}"
+                        android:text="@{viewModel.mIsMobileVerified ? @string/luckydraw_finishverify : @string/luckydraw_verifymobile, default =  @string/luckydraw_verifymobile}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
