@@ -93,6 +93,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
             mLoadingIndicatorUtil.show()
             mViewModel.getEventUser(object : OnCallBackListener {
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    if(!resultFlag) mLoadingIndicatorUtil.dismiss()
                     var eventUser = value as EventUser
                     if (eventUser.isUserLuckyEventCheck()) {
                         // 인증 및 럭키드로우 이벤트 응모 가능

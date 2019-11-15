@@ -34,9 +34,14 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
             UserServer.getEventUser(OnServerListener { success, o ->
                 if (success && o is BaseModel<*>)
                     if (o.resultCode == ResultCode.SUCCESS.flag) listener.callBackListener(true, o.data as EventUser)
-                    else ToastUtil.showMessage(o.message)
-                else
+                    else {
+                        listener.callBackListener(false, o.message)
+                        ToastUtil.showMessage(o.message)
+                    }
+                else{
                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                    listener.callBackListener(false, "")
+                }
             }, accessToken = accessToken)
         })
     }
@@ -54,7 +59,7 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
                                 listener.callBackListener(true, data)
                             }else{
                                 if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data o ",o.toString())
-                                listener.callBackListener(false, "")
+                                listener.callBackListener(false, (o as BaseModel<*>).message)
                             }
                         },
                         dataNotFoundTask = {
