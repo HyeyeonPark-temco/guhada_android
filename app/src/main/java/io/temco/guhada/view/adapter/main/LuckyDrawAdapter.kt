@@ -251,7 +251,7 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                         }
                     })
                 }
-                if (position == 0) {
+                if (position == 0 && item.eventTile.size > 1) {
                     homeRolling()
                 }
             }

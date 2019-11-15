@@ -48,12 +48,14 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
             ProductServer.getRequestLuckyDraw(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            var data = (o as BaseModel<*>).data as LuckyDrawList
-                            if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data",data)
-                            /*if(data.has("statusCode")){
-                                if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "statusCode",data.getString("statusCode"))
-                            }*/
-                            listener.callBackListener(true, data)
+                            if(success){
+                                var data = (o as BaseModel<*>).data as LuckyDrawList
+                                if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data",data)
+                                listener.callBackListener(true, data)
+                            }else{
+                                if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "data o ",o.toString())
+                                listener.callBackListener(false, "")
+                            }
                         },
                         dataNotFoundTask = {
                             if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataNotFoundTask ")
@@ -85,16 +87,16 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
                         },
                         dataNotFoundTask = {
                             if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataNotFoundTask ")
-                            listener.callBackListener(false, "")
+                            listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_DNF]")
                         },
                         failedTask = {if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw failedTask ")
-                            listener.callBackListener(false, "") },
+                            listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_FT]") },
                         userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw userLikeNotFoundTask ")
-                            listener.callBackListener(false, "") },
+                            listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_ULF]") },
                         serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw serverRuntimeErrorTask ")
-                            listener.callBackListener(false, "") },
+                            listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_SRE]") },
                         dataIsNull = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataIsNull ")
-                            listener.callBackListener(false, "")}
+                            listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_DN]")}
                 )
             },accessToken = accessToken, dealId = dealId)
         })

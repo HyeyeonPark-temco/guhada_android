@@ -2,20 +2,19 @@ package io.temco.guhada.view.activity
 
 import android.content.Intent
 import android.view.View
+import com.google.gson.JsonObject
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.DateUtil
-import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.event.EventUser
 import io.temco.guhada.data.model.event.LuckyDrawList
 import io.temco.guhada.data.model.event.Status
 import io.temco.guhada.data.viewmodel.LuckyEventDialogViewModel
 import io.temco.guhada.databinding.ActivityLuckyeventdialogBinding
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 
 /**
  * @author park jungho
@@ -46,10 +45,16 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                 }
                 Status.WINNER_ANNOUNCEMENT.code->{
                     if(CommonUtil.checkToken()){
+                        mLoadingIndicatorUtil.show()
                         getLuckyDrawWinner()
                     }else{
-                        CommonUtil.startLoginPage(this)
-                        this@LuckyEventDialogActivity.finish()
+                        CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                                cancelButtonVisible = true,
+                                confirmTask = {
+                                    CommonUtil.startLoginPage(this@LuckyEventDialogActivity)
+                                    this@LuckyEventDialogActivity.finish()
+                                }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
+
                     }
                 }
             }
@@ -86,10 +91,11 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                         mViewModel.getRequestLuckyDraw(eventData.dealId.toString(), object : OnCallBackListener{
                             override fun callBackListener(resultFlag: Boolean, value: Any) {
                                 mLoadingIndicatorUtil.dismiss()
-                                /*if(resultFlag){
+                                if(resultFlag){
                                     setRequestOkPopup()
-                                }*/
-                                setRequestOkPopup()
+                                }else{
+                                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false,true)
+                                }
                             }
                         })
                     }else{
@@ -133,9 +139,19 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
 
     // 유저의 사용자 정보 확인
     private fun getLuckyDrawWinner(){
-        mViewModel.getRequestLuckyDrawWinner(eventData.dealId, CommonUtil.checkUserId(), object : OnCallBackListener{
+        mViewModel.getRequestLuckyDrawWinner(eventData.dealId, object : OnCallBackListener{
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-
+                mLoadingIndicatorUtil.dismiss()
+                if(resultFlag){
+                    var data = value as JsonObject
+                    mBinding.layoutLuckydrawContent.visibility = View.VISIBLE
+                    mBinding.layoutLuckydrawWinner.visibility = View.VISIBLE
+                    mBinding.winnerTitle = data.get("title").asString
+                    mBinding.winnerUser = data.get("userName").asString
+                    mBinding.setClickCloseListener { finish() }
+                }else{
+                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false,true)
+                }
             }
         })
     }

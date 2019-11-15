@@ -1347,6 +1347,7 @@
     <string name="luckydraw_popup_desc2">당첨자 발표일</string>
     <string name="luckydraw_popup_desc3">당첨자 구매기간</string>
     <string name="luckydraw_popup_footer_desc">·  당첨자 발표는 본인인증한 휴대전화 번호로 이뤄집니다.\n·  당첨 안내수신 후 24시간 내 답변이 없을 시 취소 처리됩니다.</string>
+    <string name="luckydraw_popup_winner_desc1"><![CDATA[ <font color="#ffe84b">당첨자</font><font color="#ffffff"> 발표</font>]]></string>
 
     <!-- LUCKY DRAW -->
     <string name="luckydraw_checkduplicate">중복확인</string>

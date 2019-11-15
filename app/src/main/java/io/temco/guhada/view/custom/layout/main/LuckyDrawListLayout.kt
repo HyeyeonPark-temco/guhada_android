@@ -318,9 +318,9 @@ class LuckyDrawListLayout constructor(
         if (CustomLog.flag) CustomLog.L("LuckyDrawListLayout", "onResume")
         mViewModel.adapter.notifyDataSetChanged()
         if (!CommonUtil.checkToken()) {
-            mBinding.textviewBottomLogin.visibility = View.VISIBLE
-        }else{
             mBinding.textviewBottomLogin.visibility = View.GONE
+        }else{
+            mBinding.textviewBottomLogin.visibility = View.VISIBLE
         }
         //loadTimeDealData()
     }
