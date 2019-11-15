@@ -250,8 +250,23 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                         setResult(resultCode);
                         finish();
                     } else {
-                        Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
-                        startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
+                        if (Preferences.getToken() != null) {
+                            if (Preferences.getToken().getAccessToken() != null) {
+                                UserServer.getEventUser((success, o) -> {
+                                    if (success && o instanceof BaseModel)
+                                        if (((BaseModel) o).resultCode == Flag.ResultCode.SUCCESS) {
+                                            if (((EventUser) ((BaseModel) o).data).isUserLuckyEventCheck()) {
+                                                setResult(resultCode);
+                                                finish();
+                                            } else {
+                                                Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
+                                                startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
+                                            }
+                                        } else
+                                            ToastUtil.showMessage(((BaseModel) o).message);
+                                }, "Bearer " + Preferences.getToken().getAccessToken());
+                            }
+                        }
                     }
                 } else {
                     setResult(resultCode);
