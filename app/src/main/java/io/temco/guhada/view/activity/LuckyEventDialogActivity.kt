@@ -7,6 +7,7 @@ import com.google.gson.JsonObject
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.event.EventUser
@@ -54,7 +55,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                                 cancelButtonVisible = true,
                                 confirmTask = {
                                     CommonUtil.startLoginPage(this@LuckyEventDialogActivity)
-                                    this@LuckyEventDialogActivity.finish()
+                                    this@LuckyEventDialogActivity.onBackPressed()
                                 }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
 
                     }
@@ -62,7 +63,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
             }
         }
 
-        if (!::eventData.isInitialized) finish()
+        if (!::eventData.isInitialized) onBackPressed()
     }
 
 
@@ -70,7 +71,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            Flag.RequestCode.LOGIN -> if (resultCode == Activity.RESULT_OK) requestLuckyDraw() else finish()
+            Flag.RequestCode.LOGIN -> if (resultCode == Activity.RESULT_OK) requestLuckyDraw() else onBackPressed()
         }
     }
 
@@ -118,7 +119,11 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                 if(resultFlag){
                     setRequestOkPopup()
                 }else{
-                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false,true)
+                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false, object:OnBaseDialogListener{
+                        override fun onClickOk() {
+                            onBackPressed()
+                        }
+                    })
                 }
             }
         })
@@ -138,7 +143,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
         mBinding.date1 = DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerAnnouncementAt)
         mBinding.date2 = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerBuyFromAt) + " - " +
                 DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerBuyToAt))
-        mBinding.setClickCloseListener { finish() }
+        mBinding.setClickCloseListener { onBackPressed() }
     }
 
     // 로그인 페이지 이동
@@ -166,7 +171,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                     mBinding.layoutLuckydrawWinner.visibility = View.VISIBLE
                     mBinding.winnerTitle = data.get("title").asString
                     mBinding.winnerUser = data.get("userName").asString
-                    mBinding.setClickCloseListener { finish() }
+                    mBinding.setClickCloseListener { onBackPressed() }
                 }else{
                     CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false,true)
                 }
@@ -174,4 +179,9 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
         })
     }
 
+    override fun onBackPressed() {
+        this.overridePendingTransition(0, 0)
+        super.onBackPressed()
+        this.overridePendingTransition(0, 0)
+    }
 }
