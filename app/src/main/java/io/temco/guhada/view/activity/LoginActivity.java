@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Flag;
@@ -308,6 +309,10 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     mViewModel.getTempSnsUser().setSnsType("FACEBOOK");
 
                     break;
+
+                case Flag.RequestCode.LUCKY_DRAW_EVENT:
+                    // TODO 럭키드로우
+                    break;
             }
         } else {
             mViewModel.setSnsUser(null);
@@ -322,7 +327,16 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 switch (model.resultCode) {
                     case Flag.ResultCode.SUCCESS:
                         if (mViewModel.getMIsEvent()) {
+                            EventUser.SnsSignUp snsSignUp = new EventUser.SnsSignUp();
+                            snsSignUp.setSnsType(Objects.requireNonNull(mViewModel.getTempSnsUser().getSnsType()));
+                            snsSignUp.setSnsId(Objects.requireNonNull(mViewModel.getTempSnsUser().getSnsId()));
 
+                            Token token = (Token) model.data;
+                            Preferences.setToken(token);
+
+                            Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
+                            intent.putExtra("snsUser", snsSignUp);
+                            startActivityForResult(intent, Flag.RequestCode.LUCKY_DRAW_EVENT);
                         } else {
                             // SNS 로그인
                             Token token = (Token) model.data;
