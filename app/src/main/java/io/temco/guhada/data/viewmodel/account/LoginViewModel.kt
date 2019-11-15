@@ -212,6 +212,12 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                             name = (snsUser as GoogleSignInAccount).displayName)
                 }
                 "FACEBOOK" -> {
+                    createSnsUser(
+                            id = tempSnsUser.snsId,
+                            email = tempSnsUser.email,
+                            imageUrl = tempSnsUser.userProfile?.imageUrl?:"",
+                            name = tempSnsUser.name
+                    )
                 }
             }
         }

@@ -321,11 +321,15 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
                     case Flag.ResultCode.SUCCESS:
-                        // SNS 로그인
-                        Token token = (Token) model.data;
-                        Preferences.setToken(token);
-                        setResult(RESULT_OK);
-                        finish();
+                        if (mViewModel.getMIsEvent()) {
+
+                        } else {
+                            // SNS 로그인
+                            Token token = (Token) model.data;
+                            Preferences.setToken(token);
+                            setResult(RESULT_OK);
+                            finish();
+                        }
                         break;
                     case Flag.ResultCode.DATA_NOT_FOUND:
                         // SNS 회원가입
