@@ -10,7 +10,6 @@ import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
-import io.temco.guhada.data.model.LuckyDrawWinner
 import io.temco.guhada.data.model.ProductByList
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
@@ -321,10 +320,10 @@ class ProductServer {
          * 럭키드로우 응모하기
          */
         @JvmStatic
-        fun getRequestLuckyDrawWinner(listener: OnServerListener?,accessToken: String, luckyDrawWinner:LuckyDrawWinner) {
+        fun getRequestLuckyDrawWinner(listener: OnServerListener?,accessToken: String, dealId:Long) {
             if (listener != null) {
                 RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true, true)
-                        .getRequestLuckyDrawWinner(accessToken, luckyDrawWinner)
+                        .getRequestLuckyDrawWinner(accessToken, dealId)
                         .enqueue(object : Callback<BaseModel<JsonObject>> {
                             override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                                 listener.onResult(response.isSuccessful, response.body())

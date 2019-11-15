@@ -2,7 +2,6 @@ package io.temco.guhada.data.viewmodel
 
 import android.content.Context
 import com.google.gson.JsonObject
-import io.reactivex.Observable
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ResultCode
@@ -11,20 +10,12 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.Deal
-import io.temco.guhada.data.model.LuckyDrawWinner
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.event.EventUser
 import io.temco.guhada.data.model.event.LuckyDrawList
-import io.temco.guhada.data.model.event.LuckyEvent
-import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.view.adapter.main.LuckyDrawAdapter
-import io.temco.guhada.view.adapter.main.TimeDealListAdapter
-import org.json.JSONObject
-import java.util.*
 
 /**
  * @author park jungho
@@ -83,9 +74,8 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
 
 
 
-    fun getRequestLuckyDrawWinner(dealId:Long, userId:Long, listener: OnCallBackListener) {
+    fun getRequestLuckyDrawWinner(dealId:Long, listener: OnCallBackListener) {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
-            var winner =  LuckyDrawWinner(dealId, userId)
             ProductServer.getRequestLuckyDrawWinner(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
@@ -106,7 +96,7 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
                         dataIsNull = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataIsNull ")
                             listener.callBackListener(false, "")}
                 )
-            },accessToken = accessToken, luckyDrawWinner = winner)
+            },accessToken = accessToken, dealId = dealId)
         })
     }
 

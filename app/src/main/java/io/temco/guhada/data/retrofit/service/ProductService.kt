@@ -103,6 +103,6 @@ interface ProductService {
 
 
 
-    @POST("/lucky-draws/winner")
-    fun getRequestLuckyDrawWinner(@Header("Authorization") accessToken: String,@Body luckyDrawWinner : LuckyDrawWinner): Call<BaseModel<JsonObject>>
+    @GET("/lucky-draws/winner/{dealId}")
+    fun getRequestLuckyDrawWinner(@Header("Authorization") accessToken: String, @Path("dealId") dealId : Long): Call<BaseModel<JsonObject>>
 }
