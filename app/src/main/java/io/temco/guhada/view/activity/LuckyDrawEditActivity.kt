@@ -130,6 +130,7 @@ class LuckyDrawEditActivity : BindActivity<ActivityLuckydrawEditBinding>() {
         }
 
         mBinding.viewModel = mViewModel
+        mBinding.includeLuckydrawjoinTerms.isEvent = true
         mBinding.includeLuckydrawjoinTerms.viewModel = mTermsViewModel
         mBinding.includeLuckydrawjoinTerms.setOnClickSignUp {
             mViewModel.updateEventUser(successTask = {
