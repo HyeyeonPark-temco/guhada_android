@@ -49,6 +49,7 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     var mEmailVerifyBtnText = ObservableField(BaseApplication.getInstance().getString(R.string.luckydraw_checkduplicate))
         @Bindable
         get() = field
+    var mOriginEmail = ""
     var mEmail = ""
         set(value) {
             field = value
@@ -139,17 +140,13 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
         if (!mIsEmailVerified.get()) {
             if (!mIsEmailDuplicate.get()) {
                 if (mEmail.isNotEmpty()) {
-                    if (!Preferences.getToken()?.accessToken.isNullOrEmpty()) {
-                        val originEmail = JWT(Preferences.getToken()?.accessToken
-                                ?: "").getClaim("user_name").asString()
-                        if (mEmail == originEmail) {
-                            mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_finishcheck))
+                    if (mEmail == mOriginEmail) {
+                        mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_finishcheck))
 
-                            mResetVerifyNumberTask()
+                        mResetVerifyNumberTask()
 
-                            mIsEmailVerified = ObservableBoolean(true)
-                            notifyPropertyChanged(BR.mIsEmailVerified)
-                        } else checkDuplicateEmail()
+                        mIsEmailVerified = ObservableBoolean(true)
+                        notifyPropertyChanged(BR.mIsEmailVerified)
                     } else checkDuplicateEmail()
                 }
             } else {

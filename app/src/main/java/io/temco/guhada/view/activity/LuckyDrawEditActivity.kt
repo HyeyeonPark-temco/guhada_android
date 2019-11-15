@@ -44,6 +44,7 @@ class LuckyDrawEditActivity : BindActivity<ActivityLuckydrawEditBinding>() {
                 if (it != null) {
                     this.mSnsSignUp = it as EventUser.SnsSignUp
                     this.mEmail = it.email
+                    this.mOriginEmail = it.email
                     this.mIsSns = true
                 }
             }
@@ -66,6 +67,7 @@ class LuckyDrawEditActivity : BindActivity<ActivityLuckydrawEditBinding>() {
 
                 if (!it.email.isNullOrEmpty() && it.validEmail) {
                     this.mEmail = it.email
+                    this.mOriginEmail = it.email
                     mBinding.edittextLuckydrawjoinEmail.text = it.email
                 }
 
@@ -113,7 +115,7 @@ class LuckyDrawEditActivity : BindActivity<ActivityLuckydrawEditBinding>() {
                 mViewModel.mIsJoinAvailable.set(isAllChecked && isAllVerified)
                 mViewModel.mIsTermsAllChecked = isAllChecked
 
-                if(isAllChecked){
+                if (isAllChecked) {
                     mViewModel.mEventUser.value?.acceptTerms?.agreeCollectPersonalInfoTos = true
                     mViewModel.mEventUser.value?.acceptTerms?.agreePurchaseTos = true
                     mViewModel.mEventUser.value?.acceptTerms?.agreeSaleTos = true
@@ -130,7 +132,10 @@ class LuckyDrawEditActivity : BindActivity<ActivityLuckydrawEditBinding>() {
         mBinding.viewModel = mViewModel
         mBinding.includeLuckydrawjoinTerms.viewModel = mTermsViewModel
         mBinding.includeLuckydrawjoinTerms.setOnClickSignUp {
-            mViewModel.updateEventUser()
+            mViewModel.updateEventUser(successTask = {
+                setResult(RESULT_OK)
+                finish()
+            })
         }
         mBinding.includeLuckydrawjoinHeader.title = getString(R.string.luckydraw_title_edit)
         mBinding.includeLuckydrawjoinHeader.setOnClickCloseButton { finish() }

@@ -26,6 +26,7 @@ class EventUser {
     var email = ""
     var emailVerified = false                 // 이메일 수정 가능 여부 판단 (true: 수정 불가)
     var validEmail = false                  // 유효한 이메일 format 여부 (false: 이메일 필드 지우고 새로 입력받아야 함; sns의 경우 KAKAO:12345 로 email이 저장되는 경우가 있음)
+                                            // 나머지 조건이 모두 충족하다는 가정하에, validEmail이 true면 회원정보 수정으로 넘기지 않음
     var verifiedIdentityUpdated = false
 
 
@@ -103,13 +104,13 @@ class EventUser {
 
 
     fun isUserLuckyEventCheck() : Boolean{
-        var isFalg = false
+        var isFlag = false
         if(this.acceptTerms.agreeEmailReception && this.acceptTerms.agreeSmsReception && this.acceptTerms.agreeSaleTos &&
-                this.emailVerified && this.validEmail && (!TextUtils.isEmpty(this.identityVerify.identityVerifyMethod) && !"NONE".equals(this.identityVerify.identityVerifyMethod, true))){
-            isFalg = true
+                (this.emailVerified || (!this.emailVerified && this.validEmail)) && (!TextUtils.isEmpty(this.identityVerify.identityVerifyMethod) && !"NONE".equals(this.identityVerify.identityVerifyMethod, true))){
+            isFlag = true
         }
 
-        return isFalg
+        return isFlag
     }
 
 
