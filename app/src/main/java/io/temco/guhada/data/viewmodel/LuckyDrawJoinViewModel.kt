@@ -10,13 +10,16 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.common.enum.SnsLoginType
 import io.temco.guhada.common.enum.VerificationType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnTimerListener
 import io.temco.guhada.common.util.*
+import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.event.EventUser
+import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -283,7 +286,7 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 
     fun onClickVerifyMobile() = mVerifyMobileTask()
 
-    fun signUpEventUser(agreeCollectPersonalInfoTos: Boolean, agreePurchaseTos: Boolean, agreeSaleTos: Boolean, agreeEmailReception: Boolean, agreeSmsReception: Boolean, successTask : ()->Unit) {
+    fun signUpEventUser(agreeCollectPersonalInfoTos: Boolean, agreePurchaseTos: Boolean, agreeSaleTos: Boolean, agreeEmailReception: Boolean, agreeSmsReception: Boolean, successTask: () -> Unit) {
         val eventUser = EventUser().apply {
             this.identityVerify = IdentityVerify().apply {
                 this.birth = mBirth
@@ -327,8 +330,18 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                     if (o.resultCode == ResultCode.SUCCESS.flag) {
                         if (CustomLog.flag) CustomLog.L("럭키드로우 SNS 회원가입", mEmail)
 
-                        // [TODO] 럭키드로우 응모
+                        val snsUser = SnsUser().apply {
+                            this.userProfile = mSnsSignUp?.profileJson
+                            this.snsId = mSnsSignUp?.snsId
+                            this.snsType = mSnsSignUp?.snsType
+                            this.email = mEmail
+                        }
 
+                        when (mSnsSignUp?.snsType) {
+                            SnsLoginType.KAKAO.type -> UserServer.kakaoLogin(snsUser, OnServerListener { success, o -> onSuccessLogin(success, o, successTask) })
+                            SnsLoginType.GOOGLE.type -> UserServer.googleLogin(OnServerListener { success, o -> onSuccessLogin(success, o, successTask) }, snsUser)
+                            SnsLoginType.FACEBOOK.type -> UserServer.facebookLogin(OnServerListener { success, o -> onSuccessLogin(success, o, successTask) }, snsUser)
+                        }
                     } else
                         ToastUtil.showMessage(o.message)
                 else
@@ -340,16 +353,30 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                     if (o.resultCode == ResultCode.SUCCESS.flag) {
                         if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
 
+                        val user = User().apply {
+                            this.email = mEmail
+                            this.password = mPassword
+                        }
 
-                        // [TODO] 럭키드로우 응모
-
+                        UserServer.signIn(OnServerListener { success, o ->
+                            onSuccessLogin(success, o, successTask)
+                        }, user = user)
                     } else
                         ToastUtil.showMessage(o.message)
                 else
                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
             }, eventUser = eventUser)
         }
+    }
 
+    // 럭키드로우 회원가입 후 accessToken을 가져오기 위한 function
+    private fun onSuccessLogin(success: Boolean, o: Any, successTask: () -> Unit) {
+        if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) {
+            val accessToken = o.data as Token
+            if (Preferences.getToken() != null) Preferences.clearToken(false)
+            Preferences.setToken(accessToken)
 
+            successTask()
+        }
     }
 }

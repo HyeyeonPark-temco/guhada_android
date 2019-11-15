@@ -109,7 +109,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                                 JsonParser parser = new JsonParser();
                                 JsonObject jsonObject = (JsonObject) (parser.parse(((JSONObject) data).getString("picture")));
                                 JsonObject jsonObject1 = (JsonObject) parser.parse(jsonObject.get("data").toString());
-                                imageUrl = jsonObject1.get("url").toString();
+                                if (jsonObject1.get("url") != null)
+                                    imageUrl = jsonObject1.get("url").toString();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -122,7 +123,9 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                             givenName = ((GoogleSignInAccount) data).getGivenName();
                             familyName = ((GoogleSignInAccount) data).getFamilyName();
                             name = ((GoogleSignInAccount) data).getDisplayName();
-                            imageUrl = ((GoogleSignInAccount) data).getPhotoUrl().toString();
+
+                            if (((GoogleSignInAccount) data).getPhotoUrl() != null)
+                                imageUrl = Objects.requireNonNull(((GoogleSignInAccount) data).getPhotoUrl()).toString();
                             snsType = "GOOGLE";
                             break;
                         }
@@ -243,10 +246,10 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             @Override
             public void closeActivity(int resultCode) {
                 if (mViewModel.getEventData() != null) {
-                    if(resultCode == RESULT_CANCELED){
+                    if (resultCode == RESULT_CANCELED) {
                         setResult(resultCode);
                         finish();
-                    }else{
+                    } else {
                         Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
                         startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
                     }
