@@ -327,7 +327,7 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                         binding.textStatus.setOnClickListener {
                             var intent = Intent(viewModel.context as Activity, LuckyEventDialogActivity::class.java)
                             intent.putExtra("eventData",item.eventData)
-                            (viewModel.context as Activity).startActivityForResult(intent,Flag.RequestCode.LUCKY_DRAW_EVENT_DIALOG)
+                            (viewModel.context as Activity).startActivityForResult(intent,Flag.RequestCode.LUCKY_DRAW_EVENT)
                         }
                     }
                     Status.NORMAL.code, Status.READY.code ->{
@@ -341,6 +341,11 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                     Status.WINNER_ANNOUNCEMENT.code->{
                         binding.textStatus.setBackgroundResource(R.drawable.background_color_round_13182e)
                         binding.textStatus.setTextColor(Color.parseColor("#ffffff"))
+                        binding.textStatus.setOnClickListener {
+                            var intent = Intent(viewModel.context as Activity, LuckyEventDialogActivity::class.java)
+                            intent.putExtra("eventData",item.eventData)
+                            (viewModel.context as Activity).startActivityForResult(intent,Flag.RequestCode.LUCKY_DRAW_EVENT)
+                        }
                     }
                     Status.REQUESTED.code->{
                         binding.textStatus.setBackgroundResource(R.drawable.background_color_round_c9c9c9)
