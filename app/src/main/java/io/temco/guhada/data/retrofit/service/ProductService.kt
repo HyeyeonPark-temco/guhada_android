@@ -2,6 +2,7 @@ package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.event.LuckyEvent
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.data.model.product.Product
@@ -85,5 +86,14 @@ interface ProductService {
      */
     @GET("time-deals")
     fun getTimeDeal() : Call<BaseModel<MutableList<Deal>>>
+
+
+    /**
+     * @author park jungho
+     * 19.11.13
+     * 럭키드로우 리스트
+     */
+    @GET("lucky-draws")
+    fun getLuckyDraws(): Call<BaseModel<LuckyEvent>>
 
 }

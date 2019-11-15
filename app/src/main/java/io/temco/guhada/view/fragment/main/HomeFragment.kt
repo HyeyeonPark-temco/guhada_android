@@ -121,10 +121,10 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                 mBinding.viewLine.visibility = View.VISIBLE
                             }
                             5 -> {
-                                vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = EventListLayout(it).apply { mHomeFragment = this@HomeFragment }
                             }
                             6 -> {
-                                vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = LuckyDrawListLayout(it).apply { mHomeFragment = this@HomeFragment }
                             }
                             else -> {
                                 vw = HomeListLayout(it)

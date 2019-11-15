@@ -82,6 +82,7 @@ class InfiniteViewPager : MultiTouchViewPager {
     }
 
 
+
     interface OnTabClickListener {
         fun onClick()
     }

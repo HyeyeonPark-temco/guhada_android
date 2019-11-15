@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <variable name="index" type="Integer" />
+
+        <variable
+            name="luckydraw"
+            type="io.temco.guhada.data.model.event.LuckyDrawList" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.main.LuckyDrawViewModel" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_bg_index0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{index == 0 ? View.VISIBLE : View.GONE, default = gone}"
+            android:background="@drawable/bg_02"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/common_white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/img_bg">
+
+                <ImageView
+                    android:id="@+id/image_thumb"
+                    style="@style/ProductImageType"
+                    android:layout_centerInParent="true"
+                    android:layout_width="240dp"
+                    android:layout_height="240dp"/>
+            </RelativeLayout>
+
+            <!-- TITLE -->
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:text="@{luckydraw.title}"
+                android:maxLines="2"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_17" />
+
+            <!-- PRICE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/common_price_format(luckydraw.sellPrice)}"
+                        android:textColor="@color/warm_grey_two"
+                        android:textSize="@dimen/text_16"
+                        app:cancelLine="@{true}"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{@string/common_price_format(luckydraw.discountPrice)}"
+                            android:textColor="@color/common_black"
+                            android:textSize="@dimen/text_26" />
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/common_unit_price"
+                            android:textColor="@color/common_black"
+                            android:textSize="@dimen/text_17" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(luckydraw.discountRate), default = 0}"
+                        android:textColor="#f43143"
+                        android:textSize="46sp" />
+
+                    <TextView
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_unit_percent"
+                        android:textColor="#f43143"
+                        android:textSize="@dimen/text_25" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_status"
+                style="@style/TextRegular"
+                android:layout_width="280dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:textColor="@color/common_white"
+                android:background="@drawable/background_color_round_f43143"
+                android:text="@{luckydraw.statusText}"
+                android:textSize="@dimen/text_18" />
+            <!--android:text="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? deal.timeDealInfo.statusText : @string/timedeal_today, default= @string/timedeal_today}"-->
+
+
+            <LinearLayout
+                android:id="@+id/layout_luckydraw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="4dp"
+                    android:textColor="@color/warm_grey_six"
+                    android:text="응모안내"
+                    android:textSize="@dimen/text_15" />
+
+                <ImageView
+                    android:id="@+id/imageview_luckydraw_infoarrow"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/detail_icon_arrow_open"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_luckydraw_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="40dp"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#dddddd"/>
+
+                <TextView
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/greyish_brown_two"
+                    android:layout_marginTop="30dp"
+                    android:text="당첨자 응모기간"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:id="@+id/text_luckydraw_info_desc1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/warm_grey_six"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/greyish_brown_two"
+                    android:layout_marginTop="20dp"
+                    android:text="당첨자 발표일"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:id="@+id/text_luckydraw_info_desc2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/warm_grey_six"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/greyish_brown_two"
+                    android:layout_marginTop="20dp"
+                    android:text="당첨자 구매기간"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:id="@+id/text_luckydraw_info_desc3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/warm_grey_six"
+                    android:textSize="@dimen/text_14" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relative_luckydraw_ribbon"
+            android:layout_width="178dp"
+            android:layout_height="47dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:background="@drawable/today_ribbon">
+
+            <TextView
+                android:id="@+id/text_luckydraw_ribbon"
+                style="@style/TextMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_18"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/common_white"
+                android:lineSpacingExtra="7sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

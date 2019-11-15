@@ -34,7 +34,7 @@ object TrackingEvent {
 
     enum class MainEvent(val eventName: String) {
         View_Time_Deal_Product("View_Time_Deal_Product"),
-        View_Lucky_Event_Product("View_Lucky_Event_Product")
+        View_Lucky_Event_Product("luckydraw"),
     }
 }
 

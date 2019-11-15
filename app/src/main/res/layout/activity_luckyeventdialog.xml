@@ -4,13 +4,181 @@
     <data>
 
         <import type="android.view.View" />
+        <variable name="title" type="String" />
+        <variable name="imgUrl" type="String" />
+        <variable name="date1" type="String" />
+        <variable name="date2" type="String" />
+
+        <variable
+            name="clickCloseListener"
+            type="android.view.View.OnClickListener" />
 
     </data>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/layout_luckydraw_content"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/toast_background"
+        android:visibility="visible">
 
-    </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/layout_luckydraw_request"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <LinearLayout
+                android:id="@+id/layout_luckydraw_request_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:background="@drawable/luckydraw_popup_bg"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextRegularSingleLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{title}"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_16"
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="-5sp"
+                    android:textColor="@color/common_white" />
+
+                <io.temco.guhada.view.custom.HtmlTextView
+                    style="@style/TextBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="35dp"
+                    android:text="@string/luckydraw_popup_desc1"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_26"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="bold"
+                    android:letterSpacing="-0.02"
+                    android:lineSpacingExtra="-14sp"
+                    app:isHtml="true"/>
+
+                <ImageView
+                    android:layout_width="165dp"
+                    android:layout_height="165dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"
+                    app:imageUrl="@{imgUrl}"/>
+                
+                <Button
+                    style="@style/TextRegularSingleLine"
+                    android:layout_width="200dp"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:textSize="@dimen/text_16"
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="-8sp"
+                    android:text="@string/common_confirm"
+                    android:onClick="@{clickCloseListener}"
+                    android:textColor="@color/common_white"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_color_round_border_white"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_luckydraw_request_info"
+                android:background="@color/common_white"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="17dp"
+                android:paddingBottom="15dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7dp">
+
+                    <TextView
+                        style="@style/TextRegularSingleLine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="당첨자 발표일"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_12"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="-0sp"
+                        android:textColor="@color/greyish_brown_two" />
+
+                    <TextView
+                        style="@style/TextRegularSingleLine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:text="@{date1}"
+                        android:textSize="@dimen/text_12"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="-0sp"
+                        android:textColor="@color/greyish_brown_two" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        style="@style/TextRegularSingleLine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="당첨자 구매기간"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_12"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="-0sp"
+                        android:textColor="@color/greyish_brown_two" />
+
+                    <TextView
+                        style="@style/TextRegularSingleLine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:text="@{date2}"
+                        android:textSize="@dimen/text_12"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="-0sp"
+                        android:textColor="@color/greyish_brown_two" />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/luckydraw_popup_footer_desc"
+                    android:textSize="@dimen/text_11"
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/warm_grey_two" />
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:onClick="@{clickCloseListener}"
+                android:background="@color/transparent"
+                android:src="@drawable/close_btn_img"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 </layout>

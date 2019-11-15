@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.webkit.*
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.ActivityCustomwebviewBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -14,6 +15,7 @@ import io.temco.guhada.view.activity.base.BindActivity
 
 
 class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
+    private val JS_INTERFACE_NAME = "Android"
 
     private var title = ""
     private var url = ""
@@ -45,6 +47,12 @@ class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
             layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
             if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
         }
+        mBinding.webview.addJavascriptInterface(AndroidBridge(), JS_INTERFACE_NAME)
+        mBinding.webview.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                mBinding.webview.loadUrl("javascript:execDaumPostcode();")
+            }
+        }
         mBinding.webview.webViewClient = object  : WebViewClient(){
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 //return super.shouldOverrideUrlLoading(view, request)
@@ -62,6 +70,18 @@ class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
             mBinding.webview.goBack()
         }else{
             super.onBackPressed()
+        }
+    }
+
+    inner class AndroidBridge {
+        @JavascriptInterface
+        fun processData(state: String, arg: String) {
+            when(state){
+                "login"->{
+                    CommonUtil.startLoginPage(this@CustomWebViewActivity)
+                    finish()
+                }
+            }
         }
     }
 

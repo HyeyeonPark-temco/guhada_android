@@ -142,8 +142,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
         var eventListSize = 0
 
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) {
-        }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is MainEvent){
                 var data = item

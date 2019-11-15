@@ -319,7 +319,7 @@ public class Type {
     }
 
 
-    private static String getWebUrl() {
+    public static String getWebUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.guhada.com/";
@@ -613,7 +613,9 @@ public class Type {
         TYPE_2("yyyy-MM-dd"),
         TYPE_3("yyyy-MM-dd HH:mm:ss"),
         TYPE_4("yy.MM.dd HH:mm"),
-        TYPE_5("yy.MM.dd HH:mm");
+        TYPE_5("yy.MM.dd HH:mm"),
+        TYPE_6("MM월 dd일"),
+        TYPE_7("MM.dd (E) HH:mm");
 
         private String type;
 
@@ -631,6 +633,10 @@ public class Type {
                     return TYPE_4.type;
                 case TYPE_5:
                     return TYPE_5.type;
+                case TYPE_6:
+                    return TYPE_6.type;
+                case TYPE_7:
+                    return TYPE_7.type;
                 default:
                     return TYPE_1.type;
             }
