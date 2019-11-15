@@ -31,7 +31,7 @@ enum class Status(val code :String, val label: String){
     READY("READY", "오픈"),  // 시작시간 24이내가 되면 READY
     OUT_OF_TIME("OUT_OF_TIME", "응모 마감"),
     REQUESTED ("REQUESTED ", "응모 완료"),
-    WINNER_ANNOUNCEMENT("OUT_OF_TIME", "당첨자 발표")
+    WINNER_ANNOUNCEMENT("WINNER_ANNOUNCEMENT", "당첨자 발표")
 }
 
 class LuckyDrawList : Serializable{

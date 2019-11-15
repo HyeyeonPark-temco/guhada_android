@@ -1,6 +1,4 @@
 package io.temco.guhada.data.model
 
-class LuckyDrawWinner {
-    var dealId = 0
-    var userId = 0
-}
+data class LuckyDrawWinner(var dealId : Long = 0L,
+                           var userId  : Long = 0L)

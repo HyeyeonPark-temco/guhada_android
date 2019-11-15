@@ -2,6 +2,7 @@ package io.temco.guhada.data.server
 
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
@@ -14,13 +15,13 @@ import io.temco.guhada.data.model.ProductByList
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
+import io.temco.guhada.data.model.event.LuckyDrawList
 import io.temco.guhada.data.model.event.LuckyEvent
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.ProductService
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -302,11 +303,11 @@ class ProductServer {
             if (listener != null) {
                 RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true,false)
                         .getRequestLuckyDraw(accessToken, id)
-                        .enqueue(object : Callback<BaseModel<JSONObject>> {
-                            override fun onResponse(call: Call<BaseModel<JSONObject>>, response: Response<BaseModel<JSONObject>>) {
+                        .enqueue(object : Callback<BaseModel<LuckyDrawList>> {
+                            override fun onResponse(call: Call<BaseModel<LuckyDrawList>>, response: Response<BaseModel<LuckyDrawList>>) {
                                 listener.onResult(response.isSuccessful, response.body())
                             }
-                            override fun onFailure(call: Call<BaseModel<JSONObject>>, t: Throwable) {
+                            override fun onFailure(call: Call<BaseModel<LuckyDrawList>>, t: Throwable) {
                                 listener.onResult(false, t.message)
                             }
                         })
@@ -322,13 +323,13 @@ class ProductServer {
         @JvmStatic
         fun getRequestLuckyDrawWinner(listener: OnServerListener?,accessToken: String, luckyDrawWinner:LuckyDrawWinner) {
             if (listener != null) {
-                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true)
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true, true)
                         .getRequestLuckyDrawWinner(accessToken, luckyDrawWinner)
-                        .enqueue(object : Callback<BaseModel<JSONObject>> {
-                            override fun onResponse(call: Call<BaseModel<JSONObject>>, response: Response<BaseModel<JSONObject>>) {
+                        .enqueue(object : Callback<BaseModel<JsonObject>> {
+                            override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                                 listener.onResult(response.isSuccessful, response.body())
                             }
-                            override fun onFailure(call: Call<BaseModel<JSONObject>>, t: Throwable) {
+                            override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                                 listener.onResult(false, t.message)
                             }
                         })

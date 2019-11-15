@@ -12,6 +12,7 @@ import io.temco.guhada.common.util.DateUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.event.EventUser
 import io.temco.guhada.data.model.event.LuckyDrawList
+import io.temco.guhada.data.model.event.Status
 import io.temco.guhada.data.viewmodel.LuckyEventDialogViewModel
 import io.temco.guhada.databinding.ActivityLuckyeventdialogBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -39,7 +40,19 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
         if(intent?.extras!!.containsKey("eventData")){
             eventData = intent.extras.getSerializable("eventData") as LuckyDrawList
             if(CustomLog.flag)CustomLog.L("LuckyEventDialogActivity","eventData",eventData)
-            userCheck()
+            when(eventData.statusCode){
+                Status.START.code->{
+                    userCheck()
+                }
+                Status.WINNER_ANNOUNCEMENT.code->{
+                    if(CommonUtil.checkToken()){
+                        getLuckyDrawWinner()
+                    }else{
+                        CommonUtil.startLoginPage(this)
+                        this@LuckyEventDialogActivity.finish()
+                    }
+                }
+            }
         }
 
         if(!::eventData.isInitialized) finish()
@@ -119,8 +132,12 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
     }
 
     // 유저의 사용자 정보 확인
-    private fun getUserDataCheck(){
+    private fun getLuckyDrawWinner(){
+        mViewModel.getRequestLuckyDrawWinner(eventData.dealId, CommonUtil.checkUserId(), object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
 
+            }
+        })
     }
 
 }
