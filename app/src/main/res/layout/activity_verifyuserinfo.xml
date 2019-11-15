@@ -159,11 +159,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="23dp"
-                    android:background="@{viewModel.mVerifyNumber.length() == 6 ? @color/colorPrimary : @color/silver, default=@color/silver}"
-                    android:clickable="@{viewModel.mVerifyNumber.length() == 6 ? true : false, default = false}"
+                    android:background="@color/colorPrimary"
+                    android:clickable="true"
                     android:onClick="@{()->viewModel.onClickVerifyNumber()}"
                     android:text="@string/findpwd_button_finishverify"
                     android:visibility="@{viewModel.mVerifyEmailVisibility, default=gone}" />
+
+                <!--android:background="@{viewModel.mVerifyNumber.length() == 6 ? @color/colorPrimary : @color/silver, default=@color/silver}"-->
+                <!--android:clickable="@{viewModel.mVerifyNumber.length() == 6 ? true : false, default = false}"-->
+                <!--android:onClick="@{()->viewModel.onClickVerifyNumber()}"-->
+                <!--android:text="@string/findpwd_button_finishverify"-->
+                <!--android:visibility="@{viewModel.mVerifyEmailVisibility, default=gone}" />-->
+
 
             </FrameLayout>
 

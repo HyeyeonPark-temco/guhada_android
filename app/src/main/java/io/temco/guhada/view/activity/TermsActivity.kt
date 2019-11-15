@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.data.viewmodel.account.TermsViewModel
 import io.temco.guhada.databinding.ActivityTermsBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -32,8 +34,18 @@ class TermsActivity : BindActivity<ActivityTermsBinding>() {
                     finish()
                 }
             }
+
+            this.mRedirectTermsTask = { type ->
+                when (type) {
+                    TermsViewModel.TermsType.PURCHASE.type -> CommonUtilKotlin.startTermsPurchase(this@TermsActivity)
+                    TermsViewModel.TermsType.PERSONAL.type -> CommonUtilKotlin.startTermsPersonal(this@TermsActivity)
+                    TermsViewModel.TermsType.SALES.type -> CommonUtilKotlin.startTermsSale(this@TermsActivity)
+                }
+            }
         }
+        mBinding.includeTerms.setOnClickSignUp { mViewModel.onClickSignUp() }
         mBinding.viewModel = mViewModel
+        mBinding.includeTerms.viewModel = mViewModel
         mBinding.includeTermsHeader.viewModel = mViewModel
         mBinding.executePendingBindings()
     }

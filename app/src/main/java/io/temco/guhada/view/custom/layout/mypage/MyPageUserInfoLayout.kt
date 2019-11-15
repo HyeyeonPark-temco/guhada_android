@@ -172,8 +172,11 @@ class MyPageUserInfoLayout constructor(
     override fun onDestroy() {
         try {
             SnsLoginModule.removeKakaoCallback()
-        }catch (e : Exception){if(CustomLog.flag)CustomLog.E(e)}
+        } catch (e: Exception) {
+            if (CustomLog.flag) CustomLog.E(e)
+        }
     }
+
     override fun onFocusView() {}
     override fun onReleaseView() {}
 
@@ -293,4 +296,5 @@ class MyPageUserInfoLayout constructor(
         }
     }
 
+    override fun redirectLuckyDrawJoinActivity() {}
 }

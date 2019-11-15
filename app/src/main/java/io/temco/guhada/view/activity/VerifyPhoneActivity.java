@@ -11,13 +11,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.NetworkUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Verification;
@@ -125,9 +130,10 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
         }
     }
 
-    private void getVerifyInfo(String url) {
-        Log.e("본인인증", url);
-        Uri uri = Uri.parse(url);
+    private void getVerifyInfo(String path) {
+        if (CustomLog.getFlag()) CustomLog.L("본인인증", path);
+
+        Uri uri = Uri.parse(path);
         Set<String> params = uri.getQueryParameterNames();
         Map<String, String> map = new HashMap<>();
         for (String key : params) {
@@ -137,6 +143,18 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
                 map.put(key, value);
             }
         }
+//        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+//        try {
+//            URL url = new URL(path);
+//            String query = url.getQuery();
+//            String[] pairs = query.split("&");
+//            for (String pair : pairs) {
+//                int idx = pair.indexOf("=");
+//                map.put(pair.substring(0, idx), pair.substring(idx + 1));
+//            }
+//        } catch (MalformedURLException e) {
+//            if (CustomLog.getFlag()) CustomLog.E(e.getMessage());
+//        }
 
         String name = map.get("sName");
         String phoneNumber = map.get("sMobileNo");
@@ -150,6 +168,8 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
         String requestNumber = map.get("sRequestNumber");
         String responseNumber = map.get("sResponseNumber");
 
+        if (CustomLog.getFlag() && di != null) CustomLog.L("본인인증 di", di);
+
         Intent intent = getIntent();
         intent.putExtra("name", name);
         intent.putExtra("phoneNumber", phoneNumber);
@@ -160,7 +180,7 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
             intent.putExtra("gender", gender.equals(Verification.Gender.FEMALE.getCode()) ? Verification.Gender.FEMALE.getLabel() : Verification.Gender.MALE.getLabel());
         setResult(RESULT_OK, intent);
         finish();
-    }
 
+    }
 }
 

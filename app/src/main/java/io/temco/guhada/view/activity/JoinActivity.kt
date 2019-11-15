@@ -121,7 +121,7 @@ class JoinActivity : BindActivity<ActivityJoinBinding>() {
                 mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd)
                 mBinding.textviewJoinConfirmpasswordfocus.visibility = View.VISIBLE
             } else {
-                if (!CommonUtil.validatePassword(mBinding.edittextJoinPassword.text)) {
+                if (pas1.isNotEmpty() && !CommonUtil.validatePassword(mBinding.edittextJoinPassword.text)) {
                     mBinding.textviewJoinPasswordfocus.visibility = View.VISIBLE
                 } else {
                     mBinding.textviewJoinPasswordfocus.visibility = View.GONE

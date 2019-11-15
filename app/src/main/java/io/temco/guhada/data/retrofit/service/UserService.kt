@@ -3,15 +3,14 @@ package io.temco.guhada.data.retrofit.service
 import com.google.gson.JsonObject
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.event.EventUser
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.model.point.ExpectedPointResponse
 import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.*
 import kotlinx.coroutines.Deferred
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -577,4 +576,41 @@ interface UserService {
      */
     @GET("/users/{userId}/followings")
     fun getFollowingStores(@Path("userId") userId: Long): Call<BaseModel<MutableList<SellerStore>>>
+
+    /**
+     * 럭키드로우 이메일 회원가입 API
+     * response: email (String)
+     * @author Hyeyeon Park
+     * @since 2019.11.13
+     */
+    @POST("/event/users")
+    fun signUpEventUser(@Body eventUser: EventUser): Call<BaseModel<Any>>
+
+    /**
+     * 럭키드로우 SNS 회원가입 API
+     * response: email (String)
+     * @author Hyeyeon Park
+     * @since 2019.11.14
+     */
+    @POST("/event/sns-users")
+    fun signUpEventSnsUser(@Body eventUser: EventUser): Call<BaseModel<Any>>
+
+    /**
+     * 럭키드로우 유저 정보 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.11.14
+     */
+    @GET("/event/users")
+    fun getEventUser(@Header("Authorization") accessToken: String): Call<BaseModel<EventUser>>
+
+    /**
+     * 럭키드로우 유저 정보 수정 API
+     * response: email (String)
+     * @author Hyeyeon Park
+     * @since 2019.11.14
+     */
+    @PUT("/event/users")
+    fun updateEventUser(@Header("Authorization") accessToken: String, @Body eventUser: EventUser): Call<BaseModel<Any>>
+
+
 }

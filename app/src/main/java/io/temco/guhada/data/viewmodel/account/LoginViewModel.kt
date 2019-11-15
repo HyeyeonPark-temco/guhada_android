@@ -67,6 +67,9 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     var snsUser: Any? = null
     var tempSnsUser = SnsUser()
 
+    // 럭키드로우 회원가입 분기 falg
+    var mIsEvent = false
+
 
     // CLICK LISTENER
     fun onClickGuestOrder() {
@@ -129,8 +132,12 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     }
 
     fun onClickSignUp() {
-        loginListener.redirectJoinActivity()
-        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SignUpButton.eventName)
+        if (mIsEvent) {
+            loginListener.redirectLuckyDrawJoinActivity()
+        } else {
+            loginListener.redirectJoinActivity()
+            TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SignUpButton.eventName)
+        }
     }
 
     fun onClickFindId() {
@@ -205,6 +212,12 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                             name = (snsUser as GoogleSignInAccount).displayName)
                 }
                 "FACEBOOK" -> {
+                    createSnsUser(
+                            id = tempSnsUser.snsId,
+                            email = tempSnsUser.email,
+                            imageUrl = tempSnsUser.userProfile?.imageUrl?:"",
+                            name = tempSnsUser.name
+                    )
                 }
             }
         }
@@ -225,6 +238,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
         tempSnsUser.userProfile!!.email = email
     }
 
+    // 페이스북 로그인
     fun facebookLogin(`object`: JSONObject, serverListener: OnServerListener) {
         try {
             val email = `object`.getString("email")

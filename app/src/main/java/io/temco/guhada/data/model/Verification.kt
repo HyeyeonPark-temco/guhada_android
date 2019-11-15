@@ -26,7 +26,8 @@ class Verification {
 
     enum class IdentityVerifyMethod(val code: String) {
         MOBILE("MOBILE"),
-        EMAIL("EMAIL")
+        EMAIL("EMAIL"),
+        NONE("NONE")        // 미인증
     }
 
     enum class Gender(val label: String, val code: String) {

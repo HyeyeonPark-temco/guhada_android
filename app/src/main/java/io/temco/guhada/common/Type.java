@@ -76,7 +76,8 @@ public class Type {
         LUCKY_EVENT,
         LUCKY_EVENT_DIALOG,
         PHOTO_PAGER,
-        CARD_INTEREST
+        CARD_INTEREST,
+        LUCKY_DRAW_JOIN
     }
 
     // Main
