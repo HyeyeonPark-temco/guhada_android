@@ -219,7 +219,7 @@
                     app:isHtml="true"/>
 
                 <TextView
-                    style="@style/TextRegularSingleLine"
+                    style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{winnerTitle}"

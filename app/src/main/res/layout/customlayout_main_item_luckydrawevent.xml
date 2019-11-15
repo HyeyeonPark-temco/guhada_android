@@ -165,9 +165,10 @@
                 android:id="@+id/layout_luckydraw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="4dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -185,6 +186,7 @@
                     android:id="@+id/imageview_luckydraw_infoarrow"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/detail_icon_arrow_open"/>
 
             </LinearLayout>
