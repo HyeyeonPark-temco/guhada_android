@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.view.View
 import com.google.gson.JsonObject
@@ -9,6 +10,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.event.EventUser
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.event.LuckyDrawList
 import io.temco.guhada.data.model.event.Status
 import io.temco.guhada.data.viewmodel.LuckyEventDialogViewModel
@@ -24,9 +26,9 @@ import io.temco.guhada.view.custom.dialog.CustomMessageDialog
  */
 class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>() {
 
-    private lateinit var mViewModel : LuckyEventDialogViewModel
-    private lateinit var eventData : LuckyDrawList
-    private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
+    private lateinit var mViewModel: LuckyEventDialogViewModel
+    private lateinit var eventData: LuckyDrawList
+    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
 
     override fun getBaseTag(): String = this@LuckyEventDialogActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_luckyeventdialog
@@ -36,11 +38,11 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = LuckyEventDialogViewModel(this)
         mBinding.viewModel = mViewModel
-        if(intent?.extras!!.containsKey("eventData")){
+        if (intent?.extras!!.containsKey("eventData")) {
             eventData = intent.extras.getSerializable("eventData") as LuckyDrawList
-            if(CustomLog.flag)CustomLog.L("LuckyEventDialogActivity","eventData",eventData)
-            when(eventData.statusCode){
-                Status.START.code->{
+            if (CustomLog.flag) CustomLog.L("LuckyEventDialogActivity", "eventData", eventData)
+            when (eventData.statusCode) {
+                Status.START.code -> {
                     userCheck()
                 }
                 Status.WINNER_ANNOUNCEMENT.code->{
@@ -60,17 +62,21 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
             }
         }
 
-        if(!::eventData.isInitialized) finish()
+        if (!::eventData.isInitialized) finish()
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            Flag.RequestCode.LOGIN -> if (resultCode == Activity.RESULT_OK) requestLuckyDraw()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if(!::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.dismiss()
+        if (!::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.dismiss()
     }
 
     /**
@@ -79,38 +85,43 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
      * 유저 확인
      * 로그인여부 확인
      */
-    private fun userCheck(){
-        if(CommonUtil.checkToken()){
+    private fun userCheck() {
+        if (CommonUtil.checkToken()) {
             // 로그인 되어 있는 사용자
             mLoadingIndicatorUtil.show()
-            mViewModel.getEventUser(object : OnCallBackListener{
+            mViewModel.getEventUser(object : OnCallBackListener {
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
                     var eventUser = value as EventUser
-                    if(eventUser.isUserLuckyEventCheck()){
+                    if (eventUser.isUserLuckyEventCheck()) {
                         // 인증 및 럭키드로우 이벤트 응모 가능
-                        mViewModel.getRequestLuckyDraw(eventData.dealId.toString(), object : OnCallBackListener{
-                            override fun callBackListener(resultFlag: Boolean, value: Any) {
-                                mLoadingIndicatorUtil.dismiss()
-                                if(resultFlag){
-                                    setRequestOkPopup()
-                                }else{
-                                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false,true)
-                                }
-                            }
-                        })
-                    }else{
+                        requestLuckyDraw()
+                    } else {
                         mLoadingIndicatorUtil.dismiss()
                         // 회원 수정 화면
-
+                        moveEdit()
                     }
-                    if(CustomLog.flag)CustomLog.L("LuckyEventDialogActivity","eventUser",eventUser)
-                    if(CustomLog.flag)CustomLog.L("LuckyEventDialogActivity","eventUser isUserLuckyEventCheck",eventUser.isUserLuckyEventCheck())
+                    if (CustomLog.flag) CustomLog.L("LuckyEventDialogActivity", "eventUser", eventUser)
+                    if (CustomLog.flag) CustomLog.L("LuckyEventDialogActivity", "eventUser isUserLuckyEventCheck", eventUser.isUserLuckyEventCheck())
                 }
             })
-        }else{
+        } else {
             // 로그인 페이지로 이동
+            mLoadingIndicatorUtil.dismiss()
             moveLogin()
         }
+    }
+
+    private fun requestLuckyDraw() {
+        mViewModel.getRequestLuckyDraw(eventData.dealId.toString(), object : OnCallBackListener {
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                mLoadingIndicatorUtil.dismiss()
+                if(resultFlag){
+                    setRequestOkPopup()
+                }else{
+                    CommonViewUtil.showDialog(this@LuckyEventDialogActivity,value.toString(),false,true)
+                }
+            }
+        })
     }
 
 
@@ -119,21 +130,28 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
      *
      * 당첨자 확인 팝업
      */
-    private fun setRequestOkPopup(){
+    private fun setRequestOkPopup() {
         mBinding.layoutLuckydrawContent.visibility = View.VISIBLE
         mBinding.layoutLuckydrawRequest.visibility = View.VISIBLE
         mBinding.title = eventData.title
         mBinding.imgUrl = eventData.imageUrl
         mBinding.date1 = DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerAnnouncementAt)
-        mBinding.date2 = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerBuyFromAt)+ " - " +
+        mBinding.date2 = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerBuyFromAt) + " - " +
                 DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, eventData.winnerBuyToAt))
         mBinding.setClickCloseListener { finish() }
     }
 
     // 로그인 페이지 이동
-    private fun moveLogin(){
+    private fun moveLogin() {
         var intent = Intent(this, LoginActivity::class.java)
-        intent.putExtra("eventData",eventData)
+        intent.putExtra("eventData", eventData)
+        startActivityForResult(intent, Flag.RequestCode.LOGIN)
+    }
+
+    // 회원정보 수정 페이지 이동
+    private fun moveEdit() {
+        var intent = Intent(this, LuckyDrawEditActivity::class.java)
+        intent.putExtra("snsUser", EventUser.SnsSignUp())
         startActivityForResult(intent, Flag.RequestCode.LOGIN)
     }
 

@@ -31,7 +31,7 @@ class LuckyDrawEditViewModel : LuckyDrawJoinViewModel() {
         })
     }
 
-    fun updateEventUser() {
+    fun updateEventUser(successTask: () -> Unit) {
         if (mEventUser.value != null) {
             mEventUser.value?.email = mEmail
             ServerCallbackUtil.callWithToken(task = { accessToken ->
@@ -40,7 +40,7 @@ class LuckyDrawEditViewModel : LuckyDrawJoinViewModel() {
                         if (o.resultCode == ResultCode.SUCCESS.flag) {
                             // [TODO] 럭키드로우 응모
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.luckydraw_message_edit))
-
+                            successTask()
                         } else ToastUtil.showMessage(o.message)
                     else
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))

@@ -133,10 +133,10 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
 
     fun onClickSignUp() {
         if (eventData == null) {
-            loginListener.redirectLuckyDrawJoinActivity()
-        } else {
             loginListener.redirectJoinActivity()
             TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SignUpButton.eventName)
+        } else {
+            loginListener.redirectLuckyDrawJoinActivity()
         }
     }
 
