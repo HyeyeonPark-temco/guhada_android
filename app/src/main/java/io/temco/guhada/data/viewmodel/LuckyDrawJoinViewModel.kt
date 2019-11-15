@@ -283,7 +283,7 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 
     fun onClickVerifyMobile() = mVerifyMobileTask()
 
-    fun signUpEventUser(agreeCollectPersonalInfoTos: Boolean, agreePurchaseTos: Boolean, agreeSaleTos: Boolean, agreeEmailReception: Boolean, agreeSmsReception: Boolean) {
+    fun signUpEventUser(agreeCollectPersonalInfoTos: Boolean, agreePurchaseTos: Boolean, agreeSaleTos: Boolean, agreeEmailReception: Boolean, agreeSmsReception: Boolean, successTask : ()->Unit) {
         val eventUser = EventUser().apply {
             this.identityVerify = IdentityVerify().apply {
                 this.birth = mBirth
@@ -325,10 +325,10 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
             UserServer.signUpEventSnsUser(OnServerListener { success, o ->
                 if (success && o is BaseModel<*>)
                     if (o.resultCode == ResultCode.SUCCESS.flag) {
-                        ToastUtil.showMessage("럭키드로우 SNS 회원가입 완료")
                         if (CustomLog.flag) CustomLog.L("럭키드로우 SNS 회원가입", mEmail)
 
                         // [TODO] 럭키드로우 응모
+
                     } else
                         ToastUtil.showMessage(o.message)
                 else
@@ -338,11 +338,11 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
             UserServer.signUpEventUser(OnServerListener { success, o ->
                 if (success && o is BaseModel<*>)
                     if (o.resultCode == ResultCode.SUCCESS.flag) {
-                        ToastUtil.showMessage("럭키드로우 Email 회원가입 완료")
                         if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
 
 
                         // [TODO] 럭키드로우 응모
+
                     } else
                         ToastUtil.showMessage(o.message)
                 else
