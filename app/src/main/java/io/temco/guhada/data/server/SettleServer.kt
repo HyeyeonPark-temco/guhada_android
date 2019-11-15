@@ -10,7 +10,7 @@ import io.temco.guhada.data.model.CardInterest
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
-import io.temco.guhada.data.model.event.EventList
+import io.temco.guhada.data.model.event.EventListData
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.SettleService
 import retrofit2.Call
@@ -77,12 +77,12 @@ class SettleServer {
          * 중복된 이메일인지 검증
          */
         @JvmStatic
-        fun getEventList(listener: OnServerListener) {
-            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getEventList().enqueue(object : Callback<BaseModel<EventList>> {
-                override fun onResponse(call: Call<BaseModel<EventList>>, response: Response<BaseModel<EventList>>) {
+        fun getEventList(eventProgress : String,listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getEventList(eventProgress).enqueue(object : Callback<BaseModel<EventListData>> {
+                override fun onResponse(call: Call<BaseModel<EventListData>>, response: Response<BaseModel<EventListData>>) {
                     resultListener(listener, call, response)
                 }
-                override fun onFailure(call: Call<BaseModel<EventList>>, t: Throwable) {
+                override fun onFailure(call: Call<BaseModel<EventListData>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
             })

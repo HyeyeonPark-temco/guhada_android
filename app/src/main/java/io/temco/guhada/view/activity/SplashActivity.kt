@@ -15,7 +15,9 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.db.GuhadaDB
@@ -175,13 +177,17 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                                      * 서버에서 내려오는 버전 보다 현재 앱의 버전이 낮은 경우 업데이트 이동
                                      */
                                     if(d.isUpdateApp(version)){
-                                        val appPackageName = packageName
-                                        try {
-                                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
-                                        } catch (anfe: android.content.ActivityNotFoundException) {
-                                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
-                                        }
-                                        finish()
+                                        CommonViewUtil.showDialog(this@SplashActivity, "최신 버전으로 업데이트 진행해주세요.",false, object : OnBaseDialogListener{
+                                            override fun onClickOk() {
+                                                val appPackageName = packageName
+                                                try {
+                                                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+                                                } catch (anfe: android.content.ActivityNotFoundException) {
+                                                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+                                                }
+                                                finish()
+                                            }
+                                        })
                                     }else{
                                         initData()
                                     }

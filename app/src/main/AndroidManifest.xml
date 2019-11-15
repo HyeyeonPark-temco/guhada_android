@@ -374,13 +374,9 @@
 
         <!-- Lucky Event -->
         <activity
-            android:name=".view.activity.LuckyEventDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-
-        <activity
             android:name=".view.activity.LuckyEventDialogActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
 

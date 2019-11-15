@@ -107,7 +107,7 @@
                     layout="@layout/layout_floating_button_badge"
                     android:layout_width="@dimen/view_button_floating"
                     android:layout_height="@dimen/view_button_floating"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/button_floating_top"
@@ -115,7 +115,7 @@
                     android:layout_width="@dimen/view_button_floating"
                     android:layout_height="@dimen/view_button_floating"
                     android:layout_marginTop="7dp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </LinearLayout>
 
 

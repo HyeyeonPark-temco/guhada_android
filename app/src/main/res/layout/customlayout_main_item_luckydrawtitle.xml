@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.main.LuckyDrawViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="640dp"
+        android:background="@drawable/bg_01"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="378dp"
+            android:layout_marginTop="126dp">
+
+            <ImageView
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_marginTop="98dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/round"/>
+
+            <io.temco.guhada.view.viewpager.InfiniteViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="378dp"
+                android:layout_alignBottom="@+id/tab_layout"
+                android:background="#00000000" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp"
+                android:clipToPadding="false"
+                app:tabPaddingStart="2.5dp"
+                app:tabPaddingEnd="2.5dp"
+                app:tabBackground="@color/transparent"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_luckytitle_timer"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="40dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="35dp"
+                android:layout_height="65dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/number_bg"/>
+
+                <ImageView
+                    android:id="@+id/imageview_luckytitle_timer_h0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="35dp"
+                android:layout_height="65dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/number_bg"/>
+
+                <ImageView
+                    android:id="@+id/imageview_luckytitle_timer_h1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/time_dot"/>
+
+            <RelativeLayout
+                android:layout_width="35dp"
+                android:layout_height="65dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/number_bg"/>
+
+                <ImageView
+                    android:id="@+id/imageview_luckytitle_timer_m0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="35dp"
+                android:layout_height="65dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/number_bg"/>
+
+                <ImageView
+                    android:id="@+id/imageview_luckytitle_timer_m1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/time_dot"/>
+
+            <RelativeLayout
+                android:layout_width="35dp"
+                android:layout_height="65dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/number_bg"/>
+
+                <ImageView
+                    android:id="@+id/imageview_luckytitle_timer_s0"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="35dp"
+                android:layout_height="65dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/number_bg"/>
+
+                <ImageView
+                    android:id="@+id/imageview_luckytitle_timer_s1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

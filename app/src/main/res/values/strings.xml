@@ -675,6 +675,8 @@
     <string name="addshippingaddress_description3">에서 수정 및 삭제가 가능합니다.</string>
 
     <!-- HOME FRAGMENT
+        <item>이벤트</item>
+        <item>럭키드로우</item>
         <item>신상품</item>
         <item>파워딜</item>
         <item>타임딜</item>
@@ -686,6 +688,8 @@
         <item>남성</item>
         <item>키즈</item>
         <item>타임딜</item>
+        <item>이벤트</item>
+        <item>럭키드로우</item>
     </string-array>
 
     <!-- MYPAGE ORDER SHIP -->
@@ -1338,6 +1342,12 @@
     <!-- CARD INTEREST -->
     <string name="cardinterest_header">무이자 할부 안내</string>
     <string name="cardinterest_title1">무이자 할부정보 (%d년 %d월)</string>
+
+    <!-- Lucky Draw -->
+    <string name="luckydraw_popup_desc1"><![CDATA[<font color="#ffffff">럭키드로우</font> <font color="#ffe84b">응모 완료</font>]]></string>
+    <string name="luckydraw_popup_desc2">당첨자 발표일</string>
+    <string name="luckydraw_popup_desc3">당첨자 구매기간</string>
+    <string name="luckydraw_popup_footer_desc">·  당첨자 발표는 본인인증한 휴대전화 번호로 이뤄집니다.\n·  당첨 안내수신 후 24시간 내 답변이 없을 시 취소 처리됩니다.</string>
 
     <!-- LUCKY DRAW -->
     <string name="luckydraw_checkduplicate">중복확인</string>

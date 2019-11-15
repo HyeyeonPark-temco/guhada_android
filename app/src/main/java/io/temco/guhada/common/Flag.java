@@ -60,6 +60,8 @@ public class Flag {
         public static final int WELCOME_DIALOG = 10036;
 
         public static final int USER_INFO = 10037;
+        public static final int LUCKY_DRAW_EVENT = 10038;
+        public static final int LUCKY_DIALOG = 10039;
 
         public static final int MYPAGE_MOVE = 20000;
         public static final int HOME_MOVE = 20001;

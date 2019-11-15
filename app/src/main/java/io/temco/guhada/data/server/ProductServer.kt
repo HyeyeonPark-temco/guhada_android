@@ -13,6 +13,7 @@ import io.temco.guhada.data.model.ProductByList
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
+import io.temco.guhada.data.model.event.LuckyEvent
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.data.model.product.Product
@@ -266,6 +267,28 @@ class ProductServer {
         fun getTimeDeal(listener: OnServerListener) =
                 RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getTimeDeal().enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+
+        /**
+         * @author park jungho
+         * 19.09.19
+         * 핫키워드 목록 조회
+         */
+        @JvmStatic
+        fun getLuckyDraws(listener: OnServerListener?) {
+            if (listener != null) {
+                val call = RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false).getLuckyDraws()
+                RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<LuckyEvent>> {
+                    override fun onResponse(call: Call<BaseModel<LuckyEvent>>, response: Response<BaseModel<LuckyEvent>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+                    override fun onFailure(call: Call<BaseModel<LuckyEvent>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+            }
+        }
+
     }
 
 }

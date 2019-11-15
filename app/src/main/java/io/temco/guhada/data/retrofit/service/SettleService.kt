@@ -3,7 +3,7 @@ package io.temco.guhada.data.retrofit.service
 import io.temco.guhada.data.model.AppVersionCheck
 import io.temco.guhada.data.model.CardInterest
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.event.EventList
+import io.temco.guhada.data.model.event.EventListData
 import io.temco.guhada.data.model.search.Popular
 import retrofit2.Call
 import retrofit2.http.GET
@@ -24,6 +24,6 @@ interface SettleService {
 
 
     @GET("event/list")
-    fun getEventList(): Call<BaseModel<EventList>>
+    fun getEventList(@Query("eventProgress") eventProgress : String): Call<BaseModel<EventListData>>
 
 }
