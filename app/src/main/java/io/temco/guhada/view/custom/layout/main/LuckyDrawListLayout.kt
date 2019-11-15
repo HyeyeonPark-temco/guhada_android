@@ -317,11 +317,11 @@ class LuckyDrawListLayout constructor(
         //setRecentProductCount()
         if (CustomLog.flag) CustomLog.L("LuckyDrawListLayout", "onResume----")
         mViewModel.adapter.notifyDataSetChanged()
-        if (CommonUtil.checkToken()) {
+        /*if (CommonUtil.checkToken()) {
             mBinding.textviewBottomLogin.visibility = View.VISIBLE
         }else{
             mBinding.textviewBottomLogin.visibility = View.GONE
-        }
+        }*/
         //loadTimeDealData()
     }
 
