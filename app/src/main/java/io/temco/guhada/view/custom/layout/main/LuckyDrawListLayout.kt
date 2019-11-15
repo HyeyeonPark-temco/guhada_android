@@ -315,12 +315,12 @@ class LuckyDrawListLayout constructor(
     override fun onStart() {}
     override fun onResume() {
         //setRecentProductCount()
-        if (CustomLog.flag) CustomLog.L("LuckyDrawListLayout", "onResume")
+        if (CustomLog.flag) CustomLog.L("LuckyDrawListLayout", "onResume----")
         mViewModel.adapter.notifyDataSetChanged()
-        if (!CommonUtil.checkToken()) {
-            mBinding.textviewBottomLogin.visibility = View.GONE
-        }else{
+        if (CommonUtil.checkToken()) {
             mBinding.textviewBottomLogin.visibility = View.VISIBLE
+        }else{
+            mBinding.textviewBottomLogin.visibility = View.GONE
         }
         //loadTimeDealData()
     }
