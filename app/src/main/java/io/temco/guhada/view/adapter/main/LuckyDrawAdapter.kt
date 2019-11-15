@@ -193,10 +193,12 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                     }
                     binding.viewPager.adapter = infiniteAdapter
 
-                    if (currentAdIndex == -1) {
+                    /*if (currentAdIndex == -1) {
                         eventListSize = binding.viewPager.offsetAmount
                         currentAdIndex = binding.viewPager.currentItem
-                    }
+                    }*/
+                    eventListSize = binding.viewPager.offsetAmount
+                    currentAdIndex = binding.viewPager.currentItem
                     binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                         override fun onPageScrollStateChanged(state: Int) {
                             isViewPagerIdle = state == ViewPager.SCROLL_STATE_IDLE
@@ -316,12 +318,17 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                     }
                     //viewModel.getListAdapter().notifyItemChanged(position)
                 }
+
+                if(position == 1){
+                    binding.relativeLuckydrawRibbon.visibility = View.VISIBLE
+                    binding.textLuckydrawRibbon.text = DateUtil.getCalendarToString(Type.DateFormat.TYPE_6, item.eventData.requestFromAt)
+                }else{
+                    binding.relativeLuckydrawRibbon.visibility = View.GONE
+                }
+
                 binding.textStatus.setOnClickListener(null)
-                binding.relativeLuckydrawRibbon.visibility = View.GONE
                 when(item.eventData.statusCode){
                     Status.START.code->{
-                        binding.relativeLuckydrawRibbon.visibility = View.VISIBLE
-                        binding.textLuckydrawRibbon.text = DateUtil.getCalendarToString(Type.DateFormat.TYPE_6, item.eventData.requestFromAt)
                         binding.textStatus.setBackgroundResource(R.drawable.background_color_round_f43143)
                         binding.textStatus.setTextColor(Color.parseColor("#ffffff"))
                         binding.textStatus.setOnClickListener {
