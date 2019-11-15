@@ -11,6 +11,10 @@
         <variable
             name="onClickSignUp"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="isEvent"
+            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -374,7 +378,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_weight="1"
-            android:text="@string/terms_description"
+            android:text="@{isEvent ? @string/luckydraw_terms_description : @string/terms_description, default = @string/terms_description}"
             android:textColor="@color/warm_grey_three"
             android:textSize="@dimen/text_11"
             app:lineHeight="18dp" />
