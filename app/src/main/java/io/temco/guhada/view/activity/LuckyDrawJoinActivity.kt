@@ -82,7 +82,11 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
         mBinding.includeLuckydrawjoinTerms.viewModel = mTermsViewModel
         mBinding.includeLuckydrawjoinTerms.setOnClickSignUp {
             mViewModel.signUpEventUser(agreeCollectPersonalInfoTos = mTermsViewModel.user.agreeCollectPersonalInfoTos, agreePurchaseTos = mTermsViewModel.user.agreePurchaseTos,
-                    agreeSaleTos = mTermsViewModel.user.agreeSaleTos, agreeEmailReception = mTermsViewModel.user.agreeEmailReception, agreeSmsReception = mTermsViewModel.user.agreeSmsReception)
+                    agreeSaleTos = mTermsViewModel.user.agreeSaleTos, agreeEmailReception = mTermsViewModel.user.agreeEmailReception, agreeSmsReception = mTermsViewModel.user.agreeSmsReception,
+                    successTask = {
+                        setResult(Activity.RESULT_OK)
+                        finish()
+                    })
         }
 
         mBinding.includeLuckydrawjoinHeader.title = getString(R.string.join_title)

@@ -106,7 +106,7 @@ class EventUser {
     fun isUserLuckyEventCheck() : Boolean{
         var isFlag = false
         if(this.acceptTerms.agreeEmailReception && this.acceptTerms.agreeSmsReception && this.acceptTerms.agreeSaleTos &&
-                (this.emailVerified || (!this.emailVerified && this.validEmail)) && (!TextUtils.isEmpty(this.identityVerify.identityVerifyMethod) && !"NONE".equals(this.identityVerify.identityVerifyMethod, true))){
+                (this.emailVerified || this.validEmail) && (!TextUtils.isEmpty(this.identityVerify.identityVerifyMethod) && !"NONE".equals(this.identityVerify.identityVerifyMethod, true))){
             isFlag = true
         }
 
