@@ -105,7 +105,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
         else if (mIsError && !getText().isEmpty())
             binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(getResources().getColor(R.color.brick));
         else
-            binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(getResources().getColor(R.color.pinkish_grey));
+            binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(getResources().getColor(R.color.white_four));
 
         if (onBorderEditTextFocusListener != null)
             onBorderEditTextFocusListener.onFocusChange(v, hasFocus);
@@ -144,7 +144,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
 
         if (text == null || text.isEmpty()) {
             view.binding.textviewError.setVisibility(View.GONE);
-            view.binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(view.binding.getRoot().getContext().getResources().getColor(R.color.pinkish_grey));
+            view.binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(view.binding.getRoot().getContext().getResources().getColor(R.color.white_four));
         }
     }
 
@@ -173,7 +173,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
     @BindingAdapter("isError")
     public static void setErrorBg(BorderEditTextView view, boolean isError) {
         if (!isError)
-            view.binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(view.binding.getRoot().getContext().getResources().getColor(R.color.pinkish_grey));
+            view.binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(view.binding.getRoot().getContext().getResources().getColor(R.color.white_four));
 
         view.setIsError(isError);
         view.setErrorMessageVisibility(isError);
