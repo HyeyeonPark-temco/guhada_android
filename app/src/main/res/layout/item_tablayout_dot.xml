@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="6dp"
+    android:layout_height="6dp">
+
+    <ImageView
+        android:id="@+id/tab_dot"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:src="@drawable/drawable_round_corner_5"
+        android:background="@drawable/tab_selector_dot"/>
+
+</RelativeLayout>

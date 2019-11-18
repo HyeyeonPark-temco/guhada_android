@@ -72,9 +72,26 @@ class TimeDealListLayout constructor(
         }
 
         mBinding.floating.bringToFront()
-        mBinding.scrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+        /*mBinding.scrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             changeFloatingButtonLayout(scrollY > oldScrollY)
-        }
+        }*/
+
+        mBinding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                // super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    // Top
+                    changeFloatingButtonLayout(false)
+                } else if (!recyclerView.canScrollVertically(1)) {
+                    // Bottom
+                } else {
+                    // Idle
+                    changeFloatingButtonLayout(true)
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) { }
+        })
 
         mViewModel.adapter = TimeDealListAdapter(mViewModel, mViewModel.listData)
         mBinding.recyclerView.adapter = mViewModel.adapter

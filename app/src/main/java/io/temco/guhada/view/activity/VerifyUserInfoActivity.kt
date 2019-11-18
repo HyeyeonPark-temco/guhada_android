@@ -41,7 +41,7 @@ class VerifyUserInfoActivity : AppCompatActivity() {
                 intent.putExtra("mobile", mViewModel.mMobile.get())
             }
             intent.putExtra("name", mViewModel.mName.get())
-            intent.putExtra("verifyNumber", mViewModel.mVerifyNumber.get())
+            intent.putExtra("verifyNumber", mViewModel.mVerifyNumber)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

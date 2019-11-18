@@ -2,7 +2,6 @@ package io.temco.guhada.data.viewmodel.account
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import com.auth0.android.jwt.JWT
@@ -23,6 +22,7 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.TrackingUtil
 import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.event.LuckyDrawList
 import io.temco.guhada.data.model.naver.NaverUser
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
@@ -66,6 +66,9 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
         get() = field
     var snsUser: Any? = null
     var tempSnsUser = SnsUser()
+
+    // 럭키드로우 회원가입 분기 falg
+    var eventData : LuckyDrawList? = null
 
 
     // CLICK LISTENER
@@ -129,8 +132,12 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     }
 
     fun onClickSignUp() {
-        loginListener.redirectJoinActivity()
-        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SignUpButton.eventName)
+        if (eventData == null) {
+            loginListener.redirectJoinActivity()
+            TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SignUpButton.eventName)
+        } else {
+            loginListener.redirectLuckyDrawJoinActivity()
+        }
     }
 
     fun onClickFindId() {
@@ -205,6 +212,12 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                             name = (snsUser as GoogleSignInAccount).displayName)
                 }
                 "FACEBOOK" -> {
+                    createSnsUser(
+                            id = tempSnsUser.snsId,
+                            email = tempSnsUser.email,
+                            imageUrl = tempSnsUser.userProfile?.imageUrl?:"",
+                            name = tempSnsUser.name
+                    )
                 }
             }
         }
@@ -225,6 +238,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
         tempSnsUser.userProfile!!.email = email
     }
 
+    // 페이스북 로그인
     fun facebookLogin(`object`: JSONObject, serverListener: OnServerListener) {
         try {
             val email = `object`.getString("email")

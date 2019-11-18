@@ -120,11 +120,11 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                 vw = TimeDealListLayout(it).apply { mHomeFragment = this@HomeFragment }
                                 mBinding.viewLine.visibility = View.VISIBLE
                             }
+                            /*5 -> {
+                                vw = EventListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                            }*/
                             5 -> {
-                                vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }
-                            }
-                            6 -> {
-                                vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = LuckyDrawListLayout(it).apply { mHomeFragment = this@HomeFragment }
                             }
                             else -> {
                                 vw = HomeListLayout(it)
@@ -166,12 +166,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         })
         val windowSize = Point()
         activity!!.windowManager.defaultDisplay.getSize(windowSize)
-        /*mBinding.layoutTab.viewTreeObserver.addOnScrollChangedListener{
-            val scrollX = mBinding.layoutTab.getScrollX() // Current x scrolling position
-            if(scrollX >= 190) mBinding.imageviewLayoutTab.visibility = View.GONE
-            else mBinding.imageviewLayoutTab.visibility = View.VISIBLE
-            //if(CustomLog.flag)CustomLog.L("HomeFragment","scrollX",scrollX)
-        }*/
         mBinding.imageviewLayoutTab.setOnClickListener {
             mBinding.viewpager.setCurrentItem(currentPagerIndex + 1)
         }
@@ -220,6 +214,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                     2-> (customLayoutMap[currentPagerIndex] as MenListLayout).listScrollTop()
                                     3-> (customLayoutMap[currentPagerIndex] as KidsListLayout).listScrollTop()
                                     4-> (customLayoutMap[currentPagerIndex] as TimeDealListLayout).listScrollTop()
+                                    5-> (customLayoutMap[currentPagerIndex] as LuckyDrawListLayout).listScrollTop()
                                 }
 
                             }

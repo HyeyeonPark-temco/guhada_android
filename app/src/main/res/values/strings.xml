@@ -69,8 +69,8 @@
     <string name="common_month_three">3개월</string>
     <string name="common_year_one">1년</string>
 
-    <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
-    <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
+    <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string>
+    <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string>
     <string name="common_message_timeout">서버 응답이 없습니다. 다시 시도해주세요.</string>
     <string name="common_message_ing">준비중입니다.</string>
     <string name="common_message_expiretoken">다시 로그인해주세요.</string><!-- fix (토큰이 만료되었습니다. 다시 로그인해주세요.) -->
@@ -79,6 +79,7 @@
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
 
     <string name="common_message_resendable">인증번호 재발송은 발송 1분 후에 가능합니다.</string>
+    <string name="common_message_networkerror">인터넷 연결을 확인해주세요.</string>
 
     <string name="common_minus">-</string>
     <string name="common_plus">+</string>
@@ -674,6 +675,8 @@
     <string name="addshippingaddress_description3">에서 수정 및 삭제가 가능합니다.</string>
 
     <!-- HOME FRAGMENT
+        <item>이벤트</item>
+        <item>럭키드로우</item>
         <item>신상품</item>
         <item>파워딜</item>
         <item>타임딜</item>
@@ -685,6 +688,7 @@
         <item>남성</item>
         <item>키즈</item>
         <item>타임딜</item>
+        <item>럭키드로우</item>
     </string-array>
 
     <!-- MYPAGE ORDER SHIP -->
@@ -1337,4 +1341,23 @@
     <!-- CARD INTEREST -->
     <string name="cardinterest_header">무이자 할부 안내</string>
     <string name="cardinterest_title1">무이자 할부정보 (%d년 %d월)</string>
+
+    <!-- Lucky Draw -->
+    <string name="luckydraw_popup_desc1"><![CDATA[<font color="#ffffff">럭키드로우</font> <font color="#ffe84b">응모 완료</font>]]></string>
+    <string name="luckydraw_popup_desc2">당첨자 발표일</string>
+    <string name="luckydraw_popup_desc3">당첨자 구매기간</string>
+    <string name="luckydraw_popup_footer_desc">·  당첨자 발표는 본인인증한 휴대전화 번호로 이뤄집니다.\n·  당첨 안내수신 후 24시간 내 답변이 없을 시 취소 처리됩니다.</string>
+    <string name="luckydraw_popup_winner_desc1"><![CDATA[ <font color="#ffe84b">당첨자</font><font color="#ffffff"> 발표</font>]]></string>
+
+    <!-- LUCKY DRAW -->
+    <string name="luckydraw_checkduplicate">중복확인</string>
+    <string name="luckydraw_verifyemail">메일인증</string>
+    <string name="luckydraw_finishcheck">확인완료</string>
+    <string name="luckydraw_verifymobile">본인인증</string>
+    <string name="luckydraw_resend">재전송</string>
+    <string name="luckydraw_finishverify">인증완료</string>
+    <string name="luckydraw_hint_mobile">전화번호</string>
+    <string name="luckydraw_title_edit">회원정보수정</string>
+    <string name="luckydraw_message_edit">회원정보수정이 완료되었습니다.</string>
+    <string name="luckydraw_terms_description">※ 이벤트 참여는 본인인증 및 선택약관 전체동의 시 이용 가능합니다.\n※ 선택약관 전체동의 시 이벤트 참여 및 할인 정보 등 마케팅 정보에 사용됩니다.\n※ 결제/교환/환불 등과 관련된 내용은 거래 안전 을 위하여 수신동의 여부와 관계없이 발송됩니다.</string>
 </resources>

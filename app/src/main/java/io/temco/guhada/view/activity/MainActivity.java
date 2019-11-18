@@ -283,6 +283,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 case Flag.RequestCode.USER_SIZE:
                     EventBusHelper.sendEvent(new EventBusData(requestCode, RESULT_OK));
                     break;
+                case Flag.RequestCode.LUCKY_DRAW_EVENT:
+                    EventBusHelper.sendEvent(new EventBusData(requestCode, RESULT_OK));
             }
         } else {
             switch (requestCode) {

@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
@@ -13,9 +14,15 @@ import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kakao.usermgmt.response.model.UserProfile;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
+import java.util.Objects;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Flag;
@@ -27,11 +34,15 @@ import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomLog;
+import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.event.EventUser;
+import io.temco.guhada.data.model.event.LuckyDrawList;
 import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.user.SnsUser;
+import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.account.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -69,9 +80,78 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             @Override
             public void redirectTermsActivity(int type, Object data, String email) {
                 mViewModel.setSnsUser(data);
-                Intent intent = new Intent(LoginActivity.this, TermsActivity.class);
-                intent.putExtra("email", email);
-                startActivityForResult(intent, type);
+
+                if (mViewModel.getEventData() != null) {
+                    String snsId = "", name = "", familyName = "", givenName = "", imageUrl = "", snsType = "";
+
+                    switch (type) {
+                        case Flag.RequestCode.KAKAO_LOGIN: {
+                            snsId = (String.valueOf(((UserProfile) data).getId()));
+                            givenName = familyName = name = ((UserProfile) data).getNickname();
+                            imageUrl = ((UserProfile) data).getProfileImagePath();
+                            snsType = "KAKAO";
+                            break;
+                        }
+                        case Flag.RequestCode.NAVER_LOGIN: {
+                            snsId = ((NaverUser) data).getId();
+                            givenName = familyName = name = ((NaverUser) data).getName();
+                            imageUrl = ((NaverUser) data).getProfileImage();
+                            snsType = "NAVER";
+                            break;
+                        }
+                        case Flag.RequestCode.FACEBOOK_LOGIN: {
+                            snsType = "FACEBOOK";
+                            JSONObject object = (JSONObject) data;
+                            try {
+                                snsId = object.getString("id");
+                                givenName = familyName = name = object.getString("name");
+
+                                JsonParser parser = new JsonParser();
+                                JsonObject jsonObject = (JsonObject) (parser.parse(((JSONObject) data).getString("picture")));
+                                JsonObject jsonObject1 = (JsonObject) parser.parse(jsonObject.get("data").toString());
+                                if (jsonObject1.get("url") != null)
+                                    imageUrl = jsonObject1.get("url").toString();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        }
+                        case Flag.RequestCode.GOOGLE_LOGIN:
+                        case Flag.RequestCode.RC_GOOGLE_LOGIN: {
+                            snsId = (String.valueOf(((GoogleSignInAccount) data).getId()));
+                            givenName = ((GoogleSignInAccount) data).getGivenName();
+                            familyName = ((GoogleSignInAccount) data).getFamilyName();
+                            name = ((GoogleSignInAccount) data).getDisplayName();
+
+                            if (((GoogleSignInAccount) data).getPhotoUrl() != null)
+                                imageUrl = Objects.requireNonNull(((GoogleSignInAccount) data).getPhotoUrl()).toString();
+                            snsType = "GOOGLE";
+                            break;
+                        }
+                    }
+
+                    io.temco.guhada.data.model.user.UserProfile profile = new io.temco.guhada.data.model.user.UserProfile();
+                    profile.setSnsId(snsId);
+                    profile.setEmail(email);
+                    profile.setFamilyName(familyName);
+                    profile.setGivenName(givenName);
+                    profile.setName(name);
+                    profile.setImageUrl(imageUrl);
+
+                    EventUser.SnsSignUp snsSignUp = new EventUser.SnsSignUp();
+                    snsSignUp.setSnsId(snsId);
+                    snsSignUp.setProfileJson(profile);
+                    snsSignUp.setSnsType(snsType);
+
+                    Intent intent = new Intent(LoginActivity.this, LuckyDrawJoinActivity.class);
+                    intent.putExtra("snsUser", snsSignUp);
+                    startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, TermsActivity.class);
+                    intent.putExtra("email", email);
+                    startActivityForResult(intent, type);
+                }
             }
 
             @Override
@@ -147,6 +227,12 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
 
             @Override
+            public void redirectLuckyDrawJoinActivity() {
+                Intent intent = new Intent(LoginActivity.this, LuckyDrawJoinActivity.class);
+                startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
+            }
+
+            @Override
             public void showMessage(String message) {
                 ToastUtil.showMessage(message);
 //                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -159,10 +245,38 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
-                setResult(resultCode);
-                finish();
+                if (mViewModel.getEventData() != null) {
+                    if (resultCode == RESULT_CANCELED) {
+                        setResult(resultCode);
+                        finish();
+                    } else {
+                        if (Preferences.getToken() != null) {
+                            if (Preferences.getToken().getAccessToken() != null) {
+                                UserServer.getEventUser((success, o) -> {
+                                    if (success && o instanceof BaseModel)
+                                        if (((BaseModel) o).resultCode == Flag.ResultCode.SUCCESS) {
+                                            if (((EventUser) ((BaseModel) o).data).isUserLuckyEventCheck()) {
+                                                setResult(resultCode);
+                                                finish();
+                                            } else {
+                                                Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
+                                                startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
+                                            }
+                                        } else
+                                            ToastUtil.showMessage(((BaseModel) o).message);
+                                }, "Bearer " + Preferences.getToken().getAccessToken());
+                            }
+                        }
+                    }
+                } else {
+                    setResult(resultCode);
+                    finish();
+                }
             }
         });
+        //mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", false));
+        LuckyDrawList luckyDrawList = (LuckyDrawList) getIntent().getSerializableExtra("eventData");
+        mViewModel.setEventData(luckyDrawList);
         mViewModel.setToolBarTitle(getResources().getString(R.string.login_title));
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);
@@ -187,8 +301,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         SnsLoginModule.handleActivityResultForKakao(requestCode, resultCode, data);
 
         if (mViewModel.getSnsUser() == null) {
-            if (CustomLog.INSTANCE.getFlag())
-                CustomLog.INSTANCE.L("onActivityResult", "getSnsUser ", "null -----");
+            if (CustomLog.getFlag()) CustomLog.L("onActivityResult", "getSnsUser ", "null -----");
             SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener, getSnsLoginServerListener());
         }
 
@@ -213,14 +326,20 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     if (mViewModel.getSnsUser() == null)
-                        if (CustomLog.INSTANCE.getFlag())
-                            CustomLog.INSTANCE.L("onActivityResult RC_GOOGLE_LOGIN", "getSnsUser ", "null -----");
+                        if (CustomLog.getFlag())
+                            CustomLog.L("onActivityResult RC_GOOGLE_LOGIN", "getSnsUser ", "null -----");
                     mViewModel.getTempSnsUser().setSnsType("GOOGLE");
                     SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
                     mViewModel.getTempSnsUser().setSnsType("FACEBOOK");
 
+                    break;
+
+                case Flag.RequestCode.LUCKY_DIALOG:
+                    // TODO 럭키드로우
+                    setResult(RESULT_OK);
+                    finish();
                     break;
             }
         } else {
@@ -235,11 +354,27 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
                     case Flag.ResultCode.SUCCESS:
-                        // SNS 로그인
                         Token token = (Token) model.data;
                         Preferences.setToken(token);
-                        setResult(RESULT_OK);
-                        finish();
+
+                        if (mViewModel.getEventData() != null && TextUtils.isEmpty(token.getAccessToken())) {
+                            UserServer.getEventUser((success12, object) -> {
+                                EventUser user = (EventUser) ((BaseModel) object).data;
+                                if (!user.isUserLuckyEventCheck()) {
+                                    EventUser.SnsSignUp snsSignUp = new EventUser.SnsSignUp();
+                                    snsSignUp.setSnsType(Objects.requireNonNull(mViewModel.getTempSnsUser().getSnsType()));
+                                    snsSignUp.setSnsId(Objects.requireNonNull(mViewModel.getTempSnsUser().getSnsId()));
+
+                                    Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
+                                    intent.putExtra("snsUser", snsSignUp);
+                                    startActivityForResult(intent, Flag.RequestCode.LUCKY_DIALOG);
+                                }
+                            }, token.getAccessToken());
+                        } else {
+                            // SNS 로그인
+                            setResult(RESULT_OK);
+                            finish();
+                        }
                         break;
                     case Flag.ResultCode.DATA_NOT_FOUND:
                         // SNS 회원가입

@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Observable;
 
@@ -29,6 +31,13 @@ public class User extends Observable implements Serializable {
     // USER INFO
     @Nullable
     private String name = "";
+
+    @Nullable
+    private String familyName = "";
+
+    @Nullable
+    private String givenName = "";
+
     @Nullable
     private String email = "";
     @Nullable
@@ -298,6 +307,23 @@ public class User extends Observable implements Serializable {
         return userDetail;
     }
 
+    @Nullable
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(@Nullable String familyName) {
+        this.familyName = familyName;
+    }
+
+    @Nullable
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public void setGivenName(@Nullable String givenName) {
+        this.givenName = givenName;
+    }
 
     @Override
     public String toString() {

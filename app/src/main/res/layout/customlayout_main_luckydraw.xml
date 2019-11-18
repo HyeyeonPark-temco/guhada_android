@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="clickLoginListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="clickShareListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.main.LuckyDrawViewModel" />
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#13182e">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="1dp"
+                android:background="@color/transparent" />
+
+            <LinearLayout
+                android:id="@+id/floating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="75dp"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/button_floating_item"
+                    layout="@layout/layout_floating_button_badge"
+                    android:layout_width="@dimen/view_button_floating"
+                    android:layout_height="@dimen/view_button_floating"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/button_floating_top"
+                    layout="@layout/layout_floating_button_top"
+                    android:layout_width="@dimen/view_button_floating"
+                    android:layout_height="@dimen/view_button_floating"
+                    android:layout_marginTop="7dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:weightSum="2"
+                android:visibility="gone"
+                app:layout_behavior="io.temco.guhada.view.custom.FixScrollingFooterBehavior"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:text="공유하기"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_16"
+                    android:onClick="@{clickShareListener}"
+                    android:background="@color/greyish_brown_two"
+                    android:textColor="@color/common_white" />
+
+                <TextView
+                    android:id="@+id/textview_bottom_login"
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:onClick="@{clickLoginListener}"
+                    android:text="회원가입 · 로그인"
+                    android:textSize="@dimen/text_16"
+                    android:background="@color/blue_purple"
+                    android:textColor="@color/common_white" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eeeeee"/>
+
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

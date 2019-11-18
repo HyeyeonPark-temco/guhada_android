@@ -58,10 +58,7 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
             field = value
             notifyPropertyChanged(BR.mName)
         }
-    var mVerifyNumber = ObservableField("")
-        @Bindable
-        get() = field
-
+    var mVerifyNumber = ""
 
     /**
      * 이메일로 인증번호 발송
@@ -151,7 +148,7 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
      */
     fun onClickVerifyNumber() {
         val verification = Verification()
-        verification.verificationNumber = mVerifyNumber.get() ?: ""
+        verification.verificationNumber = mVerifyNumber
         verification.verificationTarget = if (mIsEmail) mEmail.get() ?: "" else mMobile.get() ?: ""
         verification.verificationTargetType = if (mIsEmail) Verification.IdentityVerifyMethod.EMAIL.code else Verification.IdentityVerifyMethod.MOBILE.code
 

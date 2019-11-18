@@ -1,14 +1,16 @@
 package io.temco.guhada.data.retrofit.service
 
+import com.google.gson.JsonObject
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.event.LuckyDrawList
+import io.temco.guhada.data.model.event.LuckyEvent
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.data.model.product.Product
+import org.json.JSONObject
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ProductService {
 
@@ -86,4 +88,29 @@ interface ProductService {
     @GET("time-deals")
     fun getTimeDeal() : Call<BaseModel<MutableList<Deal>>>
 
+
+    /**
+     * @author park jungho
+     * 19.11.13
+     * 럭키드로우 리스트
+     */
+    @GET("lucky-draws")
+    fun getLuckyDraws(): Call<BaseModel<LuckyEvent>>
+
+    /**
+     * @author park jungho
+     * 19.11.13
+     * 럭키드로우 리스트
+     */
+    @GET("lucky-draws")
+    fun getLuckyDraws(@Header("Authorization") accessToken: String): Call<BaseModel<LuckyEvent>>
+
+
+    @POST("lucky-draws/request/{dealId}")
+    fun getRequestLuckyDraw(@Header("Authorization") accessToken: String, @Path("dealId") id: String): Call<BaseModel<LuckyDrawList>>
+
+
+
+    @GET("/lucky-draws/winner/{dealId}")
+    fun getRequestLuckyDrawWinner(@Header("Authorization") accessToken: String, @Path("dealId") dealId : Long): Call<BaseModel<JsonObject>>
 }

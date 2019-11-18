@@ -39,6 +39,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="43dp">
+
                 <RelativeLayout
                     android:id="@+id/relativelayout_layout_tab"
                     android:layout_width="match_parent"
@@ -90,8 +91,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="io.temco.guhada.view.custom.FixScrollingFooterBehavior"
-            >
+            app:layout_behavior="io.temco.guhada.view.custom.FixScrollingFooterBehavior">
             <!--app:layout_behavior="@string/appbar_scrolling_view_behavior" -->
 
             <androidx.viewpager.widget.ViewPager
@@ -99,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never"/>
+
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

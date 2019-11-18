@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.main.LuckyDrawViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image_thumb"
+            style="@style/ProductImageType"
+            android:layout_alignParentRight="true"
+            android:layout_width="274dp"
+            android:layout_height="270dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="254dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_luckypager_1"
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:letterSpacing="-0.05"
+                    android:lineSpacingExtra="3sp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_16" />
+
+                <TextView
+                    android:id="@+id/text_luckypager_2"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="22dp"
+                    android:background="#13182e"
+                    android:gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="OPEN"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_16" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_luckypager_3"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_gravity="center_horizontal"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:letterSpacing="-0.04"
+                android:lineSpacingExtra="3sp"
+                android:maxLines="2"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_15" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

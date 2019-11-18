@@ -6,53 +6,55 @@
     </declare-styleable>
 
     <declare-styleable name="BorderEditTextView">
-        <attr name="type" format="reference|string"/>
+        <attr name="type" format="reference|string" />
         <attr name="hint" format="reference|string" />
         <attr name="txt" format="reference|string" />
         <attr name="max" format="reference|integer" />
-        <attr name="readonly" format="boolean"/>
+        <attr name="readonly" format="boolean" />
+        <attr name="isError" format="boolean" />
+        <attr name="errorMessage" format="reference|string"/>
     </declare-styleable>
 
     <declare-styleable name="HeightRelativeLayout">
         <attr name="width" format="dimension" />
-        <attr name="height" format="dimension"/>
+        <attr name="height" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="CustomSpinnerView">
-        <attr name="list" format="reference"/>
+        <attr name="list" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="HtmlTextView">
-        <attr name="isHtml" format="boolean"/>
+        <attr name="isHtml" format="boolean" />
         <attr name="android:text" />
     </declare-styleable>
 
 
     <declare-styleable name="MaterialSpinner" tools:ignore="ResourceName">
-        <attr format="color" name="ms_arrow_tint"/>
-        <attr format="boolean" name="ms_hide_arrow"/>
-        <attr format="integer" name="ms_background_color"/>
-        <attr format="color" name="ms_text_color"/>
-        <attr format="dimension" name="ms_dropdown_max_height"/>
-        <attr format="dimension" name="ms_dropdown_height">
-            <enum name="fill_parent" value="-1"/>
-            <enum name="match_parent" value="-1"/>
-            <enum name="wrap_content" value="-2"/>
+        <attr name="ms_arrow_tint" format="color" />
+        <attr name="ms_hide_arrow" format="boolean" />
+        <attr name="ms_background_color" format="integer" />
+        <attr name="ms_text_color" format="color" />
+        <attr name="ms_dropdown_max_height" format="dimension" />
+        <attr name="ms_dropdown_height" format="dimension">
+            <enum name="fill_parent" value="-1" />
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
         </attr>
-        <attr format="integer" name="ms_background_selector"/>
-        <attr format="dimension" name="ms_padding_top"/>
-        <attr format="dimension" name="ms_padding_left"/>
-        <attr format="dimension" name="ms_padding_bottom"/>
-        <attr format="dimension" name="ms_padding_right"/>
-        <attr format="dimension" name="ms_popup_padding_top"/>
-        <attr format="dimension" name="ms_popup_padding_left"/>
-        <attr format="dimension" name="ms_popup_padding_bottom"/>
-        <attr format="dimension" name="ms_popup_padding_right"/>
-        <attr format="string" name="ms_hint"/>
-        <attr format="color" name="ms_hint_color"/>
-        <attr format="integer" name="ms_start_index"/>
-        <attr format="boolean" name="ms_start_index_half"/>
-        <attr format="integer" name="ms_text_size"/>
+        <attr name="ms_background_selector" format="integer" />
+        <attr name="ms_padding_top" format="dimension" />
+        <attr name="ms_padding_left" format="dimension" />
+        <attr name="ms_padding_bottom" format="dimension" />
+        <attr name="ms_padding_right" format="dimension" />
+        <attr name="ms_popup_padding_top" format="dimension" />
+        <attr name="ms_popup_padding_left" format="dimension" />
+        <attr name="ms_popup_padding_bottom" format="dimension" />
+        <attr name="ms_popup_padding_right" format="dimension" />
+        <attr name="ms_hint" format="string" />
+        <attr name="ms_hint_color" format="color" />
+        <attr name="ms_start_index" format="integer" />
+        <attr name="ms_start_index_half" format="boolean" />
+        <attr name="ms_text_size" format="integer" />
     </declare-styleable>
 
 </resources>

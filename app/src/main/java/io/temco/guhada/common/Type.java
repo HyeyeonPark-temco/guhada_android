@@ -76,7 +76,8 @@ public class Type {
         LUCKY_EVENT,
         LUCKY_EVENT_DIALOG,
         PHOTO_PAGER,
-        CARD_INTEREST
+        CARD_INTEREST,
+        LUCKY_DRAW_JOIN
     }
 
     // Main
@@ -89,9 +90,9 @@ public class Type {
     }
 
     /** 임시 서버 연결 여부 (true: TempServer name; false: dev) **/
-    public static boolean isTempServer= false;
+    public static boolean isTempServer= true;
     public static String[] ServerTypeArray = { "http://dev.", "http://qa.", "https://stg.", "https://" };
-    public static String serverType = ServerTypeArray[0];
+    public static String serverType = ServerTypeArray[1];
     ////////////////////////////////////////////////
     // Server
     public enum Server {
@@ -319,7 +320,7 @@ public class Type {
     }
 
 
-    private static String getWebUrl() {
+    public static String getWebUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.guhada.com/";
@@ -613,7 +614,9 @@ public class Type {
         TYPE_2("yyyy-MM-dd"),
         TYPE_3("yyyy-MM-dd HH:mm:ss"),
         TYPE_4("yy.MM.dd HH:mm"),
-        TYPE_5("yy.MM.dd HH:mm");
+        TYPE_5("yy.MM.dd HH:mm"),
+        TYPE_6("MM월 dd일"),
+        TYPE_7("MM.dd (E) HH:mm");
 
         private String type;
 
@@ -631,6 +634,10 @@ public class Type {
                     return TYPE_4.type;
                 case TYPE_5:
                     return TYPE_5.type;
+                case TYPE_6:
+                    return TYPE_6.type;
+                case TYPE_7:
+                    return TYPE_7.type;
                 default:
                     return TYPE_1.type;
             }

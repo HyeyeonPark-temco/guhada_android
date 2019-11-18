@@ -12,6 +12,7 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
+import io.temco.guhada.data.model.event.EventUser
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.point.PointPopupInfo
@@ -23,7 +24,6 @@ import io.temco.guhada.data.retrofit.service.UserService
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import org.apache.commons.lang3.mutable.Mutable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -113,7 +113,7 @@ class UserServer {
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).verifyEmail(user = user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).verifyEmail(user = user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
 
         /**
          * 핸드폰 번호로 인증번호 전송하기
@@ -900,8 +900,43 @@ class UserServer {
         fun getFollowingStores(listener: OnServerListener, userId: Long) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getFollowingStores(userId = userId)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<SellerStore>>>(successTask = { listener.onResult(true, it.body()) }))
 
+        /**
+         * 럭키드로우 이메일 회원가입
+         * @author Hyeyeon Park
+         * @since 2019.11.13
+         */
+        @JvmStatic
+        fun signUpEventUser(listener: OnServerListener, eventUser: EventUser) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).signUpEventUser(eventUser = eventUser)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 럭키드로우 이메일 회원가입
+         * @author Hyeyeon Park
+         * @since 2019.11.13
+         */
+        @JvmStatic
+        fun signUpEventSnsUser(listener: OnServerListener, eventUser: EventUser) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).signUpEventSnsUser(eventUser = eventUser)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
+
+
+        /**
+         * 럭키드로우 유저 정보 조회
+         * @author Hyeyeon Park
+         * @since 2019.11.14
+         */
+        @JvmStatic
+        fun getEventUser(listener: OnServerListener, accessToken: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getEventUser(accessToken = accessToken)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<EventUser>>(successTask = { listener.onResult(true, it.body()) }))
+
+
+        /**
+         * 럭키드로우 유저 정보 수정
+         * @author Hyeyeon Park
+         * @since 2019.11.14
+         */
+        fun updateEventUser(listener: OnServerListener, accessToken: String, eventUser: EventUser) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false)
+                .updateEventUser(accessToken = accessToken, eventUser = eventUser).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
+
 
     }
-
-
 }
