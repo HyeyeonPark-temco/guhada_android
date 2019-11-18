@@ -390,7 +390,8 @@ interface UserService {
      * 19.08.08
      */
     @GET("/users/my-page/reviews")
-    fun getMypageReviewList(@Header("Authorization") accessToken: String, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<MyPageReview>>
+    fun getMypageReviewList(@Header("Authorization") accessToken: String, @Query("page") page: Int, @Query("size") size: Int,
+                            @Query("sort")sort:String = "created_at,desc"): Call<BaseModel<MyPageReview>>
 
 
     /**

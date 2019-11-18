@@ -3,6 +3,7 @@ package io.temco.guhada.view.adapter.main
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Uri
@@ -140,6 +141,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
     inner class MainEventViewHolder(private val containerView: View, val binding: CustomlayoutMainItemMaineventBinding) : ListViewHolder(containerView, binding){
         var currentAdIndex : Int = -1
         var eventListSize = 0
+        lateinit var views : ArrayList<View>
 
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
@@ -153,6 +155,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                 binding.heightLayout.setmHeight((384 * metrics.density).toInt())
                 binding.heightLayout.setmWidth((360 * metrics.density).toInt())
                 if(infiniteAdapter == null){
+                    views = arrayListOf()
                     infiniteAdapter = object : InfiniteGeneralFixedPagerAdapter<EventData>(data.eventList, true, true){
                         override fun getPageView(paramViewGroup: ViewGroup, paramInt: Int, item: EventData): View {
                             val imageView = ImageView(paramViewGroup.context)
@@ -166,13 +169,30 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         override fun getPagerIcon(position: Int): Int = 0
                         override fun getPagerIconBackground(position: Int): Int = 0
                     }
+                    model.mainHomeEventViewIndex.set(0)
+                    binding.activityViewPagerIndicatorUnderline.removeAllViews()
+                    var param = LinearLayout.LayoutParams(0,CommonViewUtil.dipToPixel(model.context,2), data.eventList.size.toFloat())
+                    param.weight = 1f
+                    param.rightMargin = CommonViewUtil.dipToPixel(model.context,18)
+                    binding.activityViewPagerIndicatorUnderline.layoutParams = param
+                    binding.activityViewPagerIndicatorUnderline.orientation = LinearLayout.HORIZONTAL
+                    for (i in 0 until data.eventList.size){
+                        val view = View(model.context)
+                        var param = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                        param.weight = 1f
+                        view.layoutParams = param
+                        if(binding.viewPager.realCurrentItem == i) view.setBackgroundColor(Color.WHITE)
+                        else view.setBackgroundColor(Color.TRANSPARENT)
+
+                        views.add(view)
+                        binding.activityViewPagerIndicatorUnderline.addView(view,LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1f))
+                    }
                     binding.viewPager.adapter = infiniteAdapter
 
                     if(currentAdIndex == -1){
                         eventListSize = binding.viewPager.offsetAmount
                         currentAdIndex = binding.viewPager.currentItem
                     }
-                    model.mainHomeEventViewIndex.set(0)
                     binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
                         override fun onPageScrollStateChanged(state: Int) {
                             isViewPagerIdle = state == ViewPager.SCROLL_STATE_IDLE
@@ -181,9 +201,15 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         override fun onPageSelected(position: Int) {
                             currentAdIndex = position
                             model.mainHomeEventViewIndex.set(binding.viewPager.realCurrentItem)
+                            for (i in 0 until data.eventList.size){
+                                if(binding.viewPager.realCurrentItem == i) views[i].setBackgroundColor(Color.WHITE)
+                                else views[i].setBackgroundColor(Color.TRANSPARENT)
+                            }
+                            binding.eventIndex = (binding.viewPager.realCurrentItem+1).toString()+"/"+data.eventList.size.toString()
                         }
                     })
                 }
+                binding.eventIndex = (binding.viewPager.realCurrentItem+1).toString()+"/"+data.eventList.size.toString()
                 if(position == 0){
                     homeRolling()
                 }

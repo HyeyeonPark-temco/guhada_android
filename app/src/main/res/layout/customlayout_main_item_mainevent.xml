@@ -6,6 +6,8 @@
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.main.HomeListViewModel" />
+
+        <variable name="eventIndex" type="String" />
     </data>
 
     <io.temco.guhada.view.custom.layout.HeightRelativeLayout
@@ -37,36 +39,8 @@
                 android:layout_height="2dp"
                 android:layout_marginRight="18dp"
                 android:layout_weight="1"
-                android:weightSum="5"
                 android:orientation="horizontal"
-                android:background="@color/white_overlay3"  >
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==0 ? @color/common_white : @color/transparent}"
-                    android:layout_weight="1"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==1 ? @color/common_white : @color/transparent}"
-                    android:layout_weight="1"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==2 ? @color/common_white : @color/transparent}"
-                    android:layout_weight="1"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==3 ? @color/common_white : @color/transparent}"
-                    android:layout_weight="1"/>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==4 ? @color/common_white : @color/transparent}"
-                    android:layout_weight="1"/>
-            </LinearLayout>
+                android:background="@color/white_overlay3" />
 
             <TextView
                 style="@style/TextRegularSingleLine"
@@ -77,7 +51,7 @@
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_12"
                 android:letterSpacing="0.05"
-                android:text="@{(viewModel.mainHomeEventViewIndex+1) + `/5`}"/>
+                android:text="@{eventIndex}"/>
 
         </LinearLayout>
 

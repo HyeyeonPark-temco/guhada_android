@@ -75,7 +75,6 @@ class HomeListRepository(val context : Context){
          tmpList.add(EventData(1, "", R.drawable.timedeal_main_m_360, "main_banner_mobile", "", "", 1, ""))
          tmpList.add(EventData(2, "", R.drawable.join_main_m_360, "main_banner_mobile", "", "", 2, ""))
          tmpList.add(EventData(3, "", R.drawable.main_m_2per_360, "main_banner_mobile", "", "", 3, ""))
-         tmpList.add(EventData(4, "", R.drawable.open_main_m_360, "main_banner_mobile", "", "", 4, ""))
          val event = MainEvent(0, HomeType.MainEvent, tmpList)
          ddd.add(event)
          list.value!!.add(event)
