@@ -957,7 +957,7 @@
     <!-- SUCCESS REFUND -->
     <string name="successrefund_warning">반드시, 반품 상품 발송 후 송장번호를 등록해주세요.</string>
     <string name="successrefund_title"><![CDATA[주문상품의 <font color="#5d2ed1">반품신청이<br>완료</font>되었습니다.]]></string>
-    <string name="successrefund_shippingpayment">반품 사유로 인해 반품배송비 5,000을\n%s으로 구매자가 부담합니다.</string>
+    <string name="successrefund_shippingpayment">반품 사유로 인해 반품배송비 %,2d원을\n%s으로 구매자가 부담합니다.</string>
     <string name="successrefund_notsend">아니요</string>
     <string name="successrefund_address_format">[%s] %s</string>
     <string name="successrefund_card">신용/체크 카드</string>
