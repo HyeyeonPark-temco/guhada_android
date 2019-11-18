@@ -1,5 +1,6 @@
 import android.util.Log
 import android.view.View
+import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.util.DateUtil
 import org.joda.time.DateTime
@@ -54,6 +55,9 @@ class Test {
 
         val ui = Ui() + UiOp.Show + UiOp.Hide
 //        run(View(BaseApplication.getInstance().applicationContext), ui)
+
+
+        print(String.format("반품 사유로 인해 반품배송비 %,2d원을 %s으로 구매자가 부담합니다.", 1000, "<<환불 방법>>"))
     }
 
 
