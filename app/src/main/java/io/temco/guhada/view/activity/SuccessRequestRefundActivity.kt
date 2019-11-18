@@ -4,6 +4,7 @@ import android.view.View
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.PaymentWayType
+import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.seller.SellerAddress
@@ -69,7 +70,7 @@ class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>(
         mBinding.includeSuccessrefundProductinfo.optionStr = mOption
 
         mBinding.textviewSuccessrefundShippingprice.text = refundRequest.getShippingPaymentDescription(returnShippingPrice)
-        val refundInfoVisibility = if (mPurchaseOrder.paymentMethod == PaymentWayType.VBANK.code) View.VISIBLE else View.GONE
+        val refundInfoVisibility = if (mPurchaseOrder.paymentMethod == PaymentWayType.VBANK.code && mPurchaseOrder.orderStatus != PurchaseStatus.WAITING_PAYMENT.status) View.VISIBLE else View.GONE
         mBinding.textviewSuccessrefundRefundaccounttitle.visibility = refundInfoVisibility
         mBinding.textviewSuccessrefundRefundaccount.visibility = refundInfoVisibility
     }

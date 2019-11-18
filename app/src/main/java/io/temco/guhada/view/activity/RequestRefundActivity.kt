@@ -14,6 +14,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RefundCause
 import io.temco.guhada.common.enum.ShippingPaymentType
@@ -122,7 +123,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         }
         mViewModel.mPurchaseOrder.observe(this, Observer {
             if (it.purchaseId > 0) {
-                mBinding.includeRequestrefundRefund.constraintlayoutRequestcancelorderRefund.visibility = if (it.orderStatus == PurchaseStatus.WAITING_PAYMENT.status) View.GONE else View.VISIBLE
+                mBinding.includeRequestrefundRefund.constraintlayoutRequestcancelorderRefund.visibility = if (it.paymentMethod == PaymentWayType.VBANK.code && it.orderStatus != PurchaseStatus.WAITING_PAYMENT.status) View.VISIBLE else View.GONE
 
                 initOrderInfo(it)
                 initProductInfo(it)
@@ -318,11 +319,17 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 for (i in 0 until it.size) {
                     if (code == it[i].code) {
                         mBinding.includeRequestrefundCollection.spinnerRequestorderstatusShippingcompany.setSelection(i)
+                        mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayTrue.isChecked = true
+                        mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.setText(
+                                if (purchaseOrder.returnPickingInvoiceNo == "0") ""
+                                else purchaseOrder.returnPickingInvoiceNo)
+
                         break
                     }
                 }
             } else {
                 mBinding.includeRequestrefundCollection.spinnerRequestorderstatusShippingcompany.setSelection(it.size - 1)
+                mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
             }
         })
         mViewModel.getShippingCompany()

@@ -33,6 +33,7 @@ import io.temco.guhada.view.activity.SellerInfoActivity;
 import io.temco.guhada.view.activity.ShippingTrackingActivity;
 import io.temco.guhada.view.activity.SplashActivity;
 import io.temco.guhada.view.activity.SuccessCancelOrderActivity;
+import io.temco.guhada.view.activity.SuccessRequestRefundActivity;
 import io.temco.guhada.view.activity.TempLogoutActivity;
 import io.temco.guhada.view.activity.TermsActivity;
 import io.temco.guhada.view.activity.VerifyActivity;
@@ -154,6 +155,9 @@ public class TestListActivity extends AppCompatActivity {
                 case 23:
                     startActivity(LuckyDrawJoinActivity.class);
                     break;
+                case 24:
+                    startActivity(SuccessRequestRefundActivity.class);
+                    break;
             }
         });
         list.setAdapter(adapter);
@@ -190,6 +194,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("VERIFY"); // 21
         list.add("SHIPPING_TRACKING"); // 22
         list.add("LUCKY DRAW JOIN"); // 23
+        list.add("SUCCESS REQUEST REFUND"); // 24
         return list;
     }
 
