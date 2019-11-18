@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.Html
+import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.addTextChangedListener
@@ -163,7 +164,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     private fun initProductInfo(purchaseOrder: PurchaseOrder) {
         mBinding.includeRequestrefundProductinfo.imageUrl = purchaseOrder.imageUrl
         mBinding.includeRequestrefundProductinfo.brandName = purchaseOrder.brandName
-        mBinding.includeRequestrefundProductinfo.productName = if(purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName else "${purchaseOrder.season} ${purchaseOrder.productName}"
+        mBinding.includeRequestrefundProductinfo.productName = if (purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName else "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeRequestrefundProductinfo.optionStr = purchaseOrder.getOptionStr()
         mBinding.includeRequestrefundProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeRequestrefundProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
@@ -213,11 +214,13 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                         mViewModel.mRefundRequest.refundReason = cause.code
                         mBinding.includeRequestrefundCause.defaultMessage = cause.label
 
-                        mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
-                                if (cause.isFeeCharged) View.VISIBLE
-                                else View.GONE
+                        if (purchaseOrder.returnShipExpense > 0 && purchaseOrder.returnShippingPrice > 0) {
+                            mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
+                                    if (cause.userFault) View.VISIBLE
+                                    else View.GONE
+                        }
 
-                        if (!cause.isFeeCharged)
+                        if (!cause.userFault)
                             mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
                     }
                 }
@@ -326,43 +329,52 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     }
 
     private fun initShippingPayment(purchaseOrder: PurchaseOrder) {
-        mBinding.includeRequestrefundShippingpayment.title = resources.getString(R.string.requestorderstatus_refund_shipping_title)
-        mBinding.includeRequestrefundShippingpayment.textviewRequestorderstatusShippingpaymentDescription1.text = Html.fromHtml(resources.getString(R.string.requestorderstatus_refund_shipping_description1))
-        mBinding.includeRequestrefundShippingpayment.textviewRequestorderstatusShippingpaymentDescription2.text = Html.fromHtml(resources.getString(R.string.requestorderstatus_refund_shipping_description2))
-        mBinding.includeRequestrefundShippingpayment.isRefund = true
+        if (purchaseOrder.returnShipExpense > 0 && purchaseOrder.returnShippingPrice > 0) {
+            mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.VISIBLE
+            mBinding.includeRequestrefundShippingpayment.title = resources.getString(R.string.requestorderstatus_refund_shipping_title)
 
-        for (reason in purchaseOrder.returnReasonList ?: mutableListOf()) {
-            val returnReason = purchaseOrder.returnReason
-            if (returnReason == reason.code && !reason.isFeeCharged) {
-                mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
-                break
-            }
-        }
+            val returnShippingPrice: Int =
+                    if (purchaseOrder.returnShipExpense > 0) purchaseOrder.returnShipExpense
+                    else if (purchaseOrder.returnShippingPrice > 0) purchaseOrder.returnShippingPrice
+                    else 0
+            mBinding.includeRequestrefundShippingpayment.textviewRequestorderstatusShippingpaymentDescription1.text = Html.fromHtml(String.format(resources.getString(R.string.requestorderstatus_refund_shipping_description1), returnShippingPrice))
+            mBinding.includeRequestrefundShippingpayment.textviewRequestorderstatusShippingpaymentDescription2.text = Html.fromHtml(resources.getString(R.string.requestorderstatus_refund_shipping_description2))
+            mBinding.includeRequestrefundShippingpayment.isRefund = true
 
-        // [신청서 수정] 배송비 결제 방법
-        setShippingPayment(purchaseOrder)
-        mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.EXCLUDE_REFUND_PRICE.type
-                mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
-                mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = false
+            for (reason in purchaseOrder.returnReasonList ?: mutableListOf()) {
+                val returnReason = purchaseOrder.returnReason
+                if (returnReason == reason.code && !reason.userFault) {
+                    mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
+                    break
+                }
             }
-        }
-        mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.BOX.type
-                mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = false
-                mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = false
-            }
-        }
-        mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.DIRECT_SEND.type
-                mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = false
-                mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
-            }
-        }
 
+            // [신청서 수정] 배송비 결제 방법
+            setShippingPayment(purchaseOrder)
+            mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.EXCLUDE_REFUND_PRICE.type
+                    mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
+                    mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = false
+                }
+            }
+            mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.BOX.type
+                    mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = false
+                    mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = false
+                }
+            }
+            mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.DIRECT_SEND.type
+                    mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = false
+                    mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
+                }
+            }
+        } else {
+            mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
+        }
     }
 
     private fun initButton(isModify: Boolean) {
@@ -381,7 +393,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     }
 
     private fun setShippingPayment(purchaseOrder: PurchaseOrder) {
-        if (purchaseOrder.returnShippingPriceType != null && purchaseOrder.returnShippingPriceType != ShippingPaymentType.NONE.type) {
+        if (TextUtils.isEmpty(purchaseOrder.returnShippingPriceType) && purchaseOrder.returnShippingPriceType != ShippingPaymentType.NONE.type) {
             when (purchaseOrder.returnShippingPriceType) {
                 ShippingPaymentType.EXCLUDE_REFUND_PRICE.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = true
                 ShippingPaymentType.BOX.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true

@@ -171,10 +171,10 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                         mBinding.includeRequestexchangeCause.defaultMessage = cause.label
 
                         mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
-                                if (cause.isFeeCharged) View.VISIBLE
+                                if (cause.userFault) View.VISIBLE
                                 else View.GONE
 
-                        if (!cause.isFeeCharged)
+                        if (!cause.userFault)
                             mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
                     }
                 }
@@ -293,7 +293,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
 
         for (reason in purchaseOrder.exchangeReasonList ?: mutableListOf()) {
             val returnReason = purchaseOrder.exchangeReason
-            if (returnReason == reason.code && !reason.isFeeCharged) {
+            if (returnReason == reason.code && !reason.userFault) {
                 mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
                 break
             }

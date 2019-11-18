@@ -922,7 +922,7 @@
     <string name="requestorderstatus_refund_way_description">반품상품을 이미 발송하셨나요?</string>
     <string name="requestorderstatus_refund_way_title">반품 발송 여부</string>
     <string name="requestorderstatus_refund_shipping_title">반품배송비 결제</string>
-    <string name="requestorderstatus_refund_shipping_description1"><![CDATA[<font color="#5d2ed1">반품 사유</font>로 인해 <font color="#5d2ed1">반품배송비 5,000원</font>을]]></string>
+    <string name="requestorderstatus_refund_shipping_description1"><![CDATA[<font color="#5d2ed1">반품 사유</font>로 인해 <font color="#5d2ed1">반품배송비 %,2d원</font>을]]></string>
     <string name="requestorderstatus_refund_shipping_description2"><![CDATA[<font color="#5d2ed1">구매자가 부담</font>합니다.]]></string>
     <string name="requestorderstatus_refund_shipping_radio">환불금액에서 차감</string>
     <string name="requestorderstatus_refund_warning">송장번호 미입력시 반품 처리가 늦어질 수 있습니다.</string>

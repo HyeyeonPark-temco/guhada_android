@@ -15,5 +15,5 @@ class OrderChangeCause : Serializable{
     var label : String = ""
 
     @SerializedName("userFault")
-    var isFeeCharged : Boolean = true
+    var userFault : Boolean = false
 }
