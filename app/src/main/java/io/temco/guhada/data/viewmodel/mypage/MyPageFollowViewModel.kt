@@ -40,9 +40,8 @@ class MyPageFollowViewModel : BaseObservableViewModel() {
         get() = field
 
     fun getFollowingStores() {
-        val token = Preferences.getToken().accessToken
-        if (!token.isNullOrEmpty()) {
-            val userId = JWT(token).getClaim("userId").asInt()
+        ServerCallbackUtil.callWithToken(task = { token ->
+            val userId = JWT(token.split("Bearer ")[1]).getClaim("userId").asInt()
             if (userId != null)
                 UserServer.getFollowingStores(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
@@ -59,7 +58,7 @@ class MyPageFollowViewModel : BaseObservableViewModel() {
                                 notifyPropertyChanged(BR.mEmptyViewVisible)
                             })
                 }, userId = userId.toLong())
-        }
+        })
     }
 
     /**
