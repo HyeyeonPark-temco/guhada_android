@@ -5,6 +5,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.PurchaseStatus
+import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.seller.SellerAddress
@@ -60,7 +61,7 @@ class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>(
 
         val shippingPriceLineVisibility = if (purchaseOrder.paymentMethod == PaymentWayType.VBANK.code && shippingPriceVisibility == View.VISIBLE) View.VISIBLE else View.GONE
         mBinding.viewSuccessrefundShippingline.visibility = shippingPriceLineVisibility
-        mBinding.viewSuccessrefundCollectline.visibility = shippingPriceLineVisibility
+//        mBinding.viewSuccessrefundCollectline.visibility = shippingPriceLineVisibility
     }
 
     private fun initRefundInfo(refundRequest: RefundRequest) {
@@ -68,6 +69,13 @@ class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>(
         mPurchaseOrder.quantity = refundRequest.quantity
         mOption = mPurchaseOrder.getOptionStr()
         mBinding.includeSuccessrefundProductinfo.optionStr = mOption
+
+        if (refundRequest.claimShippingPriceType != ShippingPaymentType.NONE.type) {
+            mBinding.textviewSuccessrefundShippingprice.text = refundRequest.getShippingPaymentDescription(returnShippingPrice)
+        } else {
+            mBinding.textviewSuccessrefundShippingprice.visibility = View.GONE
+            mBinding.textviewSuccessrefundShippingtitle.visibility = View.GONE
+        }
 
         mBinding.textviewSuccessrefundShippingprice.text = refundRequest.getShippingPaymentDescription(returnShippingPrice)
         val refundInfoVisibility = if (mPurchaseOrder.paymentMethod == PaymentWayType.VBANK.code && mPurchaseOrder.orderStatus != PurchaseStatus.WAITING_PAYMENT.status) View.VISIBLE else View.GONE

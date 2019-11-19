@@ -11,7 +11,7 @@ import java.io.Serializable
  * @since 2019.08.19
  */
 class ExchangeRequest : Serializable {
-    var alreadySend : Boolean? = null
+    var alreadySend: Boolean? = null
     var claimShippingPriceType = ""
     var exchangeReason = ""
     var exchangeReasonDetail = ""
@@ -23,12 +23,12 @@ class ExchangeRequest : Serializable {
     var orderClaimId = 0L
     var exchangeShippingAddress: UserShipping = UserShipping()
 
-    fun getShippingPaymentDescription(): String {
+    fun getShippingPaymentDescription(shippingPrice: Int): String {
         val context = BaseApplication.getInstance()
         return when (claimShippingPriceType) {
             ShippingPaymentType.NONE.type -> "판매자 부담"
-            ShippingPaymentType.BOX.type -> String.format(context.getString(R.string.successexchange_shippingpayment), context.getString(R.string.requestorderstatus_common_shipping_radio1))
-            ShippingPaymentType.DIRECT_SEND.type -> String.format(context.getString(R.string.successexchange_shippingpayment), context.getString(R.string.requestorderstatus_common_shipping_radio2))
+            ShippingPaymentType.BOX.type -> String.format(context.getString(R.string.successexchange_shippingpayment), shippingPrice, context.getString(R.string.requestorderstatus_common_shipping_radio1))
+            ShippingPaymentType.DIRECT_SEND.type -> String.format(context.getString(R.string.successexchange_shippingpayment), shippingPrice, context.getString(R.string.requestorderstatus_common_shipping_radio2))
             else -> "판매자 부담"
         }
     }

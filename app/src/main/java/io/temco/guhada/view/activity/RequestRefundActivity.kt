@@ -215,11 +215,10 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                         mViewModel.mRefundRequest.refundReason = cause.code
                         mBinding.includeRequestrefundCause.defaultMessage = cause.label
 
-                        if (purchaseOrder.returnShipExpense > 0 && purchaseOrder.returnShippingPrice > 0) {
+                        if (purchaseOrder.returnShipExpense > 0 || purchaseOrder.returnShippingPrice > 0)
                             mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
                                     if (cause.userFault) View.VISIBLE
                                     else View.GONE
-                        }
 
                         if (!cause.userFault)
                             mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
@@ -264,6 +263,21 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mBinding.includeRequestrefundCollection.textviewRequestorderstatusWarning.visibility = View.GONE
                 mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.returnPickingInvoiceNo)
             }
+        } else {
+            mViewModel.mRefundRequest.alreadySend = false
+            mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
+            mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayTrue.isChecked = false
+
+            // 택배사 및 송장번호 입력 란
+            mBinding.includeRequestrefundCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.GONE
+            mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.visibility = View.GONE
+            mBinding.includeRequestrefundCollection.textviewRequestorderstatusWarning.visibility = View.GONE
+            mBinding.includeRequestrefundCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
+
+            // 택배사 및 송장번호 초기화
+            mViewModel.mRefundRequest.shippingCompanyCode = ""
+            mViewModel.mRefundRequest.shippingCompanyName = ""
+            mViewModel.mRefundRequest.invoiceNo = 0L
         }
 
         // Listener
@@ -336,7 +350,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     }
 
     private fun initShippingPayment(purchaseOrder: PurchaseOrder) {
-        if (purchaseOrder.returnShipExpense > 0 && purchaseOrder.returnShippingPrice > 0) {
+        if (purchaseOrder.returnShipExpense > 0 || purchaseOrder.returnShippingPrice > 0) {
             mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.VISIBLE
             mBinding.includeRequestrefundShippingpayment.title = resources.getString(R.string.requestorderstatus_refund_shipping_title)
 
@@ -400,7 +414,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     }
 
     private fun setShippingPayment(purchaseOrder: PurchaseOrder) {
-        if (TextUtils.isEmpty(purchaseOrder.returnShippingPriceType) && purchaseOrder.returnShippingPriceType != ShippingPaymentType.NONE.type) {
+        if (!TextUtils.isEmpty(purchaseOrder.returnShippingPriceType) && purchaseOrder.returnShippingPriceType != ShippingPaymentType.NONE.type) {
             when (purchaseOrder.returnShippingPriceType) {
                 ShippingPaymentType.EXCLUDE_REFUND_PRICE.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = true
                 ShippingPaymentType.BOX.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true

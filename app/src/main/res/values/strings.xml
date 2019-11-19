@@ -906,7 +906,7 @@
     <string name="requestorderstatus_exchange_way_title">교환 발송 여부</string>
     <string name="requestorderstatus_exchange_way_description">교환상품을 이미 발송하셨습니까?</string>
     <string name="requestorderstatus_exchange_shipping_title">교환배송비 결제</string>
-    <string name="requestorderstatus_exchange_shipping_description1"><![CDATA[<font color="#5d2ed1">교환사유</font>로 인해 <font color="#5d2ed1">교환배송비 5,000</font>을]]></string>
+    <string name="requestorderstatus_exchange_shipping_description1"><![CDATA[<font color="#5d2ed1">교환사유</font>로 인해 <font color="#5d2ed1">교환배송비 %,2d원</font>을]]></string>
     <string name="requestorderstatus_exchange_shipping_description2"><![CDATA[<font color="#5d2ed1">구매자가 부담</font>합니다.]]></string>
     <string name="requestorderstatus_exchange_warning">송장번호 미입력시 교환 처리가 늦어질 수 있습니다.</string>
 
@@ -951,7 +951,7 @@
     <!-- SUCCESS EXCHANGE -->
     <string name="successexchange_warning">반드시, 교환 상품 발송 후 송장번호를 등록해주세요.</string>
     <string name="successexchange_title"><![CDATA[주문상품의 <font color="#5d2ed1">교환신청이<br>완료</font>되었습니다.]]></string>
-    <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 5,000원을\n박스에 동봉으로 구매자가 부담합니다.</string>
+    <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 %,2d원을\n%s으로 구매자가 부담합니다.</string>
     <string name="successexchange_notsend">미발송</string>
     <string name="successexchange_address_format">[%s] %s</string>
 

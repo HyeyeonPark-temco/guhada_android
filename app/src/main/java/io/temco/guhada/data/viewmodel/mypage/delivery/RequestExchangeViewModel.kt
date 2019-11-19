@@ -212,7 +212,6 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                     }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
                 })
             }
-
         }
     }
 
