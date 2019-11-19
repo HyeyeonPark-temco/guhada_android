@@ -19,6 +19,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.util.CommonViewUtil
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartValidStatus
@@ -390,9 +391,9 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         }
 
         private suspend fun getCartItemList(cart: Cart) {
-            val token = Preferences.getToken().accessToken
-            if (!token.isNullOrEmpty()) {
-                val model = OrderServer.getCartItemOptionListForSpinnerAsync(accessToken = "Bearer $token", cartItemId = cart.cartItemId).await()
+            val token = Preferences.getToken()
+            if (token != null && !token.accessToken.isNullOrEmpty()) {
+                val model = OrderServer.getCartItemOptionListForSpinnerAsync(accessToken = "Bearer ${token.accessToken}", cartItemId = cart.cartItemId).await()
                 cart.cartOptionInfoList = model.data
                 mBinding.framelayoutProductdetailOption.visibility = if (model.data.isEmpty()) View.GONE else View.VISIBLE
                 initMenuSpinner(cart)
