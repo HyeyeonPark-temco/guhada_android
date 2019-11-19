@@ -53,7 +53,9 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
                         getLuckyDrawWinner()
                     } else {
                         CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
-                                cancelButtonVisible = true,
+                                cancelTask = {
+                                    onBackPressed()
+                                },
                                 confirmTask = {
                                     CommonUtil.startLoginPage(this@LuckyEventDialogActivity)
                                     this@LuckyEventDialogActivity.onBackPressed()

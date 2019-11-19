@@ -69,7 +69,7 @@ class EventListViewModel(val context : Context) : BaseObservableViewModel() {
 }
 
 enum class EventProgressType(val code : String, var label:String) {
-    ALL("ALL", "전체"),
+    ALL("ALL", "전체 이벤트"),
     PROGRESS("PROGRESS", "진행중 이벤트"),
     END("END", "종료 이벤트")
 }

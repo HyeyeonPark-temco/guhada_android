@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonUtilKotlin
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
@@ -104,7 +105,7 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
         override fun bind(viewModel: EventListViewModel, position: Int, item: MainBaseModel) {
             if(item is EventHeader){
                 binding.textMaineventTotal.text = item.eventHeader.count.toString()
-                val selectedStr = viewModel.mSortFilterLabel[position]
+                val selectedStr = viewModel.mSortFilterLabel[viewModel.mFilterIndex]
                 binding.textMaineventFilter.text = selectedStr
                 binding.setClickListener {
                     val bottomSheet = ListBottomSheetFragment(binding.root.context).apply {
@@ -112,8 +113,6 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
                         this.mTitle = "정렬 선택"
                         this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
                             override fun onItemClick(position: Int) {
-                                val selectedStr = viewModel.mSortFilterLabel[position]
-                                binding.textMaineventFilter.text = selectedStr
                                 viewModel.mFilterIndex = position
                                 viewModel.getEventList()
                             }
