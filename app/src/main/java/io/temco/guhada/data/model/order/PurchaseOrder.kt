@@ -78,7 +78,8 @@ open class PurchaseOrder : OrderItemResponse(), Serializable {
     var returnPickingShipCompany = ""  // [19.08.26] 택배사 코드
     var returnPickingInvoiceNo = ""
     var returnShippingPriceType = ""
-    var returnShippingPrice = 0
+    var returnShipExpense = 0           // claim-form API
+    var returnShippingPrice = 0         // claim-update-form API
     var returnEtcPrice = 0
 
     // 교환 신청 정보
@@ -87,7 +88,8 @@ open class PurchaseOrder : OrderItemResponse(), Serializable {
     var exchangePickingShipCompany = ""
     var exchangePickingInvoiceNo = ""
     var exchangeShippingPriceType = ""
-    var exchangeShippingPrice = 0
+    var exchangeShipExpense = 0         // claim-form API
+    var exchangeShippingPrice = 0       // claim-update-form API
     var exchangeEtcPrice = 0
     var exchangeBuyerRecipientName = ""
     var exchangeBuyerRecipientMobile = ""

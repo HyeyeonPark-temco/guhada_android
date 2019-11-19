@@ -22,16 +22,18 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
     override fun getLayoutId(): Int = R.layout.fragment_shippingaddresslist
 
     override fun init() {
+        if (context != null) mLoadingIndicator = LoadingIndicatorUtil(context!!)
+
         if (::mViewModel.isInitialized) {
-            if (context != null) mLoadingIndicator = LoadingIndicatorUtil(context!!)
             getShippingAddressList()
             mViewModel.shippingAddresses.observe(this, Observer {
-                if (!::mListAdapter.isInitialized)
-                    mListAdapter = ShippingAddressListAdapter(mViewModel).apply { this.radioButtonVisible = this@ShippingAddressListFragment.radioButtonVisible }
+                mListAdapter = ShippingAddressListAdapter(mViewModel).apply { this.radioButtonVisible = this@ShippingAddressListFragment.radioButtonVisible }
 
                 if (mBinding.recyclerviewShippingaddress.adapter == null) {
-                    mListAdapter.setItems(it)
-                    mBinding.recyclerviewShippingaddress.adapter = mListAdapter
+                    if (::mListAdapter.isInitialized) {
+                        mListAdapter.setItems(it)
+                        mBinding.recyclerviewShippingaddress.adapter = mListAdapter
+                    }
                 } else {
                     (mBinding.recyclerviewShippingaddress.adapter as ShippingAddressListAdapter).initPoses()
                     (mBinding.recyclerviewShippingaddress.adapter as ShippingAddressListAdapter).setItems(it)
@@ -70,7 +72,7 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
         @JvmStatic
         @BindingAdapter("bindShippingAddress")
         fun RecyclerView.bindShippingAddresses(list: MutableList<UserShipping>?) {
-            if (list != null) {
+            if (list != null && this.adapter != null) {
                 (this.adapter as ShippingAddressListAdapter).setItems(list)
             }
         }

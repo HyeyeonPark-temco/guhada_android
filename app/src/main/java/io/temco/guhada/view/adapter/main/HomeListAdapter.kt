@@ -164,7 +164,11 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                             val imageView = ImageView(paramViewGroup.context)
                             imageView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                             imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-                            imageView.setBackgroundResource(data.eventList[paramInt].imgRes)
+                            try {
+                                imageView.setBackgroundResource(data.eventList[paramInt].imgRes)
+                            } catch (e: OutOfMemoryError) {
+                                imageView.setBackgroundResource(R.drawable.background_color_pinkishgrey)
+                            }
                             //ImageUtil.loadImage(Glide.with(containerView.context as Activity),imageView, data.eventList[paramInt].imgPath)
                             return imageView
                         }

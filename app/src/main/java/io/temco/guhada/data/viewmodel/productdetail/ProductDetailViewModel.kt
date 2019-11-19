@@ -82,7 +82,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         @Bindable
         get() = field
 
-    var advantageInfoExpanded = ObservableBoolean(false)
+    var advantageInfoExpanded = ObservableBoolean(true)
         @Bindable
         get() = field
 

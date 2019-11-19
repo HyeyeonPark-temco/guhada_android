@@ -38,12 +38,12 @@ class RefundRequest : Serializable, Observable() {
     @SerializedName("returnReason")
     var refundReason = ""
 
-    fun getShippingPaymentDescription(): String {
+    fun getShippingPaymentDescription(returnShippingPrice: Int): String {
         val context = BaseApplication.getInstance()
         return when (claimShippingPriceType) {
             ShippingPaymentType.NONE.type -> "판매자 부담"
-            ShippingPaymentType.BOX.type -> String.format(context.getString(R.string.successrefund_shippingpayment), context.getString(R.string.requestorderstatus_common_shipping_radio1))
-            ShippingPaymentType.DIRECT_SEND.type -> String.format(context.getString(R.string.successrefund_shippingpayment), context.getString(R.string.requestorderstatus_common_shipping_radio2))
+            ShippingPaymentType.BOX.type -> String.format(context.getString(R.string.successrefund_shippingpayment), returnShippingPrice, context.getString(R.string.requestorderstatus_common_shipping_radio1))
+            ShippingPaymentType.DIRECT_SEND.type -> String.format(context.getString(R.string.successrefund_shippingpayment), returnShippingPrice, context.getString(R.string.requestorderstatus_common_shipping_radio2))
             else -> "판매자 부담"
         }
     }

@@ -204,7 +204,7 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 
     private fun checkDuplicateEmail() {
         if (mEmail.isNotEmpty()) {
-            if(CommonUtil.validateEmail(mEmail)){
+            if (CommonUtil.validateEmail(mEmail)) {
                 UserServer.checkEmail(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
                             successTask = {
@@ -239,7 +239,7 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 //                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.mypage_userinfo_hint_errornickname))
                             })
                 }, email = mEmail)
-            }else {
+            } else {
                 ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.findpwd_message_invalidemailformat))
             }
         }
@@ -291,15 +291,18 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     fun onClickVerifyMobile() = mVerifyMobileTask()
 
     fun signUpEventUser(agreeCollectPersonalInfoTos: Boolean, agreePurchaseTos: Boolean, agreeSaleTos: Boolean, agreeEmailReception: Boolean, agreeSmsReception: Boolean, successTask: () -> Unit) {
-        val eventUser = EventUser().apply {
-            this.identityVerify = IdentityVerify().apply {
-                this.birth = mBirth
-                this.diCode = mDiCode
-                this.gender = mGender
-                this.identityVerifyMethod = Verification.IdentityVerifyMethod.MOBILE.code
-                this.mobile = mMobile.get() ?: ""
-                this.name = mName.get() ?: ""
-            }
+        if (mDiCode.isNullOrEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+        } else {
+            val eventUser = EventUser().apply {
+                this.identityVerify = IdentityVerify().apply {
+                    this.birth = mBirth
+                    this.diCode = mDiCode
+                    this.gender = mGender
+                    this.identityVerifyMethod = Verification.IdentityVerifyMethod.MOBILE.code
+                    this.mobile = mMobile.get() ?: ""
+                    this.name = mName.get() ?: ""
+                }
 
 //            this.verification = Verification().apply {
 //                this.verificationNumber = mEmailVerifyNumber.toInt()
@@ -307,69 +310,70 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 //                this.verificationTargetType = VerificationType.EMAIL.type
 //            }
 
-            if (mSnsSignUp != null) {
-                this.snsSignUp = mSnsSignUp as EventUser.SnsSignUp
-                this.snsSignUp.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos
-                this.snsSignUp.agreePurchaseTos = agreePurchaseTos
-                this.snsSignUp.agreeSaleTos = agreeSaleTos
-                this.snsSignUp.agreeEmailReception = agreeEmailReception
-                this.snsSignUp.agreeSmsReception = agreeSmsReception
-                this.snsSignUp.email = mEmail
-                this.snsSignUp.password = mPassword
-            } else {
-                this.userSignUp = EventUser.UserSignUp().apply {
-                    this.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos
-                    this.agreePurchaseTos = agreePurchaseTos
-                    this.agreeSaleTos = agreeSaleTos
-                    this.agreeEmailReception = agreeEmailReception
-                    this.agreeSmsReception = agreeSmsReception
-                    this.email = mEmail
-                    this.password = mPassword
+                if (mSnsSignUp != null) {
+                    this.snsSignUp = mSnsSignUp as EventUser.SnsSignUp
+                    this.snsSignUp.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos
+                    this.snsSignUp.agreePurchaseTos = agreePurchaseTos
+                    this.snsSignUp.agreeSaleTos = agreeSaleTos
+                    this.snsSignUp.agreeEmailReception = agreeEmailReception
+                    this.snsSignUp.agreeSmsReception = agreeSmsReception
+                    this.snsSignUp.email = mEmail
+                    this.snsSignUp.password = mPassword
+                } else {
+                    this.userSignUp = EventUser.UserSignUp().apply {
+                        this.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos
+                        this.agreePurchaseTos = agreePurchaseTos
+                        this.agreeSaleTos = agreeSaleTos
+                        this.agreeEmailReception = agreeEmailReception
+                        this.agreeSmsReception = agreeSmsReception
+                        this.email = mEmail
+                        this.password = mPassword
+                    }
                 }
             }
-        }
-        if (mSnsSignUp != null) {
-            UserServer.signUpEventSnsUser(OnServerListener { success, o ->
-                if (success && o is BaseModel<*>)
-                    if (o.resultCode == ResultCode.SUCCESS.flag) {
-                        if (CustomLog.flag) CustomLog.L("럭키드로우 SNS 회원가입", mEmail)
+            if (mSnsSignUp != null) {
+                UserServer.signUpEventSnsUser(OnServerListener { success, o ->
+                    if (success && o is BaseModel<*>)
+                        if (o.resultCode == ResultCode.SUCCESS.flag) {
+                            if (CustomLog.flag) CustomLog.L("럭키드로우 SNS 회원가입", mEmail)
 
-                        val snsUser = SnsUser().apply {
-                            this.userProfile = mSnsSignUp?.profileJson
-                            this.snsId = mSnsSignUp?.snsId
-                            this.snsType = mSnsSignUp?.snsType
-                            this.email = mEmail
-                        }
+                            val snsUser = SnsUser().apply {
+                                this.userProfile = mSnsSignUp?.profileJson
+                                this.snsId = mSnsSignUp?.snsId
+                                this.snsType = mSnsSignUp?.snsType
+                                this.email = mEmail
+                            }
 
-                        when (mSnsSignUp?.snsType) {
-                            SnsLoginType.KAKAO.type -> UserServer.kakaoLogin(snsUser, OnServerListener { success, o -> onSuccessLogin(success, o, successTask) })
-                            SnsLoginType.GOOGLE.type -> UserServer.googleLogin(OnServerListener { success, o -> onSuccessLogin(success, o, successTask) }, snsUser)
-                            SnsLoginType.FACEBOOK.type -> UserServer.facebookLogin(OnServerListener { success, o -> onSuccessLogin(success, o, successTask) }, snsUser)
-                        }
-                    } else
-                        ToastUtil.showMessage(o.message)
-                else
-                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-            }, eventUser = eventUser)
-        } else {
-            UserServer.signUpEventUser(OnServerListener { success, o ->
-                if (success && o is BaseModel<*>)
-                    if (o.resultCode == ResultCode.SUCCESS.flag) {
-                        if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
+                            when (mSnsSignUp?.snsType) {
+                                SnsLoginType.KAKAO.type -> UserServer.kakaoLogin(snsUser, OnServerListener { success, o -> onSuccessLogin(success, o, successTask) })
+                                SnsLoginType.GOOGLE.type -> UserServer.googleLogin(OnServerListener { success, o -> onSuccessLogin(success, o, successTask) }, snsUser)
+                                SnsLoginType.FACEBOOK.type -> UserServer.facebookLogin(OnServerListener { success, o -> onSuccessLogin(success, o, successTask) }, snsUser)
+                            }
+                        } else
+                            ToastUtil.showMessage(o.message)
+                    else
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                }, eventUser = eventUser)
+            } else {
+                UserServer.signUpEventUser(OnServerListener { success, o ->
+                    if (success && o is BaseModel<*>)
+                        if (o.resultCode == ResultCode.SUCCESS.flag) {
+                            if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
 
-                        val user = User().apply {
-                            this.email = mEmail
-                            this.password = mPassword
-                        }
+                            val user = User().apply {
+                                this.email = mEmail
+                                this.password = mPassword
+                            }
 
-                        UserServer.signIn(OnServerListener { success, o ->
-                            onSuccessLogin(success, o, successTask)
-                        }, user = user)
-                    } else
-                        ToastUtil.showMessage(o.message)
-                else
-                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-            }, eventUser = eventUser)
+                            UserServer.signIn(OnServerListener { success, o ->
+                                onSuccessLogin(success, o, successTask)
+                            }, user = user)
+                        } else
+                            ToastUtil.showMessage(o.message)
+                    else
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                }, eventUser = eventUser)
+            }
         }
     }
 

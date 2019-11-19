@@ -69,6 +69,6 @@ public class BindAdapter {
 
     @BindingAdapter("underLine")
     public static void setUnderLine(TextView textView, boolean value) {
-        if (value) textView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        if (value) textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 }

@@ -135,7 +135,7 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_way_message1))
         } else if (mRefundRequest.alreadySend == true && mRefundRequest.shippingCompanyCode.isNullOrEmpty()) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_way_message2))
-        } else if (mSelectedShippingPayment == null || (mSelectedShippingPayment?.isFeeCharged == true && mRefundRequest.claimShippingPriceType == ShippingPaymentType.NONE.type)) {
+        } else if (mPurchaseOrder.value?.returnShipExpense ?: 0 > 0 && (mSelectedShippingPayment == null || (mSelectedShippingPayment?.userFault == true && mRefundRequest.claimShippingPriceType == ShippingPaymentType.NONE.type))) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_shipping))
         } else {
             if (!mIsRefundCallFinished) {

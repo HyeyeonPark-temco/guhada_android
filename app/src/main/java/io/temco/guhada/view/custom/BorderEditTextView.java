@@ -141,7 +141,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
     @BindingAdapter("txt")
     public static void setEditTextContent(BorderEditTextView view, @Nullable String text) {
         String old = view.getText();
-        if (!old.equals(text) && (text == null || text.isEmpty())) {
+        if (!old.equals(text) && (text != null || !text.isEmpty())) {
             view.binding.editText.setText(text);
             view.binding.textviewError.setVisibility(View.GONE);
             view.binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(view.binding.getRoot().getContext().getResources().getColor(R.color.white_four));

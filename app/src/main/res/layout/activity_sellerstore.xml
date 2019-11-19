@@ -310,7 +310,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
-                            android:text="@{@string/sellerstore_satisfaction_good(sellerStore.normalSatisfactionCount)}"
+                            android:text="@{@string/sellerstore_satisfaction_normal(sellerStore.normalSatisfactionCount)}"
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
@@ -334,7 +334,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
-                            android:text="@{@string/sellerstore_satisfaction_good(sellerStore.badSatisfactionCount)}"
+                            android:text="@{@string/sellerstore_satisfaction_bad(sellerStore.badSatisfactionCount)}"
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
