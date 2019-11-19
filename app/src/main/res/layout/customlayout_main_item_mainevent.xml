@@ -55,5 +55,10 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/viewPager_outer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </io.temco.guhada.view.custom.layout.HeightRelativeLayout>
 </layout>

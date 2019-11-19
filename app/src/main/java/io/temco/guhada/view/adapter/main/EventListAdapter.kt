@@ -22,7 +22,9 @@ import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.viewmodel.main.EventListViewModel
 import io.temco.guhada.databinding.*
+import io.temco.guhada.view.activity.base.BaseActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
+import io.temco.guhada.view.fragment.ListBottomSheetFragment
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
 
@@ -102,6 +104,26 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
         override fun bind(viewModel: EventListViewModel, position: Int, item: MainBaseModel) {
             if(item is EventHeader){
                 binding.textMaineventTotal.text = item.eventHeader.count.toString()
+                val selectedStr = viewModel.mSortFilterLabel[position]
+                binding.textMaineventFilter.text = selectedStr
+                binding.setClickListener {
+                    val bottomSheet = ListBottomSheetFragment(binding.root.context).apply {
+                        this.mList = viewModel.mSortFilterLabel
+                        this.mTitle = "정렬 선택"
+                        this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                            override fun onItemClick(position: Int) {
+                                val selectedStr = viewModel.mSortFilterLabel[position]
+                                binding.textMaineventFilter.text = selectedStr
+                                viewModel.mFilterIndex = position
+                                viewModel.getEventList()
+                            }
+                            override fun onClickClose() {
+                                this@apply.dismiss()
+                            }
+                        }
+                    }
+                    if ((viewModel.context as BaseActivity).supportFragmentManager != null) bottomSheet.show((viewModel.context as BaseActivity).supportFragmentManager!!, "")
+                }
             }
         }
     }
@@ -121,8 +143,15 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
                 binding.layoutEventContent.setOnClickListener(null)
                 if(item.eventData.detailPage){
                     binding.layoutEventContent.setOnClickListener {
-                        if(!TextUtils.isEmpty(item.eventData.detailPageLink))
-                            CommonUtilKotlin.startActivityWebview(viewModel.context as Activity, item.eventData.eventTitle,item.eventData.detailPageLink?:"")
+                        if(!TextUtils.isEmpty(item.eventData.mobileAppLink)){
+                            if(!TextUtils.isEmpty(item.eventData.imgDetailUrlM)){
+                                CommonUtilKotlin.startActivityWebview(viewModel.context as Activity, "이벤트",
+                                        item.eventData.imgDetailUrlM?:"",item.eventData.mobileAppLink)
+                            }else{
+                                CommonUtilKotlin.moveEventPage(viewModel.context as Activity,item.eventData.mobileAppLink,"",true,false)
+                            }
+                        }
+
                     }
                 }
             }

@@ -71,8 +71,8 @@ class HomeListRepository(val context : Context){
          val ddd = ArrayList<MainBaseModel>()
          val tmpList = java.util.ArrayList<EventData>()
          // 메인 홈 이벤트 화면의 더미 데이터 --------------------------------
-         tmpList.add(EventData(0, "", R.drawable.lucky_main_m_360, "main_banner_mobile", "", "", 0, ""))
-         tmpList.add(EventData(1, "", R.drawable.timedeal_main_m_360, "main_banner_mobile", "", "", 1, ""))
+         tmpList.add(EventData(0, "", R.drawable.lucky_main_m_360, "main_banner_mobile", "", "", 5, "lucky"))
+         tmpList.add(EventData(1, "", R.drawable.timedeal_main_m_360, "main_banner_mobile", "", "", 4, "timedeal"))
          tmpList.add(EventData(2, "", R.drawable.join_main_m_360, "main_banner_mobile", "", "", 2, ""))
          tmpList.add(EventData(3, "", R.drawable.main_m_2per_360, "main_banner_mobile", "", "", 3, ""))
          val event = MainEvent(0, HomeType.MainEvent, tmpList)

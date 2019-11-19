@@ -31,5 +31,13 @@ public class Info {
     public static final String SHARE_COMMUNITY_URL = "https://www.guhada.com/community/article/";
     public static final String SHARE_PRODUCT_URL = "https://m.guhada.com/productdetail?deals=";
 
+
+    public static class MainHomeIndex {
+        public static final int TIME_DEAL = 4;
+        public static final int EVENT_LIST = 6;
+        public static final int LUCKY_DRAW = 5;
+
+    }
+
     ////////////////////////////////////////////////
 }

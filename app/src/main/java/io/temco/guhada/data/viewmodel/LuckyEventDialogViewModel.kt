@@ -1,6 +1,7 @@
 package io.temco.guhada.data.viewmodel
 
 import android.content.Context
+import android.text.TextUtils
 import com.google.gson.JsonObject
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -96,14 +97,15 @@ class LuckyEventDialogViewModel(val context: Context) : BaseObservableViewModel(
                             if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataNotFoundTask ")
                             listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_DNF]")
                         },
-                        failedTask = {if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw failedTask ")
+                        failedTask = { o-> if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw failedTask ")
                             listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_FT]") },
                         userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw userLikeNotFoundTask ")
                             listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_ULF]") },
-                        serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw serverRuntimeErrorTask ")
+                        serverRuntimeErrorTask = {  o-> if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw serverRuntimeErrorTask ")
                             listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_SRE]") },
-                        dataIsNull = { if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataIsNull ")
-                            listener.callBackListener(false, "데이터 전송중 오류가 발생되었습니다 [LED_DN]")}
+                        dataIsNull = { o-> if (CustomLog.flag) CustomLog.L("LuckyEventDialogViewModel", "getRequestLuckyDraw dataIsNull ")
+                            listener.callBackListener(false,
+                                            if(TextUtils.isEmpty((o as BaseModel<*>).message)) "데이터 전송중 오류가 발생되었습니다 [LED_DN]" else (o as BaseModel<*>).message)}
                 )
             },accessToken = accessToken, dealId = dealId)
         })

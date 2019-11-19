@@ -1,6 +1,7 @@
 package io.temco.guhada.data.viewmodel.main
 
 import android.content.Context
+import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.Observable
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnCallBackListener
@@ -31,6 +32,7 @@ class LuckyDrawViewModel(val context: Context) : BaseObservableViewModel() {
     val listData: ArrayList<MainBaseModel> = arrayListOf()
 
     lateinit var adapter: LuckyDrawAdapter
+    lateinit var recyclerView: RecyclerView
     fun getListAdapter() = adapter
 
     fun getLuckyDraws(listener: OnCallBackListener) {

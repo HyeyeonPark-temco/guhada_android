@@ -9,11 +9,12 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.event.EventListData
 import io.temco.guhada.data.server.SettleServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import io.temco.guhada.data.viewmodel.main.EventProgressType
 
 class SideMenuViewModel(val context : Context) : BaseObservableViewModel() {
 
     fun getEventList(listener : OnCallBackListener){
-        SettleServer.getEventList("",OnServerListener { success, o ->
+        SettleServer.getEventList(EventProgressType.ALL, OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         if (CustomLog.flag) CustomLog.L("SideMenuRepository", "getEventList ", "init ----- o",o)

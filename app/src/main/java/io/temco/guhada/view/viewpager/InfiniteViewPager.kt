@@ -4,6 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.viewpager.widget.PagerAdapter
 import io.temco.guhada.common.util.CustomLog
+import android.widget.AdapterView.OnItemClickListener
+import android.view.MotionEvent
+import android.view.GestureDetector
+import android.view.View
+
 
 /**
  * @author park jungho
@@ -14,6 +19,7 @@ import io.temco.guhada.common.util.CustomLog
 class InfiniteViewPager : MultiTouchViewPager {
     private var realCount: Int = 0
     var isInfinity: Boolean = false
+    private var mOnItemClickListener: OnItemClickListener? = null
 
     val offsetAmount: Int
         get() {
@@ -45,10 +51,12 @@ class InfiniteViewPager : MultiTouchViewPager {
 
     constructor(paramContext: Context) : super(paramContext) {
         isInfinity = true
+        setup()
     }
 
     constructor(paramContext: Context, paramAttributeSet: AttributeSet) : super(paramContext, paramAttributeSet) {
         isInfinity = true
+        setup()
     }
 
     override fun setAdapter(adapter: PagerAdapter?) {
@@ -85,6 +93,34 @@ class InfiniteViewPager : MultiTouchViewPager {
 
     interface OnTabClickListener {
         fun onClick()
+    }
+
+
+    private fun setup() {
+        val tapGestureDetector = GestureDetector(context, TapGestureListener())
+
+        setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                tapGestureDetector.onTouchEvent(event)
+                return false
+            }
+        })
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        mOnItemClickListener = onItemClickListener
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private inner class TapGestureListener : GestureDetector.SimpleOnGestureListener() {
+
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+            mOnItemClickListener?.onItemClick(realCurrentItem)
+            return true
+        }
     }
 
 

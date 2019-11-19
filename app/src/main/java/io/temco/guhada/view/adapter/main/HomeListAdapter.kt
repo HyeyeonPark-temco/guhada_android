@@ -22,6 +22,8 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusData
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.*
@@ -35,6 +37,7 @@ import io.temco.guhada.view.activity.SearchWordActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
+import io.temco.guhada.view.viewpager.InfiniteViewPager
 import java.lang.ref.WeakReference
 import java.util.*
 import kotlin.collections.ArrayList
@@ -193,6 +196,15 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         eventListSize = binding.viewPager.offsetAmount
                         currentAdIndex = binding.viewPager.currentItem
                     }
+                    binding.viewPager.setOnItemClickListener(object : InfiniteViewPager.OnItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            if(CustomLog.flag)CustomLog.L("MainEventViewHolder","itemView setOnClickListener",binding.viewPager.realCurrentItem,"position",position)
+                            if(!TextUtils.isEmpty(data.eventList[position].eventData)){
+                                var index = data.eventList[position].eventType
+                                EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, index))
+                            }
+                        }
+                    })
                     binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
                         override fun onPageScrollStateChanged(state: Int) {
                             isViewPagerIdle = state == ViewPager.SCROLL_STATE_IDLE
