@@ -22,6 +22,10 @@ object TrackingEvent {
 //        Login_MainP_CheckOrderButton("Login_MainP_CheckOrderButton")          // [비회원 주문조회] 없음
     }
 
+    enum class SignUp(val eventName: String){
+        SUCCESS_SIGNUP("SignUp_Success")
+    }
+
     enum class Product(val eventName: String) {
         View_Product("View_Product"),
         Buy_Product("Buy_Product")
@@ -30,7 +34,6 @@ object TrackingEvent {
     enum class Cart(val eventName: String) {
         Add_To_Cart("Add_To_Cart")
     }
-
 
     enum class MainEvent(val eventName: String) {
         View_Time_Deal_Product("View_Time_Deal_Product"),

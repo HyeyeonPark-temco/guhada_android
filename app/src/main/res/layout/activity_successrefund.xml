@@ -148,7 +148,6 @@
                     android:id="@+id/view_successrefund_collectline"
                     android:layout_height="1dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp"
                     android:background="@color/line_6" />
 
                 <!-- 반품 배송비 -->
@@ -156,6 +155,7 @@
                     android:id="@+id/textview_successrefund_shippingtitle"
                     style="@style/SuccessRequestExchangeSubTitleTextStyle"
                     android:layout_width="wrap_content"
+                    android:layout_marginTop="30dp"
                     android:layout_height="wrap_content"
                     android:text="@string/requestorderstatus_refund_shipping_title" />
 

@@ -98,6 +98,7 @@ open class PurchaseOrder : OrderItemResponse(), Serializable {
     var exchangeBuyerRoadAddress = ""
     var exchangeBuyerDetailAddress = ""
     var exchangeBuyerShippingMessage = ""
+    var exchangeBuyerAddressName = ""
 
     var shippingMessageList = mutableListOf<ShippingMessage>()
 
