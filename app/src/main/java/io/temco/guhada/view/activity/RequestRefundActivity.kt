@@ -250,36 +250,6 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundCollection.title = resources.getString(R.string.requestorderstatus_refund_way_title)
         mBinding.includeRequestrefundCollection.description = resources.getString(R.string.requestorderstatus_refund_way_description)
 
-        // 신청서 수정 택배사
-        if (!purchaseOrder.returnPickingShipCompany.isNullOrEmpty()) {
-            mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayTrue.isChecked = true
-            mBinding.includeRequestrefundCollection.textviewRequestorderstatusShippingcompany.text = purchaseOrder.returnPickingShipCompany
-
-            mBinding.includeRequestrefundCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.VISIBLE
-            mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.visibility = View.VISIBLE
-
-            if (!purchaseOrder.returnPickingInvoiceNo.isNullOrEmpty()) {
-                mBinding.includeRequestrefundCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
-                mBinding.includeRequestrefundCollection.textviewRequestorderstatusWarning.visibility = View.GONE
-                mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.returnPickingInvoiceNo)
-            }
-        } else {
-            mViewModel.mRefundRequest.alreadySend = false
-            mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
-            mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayTrue.isChecked = false
-
-            // 택배사 및 송장번호 입력 란
-            mBinding.includeRequestrefundCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.GONE
-            mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.visibility = View.GONE
-            mBinding.includeRequestrefundCollection.textviewRequestorderstatusWarning.visibility = View.GONE
-            mBinding.includeRequestrefundCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
-
-            // 택배사 및 송장번호 초기화
-            mViewModel.mRefundRequest.shippingCompanyCode = ""
-            mViewModel.mRefundRequest.shippingCompanyName = ""
-            mViewModel.mRefundRequest.invoiceNo = 0L
-        }
-
         // Listener
         mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayTrue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -309,6 +279,23 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mViewModel.mRefundRequest.shippingCompanyName = ""
                 mViewModel.mRefundRequest.invoiceNo = 0L
             }
+        }
+
+        // 신청서 수정 택배사
+        if (!purchaseOrder.returnPickingShipCompany.isNullOrEmpty()) {
+            mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayTrue.isChecked = true
+            mBinding.includeRequestrefundCollection.textviewRequestorderstatusShippingcompany.text = purchaseOrder.returnPickingShipCompany
+
+            mBinding.includeRequestrefundCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.VISIBLE
+            mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.visibility = View.VISIBLE
+
+            if (!purchaseOrder.returnPickingInvoiceNo.isNullOrEmpty()) {
+                mBinding.includeRequestrefundCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
+                mBinding.includeRequestrefundCollection.textviewRequestorderstatusWarning.visibility = View.GONE
+                mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.returnPickingInvoiceNo)
+            }
+        } else {
+            mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
         }
 
         mViewModel.mShippingCompanyList.observe(this, Observer {
