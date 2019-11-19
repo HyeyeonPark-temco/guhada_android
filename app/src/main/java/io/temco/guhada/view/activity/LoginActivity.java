@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -36,6 +37,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.common.util.ToastUtil;
+import io.temco.guhada.common.util.TrackingUtil;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.model.event.EventUser;
@@ -380,6 +382,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                         // SNS 회원가입
                         mViewModel.joinSnsUser((success1, o1) -> {
                             if (success1) {
+                                TrackingUtil.sendKochavaEvent("SignUp_Success", mViewModel.getTempSnsUser().getSnsType() != null ? mViewModel.getTempSnsUser().getSnsType() : "SNS");
+
                                 BaseModel<Token> m = (BaseModel<Token>) o1;
                                 if (m.resultCode == Flag.ResultCode.SUCCESS) {
                                     Token t = new Token();
