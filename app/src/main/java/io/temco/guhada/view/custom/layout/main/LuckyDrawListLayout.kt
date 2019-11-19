@@ -70,7 +70,7 @@ class LuckyDrawListLayout constructor(
         mBinding.viewModel = mViewModel
 
         TrackingUtil.sendKochavaEvent(TrackingEvent.MainEvent.View_Lucky_Event_Product.eventName)
-
+        mViewModel.recyclerView = mBinding.recyclerView
         mBinding.recyclerView.setHasFixedSize(true)
         mBinding.recyclerView.layoutManager = WrapGridLayoutManager(context as Activity, 2, LinearLayoutManager.VERTICAL, false)
 

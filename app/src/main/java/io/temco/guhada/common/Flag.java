@@ -1,6 +1,7 @@
 package io.temco.guhada.common;
 
 public class Flag {
+
     public static class RequestCode {
         public static final int BASE = 100;
         public static final int GO_TO_MAIN = -9999;

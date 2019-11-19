@@ -13,6 +13,7 @@ import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.event.EventListData
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.SettleService
+import io.temco.guhada.data.viewmodel.main.EventProgressType
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,8 +78,8 @@ class SettleServer {
          * 중복된 이메일인지 검증
          */
         @JvmStatic
-        fun getEventList(eventProgress : String,listener: OnServerListener) {
-            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getEventList(eventProgress).enqueue(object : Callback<BaseModel<EventListData>> {
+        fun getEventList(eventProgress : EventProgressType, listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getEventList(eventProgress.code).enqueue(object : Callback<BaseModel<EventListData>> {
                 override fun onResponse(call: Call<BaseModel<EventListData>>, response: Response<BaseModel<EventListData>>) {
                     resultListener(listener, call, response)
                 }

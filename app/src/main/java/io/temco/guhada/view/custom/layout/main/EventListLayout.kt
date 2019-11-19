@@ -34,6 +34,7 @@ import io.temco.guhada.data.viewmodel.main.EventListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainEventlistBinding
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.activity.MainActivity
+import io.temco.guhada.view.adapter.main.EventListAdapter
 import io.temco.guhada.view.adapter.main.SubTitleListAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.fragment.main.HomeFragment
@@ -62,9 +63,9 @@ class EventListLayout constructor(
 
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).orientation = RecyclerView.VERTICAL
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
-        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return mViewModel.listData.value!![position].gridSpanCount
+                return mViewModel.listData[position].gridSpanCount
             }
         }
 
@@ -85,13 +86,17 @@ class EventListLayout constructor(
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) { }
         })
 
-        mViewModel.listData.observe(this,
+
+        mViewModel.adapter = EventListAdapter(mViewModel, mViewModel.listData)
+        mBinding.recyclerView.adapter = mViewModel.adapter
+        mViewModel.getEventList()
+        /*mViewModel.listData.observe(this,
                 androidx.lifecycle.Observer<ArrayList<MainBaseModel>> {
                     if (CustomLog.flag) CustomLog.L("EventListLayout LIFECYCLE", "onViewCreated listData.size 1----------------",it.size)
                     mViewModel.getListAdapter().notifyDataSetChanged()
                     if (CustomLog.flag) CustomLog.L("EventListLayout LIFECYCLE", "onViewCreated listData.size 2----------------",mViewModel.getListAdapter().items.size)
                 }
-        )
+        )*/
 
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
@@ -148,7 +153,7 @@ class EventListLayout constructor(
         if (isShow) {
             if (v.visibility != View.VISIBLE) {
                 v.setOnClickListener{
-                    try{  mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
+                    try{ mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
                         if(CustomLog.flag) CustomLog.E(e)
                     }
                     scrollToTop(false)

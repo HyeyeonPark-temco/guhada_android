@@ -7,6 +7,7 @@ import com.google.gson.JsonObject
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.*
@@ -144,6 +145,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
      * 당첨자 확인 팝업
      */
     private fun setRequestOkPopup() {
+        TrackingUtil.sendKochavaEvent(TrackingEvent.MainEvent.View_Lucky_Event_Request_Product.eventName)
         mBinding.layoutLuckydrawContent.visibility = View.VISIBLE
         mBinding.layoutLuckydrawRequest.visibility = View.VISIBLE
         mBinding.title = eventData.title

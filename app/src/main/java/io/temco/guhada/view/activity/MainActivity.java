@@ -128,8 +128,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                             mHandler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (CustomLog.getFlag())
-                                        CustomLog.L("GO_TO_MAIN_HOME selectTab", "index", 0, "currentViewPagerIndex", currentViewPagerIndex);
+                                    if (CustomLog.getFlag())CustomLog.L("GO_TO_MAIN_HOME selectTab", "index", 0, "currentViewPagerIndex", currentViewPagerIndex);
                                     EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE, moveMainIndex));
                                     moveMainIndex = 0;
                                 }
