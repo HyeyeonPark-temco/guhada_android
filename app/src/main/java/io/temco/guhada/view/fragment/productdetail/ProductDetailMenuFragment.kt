@@ -65,17 +65,8 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
      */
     private fun initMenuSpinner() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
-        if (list.isNotEmpty()) {
-            var placeHolder = ""
-            if (!list[0].label1.isNullOrEmpty())
-                placeHolder += list[0].label1
-            if (!list[0].label2.isNullOrEmpty())
-                placeHolder += ", ${list[0].label2}"
-            if (!list[0].label3.isNullOrEmpty())
-                placeHolder += ", ${list[0].label3}"
-
-            mBinding.textviewProductdetailOption.text = placeHolder
-        }
+        if (list.isNotEmpty())
+            mBinding.textviewProductdetailOption.text = list[0].getOptionNameText()
 
         mMenuSpinnerAdapter = ProductDetailOptionSpinnerAdapter(
                 context = mBinding.root.context,
@@ -119,15 +110,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     private fun initMenuList() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
         if (list.isNotEmpty()) {
-            var placeHolder = ""
-            if (!list[0].label1.isNullOrEmpty())
-                placeHolder += list[0].label1
-            if (!list[0].label2.isNullOrEmpty())
-                placeHolder += ", ${list[0].label2}"
-            if (!list[0].label3.isNullOrEmpty())
-                placeHolder += ", ${list[0].label3}"
-
-            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
+            val placeHolder = list[0].getOptionNameText()
             mBinding.textviewProductdetailOption.text = placeHolder
         }
 
@@ -147,7 +130,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     private fun collapseOptionList(isExpanded: Boolean) {
         if (isExpanded) {
             mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(false)
-            mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
+            mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour)
         } else {
             mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour_emptybottom)
             mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(true)

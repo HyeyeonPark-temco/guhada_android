@@ -31,11 +31,25 @@ class OptionInfo : Serializable {
             optionText = "$attribute1"
 
         if (!attribute2.isNullOrEmpty())
-            optionText = "$optionText, $attribute2"
+            optionText += ", $attribute2"
 
         if (!attribute3.isNullOrEmpty())
-            optionText = "$optionText, $attribute3"
+            optionText += ", $attribute3"
 
         return optionText
+    }
+
+    fun getOptionNameText(): String {
+        var placeHolder = ""
+        if (!label1.isNullOrEmpty())
+            placeHolder = "$label1"
+
+        if (!label2.isNullOrEmpty())
+            placeHolder += ", $label2"
+
+        if (!label3.isNullOrEmpty())
+            placeHolder += ", $label3"
+
+        return placeHolder
     }
 }
