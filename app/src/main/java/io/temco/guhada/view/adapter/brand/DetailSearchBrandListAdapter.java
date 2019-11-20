@@ -119,7 +119,7 @@ public class DetailSearchBrandListAdapter extends RecyclerView.Adapter<BaseBrand
             List<Brand> f = new ArrayList<>();
             for (Brand b : getOriginalItems()) {
                 String t = mIsAlphabet ? b.nameEn : b.nameKo;
-                if (TextUtils.isEmpty(t) && t.toLowerCase().contains(text))
+                if (t != null && t.toLowerCase().contains(text))
                     f.add(b);
             }
             if (f.size() > 0) {

@@ -524,7 +524,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 mBrandListDialog = new BrandListDialog();
                 mBrandListDialog.setOnBrandListener(brand -> CommonUtil.startBrandScreen(this, brand, false));
             }
-            mBrandListDialog.show(getSupportFragmentManager(), getBaseTag());
+
+            if(!mBrandListDialog.isAdded())
+                mBrandListDialog.show(getSupportFragmentManager(), getBaseTag());
         }
     }
 
