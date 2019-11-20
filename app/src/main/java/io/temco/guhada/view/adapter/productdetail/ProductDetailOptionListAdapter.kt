@@ -14,7 +14,7 @@ import io.temco.guhada.databinding.ItemProductdetailOptionspinnerBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
- * 옵션 하단 팝업 리스트 adapter
+ * 옵션 하단 팝업 recyclerView adapter
  * @author Hyeyeon Park
  * @since 2019.09.06
  */
@@ -37,7 +37,7 @@ class ProductDetailOptionListAdapter : RecyclerView.Adapter<ProductDetailOptionL
             setPadding(position = adapterPosition)
             setOptionText(option = option)
 
-            mBinding.textviewProductdetailOptionspinner.text = getOptionText(option = option)
+            mBinding.textviewProductdetailOptionspinner.text = option.getOptionText()
             mBinding.viewProductdetailOptionspinnerLine1.visibility = if (adapterPosition == 0) View.VISIBLE else View.GONE
             mBinding.linearlayoutProductdetailOptionspinner.setOnClickListener { mItemClickTask(option) }
 
@@ -51,7 +51,7 @@ class ProductDetailOptionListAdapter : RecyclerView.Adapter<ProductDetailOptionL
         }
 
         private fun setOptionText(option: OptionInfo) {
-            mBinding.textviewProductdetailOptionspinner.text = getOptionText(option = option)
+            mBinding.textviewProductdetailOptionspinner.text = option.getOptionText()
             mBinding.textviewProductdetailOptionspinnerExtraprice.text = when {
                 option.stock == 0 -> mBinding.root.context.getString(R.string.productdetail_option_soldout)
                 option.price > 0 -> String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)
@@ -65,20 +65,6 @@ class ProductDetailOptionListAdapter : RecyclerView.Adapter<ProductDetailOptionL
         private fun setOptionRgb(option: OptionInfo) {
             if (!option.rgb1.isNullOrEmpty())
                 mBinding.imageviewProductdetailOptionspinner.setBackgroundColor(Color.parseColor(option.rgb1))
-        }
-
-        fun getOptionText(option: OptionInfo): String {
-            var optionText = ""
-            if (!option.attribute1.isNullOrEmpty())
-                optionText = "${option.attribute1}"
-
-            if (!option.attribute2.isNullOrEmpty())
-                optionText = "$optionText, ${option.attribute2}"
-
-            if (!option.attribute3.isNullOrEmpty())
-                optionText = "$optionText, ${option.attribute3}"
-
-            return optionText
         }
 
         private fun setPadding(position: Int) {

@@ -111,7 +111,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                         } else mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
 
                         mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                        mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option).plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
+                        mBinding.textviewProductdetailOptionselected.text = option.getOptionText().plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
                         mBinding.executePendingBindings()
 
                         // INIT OPTION
@@ -184,7 +184,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                         mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
 
                     mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                    mBinding.textviewProductdetailOptionselected.text = getOptionText(option).plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
+                    mBinding.textviewProductdetailOptionselected.text = option.getOptionText().plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
                     mBinding.executePendingBindings()
 
                     // INIT OPTION
@@ -201,21 +201,6 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             }
         }
     }
-
-    private fun getOptionText(option: OptionInfo): String {
-        var optionText = ""
-        if (!option.attribute1.isNullOrEmpty())
-            optionText = "${option.attribute1}"
-
-        if (!option.attribute2.isNullOrEmpty())
-            optionText = "$optionText, ${option.attribute2}"
-
-        if (!option.attribute3.isNullOrEmpty())
-            optionText = "$optionText, ${option.attribute3}"
-
-        return optionText
-    }
-
 
     // 미사용
     private fun initMenuGrid() {

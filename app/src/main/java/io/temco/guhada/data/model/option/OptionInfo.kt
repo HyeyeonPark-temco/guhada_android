@@ -25,5 +25,17 @@ class OptionInfo : Serializable {
     var stock = 0                           // 해당 상품의 재고
     var viewType = ""                       // 옵션 뷰 타입 ("SEPARATED", "INTEGRATED")
 
+    fun getOptionText(): String {
+        var optionText = ""
+        if (!attribute1.isNullOrEmpty())
+            optionText = "$attribute1"
 
+        if (!attribute2.isNullOrEmpty())
+            optionText = "$optionText, $attribute2"
+
+        if (!attribute3.isNullOrEmpty())
+            optionText = "$optionText, $attribute3"
+
+        return optionText
+    }
 }
