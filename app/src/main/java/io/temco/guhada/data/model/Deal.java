@@ -122,10 +122,10 @@ public class Deal {
 
 
     public class TimeDealInfo {
-        public Long now = 0L;
+        public Long now = 0L;                       // s
         public Long remainedTimeForStart = 0L;
-        public Long remainedTimeForEnd = 0L;
-        public Long discountStartAt = 0L;
+        public Long remainedTimeForEnd = 0L;        // s
+        public Long discountStartAt = 0L;           // ms
         public String statusCode = "";
         public String statusText = "";
     }
