@@ -93,15 +93,6 @@ public class Deal implements Serializable {
 
     }
 
-    public class TimeDealInfo implements Serializable {
-        public Long now = 0L;
-        public Long remainedTimeForStart = 0L;
-        public Long remainedTimeForEnd = 0L;
-        public Long discountStartAt = 0L;
-        public String statusCode = "";
-        public String statusText = "";
-    }
-
     @Override
     public String toString() {
         if (CustomLog.getFlag()) return "Deal{" +
@@ -129,4 +120,12 @@ public class Deal implements Serializable {
         else return "";
     }
 
+    public class TimeDealInfo {
+        public Long now = 0L;                       // 단위: s
+        public Long remainedTimeForStart = 0L;
+        public Long remainedTimeForEnd = 0L;        // 단위: s
+        public Long discountStartAt = 0L;           // 단위: ms
+        public String statusCode = "";
+        public String statusText = "";
+    }
 }
