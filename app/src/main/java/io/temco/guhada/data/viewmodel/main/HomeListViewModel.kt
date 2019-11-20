@@ -40,6 +40,31 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
             notifyPropertyChanged(BR.mainHomeEventViewIndex)
         }
 
+    var mainHomeListTabLayout1 = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mainHomeListTabLayout1)
+        }
+
+    var mainHomeListTabLayout2 = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mainHomeListTabLayout2)
+        }
+
+    var mainHomeListTabLayout3 = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mainHomeListTabLayout3)
+        }
+
+
 
 
     fun getListAdapter() = adapter
@@ -54,7 +79,7 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
  * 메인 홈 리스트 server data 연동 Repository
  */
 class HomeListRepository(val context : Context){
-    private val unitPerPage = 10
+    private val unitPerPage = 60
     // 메인 홈 list data
     private var list = SingleLiveEvent<ArrayList<MainBaseModel>>()
 

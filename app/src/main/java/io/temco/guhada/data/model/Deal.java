@@ -2,13 +2,14 @@ package io.temco.guhada.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.main.MainBaseModel;
 
-public class Deal {
+public class Deal implements Serializable {
 
     @SerializedName("brandId")
     public int brandId;
@@ -82,7 +83,7 @@ public class Deal {
         return freeShipping;
     }
 
-    public class Option {
+    public class Option implements Serializable{
 
         @SerializedName("type")
         public String type;
@@ -92,6 +93,14 @@ public class Deal {
 
     }
 
+    public class TimeDealInfo implements Serializable {
+        public Long now = 0L;
+        public Long remainedTimeForStart = 0L;
+        public Long remainedTimeForEnd = 0L;
+        public Long discountStartAt = 0L;
+        public String statusCode = "";
+        public String statusText = "";
+    }
 
     @Override
     public String toString() {
@@ -120,13 +129,4 @@ public class Deal {
         else return "";
     }
 
-
-    public class TimeDealInfo {
-        public Long now = 0L;
-        public Long remainedTimeForStart = 0L;
-        public Long remainedTimeForEnd = 0L;
-        public Long discountStartAt = 0L;
-        public String statusCode = "";
-        public String statusText = "";
-    }
 }
