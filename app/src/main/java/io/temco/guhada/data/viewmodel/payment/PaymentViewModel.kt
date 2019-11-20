@@ -227,11 +227,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 val resultCode = (o as BaseModel<*>).resultCode
                 if (resultCode == ResultCode.SUCCESS.flag) {
                     this.cart = o.data as Cart
-                    if (this.cart.cartValidStatus.status){
+                    if (this.cart.cartValidStatus.status) {
                         getOrderForm(accessToken)
                         BaseApplication.getInstance().plusCartCount()
-                    }
-                    else {
+                    } else {
                         listener.showMessage(this.cart.cartValidStatus.cartErrorMessage)
                         listener.closeActivity()
                     }
@@ -359,7 +358,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 executeByResultCode(success, o,
                         successTask = {
                             if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 success")
-                            requestOrder("Bearer $accessToken", mRequestOrder)
+                            requestOrder(accessToken, mRequestOrder)
                         }, failedTask = { if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 ${if (it is BaseModel<*>) it.message else "에러"}") })
             }, userId, selectedShippingAddress!!)
         }
@@ -577,19 +576,15 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             // 사용 포인트
                             mRequestOrder.consumptionPoint = usedPointNumber.toInt()
 
-                            val accessToken = Preferences.getToken().accessToken
-                            if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
-                                // 배송지 추가
-                                if (accessToken != null) {
-                                    val userId = JWT(accessToken).getClaim("userId").asInt()
-                                    if (userId != null) saveShippingAddress(accessToken, userId)
+                            ServerCallbackUtil.callWithToken(task = { token ->
+                                if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
+                                    // 배송지 추가
+                                    val userId = JWT(token.split("Bearer ")[1]).getClaim("userId").asInt()
+                                    if (userId != null) saveShippingAddress(token, userId)
                                 } else {
-                                    // [임시] 토큰 없는 경우
-                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
+                                    requestOrder(token, mRequestOrder)
                                 }
-                            } else {
-                                requestOrder("Bearer $accessToken", mRequestOrder)
-                            }
+                            })
 
                         }
                     }

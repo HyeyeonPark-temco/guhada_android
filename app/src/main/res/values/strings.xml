@@ -344,7 +344,7 @@
     <!-- PRODUCT DETAIL -->
     <string name="productdetail_advantage_point">포인트 적립</string>
     <string name="productdetail_advantage_cardinterest">무이자 할부</string>
-    <string name="productdetail_advantage_more">자세히</string>
+    <string name="productdetail_advantage_more">자세히보기</string>
     <string name="productdetail_dummy_advantage2">추가 적립 포인트 1,000원</string>
     <string name="productdetail_dummy_shippingtype">택배, 등기, 소포</string>
 
@@ -689,6 +689,7 @@
         <item>키즈</item>
         <item>타임딜</item>
         <item>럭키드로우</item>
+        <item>이벤트</item>
     </string-array>
 
     <!-- MYPAGE ORDER SHIP -->
@@ -905,7 +906,7 @@
     <string name="requestorderstatus_exchange_way_title">교환 발송 여부</string>
     <string name="requestorderstatus_exchange_way_description">교환상품을 이미 발송하셨습니까?</string>
     <string name="requestorderstatus_exchange_shipping_title">교환배송비 결제</string>
-    <string name="requestorderstatus_exchange_shipping_description1"><![CDATA[<font color="#5d2ed1">교환사유</font>로 인해 <font color="#5d2ed1">교환배송비 5,000</font>을]]></string>
+    <string name="requestorderstatus_exchange_shipping_description1"><![CDATA[<font color="#5d2ed1">교환사유</font>로 인해 <font color="#5d2ed1">교환배송비 %,2d원</font>을]]></string>
     <string name="requestorderstatus_exchange_shipping_description2"><![CDATA[<font color="#5d2ed1">구매자가 부담</font>합니다.]]></string>
     <string name="requestorderstatus_exchange_warning">송장번호 미입력시 교환 처리가 늦어질 수 있습니다.</string>
 
@@ -922,7 +923,7 @@
     <string name="requestorderstatus_refund_way_description">반품상품을 이미 발송하셨나요?</string>
     <string name="requestorderstatus_refund_way_title">반품 발송 여부</string>
     <string name="requestorderstatus_refund_shipping_title">반품배송비 결제</string>
-    <string name="requestorderstatus_refund_shipping_description1"><![CDATA[<font color="#5d2ed1">반품 사유</font>로 인해 <font color="#5d2ed1">반품배송비 5,000원</font>을]]></string>
+    <string name="requestorderstatus_refund_shipping_description1"><![CDATA[<font color="#5d2ed1">반품 사유</font>로 인해 <font color="#5d2ed1">반품배송비 %,2d원</font>을]]></string>
     <string name="requestorderstatus_refund_shipping_description2"><![CDATA[<font color="#5d2ed1">구매자가 부담</font>합니다.]]></string>
     <string name="requestorderstatus_refund_shipping_radio">환불금액에서 차감</string>
     <string name="requestorderstatus_refund_warning">송장번호 미입력시 반품 처리가 늦어질 수 있습니다.</string>
@@ -950,14 +951,14 @@
     <!-- SUCCESS EXCHANGE -->
     <string name="successexchange_warning">반드시, 교환 상품 발송 후 송장번호를 등록해주세요.</string>
     <string name="successexchange_title"><![CDATA[주문상품의 <font color="#5d2ed1">교환신청이<br>완료</font>되었습니다.]]></string>
-    <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 5,000원을\n박스에 동봉으로 구매자가 부담합니다.</string>
+    <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 %,2d원을\n%s으로 구매자가 부담합니다.</string>
     <string name="successexchange_notsend">미발송</string>
     <string name="successexchange_address_format">[%s] %s</string>
 
     <!-- SUCCESS REFUND -->
     <string name="successrefund_warning">반드시, 반품 상품 발송 후 송장번호를 등록해주세요.</string>
     <string name="successrefund_title"><![CDATA[주문상품의 <font color="#5d2ed1">반품신청이<br>완료</font>되었습니다.]]></string>
-    <string name="successrefund_shippingpayment">반품 사유로 인해 반품배송비 5,000원을\n%s으로 구매자가 부담합니다.</string>
+    <string name="successrefund_shippingpayment">반품 사유로 인해 반품배송비 %,2d원을\n%s으로 구매자가 부담합니다.</string>
     <string name="successrefund_notsend">아니요</string>
     <string name="successrefund_address_format">[%s] %s</string>
     <string name="successrefund_card">신용/체크 카드</string>

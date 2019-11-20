@@ -27,46 +27,20 @@ import io.temco.guhada.view.adapter.main.HomeListAdapter
  * 메인 홈 리스트 CustomView ViewModel
  */
 class EventListViewModel(val context : Context) : BaseObservableViewModel() {
-    private var repository: EventListRepository = EventListRepository(this,context)
+    var mSortFilterType: MutableList<EventProgressType> = mutableListOf(EventProgressType.ALL,EventProgressType.PROGRESS,EventProgressType.END)
+    var mSortFilterLabel: MutableList<String> = mutableListOf(EventProgressType.ALL.label, EventProgressType.PROGRESS.label,EventProgressType.END.label)
+    var mFilterIndex = 0
 
-    var eventProgress : String = ""
-    private val _listData : SingleLiveEvent<ArrayList<MainBaseModel>> = repository.getList()
-    private val adapter = EventListAdapter(this,listData.value!!)
-
-    val listData :LiveData<ArrayList<MainBaseModel>> get() = _listData
-
+    val listData: ArrayList<MainBaseModel> = arrayListOf()
+    lateinit var adapter: EventListAdapter
     fun getListAdapter() = adapter
 
-}
-
-
-/**
- * @author park jungho
- * 19.07.18
- *
- * 메인 홈 리스트 server data 연동 Repository
- */
-class EventListRepository(val model : EventListViewModel, val context : Context){
-    private var list = SingleLiveEvent<ArrayList<MainBaseModel>>()
-
-    fun getList() : SingleLiveEvent<ArrayList<MainBaseModel>>{
-        if (list.value.isNullOrEmpty()){
-            setInitData()
-        }
-        return list
-    }
-
-
-    private fun setInitData() {
-        list.value = ArrayList()
-        getEventList(model.eventProgress)
-    }
-
     /**
-     *  PREMIUM ITEM
+     *  Event List
      */
-    private fun getEventList(eventProgress : String) {//getProductByPlusItem
-        SettleServer.getEventList(eventProgress, OnServerListener { success, o ->
+    fun getEventList() {
+        listData.clear()
+        SettleServer.getEventList(mSortFilterType[mFilterIndex], OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var eventList =  (o as BaseModel<*>).list as List<EventListData>
@@ -79,8 +53,8 @@ class EventListRepository(val model : EventListViewModel, val context : Context)
                             tmpList.add(data)
                         }
                         if (CustomLog.flag) CustomLog.L("EventListLayout LIFECYCLE", "onViewCreated listData.size 1----------------",tmpList.size)
-                        list.value!!.addAll(tmpList)
-                        list.value = list.value
+                        listData.addAll(tmpList)
+                        adapter.notifyDataSetChanged()
                     },
                     dataNotFoundTask = {
 
@@ -92,6 +66,10 @@ class EventListRepository(val model : EventListViewModel, val context : Context)
         })
     }
 
+}
 
-
+enum class EventProgressType(val code : String, var label:String) {
+    ALL("ALL", "전체 이벤트"),
+    PROGRESS("PROGRESS", "진행중 이벤트"),
+    END("END", "종료 이벤트")
 }

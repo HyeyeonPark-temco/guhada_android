@@ -2,10 +2,12 @@ package io.temco.guhada.view.activity
 
 import android.os.Build
 import android.text.TextUtils
+import android.view.View
 import android.webkit.*
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.ActivityCustomwebviewBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -19,6 +21,7 @@ class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
 
     private var title = ""
     private var url = ""
+    private var param = ""
 
     ////////////////////////////////////////////////////////////////////////////////
     override fun getBaseTag(): String = ImageGetActivity::class.java.simpleName
@@ -28,10 +31,15 @@ class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
     override fun init() {
         title = intent?.extras?.getString("title") ?: ""
         url = intent?.extras?.getString("url") ?: ""
+        param = intent?.extras?.getString("param") ?: ""
         if(CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment",url)
         if(TextUtils.isEmpty(url)) finish()
         mBinding.title = title
         mBinding.setOnClickBackButton { finish() }
+
+        if(CustomLog.flag)CustomLog.L("CustomWebViewActivity","url",url)
+        if(CustomLog.flag)CustomLog.L("CustomWebViewActivity","title",title)
+        if(CustomLog.flag)CustomLog.L("CustomWebViewActivity","param",param)
 
         mBinding.webview.settings.apply {
             javaScriptEnabled = true
@@ -48,11 +56,6 @@ class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
             if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
         }
         mBinding.webview.addJavascriptInterface(AndroidBridge(), JS_INTERFACE_NAME)
-        mBinding.webview.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                mBinding.webview.loadUrl("javascript:execDaumPostcode();")
-            }
-        }
         mBinding.webview.webViewClient = object  : WebViewClient(){
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 //return super.shouldOverrideUrlLoading(view, request)
@@ -62,7 +65,15 @@ class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
             }
         }
         mBinding.webview.loadUrl(url)
-
+        mBinding.buttonWebview.visibility = View.GONE
+        if(!TextUtils.isEmpty(param)){
+            mBinding.buttonWebview.visibility = View.VISIBLE
+            mBinding.buttonWebview.setOnClickListener {
+                if(!TextUtils.isEmpty(param)){
+                    CommonUtilKotlin.moveEventPage(this,param,"",false,true)
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -75,9 +86,10 @@ class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
 
     inner class AndroidBridge {
         @JavascriptInterface
-        fun processData(state: String, arg: String) {
-            when(state){
-                "login"->{
+        fun processData(arg1: String, arg2: String) {
+            if(CustomLog.flag)CustomLog.L("CustomWebViewActivity","AndroidBridge processData",arg1)
+            when(arg1){
+                "join"->{
                     CommonUtil.startLoginPage(this@CustomWebViewActivity)
                     finish()
                 }

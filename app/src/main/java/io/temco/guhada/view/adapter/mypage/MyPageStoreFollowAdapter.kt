@@ -55,9 +55,9 @@ class MyPageStoreFollowAdapter : RecyclerView.Adapter<MyPageStoreFollowAdapter.H
             val scope = CoroutineScope(Dispatchers.Main)
             mBinding.buttonMypagefollowFollow.setOnClickListener {
                 scope.launch {
-                    val token = Preferences.getToken().accessToken
-                    if (token != null) {
-                        if (sellerStore.isFollowing) deleteBookMark(accessToken = "Bearer $token", target = BookMarkTarget.SELLER.target, targetId = sellerStore.sellerId)
+                    val token = Preferences.getToken()
+                    if (token != null && !token.accessToken.isNullOrEmpty()) {
+                        if (sellerStore.isFollowing) deleteBookMark(accessToken = "Bearer ${token.accessToken}", target = BookMarkTarget.SELLER.target, targetId = sellerStore.sellerId)
                         else saveBookMark(accessToken = "Bearer $token", bookMarkResponse = BookMarkResponse(target = BookMarkTarget.SELLER.target, targetId = sellerStore.sellerId))
 
                         sellerStore.isFollowing = !sellerStore.isFollowing

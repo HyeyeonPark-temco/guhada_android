@@ -45,8 +45,7 @@ class SearchZipWebViewActivity : BindActivity<ActivitySearchzipwebviewBinding>()
         webview_searchzipwebview.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 // javascript:execDaumPostcode(); : sdk22 미작동
-                // webview_searchzipwebview.loadUrl("javascript:(function(){  execDaumPostcode(); })();")
-                webview_searchzipwebview.loadUrl("javascript:execDaumPostcode();")
+//                webview_searchzipwebview.loadUrl("javascript:execDaumPostcode();")
             }
         }
 

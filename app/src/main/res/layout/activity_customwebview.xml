@@ -42,10 +42,29 @@
 
         </LinearLayout>
 
-        <WebView
-            android:id="@+id/webview"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <WebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <Button
+                    android:id="@+id/button_webview"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:background="@color/transparent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="320dp"/>
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
 </layout>

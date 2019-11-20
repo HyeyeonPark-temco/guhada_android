@@ -90,7 +90,7 @@ public class Type {
     }
 
     /** 임시 서버 연결 여부 (true: TempServer name; false: dev) **/
-    public static boolean isTempServer= true;
+    public static boolean isTempServer= false;
     public static String[] ServerTypeArray = { "http://dev.", "http://qa.", "https://stg.", "https://" };
     public static String serverType = ServerTypeArray[1];
     ////////////////////////////////////////////////
@@ -167,13 +167,13 @@ public class Type {
     private static String getSettleUrl(){
         switch (BuildConfig.BuildType) {
             case QA:
-                return "http://settle.guhada.com/";
+                return "http://qa.settle.guhada.com/";
             case STAGE:
                 return "http://settle.guhada.com/";
             case RELEASE:
                 return "http://settle.guhada.com/";
             default:
-                if(isTempServer)return "http://settle.guhada.com/";/*serverType+"settle.guhada.com/";*/
+                if(isTempServer)/*return "http://settle.guhada.com";*/ return serverType+"settle.guhada.com/";
                 else return "http://dev.settle.guhada.com/";
 
         }
@@ -331,6 +331,21 @@ public class Type {
             default:
                 if(isTempServer)return serverType+"guhada.com/";
                 else return "http://dev.guhada.com/";
+        }
+    }
+
+
+    public static String getMobileWebUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.m.guhada.com";
+            case STAGE:
+                return "https://stg.m.guhada.com";
+            case RELEASE:
+                return "https://www.m.guhada.com";
+            default:
+                if(isTempServer)return serverType+"m.guhada.com";
+                else return "http://dev.m.guhada.com";
         }
     }
 

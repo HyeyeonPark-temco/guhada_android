@@ -24,6 +24,8 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusData
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.*
@@ -38,6 +40,7 @@ import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.custom.FixedSpeedScroller
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
+import io.temco.guhada.view.viewpager.InfiniteViewPager
 import kotlinx.coroutines.Runnable
 import java.util.*
 
@@ -192,7 +195,11 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                         override fun getPagerIconBackground(position: Int): Int = 0
                     }
                     binding.viewPager.adapter = infiniteAdapter
-
+                    /*binding.viewPager.setOnItemClickListener(object : InfiniteViewPager.OnItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            model.recyclerView.smoothScrollToPosition(position+1)
+                        }
+                    })*/
                     /*if (currentAdIndex == -1) {
                         eventListSize = binding.viewPager.offsetAmount
                         currentAdIndex = binding.viewPager.currentItem

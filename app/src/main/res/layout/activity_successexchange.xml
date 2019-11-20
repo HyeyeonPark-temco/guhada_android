@@ -145,31 +145,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp"
+                    android:id="@+id/view_successexchange_collectionline"
                     android:background="@color/line_6" />
 
                 <TextView
                     style="@style/SuccessRequestExchangeSubTitleTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/textview_successexchange_shippingtitle"
                     android:text="@string/requestorderstatus_exchange_shipping_title" />
 
                 <TextView
                     style="@style/SuccessRequestExchangeContentTextStyle"
+                    android:id="@+id/textview_successexchange_shippingprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text='@{exchangeRequest.getShippingPaymentDescription()}' />
+                    android:layout_marginTop="25dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="30dp"
+                    android:id="@+id/view_successexchange_shippingline"
                     android:background="@color/line_6" />
 
                 <TextView
                     style="@style/SuccessRequestExchangeSubTitleTextStyle"
+                    android:layout_marginTop="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/requestorderstatus_exchange_address" />

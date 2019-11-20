@@ -2,13 +2,14 @@ package io.temco.guhada.common.util
 
 import android.app.Activity
 import android.content.Intent
+import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
-import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.*
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.view.activity.CustomWebViewActivity
@@ -71,10 +72,13 @@ object CommonUtilKotlin  {
     fun startTermsCompany(activity: Activity)=startActivityWebview(activity,"사업자정보확인", "http://ftc.go.kr/bizCommPop.do?wrkr_no=8768601259")
 
 
-    fun startActivityWebview(activity: Activity, title : String, url : String) {
+    fun startActivityWebview(activity: Activity, title : String, url : String, param : String = "") {
         val intent = Intent(activity, CustomWebViewActivity::class.java)
         intent.putExtra("title",title)
         intent.putExtra("url",url)
+        if(!TextUtils.isEmpty(param)){
+            intent.putExtra("param",param)
+        }
         activity.startActivityForResult(intent, Flag.RequestCode.BASE)
     }
 
@@ -124,6 +128,39 @@ object CommonUtilKotlin  {
             mo = mobile
         }
         return mo
+    }
+
+
+    @JvmStatic
+    fun moveEventPage(act : Activity, param : String, param2 : String, isMainActivity : Boolean, isFinished : Boolean){
+        if(TextUtils.isEmpty(param)) return
+        if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage param",param)
+        when(param){
+            "join"->{
+                CommonUtil.startLoginPage(act)
+                if(isFinished)act.finish()
+            }
+            "timedeal"->{
+                if(isMainActivity){
+                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.TIME_DEAL))
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, Info.MainHomeIndex.TIME_DEAL,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            "luckydraw"->{
+                if(isMainActivity){
+                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.LUCKY_DRAW))
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, Info.MainHomeIndex.LUCKY_DRAW,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+        }
     }
 
 }

@@ -22,6 +22,11 @@ interface SettleService {
     @GET("payment/cardInterest")
     fun getCardInterest() : Call<BaseModel<MutableList<CardInterest>>>
 
+    /**
+     * http://settle.guhada.com/event/list?eventProgress=ALL  (전부)
+    http://settle.guhada.com/event/list?eventProgress=PROGRESS (진행중)
+    http://settle.guhada.com/event/list?eventProgress=END (종료)
+     */
 
     @GET("event/list")
     fun getEventList(@Query("eventProgress") eventProgress : String): Call<BaseModel<EventListData>>
