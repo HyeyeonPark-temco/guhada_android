@@ -74,7 +74,6 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             if (!list[0].label3.isNullOrEmpty())
                 placeHolder += ", ${list[0].label3}"
 
-//            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
             mBinding.textviewProductdetailOption.text = placeHolder
         }
 
@@ -112,7 +111,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                         } else mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
 
                         mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                        mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
+                        mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option).plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
                         mBinding.executePendingBindings()
 
                         // INIT OPTION
@@ -185,7 +184,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                         mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
 
                     mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                    mBinding.textviewProductdetailOptionselected.text = getOptionText(option)
+                    mBinding.textviewProductdetailOptionselected.text = getOptionText(option).plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
                     mBinding.executePendingBindings()
 
                     // INIT OPTION
@@ -209,10 +208,10 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             optionText = "${option.attribute1}"
 
         if (!option.attribute2.isNullOrEmpty())
-            optionText = "$optionText / ${option.attribute2}"
+            optionText = "$optionText, ${option.attribute2}"
 
         if (!option.attribute3.isNullOrEmpty())
-            optionText = "$optionText / ${option.attribute3}"
+            optionText = "$optionText, ${option.attribute3}"
 
         return optionText
     }
