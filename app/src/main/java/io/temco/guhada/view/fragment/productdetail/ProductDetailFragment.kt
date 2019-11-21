@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
@@ -11,11 +12,12 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
+import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.addListener
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
@@ -60,6 +62,7 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.cart.AddCartResultFragment
+import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment.Companion.fadeInAndOut
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -383,10 +386,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
     private fun initContentHeader() {
         mBinding.includeProductdetailContentheader.viewModel = mViewModel
+        mBinding.includeProductdetailContentheader.framelayoutProductdetailBookmark.bringToFront()
 
         val matrix = DisplayMetrics()
         (context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
-        mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.layoutParams = RelativeLayout.LayoutParams(matrix.widthPixels, matrix.widthPixels)
+        mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.layoutParams = FrameLayout.LayoutParams(matrix.widthPixels, matrix.widthPixels)
         mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
 
@@ -956,23 +960,23 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
 
-
     @SuppressLint("CheckResult")
     private fun setEvenBus() {
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
                 RequestCode.CART_BADGE.flag -> {
                     val count = requestCode.data as Int
-                    if(count > 0){
+                    if (count > 0) {
                         mBinding.includeProductdetailHeader.textviewBadge.visibility = View.VISIBLE
                         mBinding.includeProductdetailHeader.textviewBadge.text = count.toString()
-                    }else{
+                    } else {
                         mBinding.includeProductdetailHeader.textviewBadge.visibility = View.GONE
                     }
                 }
             }
         }
     }
+
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {
@@ -1012,5 +1016,22 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
         }
 
+        @JvmStatic
+        @BindingAdapter(value = ["fade", "visible"])
+        fun FrameLayout.fadeInAndOut(fade: Boolean, visible: Boolean = false) {
+            if (Preferences.getToken() != null && visible) {
+                val animDuration = 600.toLong()
+                val fadeIn = ObjectAnimator.ofFloat(this@fadeInAndOut, "alpha", 0f, 1f)
+                fadeIn.duration = animDuration
+                fadeIn.addListener(
+                        onEnd = {
+                            val fadeOut = ObjectAnimator.ofFloat(this@fadeInAndOut, "alpha", 1f, 0f)
+                            fadeOut.duration = animDuration
+                            fadeOut.start()
+                        },
+                        onStart = { this.visibility = View.VISIBLE })
+                fadeIn.start()
+            }
+        }
     }
 }

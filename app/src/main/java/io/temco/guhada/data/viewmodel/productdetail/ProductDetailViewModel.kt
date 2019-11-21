@@ -28,7 +28,6 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.order.OrderItemResponse
-import io.temco.guhada.data.model.point.ExpectedPoint
 import io.temco.guhada.data.model.point.ExpectedPointResponse
 import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.model.point.PointRequest
@@ -122,8 +121,17 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     // 혜택 정보
     var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
-
     var mSetBadgeTask: () -> Unit = {}
+
+    // 북마크
+    var mIsBookMarkSaved = ObservableBoolean(false)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            mBookMarkVisible = true
+        }
+    var mBookMarkVisible = false
 
     fun getDetail() {
         ProductServer.getProductDetail(OnServerListener { success, o ->
@@ -197,10 +205,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     fun getBookMark(target: String, targetId: Long) {
         ServerCallbackUtil.callWithToken(
                 task = {
-                    if (CustomLog.flag) CustomLog.L("getBookMark", "callWithToken", it)
-                    var userId = -1
                     if (it != null) {
-                        userId = JWT(it.substring(7, it.length)).getClaim("userId").asInt() ?: -1
+                        if (CustomLog.flag) CustomLog.L("getBookMark", "callWithToken", it)
+                        val userId = JWT(it.substring(7, it.length)).getClaim("userId").asInt()
+                                ?: -1
                         UserServer.getBookMark(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
@@ -272,17 +280,12 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                 this.mReviewSummary = ObservableField(it.data as ReviewSummary)
                                 notifyPropertyChanged(BR.mReviewSummary)
                             },
-                            failedTask = {
-
-                            },
-                            dataNotFoundTask = {
-
-                            },
+                            failedTask = {},
+                            dataNotFoundTask = {},
                             serverRuntimeErrorTask = {})
                 }, productId = product.value?.productId!!)
             }
         }
-
     }
 
     /**
@@ -464,13 +467,12 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                             TrackingUtil.sendKochavaEvent(it)
                         }
 
-                        if (cart.cartValidStatus.status){
+                        if (cart.cartValidStatus.status) {
                             listener?.showAddCartResult()
                             CommonUtil.getCartItemCount()
                             //BaseApplication.getInstance().plusCartCount()
                             mSetBadgeTask()
-                        }
-                        else {
+                        } else {
                             ToastUtil.showMessage(cart.cartValidStatus.cartErrorMessage)
                         }
                     } else {
@@ -498,6 +500,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     UserServer.saveBookMark(OnServerListener { success, o ->
                         ServerCallbackUtil.executeByResultCode(success, o,
                                 successTask = {
+                                    mIsBookMarkSaved = ObservableBoolean(true)
+                                    notifyPropertyChanged(BR.mIsBookMarkSaved)
+
                                     if (CustomLog.flag) CustomLog.L("saveBookMark", "successTask")
 
                                     when (target) {
@@ -526,6 +531,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     UserServer.deleteBookMark(OnServerListener { success, o ->
                         ServerCallbackUtil.executeByResultCode(success, o,
                                 successTask = {
+                                    mIsBookMarkSaved = ObservableBoolean(false)
+                                    notifyPropertyChanged(BR.mIsBookMarkSaved)
+
                                     if (CustomLog.flag) CustomLog.L("deleteBookMark", "successTask")
 
                                     when (target) {
@@ -548,28 +556,19 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     fun onClickBookMark() {
         if (initBookMarkData) {
-            if (productBookMark.get()) {
+            if (productBookMark.get())
                 deleteBookMark(Type.BookMarkTarget.PRODUCT.name, product.value!!.productId)
-            } else {
+            else
                 saveBookMark(Type.BookMarkTarget.PRODUCT.name, product.value!!.productId)
-            }
             productBookMark.set(!productBookMark.get())
-        }
+        } else
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
     }
 
+    fun onClickSearch() = listener?.showSearchWordActivity()
 
-    fun onClickSearch() {
-        listener?.showSearchWordActivity()
-    }
+    fun onClickShoppingBag() = listener?.showShoppingBagActivity()
 
-
-    fun onClickShoppingBag() {
-        listener?.showShoppingBagActivity()
-    }
-
-
-    fun onClickReport() {
-        listener?.showReportActivity()
-    }
+    fun onClickReport() = listener?.showReportActivity()
 
 }
