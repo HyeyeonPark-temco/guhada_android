@@ -1115,6 +1115,7 @@
     <string name="mypage_userinfo_refundaccount_button">계좌확인</string>
 
     <string name="mypage_userinfo_hint_errornickname">이미 사용중인 닉네임입니다.</string>
+    <string name="mypage_userinfo_withdraw">정말 탈퇴하시겠습니까?</string>
 
     <string name="mypage_recentlayout_totalsize1">총 </string>
     <string name="mypage_recentlayout_totalsize2">개</string>

@@ -119,7 +119,8 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                             CommonUtil.debug(token.accessToken)
                             return@OnServerListener
                         }
-                        Flag.ResultCode.USER_NOT_FOUND, Flag.ResultCode.SIGNIN_INVALID_PASSWORD -> loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.login_message_notequalpwd))
+                        else -> loginListener.showSnackBar(model.message)
+                        // Flag.ResultCode.USER_NOT_FOUND, Flag.ResultCode.SIGNIN_INVALID_PASSWORD -> loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.login_message_notequalpwd))
                     }
                 } else {
                     loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.common_message_servererror))

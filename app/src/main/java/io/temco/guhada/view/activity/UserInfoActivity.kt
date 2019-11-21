@@ -7,15 +7,17 @@ import android.text.Editable
 import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnBorderEditTextFocusListener
 import io.temco.guhada.common.listener.OnCallBackListener
@@ -28,7 +30,9 @@ import io.temco.guhada.databinding.ActivityUserinfoBinding
 import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
+import io.temco.guhada.view.adapter.cart.CartProductAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import java.util.*
 
 /**
@@ -103,7 +107,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     val gender = data?.getStringExtra("gender") // FEMALE MALE
                     val birth = data?.getStringExtra("birth")   // yyyy-MM-dd
 
-                    if (di != null){
+                    if (di != null) {
                         mViewModel.mUser.value!!.userDetail.diCode = di
                         mViewModel.mVerification.diCode = di
                     }
@@ -271,7 +275,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         // 닉네임 변경
         setNickNameListener()
 
-
         // 이메일 인증
         mBinding.edittextMypageuserinfoEmail.setOnClickListener { redirectUserInfoVerifyActivity(true) }
 
@@ -322,6 +325,9 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             mViewModel.mUser.value!!.userDetail.agreeSmsReception = !mViewModel.mUser.value!!.userDetail.agreeSmsReception
             mBinding.checkboxMypageuserinfoSms.setImageResource(if (mViewModel.mUser.value!!.userDetail.agreeSmsReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
         }
+
+        // 회원 탈퇴
+        initWithdraw()
     }
 
     private fun setBirth() {
@@ -533,6 +539,27 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
             mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)
         })
+    }
+
+    /**
+     * 회원탈퇴
+     * @author Hyeyeon Park
+     * @since 2019.11.21
+     */
+    private fun initWithdraw() {
+        mBinding.buttonMypageuserinfoUserwithdrawal.setOnClickListener {
+            CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.mypage_userinfo_withdraw),
+                    cancelButtonVisible = true,
+                    confirmTask = {
+                        mViewModel.withdraw(successTask = {
+                            Preferences.clearToken(true)
+
+                            BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true, true)
+                            this@UserInfoActivity.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                            this@UserInfoActivity.onBackPressed()
+                        })
+                    }).show(manager = this.supportFragmentManager, tag = UserInfoActivity::class.java.simpleName)
+        }
     }
 
 
