@@ -80,7 +80,7 @@ public class FastScrollRecyclerView extends RecyclerView {
             }
 
             case MotionEvent.ACTION_MOVE: {
-                if (!mListener.getShowSection() && isNotAction(x, y)) {
+                if (mListener != null && !mListener.getShowSection() && isNotAction(x, y)) {
                     return super.onTouchEvent(event);
                 } else {
                     setPositionEvent(y - mListener.getTopPadding());

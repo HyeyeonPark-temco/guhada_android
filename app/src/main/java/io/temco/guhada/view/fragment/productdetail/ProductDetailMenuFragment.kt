@@ -65,18 +65,8 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
      */
     private fun initMenuSpinner() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
-        if (list.isNotEmpty()) {
-            var placeHolder = ""
-            if (!list[0].label1.isNullOrEmpty())
-                placeHolder += list[0].label1
-            if (!list[0].label2.isNullOrEmpty())
-                placeHolder += ", ${list[0].label2}"
-            if (!list[0].label3.isNullOrEmpty())
-                placeHolder += ", ${list[0].label3}"
-
-//            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
-            mBinding.textviewProductdetailOption.text = placeHolder
-        }
+        if (list.isNotEmpty())
+            mBinding.textviewProductdetailOption.text = list[0].getOptionNameText()
 
         mMenuSpinnerAdapter = ProductDetailOptionSpinnerAdapter(
                 context = mBinding.root.context,
@@ -102,36 +92,12 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val optionList = mViewModel.product.optionInfos ?: listOf()
-
-                if (mSpinnerFirstInit && position < optionList.size && optionList[position].stock > 0) {
-                    val option: OptionInfo? = optionList[position]
-                    if (option != null) {
-                        if (option.rgb1?.isNotEmpty() == true) {
-                            mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
-                            mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
-                        } else mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
-
-                        mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                        mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
-                        mBinding.executePendingBindings()
-
-                        // INIT OPTION
-                        mViewModel.mSelectedOptionInfo = option
-                        mViewModel.productCount = ObservableInt(1)
-                        mViewModel.notifyPropertyChanged(BR.productCount)
-
-                        // PRICE
-                        mViewModel.extraPrice = ObservableInt(option.price)
-                        mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
-                        mViewModel.notifyPropertyChanged(BR.extraPrice)
-                        mViewModel.notifyPropertyChanged(BR.totalPrice)
-                    }
-                }
-
+                if (mSpinnerFirstInit && position < optionList.size)
+                    setOption(optionList[position])
                 mSpinnerFirstInit = true
             }
         }
-//        mBinding.spinnerProductdetailOption.setSelection(list.size - 1)
+
         mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
 
         // 스피너 드롭다운 Max Height 5개 높이로 설정
@@ -144,79 +110,58 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     private fun initMenuList() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
         if (list.isNotEmpty()) {
-            var placeHolder = ""
-            if (!list[0].label1.isNullOrEmpty())
-                placeHolder += list[0].label1
-            if (!list[0].label2.isNullOrEmpty())
-                placeHolder += ", ${list[0].label2}"
-            if (!list[0].label3.isNullOrEmpty())
-                placeHolder += ", ${list[0].label3}"
-
-            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
+            val placeHolder = list[0].getOptionNameText()
             mBinding.textviewProductdetailOption.text = placeHolder
         }
 
         mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
-            if (mViewModel.mIsBottomSpinnerOpen.get()) {
-                mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
-                mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(false)
-            } else {
-                mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour_emptybottom)
-                mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(true)
-            }
-
-            mViewModel.notifyPropertyChanged(BR.mIsBottomSpinnerOpen)
+            collapseOptionList(isExpanded = mViewModel.mIsBottomSpinnerOpen.get())
         }
 
         mBinding.recyclerviewProductdetailOptionspinner.adapter = ProductDetailOptionListAdapter().apply {
             this.mList = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
             this.mItemClickTask = { option ->
-
-                // close list
-                mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(false)
-                mViewModel.notifyPropertyChanged(BR.mIsBottomSpinnerOpen)
-                mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
-
-                if (option.stock > 0) {
-                    if (option.rgb1?.isNotEmpty() == true) {
-                        mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
-                        mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
-                    } else
-                        mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
-
-                    mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                    mBinding.textviewProductdetailOptionselected.text = getOptionText(option)
-                    mBinding.executePendingBindings()
-
-                    // INIT OPTION
-                    mViewModel.mSelectedOptionInfo = option
-                    mViewModel.productCount = ObservableInt(1)
-                    mViewModel.notifyPropertyChanged(BR.productCount)
-
-                    // PRICE
-                    mViewModel.extraPrice = ObservableInt(option.price)
-                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
-                    mViewModel.notifyPropertyChanged(BR.extraPrice)
-                    mViewModel.notifyPropertyChanged(BR.totalPrice)
-                }
+                collapseOptionList(isExpanded = true)
+                setOption(option)
             }
         }
     }
 
-    private fun getOptionText(option: OptionInfo): String {
-        var optionText = ""
-        if (!option.attribute1.isNullOrEmpty())
-            optionText = "${option.attribute1}"
+    private fun collapseOptionList(isExpanded: Boolean) {
+        if (isExpanded) {
+            mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(false)
+            mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour)
+        } else {
+            mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour_emptybottom)
+            mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(true)
+        }
 
-        if (!option.attribute2.isNullOrEmpty())
-            optionText = "$optionText / ${option.attribute2}"
-
-        if (!option.attribute3.isNullOrEmpty())
-            optionText = "$optionText / ${option.attribute3}"
-
-        return optionText
+        mViewModel.notifyPropertyChanged(BR.mIsBottomSpinnerOpen)
     }
 
+    private fun setOption(option: OptionInfo?) {
+        if (option != null && option.stock > 0) {
+            if (option.rgb1?.isNotEmpty() == true) {
+                mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
+                mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+            } else mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
+
+            mBinding.linearlayoutProductdetailOption.visibility = View.GONE
+            mBinding.textviewProductdetailOptionselected.text = option.getOptionText().plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
+            mBinding.executePendingBindings()
+
+            // INIT OPTION
+            mViewModel.mSelectedOptionInfo = option
+            mViewModel.productCount = ObservableInt(1)
+            mViewModel.notifyPropertyChanged(BR.productCount)
+
+            // PRICE
+            mViewModel.extraPrice = ObservableInt(option.price)
+            mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
+            mViewModel.notifyPropertyChanged(BR.extraPrice)
+            mViewModel.notifyPropertyChanged(BR.totalPrice)
+        }
+    }
 
     // 미사용
     private fun initMenuGrid() {

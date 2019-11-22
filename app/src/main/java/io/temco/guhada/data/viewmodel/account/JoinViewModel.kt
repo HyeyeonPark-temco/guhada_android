@@ -8,6 +8,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnJoinListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -57,7 +58,7 @@ class JoinViewModel : BaseObservableViewModel() {
     private fun signUp() {
         UserServer.signUp(OnServerListener { success, o ->
             if (success) {
-                TrackingUtil.sendKochavaEvent("SignUp_Success", "EMAIL")
+                TrackingUtil.sendKochavaEvent(TrackingEvent.SignUp.SUCCESS_SIGNUP.eventName, "EMAIL")
 
                 val model = o as BaseModel<*>
                 when (model.resultCode) {

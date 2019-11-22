@@ -1527,7 +1527,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     }
                 });
             }
-            mBrandListDialog.show(((AppCompatActivity)getContext()).getSupportFragmentManager(), "ProductFilterListActivity");
+
+            if(!mBrandListDialog.isAdded())
+                mBrandListDialog.show(((AppCompatActivity)getContext()).getSupportFragmentManager(), "ProductFilterListActivity");
         }
     }
     ////////////////////////////////////////////////
