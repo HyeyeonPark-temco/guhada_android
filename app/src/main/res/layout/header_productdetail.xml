@@ -13,6 +13,7 @@
         android:id="@+id/toolbar_productdetail_header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_header"
+        app:layout_collapseMode="pin"
         android:background="@drawable/borderline_under_e6">
 
         <androidx.constraintlayout.widget.ConstraintLayout

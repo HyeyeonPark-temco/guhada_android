@@ -28,6 +28,7 @@ import io.temco.guhada.view.activity.PaymentActivity;
 import io.temco.guhada.view.activity.PaymentResultActivity;
 import io.temco.guhada.view.activity.PaymentWebViewActivity;
 import io.temco.guhada.view.activity.ProductDetailActivity;
+import io.temco.guhada.view.activity.ProductFragmentDetailActivity;
 import io.temco.guhada.view.activity.SearchZipWebViewActivity;
 import io.temco.guhada.view.activity.SellerInfoActivity;
 import io.temco.guhada.view.activity.ShippingTrackingActivity;
@@ -98,7 +99,7 @@ public class TestListActivity extends AppCompatActivity {
                     break;
 
                 case 8: // Product Detail
-                    Intent intent = new Intent(TestListActivity.this, ProductDetailActivity.class);
+                    Intent intent = new Intent(TestListActivity.this, ProductFragmentDetailActivity.class);
                     intent.putExtra(Info.INTENT_DEAL_ID, Integer.parseInt(getResources().getString(R.string.temp_productId)));
                     startActivity(intent);
                     break;
