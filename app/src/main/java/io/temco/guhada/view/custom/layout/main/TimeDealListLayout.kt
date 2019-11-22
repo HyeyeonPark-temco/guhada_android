@@ -16,6 +16,7 @@ import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnMainListListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
@@ -49,6 +50,8 @@ class TimeDealListLayout constructor(
 
     private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
     private var recentViewCount = -1
+
+    lateinit var mainListListener : OnMainListListener
 
     override fun getBaseTag() = KidsListLayout::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_main_timelist

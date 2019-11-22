@@ -5,12 +5,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.listener.OnBackPressListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
 import io.temco.guhada.view.fragment.product.ProductFragment
+
 /**
  * @author park jungho
  * 19.08.05
@@ -20,7 +20,7 @@ import io.temco.guhada.view.fragment.product.ProductFragment
 class ProductFilterPagerAdapter(private val mFragmentManager: FragmentManager) : FragmentPagerAdapter(mFragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     // -------- LOCAL VALUE --------
-    private val TAG = MainPagerAdapter::class.java.simpleName
+    private val TAG = ProductFilterPagerAdapter::class.java.simpleName
     private val TAG_PRODUCT = "product"
     var mProductFragment: ProductFragment? = null
 

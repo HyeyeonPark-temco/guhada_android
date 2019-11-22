@@ -83,6 +83,7 @@ abstract class BaseListLayout<B : ViewDataBinding,T : BaseObservableViewModel> :
         addView(view)
     }
 
+
     ////////////////////////////////////////////////
 
     override fun getLifecycle(): Lifecycle {

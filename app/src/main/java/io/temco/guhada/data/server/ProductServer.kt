@@ -171,7 +171,7 @@ class ProductServer {
         @JvmStatic
         fun getProductByNewArrivals(unitPerPage: Int, listener: OnServerListener?) {
             if (listener != null) {
-                val call = RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false).getProductByNewArrivals(unitPerPage)
+                val call = RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true).getProductByNewArrivals(unitPerPage)
                 RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
                     override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
                         listener.onResult(response.isSuccessful, response.body())

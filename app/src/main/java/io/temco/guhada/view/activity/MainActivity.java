@@ -2,7 +2,6 @@ package io.temco.guhada.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,7 +18,6 @@ import io.temco.guhada.common.EventBusData;
 import io.temco.guhada.common.EventBusHelper;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
-import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomLog;
@@ -27,13 +25,9 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.db.GuhadaDB;
 import io.temco.guhada.data.model.Brand;
-import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.UserShipping;
-import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.model.cart.CartResponse;
 import io.temco.guhada.data.model.claim.Claim;
-import io.temco.guhada.data.model.user.UserSize;
-import io.temco.guhada.data.server.OrderServer;
+import io.temco.guhada.data.model.main.HomeDeal;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
@@ -55,7 +49,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private int moveMainIndex = 0;
 
     private Disposable disposable = null;
-    private Handler mHandler = null;
     //
 
     private MainPagerAdapter mPagerAdapter;
@@ -70,6 +63,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private GuhadaDB mDb;
 
     private int currentViewPagerIndex = 2;
+
+    private HomeDeal premiumData = null;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -96,10 +91,18 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         mDisposable = new CompositeDisposable();
         mDb = GuhadaDB.Companion.getInstance(this);
         mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
+        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey("premiumData")){
+            premiumData = (HomeDeal) getIntent().getSerializableExtra("premiumData");
+            if(CustomLog.getFlag())CustomLog.L("MainActivity","premiumData",premiumData);
+
+            if(CustomLog.getFlag())CustomLog.L("MainActivity","getPlusItem kidsList size",premiumData.getKidsList().size());
+            if(CustomLog.getFlag())CustomLog.L("MainActivity","getPlusItem menList size",premiumData.getMenList().size());
+            if(CustomLog.getFlag())CustomLog.L("MainActivity","getPlusItem womenList size",premiumData.getWomenList().size());
+            if(CustomLog.getFlag())CustomLog.L("MainActivity","getPlusItem allList size",premiumData.getAllList().size());
+        }
         CommonUtil.getUserIp();
-        mHandler = new Handler(getMainLooper());
-        initMainPager();
         setEventBus();
+        initMainPager();
     }
 
     @Override
@@ -239,8 +242,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     if (data != null) {
                         mPagerAdapter.removeAll();
                         String text = data.getExtras().getString("search_word");
-                        if (CustomLog.INSTANCE.getFlag())
-                            CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
+                        if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
                         mPagerAdapter.setProductSearchData(text);
                     }
                     break;
@@ -365,7 +367,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private void initMainPager() {
         // Adapter
         if (mPagerAdapter == null)
-            mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+            mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
         // Pager
         mBinding.layoutContents.layoutPager.setAdapter(mPagerAdapter);
         mBinding.layoutContents.layoutPager.setSwipeEnabled(false);
@@ -575,5 +577,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     public Disposable getDisposable() {
         return disposable;
+    }
+
+    public HomeDeal getPremiumData() {
+        return premiumData;
     }
 }

@@ -1,5 +1,8 @@
 package io.temco.guhada.view.adapter;
 
+import android.content.Context;
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -10,6 +13,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.view.activity.MainActivity;
 import io.temco.guhada.view.fragment.community.CommunityMainFragment;
 import io.temco.guhada.view.fragment.main.HomeFragment;
 import io.temco.guhada.view.fragment.mypage.MyPageMainFragment;
@@ -22,18 +26,21 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private final String TAG_PRODUCT = "product";
     private FragmentManager mFragmentManager;
     private HomeFragment mHomeFragment;
+    private Context context;
     private CommunityMainFragment mCommunityFragment;
     private MyPageMainFragment mMyPageFragment;
     private ProductFragment mProductFragment;
+
     // -----------------------------
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public MainPagerAdapter(@NonNull FragmentManager fm) {
+    public MainPagerAdapter(@NonNull FragmentManager fm, @NonNull Context context) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mFragmentManager = fm;
+        this.context = context;
     }
 
     ////////////////////////////////////////////////
@@ -51,7 +58,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0: // Home
                 if (mHomeFragment == null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("premiumData", ((MainActivity)context).getPremiumData());
                     mHomeFragment = new HomeFragment();
+                    mHomeFragment.setArguments(bundle);
                    // mHomeFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mHomeFragment;

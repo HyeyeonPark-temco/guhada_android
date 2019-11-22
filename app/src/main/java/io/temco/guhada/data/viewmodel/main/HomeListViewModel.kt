@@ -24,13 +24,13 @@ import io.temco.guhada.view.adapter.main.HomeListAdapter
  * 메인 홈 리스트 CustomView ViewModel
  */
 class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
-    private var repository: HomeListRepository = HomeListRepository(context)
+    val listData : ArrayList<MainBaseModel> = arrayListOf()
+    private var adapter : HomeListAdapter = HomeListAdapter(this, listData)
+    fun getListAdapter() = adapter
 
-
-    private val _listData : SingleLiveEvent<ArrayList<MainBaseModel>> = repository.getList()
-    private val adapter = HomeListAdapter(this,listData.value!!)
-
-    val listData :LiveData<ArrayList<MainBaseModel>> get() = _listData
+    lateinit var premiumData : HomeDeal
+    lateinit var bestData : HomeDeal
+    lateinit var newInData : HomeDeal
 
     var mainHomeEventViewIndex = ObservableInt(0)
         @Bindable
@@ -40,34 +40,67 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
             notifyPropertyChanged(BR.mainHomeEventViewIndex)
         }
 
-    var mainHomeListTabLayout1 = ObservableInt(0)
-        @Bindable
-        get() = field
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.mainHomeListTabLayout1)
-        }
+    fun setListData(){
+        setHeaderData(listData)
 
-    var mainHomeListTabLayout2 = ObservableInt(0)
-        @Bindable
-        get() = field
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.mainHomeListTabLayout2)
-        }
+        var premiumSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "PREMIUM ITEM", arrayOf(premiumData?.allList!!.size, premiumData?.womenList!!.size, premiumData?.menList!!.size, premiumData?.kidsList!!.size), 0, premiumData!!,false)
+        listData.add(premiumSubTitle)
 
-    var mainHomeListTabLayout3 = ObservableInt(0)
-        @Bindable
-        get() = field
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.mainHomeListTabLayout3)
-        }
+        var bestSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "BEST ITEM", arrayOf(bestData?.allList!!.size, bestData?.womenList!!.size, bestData?.menList!!.size, bestData?.kidsList!!.size), 0, bestData!!,false)
+        listData.add(bestSubTitle)
+        adapter.notifyDataSetChanged()
+    }
+
+    fun setNewInData(){
+        var newInSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "NEW IN", arrayOf(newInData?.allList!!.size, newInData?.womenList!!.size, newInData?.menList!!.size, newInData?.kidsList!!.size), 0, newInData!!,false)
+        listData.add(newInSubTitle)
+        adapter.notifyItemInserted(listData.size)
+        getHotKeyword()
+    }
 
 
+    private fun setHeaderData(list : ArrayList<MainBaseModel>) {
+        val ddd = ArrayList<MainBaseModel>()
+        val tmpList = java.util.ArrayList<EventData>()
+        // 메인 홈 이벤트 화면의 더미 데이터 --------------------------------
+        tmpList.add(EventData(0, "", R.drawable.lucky_main_m_360, "main_banner_mobile", "", "", 5, "lucky"))
+        tmpList.add(EventData(1, "", R.drawable.timedeal_main_m_360, "main_banner_mobile", "", "", 4, "timedeal"))
+        tmpList.add(EventData(2, "", R.drawable.join_main_m_360, "main_banner_mobile", "", "", 2, ""))
+        tmpList.add(EventData(3, "", R.drawable.main_m_2per_360, "main_banner_mobile", "", "", 3, ""))
+        tmpList.add(EventData(4, "", R.drawable.genuine_main_m_360, "main_banner_mobile", "", "", 1, ""))
+        val event = MainEvent(0, HomeType.MainEvent, tmpList)
+        ddd.add(event)
+        list.add(event)
+        //list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
+        // ------------------------------------------------------------------
+    }
 
 
-    fun getListAdapter() = adapter
+    /**
+     * HOT KEYWORD
+     */
+    private fun getHotKeyword() {
+        ProductServer.getProductByKeyword(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var keys =  (o as BaseModel<*>).list as List<Keyword>
+                        var sub = KeywordMain(listData.size, HomeType.Keyword,"HOT KEYWORD", keys)
+                        listData.add(sub)
+                        listData.add(MainBaseModel(listData.size,HomeType.Footer,2))
+                        adapter.notifyItemRangeInserted(listData.size-2, listData.size)
+                    },
+                    dataNotFoundTask = {
+
+                    },
+                    failedTask = {
+
+                    }
+            )
+        })
+    }
 
 }
 
@@ -79,39 +112,11 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
  * 메인 홈 리스트 server data 연동 Repository
  */
 class HomeListRepository(val context : Context){
-    private val unitPerPage = 60
-    // 메인 홈 list data
-    private var list = SingleLiveEvent<ArrayList<MainBaseModel>>()
-
-    fun getList() : SingleLiveEvent<ArrayList<MainBaseModel>>{
-        if (list.value.isNullOrEmpty()){
-            setInitData()
-        }
-        return list
-    }
-
-
-    private fun setInitData() {
-        list.value = ArrayList()
-         val ddd = ArrayList<MainBaseModel>()
-         val tmpList = java.util.ArrayList<EventData>()
-         // 메인 홈 이벤트 화면의 더미 데이터 --------------------------------
-         tmpList.add(EventData(0, "", R.drawable.lucky_main_m_360, "main_banner_mobile", "", "", 5, "lucky"))
-         tmpList.add(EventData(1, "", R.drawable.timedeal_main_m_360, "main_banner_mobile", "", "", 4, "timedeal"))
-         tmpList.add(EventData(2, "", R.drawable.join_main_m_360, "main_banner_mobile", "", "", 2, ""))
-         tmpList.add(EventData(3, "", R.drawable.main_m_2per_360, "main_banner_mobile", "", "", 3, ""))
-         val event = MainEvent(0, HomeType.MainEvent, tmpList)
-         ddd.add(event)
-         list.value!!.add(event)
-        //list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
-        // ------------------------------------------------------------------
-        getPlusItem()
-    }
 
     /**
      *  PREMIUM ITEM
      */
-    private fun getPlusItem() {//getProductByPlusItem
+    /*private fun getPlusItem() {//getProductByPlusItem
         SearchServer.getProductByPlusItem(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -130,13 +135,13 @@ class HomeListRepository(val context : Context){
                     }
             )
         })
-    }
+    }*/
 
 
     /**
      * Best ITEM
      */
-    private fun getBestItem() {
+    /*private fun getBestItem() {
         SearchServer.getProductByBestItem(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -155,12 +160,12 @@ class HomeListRepository(val context : Context){
                     }
             )
         })
-    }
+    }*/
 
     /**
      * NEW IN
      */
-    private fun getNewIn() {
+    /*private fun getNewIn() {
         ProductServer.getProductByNewArrivals(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -179,12 +184,12 @@ class HomeListRepository(val context : Context){
                     }
             )
         })
-    }
+    }*/
 
     /**
      * HOT KEYWORD
      */
-    private fun getHotKeyword() {
+   /* private fun getHotKeyword() {
         ProductServer.getProductByKeyword(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -205,12 +210,12 @@ class HomeListRepository(val context : Context){
                     }
             )
         })
-    }
+    }*/
 
     /**
      * BEST STORE
      */
-    private fun getBestStore() {
+    /*private fun getBestStore() {
         ProductServer.getProductByNewArrivals(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -228,8 +233,6 @@ class HomeListRepository(val context : Context){
                     }
             )
         })
-    }
-
-
+    }*/
 
 }

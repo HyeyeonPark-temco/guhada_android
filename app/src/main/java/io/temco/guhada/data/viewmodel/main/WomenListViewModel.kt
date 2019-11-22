@@ -22,15 +22,60 @@ import io.temco.guhada.view.adapter.main.WomenListAdapter
  * 메인 홈 리스트 CustomView ViewModel
  */
 class WomenListViewModel(val context : Context) : BaseObservableViewModel() {
-    private var repository: WomenListRepository = WomenListRepository(context)
     var categoryList : MutableList<CategoryEntity>? = null
 
-    private val _listData : SingleLiveEvent<ArrayList<MainBaseModel>> = repository.getList()
-    private val adapter = WomenListAdapter(this,listData.value!!)
-
-    val listData :LiveData<ArrayList<MainBaseModel>> get() = _listData
-
+    val listData : ArrayList<MainBaseModel> = arrayListOf()
+    private var adapter : WomenListAdapter = WomenListAdapter(this, listData)
     fun getListAdapter() = adapter
+
+    var premiumData : HomeDeal? = null
+    var bestData : HomeDeal? = null
+    var newInData : HomeDeal? = null
+
+    fun setListData(){
+        listData.clear()
+        var premiumSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "PREMIUM ITEM", arrayOf(premiumData?.allList!!.size, premiumData?.womenList!!.size, premiumData?.menList!!.size, premiumData?.kidsList!!.size), 1, premiumData!!,false)
+        listData.add(premiumSubTitle)
+
+        var bestSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "BEST ITEM", arrayOf(bestData?.allList!!.size, bestData?.womenList!!.size, bestData?.menList!!.size, bestData?.kidsList!!.size), 1, bestData!!,false)
+        listData.add(bestSubTitle)
+        adapter.notifyDataSetChanged()
+        if(newInData != null) setNewInData()
+    }
+
+    fun setNewInData(){
+        var newInSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "NEW IN", arrayOf(newInData?.allList!!.size, newInData?.womenList!!.size, newInData?.menList!!.size, newInData?.kidsList!!.size), 1, newInData!!,false)
+        listData.add(newInSubTitle)
+        adapter.notifyItemInserted(listData.size)
+        getHotKeyword()
+    }
+
+
+    /**
+     * HOT KEYWORD
+     */
+    private fun getHotKeyword() {
+        ProductServer.getProductByKeyword(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var keys =  (o as BaseModel<*>).list as List<Keyword>
+                        var sub = KeywordMain(listData.size, HomeType.Keyword,"HOT KEYWORD", keys)
+                        listData.add(sub)
+                        listData.add(MainBaseModel(listData.size,HomeType.Footer,2))
+                        adapter.notifyItemRangeInserted(listData.size-2, listData.size)
+                    },
+                    dataNotFoundTask = {
+
+                    },
+                    failedTask = {
+
+                    }
+            )
+        })
+    }
 
 }
 

@@ -22,134 +22,35 @@ import io.temco.guhada.view.adapter.main.KidsListAdapter
  * 메인 홈 리스트 CustomView ViewModel
  */
 class KidsListViewModel(val context : Context) : BaseObservableViewModel() {
-    private var repository: KidsListRepository = KidsListRepository(context)
     var categoryList : MutableList<CategoryEntity>? = null
 
-    private val _listData : SingleLiveEvent<ArrayList<MainBaseModel>> = repository.getList()
-    private val adapter = KidsListAdapter(this,listData.value!!)
-
-    val listData :LiveData<ArrayList<MainBaseModel>> get() = _listData
-
+    val listData : ArrayList<MainBaseModel> = arrayListOf()
+    private var adapter : KidsListAdapter = KidsListAdapter(this, listData)
     fun getListAdapter() = adapter
 
-}
+    var premiumData : HomeDeal? = null
+    var bestData : HomeDeal? = null
+    var newInData : HomeDeal? = null
 
+    fun setListData(){
+        listData.clear()
+        var premiumSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "PREMIUM ITEM", arrayOf(premiumData?.allList!!.size, premiumData?.womenList!!.size, premiumData?.menList!!.size, premiumData?.kidsList!!.size), 3, premiumData!!,false)
+        listData.add(premiumSubTitle)
 
-/**
- * @author park jungho
- * 19.07.18
- *
- * 메인 홈 리스트 server data 연동 Repository
- */
-class KidsListRepository(val context : Context){
-    private val unitPerPage = 10
-    // 메인 홈 list data
-    private var list = SingleLiveEvent<ArrayList<MainBaseModel>>()
-
-    fun getList() : SingleLiveEvent<ArrayList<MainBaseModel>>{
-        if (list.value.isNullOrEmpty()){
-            setInitData()
-        }
-        return list
+        var bestSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "BEST ITEM", arrayOf(bestData?.allList!!.size, bestData?.womenList!!.size, bestData?.menList!!.size, bestData?.kidsList!!.size), 3, bestData!!,false)
+        listData.add(bestSubTitle)
+        adapter.notifyDataSetChanged()
+        if(newInData != null) setNewInData()
     }
 
-
-    private fun setInitData() {
-        list.value = ArrayList()
-        /*val ddd = ArrayList<MainBaseModel>()
-        val tmpList = java.util.ArrayList<EventData>()
-        // 메인 홈 이벤트 화면의 더미 데이터 --------------------------------
-        tmpList.add(EventData(0, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/a5e85e5d916e4e1e9d78d0a5e75a7411",
-                R.drawable.main_01, "main_01", "", "", 0, ""))
-        tmpList.add(EventData(1, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/Aviator_Polarized_Lens_58mm_Sunglasses_RB3025-001.png",
-                R.drawable.main_02, "hotkeyword05", "", "", 1, ""))
-        tmpList.add(EventData(2, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/19c8c40763734103a56bc1e93c26689a",
-                R.drawable.main_03, "focuson04", "", "", 2, ""))
-        tmpList.add(EventData(3, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/013c833b13744fadbdebaacc38d968cd",
-                R.drawable.main_04, "foryou_08", "", "", 3, ""))
-        tmpList.add(EventData(4, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/46b0d03ccb274329b822bba10d138adc",
-                R.drawable.main_05, "banner09", "", "", 4, ""))
-        val event = MainEvent(0, HomeType.MainEvent, tmpList)
-        ddd.add(event)
-        list.value!!.add(event)*/
-        //list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
-        // ------------------------------------------------------------------
-        getPlusItem()
-    }
-
-    /**
-     * PREMIUM ITEM
-     */
-    private fun getPlusItem() {//getProductByPlusItem
-        SearchServer.getProductByPlusItem(unitPerPage,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PREMIUM ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival,false)
-                        list.value!!.add(subTitle)
-                        //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
-                        getBestItem()
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-
-    /**
-     * Best ITEM
-     */
-    private fun getBestItem() {
-        SearchServer.getProductByBestItem(unitPerPage,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival,false)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                        getNewIn()
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-
-    /**
-     * NEW IN
-     */
-    private fun getNewIn() {
-        ProductServer.getProductByNewArrivals(unitPerPage,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival,false)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                        getHotKeyword()
-                        //getBestItem()
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
+    fun setNewInData(){
+        var newInSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "NEW IN", arrayOf(newInData?.allList!!.size, newInData?.womenList!!.size, newInData?.menList!!.size, newInData?.kidsList!!.size), 3, newInData!!,false)
+        listData.add(newInSubTitle)
+        adapter.notifyItemInserted(listData.size)
+        getHotKeyword()
     }
 
 
@@ -161,13 +62,10 @@ class KidsListRepository(val context : Context){
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var keys =  (o as BaseModel<*>).list as List<Keyword>
-                        var sub = KeywordMain(list.value!!.size, HomeType.Keyword,"HOT KEYWORD", keys)
-                        if(CustomLog.flag) CustomLog.L("getHotKeyword keys",keys)
-                        if(CustomLog.flag) CustomLog.L("getHotKeyword sub",sub)
-                        list.value!!.add(sub)
-                        list.value!!.add(MainBaseModel(list.value!!.size,HomeType.Footer,2))
-                        list.value = list.value
-                        //getBestStore()
+                        var sub = KeywordMain(listData.size, HomeType.Keyword,"HOT KEYWORD", keys)
+                        listData.add(sub)
+                        listData.add(MainBaseModel(listData.size,HomeType.Footer,2))
+                        adapter.notifyItemRangeInserted(listData.size-2, listData.size)
                     },
                     dataNotFoundTask = {
 
@@ -178,31 +76,5 @@ class KidsListRepository(val context : Context){
             )
         })
     }
-
-    /**
-     * BEST STORE
-     */
-    private fun getBestStore() {
-        ProductServer.getProductByNewArrivals(unitPerPage,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-
-
 
 }

@@ -1,21 +1,21 @@
 package io.temco.guhada.view.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.util.DisplayMetrics
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Info
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnBaseDialogListener
+import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
@@ -26,12 +26,12 @@ import io.temco.guhada.data.model.AppVersionCheck
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.SettleServer
+import io.temco.guhada.data.viewmodel.main.MainDataRepository
 import io.temco.guhada.databinding.ActivitySplashBinding
 import io.temco.guhada.view.activity.base.BindActivity
-
-
 
 
 class SplashActivity : BindActivity<ActivitySplashBinding>() {
@@ -41,6 +41,11 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
     ////////////////////////////////////////////////
     private lateinit var mDisposable: CompositeDisposable
     private lateinit var db: GuhadaDB
+    private lateinit var premiumData : HomeDeal
+
+    private var isFinishedCategoryData = false
+    private var isFinishedBrandData = false
+    private var isFinishedPremiumData = false
 
     override fun getBaseTag(): String {
         return SplashActivity::class.java.simpleName
@@ -55,6 +60,7 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
     }
 
     override fun init() {
+        mHandler.postDelayed(timeOutDialog, 60*1000)
         if (CustomLog.flag) CustomLog.L(this.javaClass.simpleName, "init")
         mDisposable = CompositeDisposable()
         db = GuhadaDB.getInstance(this)!!
@@ -108,7 +114,8 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                  .subscribe {
                     if(it > 0){
                         if(CustomLog.flag)CustomLog.L("SplashActivity subscribe",it)
-                        getAllBrands()
+                        isFinishedCategoryData = true
+                        check()
                     }
                 })
             }
@@ -120,33 +127,37 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
             if (success) {
                 Preferences.setBrands(o as List<Brand>)
             }
+            isFinishedBrandData = true
             check()
         })
     }
 
-    /* mDisposable.add(Observable.fromCallable<Boolean> {
-            var isFlag = true
-    try {
-        adapter.items.clear()
-        db.recentDealDao().deleteAll()
-    }catch (e : java.lang.Exception){
-        isFlag = false
+
+    private fun getPremiumData() {
+        MainDataRepository().getPremiumItem(Info.MAIN_UNIT_PER_PAGE, object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(resultFlag){
+                    premiumData = value as HomeDeal
+                    isFinishedPremiumData = true
+                }
+                check()
+            }
+        })
     }
-    isFlag
-}.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe { result ->
-        if(result){
-            totalItemSize.value = adapter.itemCount
-            adapter.notifyDataSetChanged()
-        }
-    }
-)*/
+
 
     private fun check() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }, 1000)
+        if(CustomLog.flag)CustomLog.L("SplashActivity",
+                "check isFinishedCategoryData",isFinishedCategoryData,"isFinishedBrandData",isFinishedBrandData,"isFinishedPremiumData",isFinishedPremiumData)
+        if(isFinishedCategoryData && isFinishedBrandData && isFinishedPremiumData){
+            mHandler.removeCallbacks(timeOutDialog)
+            mHandler.postDelayed({
+                var intent = Intent(this, MainActivity::class.java)
+                if(::premiumData.isInitialized)intent.putExtra("premiumData",premiumData)
+                startActivity(intent)
+                finish()
+            }, 300)
+        }
     }
 
     private fun setPasswordConfirm() {
@@ -155,14 +166,16 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mDisposable != null) {
-            mDisposable!!.dispose()
-        }
+        if (mDisposable != null) mDisposable!!.dispose()
         GuhadaDB.destroyInstance()
+        mHandler.removeCallbacks(timeOutDialog)
     }
 
 
     private fun getAppVersionData(){
+        isFinishedCategoryData = false
+        isFinishedBrandData = false
+        isFinishedPremiumData = false
         SettleServer.checkAppVersion(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -209,6 +222,8 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
 
     private fun initData(){
         getCategories()
+        getPremiumData()
+        getAllBrands()
         setPasswordConfirm()
     }
     ////////////////////////////////////////////////
