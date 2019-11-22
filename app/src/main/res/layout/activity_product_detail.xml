@@ -25,8 +25,8 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
                 android:id="@+id/collapsingtoolbarlayout_productdetail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -88,32 +88,33 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollview_productdetail"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
+            android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <View
-                    android:id="@+id/productdetail_scrollflag_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/common_white"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:id="@+id/productdetail_scrollflag_content"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/common_white"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollview_productdetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toTopOf="@+id/button_productdetail_payment"
+                app:layout_constraintTop_toBottomOf="@+id/productdetail_scrollflag_content">
 
                 <LinearLayout
                     android:id="@+id/linearlayout_productdetail_bodycontainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/productdetail_scrollflag_content">
+                    android:orientation="vertical">
 
                     <WebView
                         android:id="@+id/webview_productdetail_content"
@@ -188,66 +189,64 @@
 
                     </LinearLayout>
                 </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
-                <View
-                    android:id="@+id/view_productdetail_menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/black_overlay"
-                    android:onClick="@{()->viewModel.onClickCloseMenu()}"
-                    android:visibility="@{viewModel.menuVisibility}"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_productdetail_bag"
-                    app:layout_constraintEnd_toEndOf="parent"
+            <View
+                android:id="@+id/view_productdetail_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_overlay"
+                android:onClick="@{()->viewModel.onClickCloseMenu()}"
+                android:visibility="@{viewModel.menuVisibility}"
+                app:layout_constraintBottom_toBottomOf="@+id/button_productdetail_bag"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-                    />
+            <FrameLayout
+                android:id="@+id/framelayout_productdetail_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.menuVisibility,default = visible}"
+                app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-                <FrameLayout
-                    android:id="@+id/framelayout_productdetail_menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{viewModel.menuVisibility,default = visible}"
-                    app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+            <Button
+                android:id="@+id/button_productdetail_bag"
+                style="@style/InactivatedButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@color/greyish_brown_two"
+                android:clickable="@{product.purchasable}"
+                android:fontFamily="sans-serif-medium"
+                android:onClick="@{()->viewModel.onClickCart()}"
+                android:text="@string/productdetail_button_bag"
+                android:textSize="@dimen/text_18"
+                android:visibility="@{viewModel.bottomBtnVisibility == View.VISIBLE &amp;&amp; product.purchasable ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/button_productdetail_payment" />
 
-                <Button
-                    android:id="@+id/button_productdetail_bag"
-                    style="@style/InactivatedButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="@color/greyish_brown_two"
-                    android:clickable="@{product.purchasable}"
-                    android:fontFamily="sans-serif-medium"
-                    android:onClick="@{()->viewModel.onClickCart()}"
-                    android:text="@string/productdetail_button_bag"
-                    android:textSize="@dimen/text_18"
-                    android:visibility="@{viewModel.bottomBtnVisibility == View.VISIBLE &amp;&amp; product.purchasable ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/button_productdetail_payment" />
+            <Button
+                android:id="@+id/button_productdetail_payment"
+                style="@style/ActivatedButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@{product.purchasable ? @color/common_blue_purple : @color/silver}"
+                android:clickable="@{product.purchasable}"
+                android:fontFamily="sans-serif-medium"
+                android:onClick="@{()->viewModel.onClickPayment()}"
+                android:text="@{product.purchasable ? @string/productdetail_button_buy : product.reasonOfUnpurchasable, default= @string/productdetail_button_buy}"
+                android:textSize="@dimen/text_18"
+                android:visibility="@{viewModel.bottomBtnVisibility}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@id/button_productdetail_bag"
+                app:layout_constraintRight_toRightOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <Button
-                    android:id="@+id/button_productdetail_payment"
-                    style="@style/ActivatedButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="@{product.purchasable ? @color/common_blue_purple : @color/silver}"
-                    android:clickable="@{product.purchasable}"
-                    android:fontFamily="sans-serif-medium"
-                    android:onClick="@{()->viewModel.onClickPayment()}"
-                    android:text="@{product.purchasable ? @string/productdetail_button_buy : product.reasonOfUnpurchasable, default= @string/productdetail_button_buy}"
-                    android:textSize="@dimen/text_18"
-                    android:visibility="@{viewModel.bottomBtnVisibility}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@id/button_productdetail_bag"
-                    app:layout_constraintRight_toRightOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

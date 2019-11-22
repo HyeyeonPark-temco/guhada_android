@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
@@ -25,6 +26,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.analytics.HitBuilders
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
@@ -317,7 +319,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         var ll = (mBinding.tablayoutProductdetail.getChildAt(0) as LinearLayout).getChildAt(0) as LinearLayout
         val lp = ll.layoutParams as LinearLayout.LayoutParams
 
-        lp.width =  CommonViewUtil.convertDpToPixel(20, mBinding.root.context)
+        lp.width = CommonViewUtil.convertDpToPixel(20, mBinding.root.context)
         lp.weight = 0f
         ll.layoutParams = lp
         ll.isEnabled = false
@@ -580,26 +582,44 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
     private fun setDetectScrollView() {
         // val scrollBounds = Rect()
-        mBinding.scrollviewProductdetail.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            val height = mBinding.includeProductdetailHeader.toolbarProductdetailHeader.height + mBinding.includeProductdetailContentsummary.linearlayoutProductdetailSummayContainer.height
-            if (animFlag) {
-                if (oldScrollY > height) {
-                    if (scrollY - oldScrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.GONE) {
-                        animFlag = false
-                        mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
-                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
-                        animFlag = true
-                    }
-                } else {
-                    if (oldScrollY - scrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.VISIBLE) {
-                        animFlag = false
-                        mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
-                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
-                        animFlag = true
-                    }
+        mBinding.appbarlayoutProductdetail.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            Log.e("스크롤", "verticalOffset: $verticalOffset      totalScrollRange:  ${appBarLayout.totalScrollRange}")
+            if (verticalOffset != 0 && Math.abs(verticalOffset) - appBarLayout.totalScrollRange < 1000) {    // collapsed
+                if (mViewModel.bottomBtnVisibility.get() == View.GONE) {
+                    mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
+                }
+            } else {    // expanded
+                if (mViewModel.bottomBtnVisibility.get() == View.VISIBLE) {
+                    mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
                 }
             }
-        }
+        })
+
+//        mBinding.scrollviewProductdetail.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+//            val height = mBinding.includeProductdetailHeader.toolbarProductdetailHeader.height + mBinding.includeProductdetailContentsummary.linearlayoutProductdetailSummayContainer.height
+//            if (animFlag) {
+//                Log.e("스크롤 ", "scrollY: $scrollY       oldScrollY: $oldScrollY       height: $height")
+//                if (oldScrollY > 0 &&   mViewModel.bottomBtnVisibility.get() == View.GONE) {
+//
+//
+//                    if (scrollY - oldScrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.GONE) {
+//                        animFlag = false
+//                        mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
+//                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
+//                        animFlag = true
+//                    }
+//                } else {
+//
+////                    Log.e("스크롤 GONE ", "oldScrollY: $oldScrollY       height: $height")
+//                    if (oldScrollY - scrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.VISIBLE) {
+//                        animFlag = false
+//                        mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
+//                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
+//                        animFlag = true
+//                    }
+//                }
+//            }
+//        }
     }
 
     override fun showSideMenu() = this.mainListener.showSideMenu(true)
