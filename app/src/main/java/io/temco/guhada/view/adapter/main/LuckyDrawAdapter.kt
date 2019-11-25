@@ -303,7 +303,7 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                 binding.luckydraw = item.eventData
                 binding.index = position
                 if(TextUtils.isEmpty(binding.imageThumb.contentDescription) || binding.imageThumb.contentDescription.toString() != item.eventData.imageUrl){
-                    ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.eventData.imageUrl)
+                    ImageUtil.loadImage(containerView.context, binding.imageThumb, item.eventData.imageUrl)
                     binding.imageThumb.contentDescription = item.eventData.imageUrl
                 }
 

@@ -1,5 +1,6 @@
 package io.temco.guhada.common.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
@@ -10,10 +11,13 @@ import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 
 public class ImageUtil {
+
+    private static RequestManager requestManager;
 
     ////////////////////////////////////////////////
     // PUBLIC
@@ -99,6 +103,12 @@ public class ImageUtil {
         loadGlideImage(manager, view, url, null);
     }
 
+    public static void loadImage(Context context, ImageView view, String url) {
+        if(requestManager == null)
+            requestManager = Glide.with((Activity)context);
+        loadGlideImage(requestManager, view, url, null);
+    }
+
     public static void loadImage(RequestManager manager, ImageView view, String url, int width, int height) {
         loadGlideImage(manager, view, url, new RequestOptions().override(width, height));
     }
@@ -152,7 +162,7 @@ public class ImageUtil {
             manager.load(url)
                     .apply(RequestOptions.fitCenterTransform())
                     .apply(options)
-                    .thumbnail(0.9f)
+                    .thumbnail(0.1f)
                     .into(view);
         }
     }
