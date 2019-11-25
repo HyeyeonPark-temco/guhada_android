@@ -78,7 +78,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mBinding.includeProductdetailContentsummary.viewModel = mViewModel
             mBinding.includeProductdetailContentheader.viewModel = mViewModel
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)
+            mBinding.webviewProductdetailContent.loadData(product.desc, "text/html", null)
             mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
 
@@ -110,7 +110,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
         }
 
-        mBinding.includeProductdetailContentbody.viewModel = mViewModel
         mBinding.includeProductdetailContentinfo.viewModel = mViewModel
         mBinding.includeProductdetailContentshipping.viewModel = mViewModel
         mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
@@ -188,7 +187,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
 
         supportFragmentManager.beginTransaction().let {
-            it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
+//            it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
             it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, mHeaderMenuFragment)
             it.commitAllowingStateLoss()
         }
@@ -214,13 +213,13 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun scrollToElement(pos: Int) {
         var h = 0
         when (pos) {
-            0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
+//            0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
             1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
 //            2 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top
 //            2 -> h = (mStoreFragment.getmBinding().productdetailScrollflagRecommend.parent as View).top + mStoreFragment.getmBinding().productdetailScrollflagRecommend.top
         }
 
-        mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
+//        mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
     }
 
     override fun showMessage(message: String) {

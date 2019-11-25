@@ -20,11 +20,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.addListener
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.analytics.HitBuilders
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
@@ -148,7 +150,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
-                mBinding.includeProductdetailContentbody.viewModel = mViewModel
+                //                mBinding.includeProductdetailContentbody.viewModel = mViewModel
                 mBinding.includeProductdetailContentinfo.viewModel = mViewModel
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
@@ -291,12 +293,17 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initTabListener() {
-        val DETAIL_TAB_POS = 0
-        val detailTab = mBinding.includeProductdetailContentbody.tablayoutProductdetail.getTabAt(DETAIL_TAB_POS)
+        val DETAIL_TAB_POS = 1
+        val detailTab = mBinding.tablayoutProductdetail.getTabAt(DETAIL_TAB_POS)
         setTabTextStyle(tab = detailTab, textStyle = Typeface.BOLD, textColor = mBinding.root.context.resources.getColor(R.color.common_blue_purple))
+        detailTab?.select()
 
-        mBinding.includeProductdetailContentbody.tablayoutProductdetail.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        mBinding.tablayoutProductdetail.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
+                if (animFlag && tab?.position != 0 && tab?.position != 4) {
+                    setTabTextStyle(tab = tab, textStyle = Typeface.BOLD, textColor = mBinding.root.context.resources.getColor(R.color.common_blue_purple))
+                    this@ProductDetailFragment.scrollToElement(tab?.position ?: DETAIL_TAB_POS)
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -304,16 +311,31 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                setTabTextStyle(tab = tab, textStyle = Typeface.BOLD, textColor = mBinding.root.context.resources.getColor(R.color.common_blue_purple))
-                this@ProductDetailFragment.scrollToElement(tab?.position ?: DETAIL_TAB_POS)
+                if (animFlag && tab?.position != 0 && tab?.position != 4) {
+                    setTabTextStyle(tab = tab, textStyle = Typeface.BOLD, textColor = mBinding.root.context.resources.getColor(R.color.common_blue_purple))
+                    this@ProductDetailFragment.scrollToElement(tab?.position ?: DETAIL_TAB_POS)
+                }
             }
         })
+
+        // tablayout 양 끝 view
+        var ll = (mBinding.tablayoutProductdetail.getChildAt(0) as LinearLayout).getChildAt(0) as LinearLayout
+        val lp = ll.layoutParams as LinearLayout.LayoutParams
+
+        lp.width = CommonViewUtil.convertDpToPixel(20, mBinding.root.context)
+        lp.weight = 0f
+        ll.layoutParams = lp
+        ll.isEnabled = false
+
+        ll = (mBinding.tablayoutProductdetail.getChildAt(0) as LinearLayout).getChildAt(4) as LinearLayout
+        ll.layoutParams = lp
+        ll.isEnabled = false
     }
 
     private fun setTabTextStyle(tab: TabLayout.Tab?, textStyle: Int, textColor: Int) {
-        val STORE_TAB_POS = 2
+        val STORE_TAB_POS = 3
         if (tab != null) {
-            val tabLayout = (mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
+            val tabLayout = (mBinding.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
             val textView =
                     if (tab.position == STORE_TAB_POS) tabLayout.findViewById(R.id.textview_tab)
                     else tabLayout.getChildAt(1) as TextView
@@ -560,27 +582,42 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun setDetectScrollView() {
-        // val scrollBounds = Rect()
         mBinding.scrollviewProductdetail.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            val height = mBinding.includeProductdetailHeader.toolbarProductdetailHeader.height + mBinding.includeProductdetailContentsummary.linearlayoutProductdetailSummayContainer.height
-            if (animFlag) {
-                if (oldScrollY > height) {
-                    if (scrollY - oldScrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.GONE) {
-                        animFlag = false
-                        mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
-                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
-                        animFlag = true
-                    }
-                } else {
-                    if (oldScrollY - scrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.VISIBLE) {
-                        animFlag = false
-                        mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
-                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
-                        animFlag = true
-                    }
+            val claimHeight = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
+            val storeHeight = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top + mStoreFragment.getStoreFlagHeight()
+
+            when {
+                scrollY in 0 until claimHeight -> {
+                    animFlag = false
+                    mBinding.tablayoutProductdetail.getTabAt(1)?.select()
+                    animFlag = true
+                }
+                scrollY in claimHeight until storeHeight -> {
+                    animFlag = false
+                    mBinding.tablayoutProductdetail.getTabAt(2)?.select()
+                    animFlag = true
+                }
+                scrollY >= storeHeight -> {
+                    animFlag = false
+                    mBinding.tablayoutProductdetail.getTabAt(3)?.select()
+                    animFlag = true
                 }
             }
         }
+
+        mBinding.appbarlayoutProductdetail.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (verticalOffset != 0 && verticalOffset + appBarLayout.totalScrollRange < 1500) {    // collapsed
+                if (!mViewModel.bottomBtnVisible.get()) {
+                    mViewModel.bottomBtnVisible = ObservableBoolean(true)
+                    mViewModel.notifyPropertyChanged(BR.bottomBtnVisible)
+                }
+            } else {    // expanded
+                if (mViewModel.bottomBtnVisible.get()) {
+                    mViewModel.bottomBtnVisible = ObservableBoolean(false)
+                    mViewModel.notifyPropertyChanged(BR.bottomBtnVisible)
+                }
+            }
+        })
     }
 
     override fun showSideMenu() = this.mainListener.showSideMenu(true)
@@ -591,11 +628,12 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     override fun scrollToElement(pos: Int) {
         var h = 0
         when (pos) {
-            0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
-            1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-            2 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top + mStoreFragment.getStoreFlagHeight()
+            1 -> h = 0 // (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
+            2 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
+            3 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top + mStoreFragment.getStoreFlagHeight()
         }
 
+        mBinding.appbarlayoutProductdetail.setExpanded(false)
         mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
     }
 
@@ -887,7 +925,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 "h1{font-size:large; word-break: break-all; word-break: break-word}" +
                 "h2{font-size:medium; word-break: break-all; word-break: break-word}</style>")
         data.append(product.desc.replace("\"//www", "\"https://www"))
-        mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
+        mBinding.webviewProductdetailContent.settings.apply {
             javaScriptEnabled = true
             javaScriptCanOpenWindowsAutomatically = true
             setSupportMultipleWindows(true)
@@ -901,7 +939,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
             if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
         }
-        mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
+        mBinding.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
 
         /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
             javaScriptEnabled = true

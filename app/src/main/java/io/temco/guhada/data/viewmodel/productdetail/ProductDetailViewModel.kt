@@ -55,13 +55,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var menuVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
-    var bottomBtnVisibility = ObservableInt(View.GONE)
+    var bottomBtnVisible = ObservableBoolean(false)
         @Bindable
         get() = field
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.bottomBtnVisibility)
-        }
+
     var imagePos = 1
         @Bindable
         get() = field
@@ -358,14 +355,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     }
 
 //    LISTENER
-
-    // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
-    fun onClickTab(view: View) {
-        val pos = view.tag.toString()
-        selectedTab = ObservableInt(pos.toInt())
-        listener?.scrollToElement(pos.toInt())
-        notifyPropertyChanged(BR.selectedTab)
-    }
 
     fun onClickRefundInfo() {
         refundInfoExpanded = ObservableBoolean(!refundInfoExpanded.get())
