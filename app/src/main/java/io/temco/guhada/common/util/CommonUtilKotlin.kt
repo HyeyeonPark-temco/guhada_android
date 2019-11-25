@@ -134,27 +134,73 @@ object CommonUtilKotlin  {
     @JvmStatic
     fun moveEventPage(act : Activity, param : String, param2 : String, isMainActivity : Boolean, isFinished : Boolean){
         if(TextUtils.isEmpty(param)) return
-        if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage param",param)
+        if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage param",param,"param2",param2)
         when(param){
-            "join"->{
+            SchemeMoveType.JOIN.code->{
                 CommonUtil.startLoginPage(act)
                 if(isFinished)act.finish()
             }
-            "timedeal"->{
+            SchemeMoveType.TIMEDEAL.code->{
                 if(isMainActivity){
                     EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.TIME_DEAL))
                 }else{
-                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, Info.MainHomeIndex.TIME_DEAL,true, isMainActivity)
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, Info.MainHomeIndex.TIME_DEAL,true, isMainActivity)
                     act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
                     act.onBackPressed()
                 }
                 if(isFinished)act.finish()
             }
-            "luckydraw"->{
+            SchemeMoveType.LUCKYDRAW.code->{
                 if(isMainActivity){
                     EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.LUCKY_DRAW))
                 }else{
-                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, Info.MainHomeIndex.LUCKY_DRAW,true, isMainActivity)
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, Info.MainHomeIndex.LUCKY_DRAW,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.EVENT.code->{
+                if(isMainActivity){
+                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.EVENT_LIST))
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, Info.MainHomeIndex.EVENT_LIST,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.MAIN.code->{
+                if(isMainActivity){
+
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.PRODUCT.code->{
+                if(isMainActivity){
+                    if(!TextUtils.isEmpty(param2)){
+                        try {
+                            CommonUtil.startProductActivity(act, param2.toLong())
+                        }catch (e : Exception){
+                            if(CustomLog.flag)CustomLog.E(e)
+                        }
+                    }
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.SEARCH.code->{
+                if(isMainActivity){
+                    CommonUtil.startSearchListActivity(act,param2,true)
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag,true, isMainActivity)
                     act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
                     act.onBackPressed()
                 }

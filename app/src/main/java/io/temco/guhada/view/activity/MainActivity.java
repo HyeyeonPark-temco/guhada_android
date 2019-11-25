@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
@@ -116,7 +118,12 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         if (((BaseApplication) getApplicationContext()).getMoveToMain() != null && ((BaseApplication) getApplicationContext()).getMoveToMain().isMoveToMain()) {
             if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() != -1) {
                 if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN) {
-
+                    if(!TextUtils.isEmpty(((BaseApplication) getApplicationContext()).getMoveToMain().getState())){
+                        CommonUtilKotlin.moveEventPage(this,
+                                ((BaseApplication) getApplicationContext()).getMoveToMain().getState(),
+                                ((BaseApplication) getApplicationContext()).getMoveToMain().getArg1(),
+                                true,false);
+                    }
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(2);
                     moveMainIndex = 0;

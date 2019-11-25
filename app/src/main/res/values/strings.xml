@@ -488,6 +488,10 @@
     <string name="productdetail_store_recommendempty">추천 상품이 없습니다.</string>
     <string name="productdetail_store_otherempty">판매자의 다른 상품이 없습니다.</string>
 
+    <string name="productdetail_bookmark_on">북마크 완료</string>
+    <string name="productdetail_bookmark_off">북마크 해제</string>
+
+
     <!-- CLAIM -->
     <string name="claim_write_hint">문의하실 내용을 입력하세요</string>
     <string name="claim_write_private">비공개글 설정</string>
@@ -1111,6 +1115,7 @@
     <string name="mypage_userinfo_refundaccount_button">계좌확인</string>
 
     <string name="mypage_userinfo_hint_errornickname">이미 사용중인 닉네임입니다.</string>
+    <string name="mypage_userinfo_withdraw">정말 탈퇴하시겠습니까?</string>
 
     <string name="mypage_recentlayout_totalsize1">총 </string>
     <string name="mypage_recentlayout_totalsize2">개</string>

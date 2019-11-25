@@ -11,6 +11,7 @@ import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.event.EventListData
+import io.temco.guhada.data.model.main.MainBanner
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.SettleService
 import io.temco.guhada.data.viewmodel.main.EventProgressType
@@ -75,7 +76,7 @@ class SettleServer {
 
 
         /**
-         * 중복된 이메일인지 검증
+         * 이벤트 리스트
          */
         @JvmStatic
         fun getEventList(eventProgress : EventProgressType, listener: OnServerListener) {
@@ -84,6 +85,21 @@ class SettleServer {
                     resultListener(listener, call, response)
                 }
                 override fun onFailure(call: Call<BaseModel<EventListData>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+        /**
+         * 메인 베너
+         */
+        @JvmStatic
+        fun getMainBanner(listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getMainBanner().enqueue(object : Callback<BaseModel<MainBanner>> {
+                override fun onResponse(call: Call<BaseModel<MainBanner>>, response: Response<BaseModel<MainBanner>>) {
+                    resultListener(listener, call, response)
+                }
+                override fun onFailure(call: Call<BaseModel<MainBanner>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
             })

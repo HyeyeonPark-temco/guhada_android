@@ -177,6 +177,10 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
                 val imageParams = RelativeLayout.LayoutParams(width, width)
                 binding.imageThumb.setLayoutParams(imageParams)
 
+                itemView.setOnClickListener{
+                    CommonUtil.startProductActivity(viewModel.context as Activity, item.deal.dealId.toLong())
+                }
+
                 // Brand
                 binding.textBrand.setText(item.deal.brandName)
 

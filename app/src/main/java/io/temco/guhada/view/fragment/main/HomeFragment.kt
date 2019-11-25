@@ -20,6 +20,7 @@ import io.temco.guhada.common.listener.OnMainListListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.model.main.MainBanner
 import io.temco.guhada.data.viewmodel.main.MainDataRepository
 import io.temco.guhada.data.viewmodel.main.MainListPageViewModel
 import io.temco.guhada.databinding.FragmentMainHomeBinding
@@ -44,8 +45,10 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     lateinit var bestData: HomeDeal
     lateinit var newInData: HomeDeal
 
+    lateinit var mainBanner: List<MainBanner>
+
     private var isFinishedBestData = false
-    private var isFinishedNewinData = false
+    private var isFinishedBannerData = false
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -66,6 +69,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         customLayoutMap = WeakHashMap()
         mHandler = Handler(context?.mainLooper)
 
+        getMainBannerList(true)
         getBestItemList(true)
         setEvenBus()
     }
@@ -125,7 +129,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                     mainListListener = this@HomeFragment
                                     mainCustomLayoutListenerMap[position] = this
                                 }
-                                vw.setData(premiumData, bestData)
+                                vw.setData(premiumData, bestData, mainBanner)
                                 if(::newInData.isInitialized) mainCustomLayoutListenerMap[position]?.loadNewInDataList(position, newInData)
                             }
                             1 -> {
@@ -282,7 +286,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 if(resultFlag){
                     bestData = value as HomeDeal
                     isFinishedBestData = true
-                    if(init && isFinishedBestData) initHeader()
+                    if(init && isFinishedBestData && isFinishedBannerData) initHeader()
                 }
             }
         })
@@ -294,6 +298,20 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 if(resultFlag){
                     newInData = value as HomeDeal
                     for (i in 0..3) mainCustomLayoutListenerMap[i]?.loadNewInDataList(i, newInData!!)
+                }
+            }
+        })
+    }
+
+
+    private fun getMainBannerList(init : Boolean) {
+        MainDataRepository().getMainBanner(object : OnCallBackListener {
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag)CustomLog.L("getMainBannerList","MainBanner callBackListener",resultFlag)
+                if(resultFlag){
+                    isFinishedBannerData = true
+                    mainBanner = value as List<MainBanner>
+                    if(init && isFinishedBestData && isFinishedBannerData) initHeader()
                 }
             }
         })

@@ -30,6 +30,8 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
     lateinit var bestData : HomeDeal
     lateinit var newInData : HomeDeal
 
+    lateinit var mainBanner: List<MainBanner>
+
     var currentSubTitleIndexArray = arrayOf(0,0,0)
 
     var premiumItemSize = 0

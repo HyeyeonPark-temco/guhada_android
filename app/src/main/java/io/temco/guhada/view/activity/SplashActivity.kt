@@ -10,10 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Info
-import io.temco.guhada.common.Preferences
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.*
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
@@ -32,6 +29,7 @@ import io.temco.guhada.data.server.SettleServer
 import io.temco.guhada.data.viewmodel.main.MainDataRepository
 import io.temco.guhada.databinding.ActivitySplashBinding
 import io.temco.guhada.view.activity.base.BindActivity
+import java.io.Serializable
 
 
 class SplashActivity : BindActivity<ActivitySplashBinding>() {
@@ -46,6 +44,8 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
     private var isFinishedCategoryData = false
     private var isFinishedBrandData = false
     private var isFinishedPremiumData = false
+
+    private var schemeData : ActivityMoveToMain? = null
 
     override fun getBaseTag(): String {
         return SplashActivity::class.java.simpleName
@@ -65,6 +65,8 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
         mDisposable = CompositeDisposable()
         db = GuhadaDB.getInstance(this)!!
         BaseApplication.getInstance().moveToMain = null
+        var data : Serializable? = intent?.extras?.getSerializable("schemeData")
+        if(data != null) schemeData = data as ActivityMoveToMain
         getAppVersionData()
 
         this.windowManager.defaultDisplay.getMetrics((this@SplashActivity.applicationContext as BaseApplication).matrix)
@@ -178,6 +180,10 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
             mHandler.postDelayed({
                 var intent = Intent(this, MainActivity::class.java)
                 if(::premiumData.isInitialized)intent.putExtra("premiumData",premiumData)
+                if(schemeData != null){
+                    if(CustomLog.flag)CustomLog.L("SplashActivity","schemeData",schemeData.toString())
+                    BaseApplication.getInstance().moveToMain = schemeData
+                }
                 startActivity(intent)
                 finish()
             }, 300)

@@ -12,7 +12,11 @@ import android.app.ActivityManager
 import android.app.ActivityManager.RunningTaskInfo
 import android.content.Context
 import android.content.Context.ACTIVITY_SERVICE
+import android.text.TextUtils
+import io.temco.guhada.common.ActivityMoveToMain
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Flag
+import io.temco.guhada.common.enum.ResultCode
 
 
 /**
@@ -27,15 +31,22 @@ class SchemeActivity : BindActivity<io.temco.guhada.databinding.ActivityCustomdi
     override fun getLayoutId(): Int = R.layout.activity_scheme
     override fun getViewType(): Type.View = Type.View.SCHEME
 
+    var schemeData : ActivityMoveToMain? = null
+
     override fun init() {
         try{
             val uriData : Uri = intent.data
             val pgState = uriData.getQueryParameter("pg_state")
             val arg1 = uriData.getQueryParameter("arg1")?:""
             val arg2 = uriData.getQueryParameter("arg2")?:""
-            if(CustomLog.flag)CustomLog.L("SchemeActivity","pgState",pgState)
-            if(CustomLog.flag)CustomLog.L("SchemeActivity","arg1",arg1)
-            if(CustomLog.flag)CustomLog.L("SchemeActivity","arg2",arg2)
+            if(!TextUtils.isEmpty(pgState)){
+                if(CustomLog.flag)CustomLog.L("SchemeActivity","pgState",pgState)
+                if(CustomLog.flag)CustomLog.L("SchemeActivity","arg1",arg1)
+                if(CustomLog.flag)CustomLog.L("SchemeActivity","arg2",arg2)
+                // constructor(resultCode: Int, resultPageIndex: Int, isMoveToMain: Boolean, isInitMain: Boolean, state: String, arg1: String, arg2: String) {
+                //  ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, Info.MainHomeIndex.LUCKY_DRAW,true, isMainActivity)
+                schemeData = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, 0, true, true, pgState,arg1,arg2)
+            }
             if(BaseApplication.getInstance().activityState != null) BaseApplication.getInstance().activityState.remove(this.javaClass.simpleName)
         }catch (e : Exception){
             if(CustomLog.flag)CustomLog.E(e)
@@ -56,12 +67,18 @@ class SchemeActivity : BindActivity<io.temco.guhada.databinding.ActivityCustomdi
                 if (this.packageName == runningTaskInfo.baseIntent.component.packageName) {
                     activtyManager.moveTaskToFront(runningTaskInfo.id, ActivityManager.MOVE_TASK_WITH_HOME)
                     if(CustomLog.flag)CustomLog.L("SchemeActivity",i, "bring2Front",runningTaskInfo.id)
+                    if(schemeData!=null) {
+                        BaseApplication.getInstance().moveToMain = schemeData
+                        setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    }
                     finish()
                     return
                 }
             }
         }
-        startActivity(Intent(this, SplashActivity::class.java))
+        var intent = Intent(this, SplashActivity::class.java)
+        intent.putExtra("schemeData",schemeData)
+        startActivity(intent)
         finish()
         /*val runningTaskInfos = activtyManager.runningAppProcesses
         for (runningTaskInfo in runningTaskInfos) {

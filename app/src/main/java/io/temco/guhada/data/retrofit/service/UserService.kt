@@ -613,5 +613,12 @@ interface UserService {
     @PUT("/event/users")
     fun updateEventUser(@Header("Authorization") accessToken: String, @Body eventUser: EventUser): Call<BaseModel<Any>>
 
+    /**
+     * 회원탈퇴
+     * @author Hyeyeon Park
+     * @since 2019.11.21
+     */
+    @DELETE("/users/withdraw")
+    fun withdraw(@Header("Authorization") accessToken: String) : Call<BaseModel<Any>>
 
 }

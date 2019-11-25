@@ -258,6 +258,9 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                 }
                 binding.relativeImageLayout.setLayoutParams(param)
 
+                itemView.setOnClickListener{
+                    CommonUtil.startProductActivity(viewModel.context as Activity, item.deal.dealId.toLong())
+                }
                 val imageParams = RelativeLayout.LayoutParams(width, width)
                 binding.imageThumb.setLayoutParams(imageParams)
 

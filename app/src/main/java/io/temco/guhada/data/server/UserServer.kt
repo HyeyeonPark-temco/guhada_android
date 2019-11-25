@@ -938,5 +938,12 @@ class UserServer {
                 .updateEventUser(accessToken = accessToken, eventUser = eventUser).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
 
+        /**
+         * 회원탈퇴
+         * @author Hyeyeon Park
+         * @since 2019.11.21
+         */
+        fun withdraw(listener: OnServerListener, accessToken: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false)
+                .withdraw(accessToken = accessToken).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
     }
 }

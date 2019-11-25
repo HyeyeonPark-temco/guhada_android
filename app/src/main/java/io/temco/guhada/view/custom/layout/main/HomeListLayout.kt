@@ -22,6 +22,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.model.main.MainBanner
 import io.temco.guhada.data.viewmodel.main.HomeListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainHomelistBinding
 import io.temco.guhada.view.WrapGridLayoutManager
@@ -151,25 +152,12 @@ class HomeListLayout constructor(
         }
     }
 
-    fun setData(premiumData : HomeDeal, bestData : HomeDeal){
-        /*arguments?.getSerializable("premiumData")?.let {
-            mViewModel.premiumData = it as HomeDeal
-        }
-        arguments?.getSerializable("bestData")?.let {
-            mViewModel.bestData = it as HomeDeal
-        }*/
+    fun setData(premiumData : HomeDeal, bestData : HomeDeal, mainBanner: List<MainBanner>){
         mViewModel.premiumData = premiumData
         mViewModel.bestData = bestData
+        mViewModel.mainBanner = mainBanner
         mViewModel.setListData()
-        if (CustomLog.flag) CustomLog.L("HomeListLayout", "premiumData kidsList size", mViewModel.premiumData?.kidsList!!.size)
-        if (CustomLog.flag) CustomLog.L("HomeListLayout", "premiumData menList size", mViewModel.premiumData?.menList!!.size)
-        if (CustomLog.flag) CustomLog.L("HomeListLayout", "premiumData womenList size", mViewModel.premiumData?.womenList!!.size)
-        if (CustomLog.flag) CustomLog.L("HomeListLayout", "premiumData allList size", mViewModel.premiumData?.allList!!.size)
-
-        if (CustomLog.flag) CustomLog.L("HomeListLayout", "bestData kidsList size", mViewModel.bestData?.kidsList!!.size)
-        if (CustomLog.flag) CustomLog.L("HomeListLayout", "bestData menList size", mViewModel.bestData?.menList!!.size)
-        if (CustomLog.flag) CustomLog.L("HomeListLayout", "bestData womenList size", mViewModel.bestData?.womenList!!.size)
-        if (CustomLog.flag) CustomLog.L("HomeListLayout", "bestData allList size", mViewModel.bestData?.allList!!.size)
+        if (CustomLog.flag) CustomLog.L("HomeListLayout", "mainBanner", mViewModel.mainBanner)
     }
 
     fun listScrollTop() {

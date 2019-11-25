@@ -5,6 +5,10 @@ import io.temco.guhada.R
 import io.temco.guhada.databinding.DialogMessageBinding
 import io.temco.guhada.view.custom.dialog.base.BaseDialog
 
+/**
+ * Dialog (text + ok btn + cancel btn)
+ * @author Hyeyeon Park
+ */
 class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
     private var message: String = msg
     private var cancelButtonVisible: Boolean = false

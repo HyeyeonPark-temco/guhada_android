@@ -172,6 +172,10 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                 val imageParams = RelativeLayout.LayoutParams(width, width)
                 binding.imageThumb.setLayoutParams(imageParams)
 
+                itemView.setOnClickListener{
+                    CommonUtil.startProductActivity(viewModel.context as Activity, item.deal.dealId.toLong())
+                }
+
                 // Brand
                 binding.textBrand.setText(item.deal.brandName)
 

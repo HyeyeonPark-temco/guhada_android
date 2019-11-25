@@ -1,13 +1,19 @@
 package io.temco.guhada.data.viewmodel.main
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
+import io.temco.guhada.data.model.main.MainBanner
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.SearchServer
+import io.temco.guhada.data.server.SettleServer
+import org.json.JSONArray
 
 class MainDataRepository {
     /**
@@ -95,6 +101,30 @@ class MainDataRepository {
                     },dataIsNull = {
                         listener.callBackListener(false, "dataIsNull")
                     }
+            )
+        })
+    }
+
+
+    /**
+     *  MainBanner ITEM
+     */
+    fun getMainBanner(listener : OnCallBackListener) {
+        SettleServer.getMainBanner(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        val type = object : TypeToken<List<MainBanner>>() {}.type
+                        val list = Gson().fromJson<List<MainBanner>>((o as BaseModel<*>).message, type)
+                        listener.callBackListener(true, list)
+                    },
+                    dataNotFoundTask = {
+                        listener.callBackListener(false, "dataNotFoundTask")
+                    },
+                    failedTask = {
+                        listener.callBackListener(false, it.message)
+                    },dataIsNull = {
+                listener.callBackListener(false, "dataIsNull")
+            }
             )
         })
     }
