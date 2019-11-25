@@ -46,8 +46,8 @@ class WomenListViewModel(val context : Context) : BaseObservableViewModel() {
 
         listData.clear()
 
-        addListViewItem(premiumData!!,"PREMIUM ITEM",  Type.SerchFilterCondition.PLUS.name, currentSubTitleIndexArray[0])
-        addListViewItem(bestData!!,"BEST ITEM",  Type.SerchFilterCondition.BEST.name, currentSubTitleIndexArray[1])
+        addListViewItem(premiumData!!,"PREMIUM ITEM",  Type.SerchFilterCondition.PLUS.name,0, currentSubTitleIndexArray[0])
+        addListViewItem(bestData!!,"BEST ITEM",  Type.SerchFilterCondition.BEST.name,1, currentSubTitleIndexArray[1])
         /*var premiumSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
                 "PREMIUM ITEM", arrayOf(premiumData?.allList!!.size, premiumData?.womenList!!.size, premiumData?.menList!!.size, premiumData?.kidsList!!.size), currentSubTitleIndexArray[0], premiumData!!,false)
         premiumItemSize = premiumSubTitle.listSize[currentSubTitleIndexArray[0]]
@@ -63,7 +63,7 @@ class WomenListViewModel(val context : Context) : BaseObservableViewModel() {
     }
 
     fun setNewInData(){
-        addListViewItem(newInData!!,"NEW IN",  Type.SerchFilterCondition.NEW.name, currentSubTitleIndexArray[2])
+        addListViewItem(newInData!!,"NEW IN",  Type.SerchFilterCondition.NEW.name,2, currentSubTitleIndexArray[2])
         /*var newInSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
                 "NEW IN", arrayOf(newInData?.allList!!.size, newInData?.womenList!!.size, newInData?.menList!!.size, newInData?.kidsList!!.size), currentSubTitleIndexArray[2], newInData!!,false)
         newInItemSize = newInSubTitle.listSize[currentSubTitleIndexArray[2]]
@@ -74,10 +74,10 @@ class WomenListViewModel(val context : Context) : BaseObservableViewModel() {
     }
 
 
-    private fun addListViewItem(homeDeal : HomeDeal, title : String, typeNm : String, currentSubTitleIndex : Int){
+    private fun addListViewItem(homeDeal : HomeDeal, title : String, typeNm : String, subTitleIndex : Int, currentSubTitleIndex : Int){
         var subTitleLayout = SubTitleLayout(listData.size, HomeType.SubTitleLayout, title,
                 arrayOf(homeDeal.allList!!.size, homeDeal.womenList!!.size, homeDeal.menList!!.size, homeDeal.kidsList!!.size),
-                true, currentSubTitleIndex)
+                true, subTitleIndex, currentSubTitleIndex)
         listData.add(subTitleLayout)
         var dealList = when(currentSubTitleIndex){
             1-> homeDeal.womenList!!

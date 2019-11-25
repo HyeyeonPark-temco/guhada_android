@@ -23,10 +23,10 @@
 
     <!-- COMMON -->
     <!--<string name="app_name">Guhada</string>-->
-    <string name="app_name_release">Guhada</string>
-    <string name="app_name_debug">Guhada Dev</string>
-    <string name="app_name_qa">Guhada Qa</string>
-    <string name="app_name_stage">Guhada Stage</string>
+    <string name="app_name_release">구하다</string>
+    <string name="app_name_debug">구하다 Dev</string>
+    <string name="app_name_qa">구하다 Qa</string>
+    <string name="app_name_stage">구하다 Stage</string>
     <string name="app_logo_sub_title">쇼핑의 즐거움을 구하다</string>
     <string name="app_copyright">Ⓒ 2019 GUHADA</string>
 

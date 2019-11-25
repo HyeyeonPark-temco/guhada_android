@@ -29,9 +29,13 @@ class SchemeActivity : BindActivity<io.temco.guhada.databinding.ActivityCustomdi
 
     override fun init() {
         try{
-            var uriData : Uri = intent.data
-            var pgState = uriData.getQueryParameter("pg_state")
+            val uriData : Uri = intent.data
+            val pgState = uriData.getQueryParameter("pg_state")
+            val arg1 = uriData.getQueryParameter("arg1")?:""
+            val arg2 = uriData.getQueryParameter("arg2")?:""
             if(CustomLog.flag)CustomLog.L("SchemeActivity","pgState",pgState)
+            if(CustomLog.flag)CustomLog.L("SchemeActivity","arg1",arg1)
+            if(CustomLog.flag)CustomLog.L("SchemeActivity","arg2",arg2)
             if(BaseApplication.getInstance().activityState != null) BaseApplication.getInstance().activityState.remove(this.javaClass.simpleName)
         }catch (e : Exception){
             if(CustomLog.flag)CustomLog.E(e)

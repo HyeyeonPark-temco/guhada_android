@@ -11,4 +11,5 @@ class SubTitleLayout(index: Int,
                        var title : String,
                        var listSize : Array<Int>,
                        var isShowTabs : Boolean,
+                       var subTitleIndex : Int,
                        var currentSubTitleIndex : Int) : MainBaseModel(index, type,2)

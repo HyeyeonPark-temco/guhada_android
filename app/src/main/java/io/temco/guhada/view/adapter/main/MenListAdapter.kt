@@ -188,7 +188,6 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
 
                 if(!::request.isInitialized){
                     request = RequestOptions()
-                            .skipMemoryCache(true)
                             .fitCenter()
                             .format(DecodeFormat.PREFER_ARGB_8888)
                             .override(width,width)

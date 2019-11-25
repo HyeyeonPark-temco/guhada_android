@@ -184,7 +184,6 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                 // Thumbnail
                 if(!::request.isInitialized){
                     request = RequestOptions()
-                            .skipMemoryCache(true)
                             .fitCenter()
                             .format(DecodeFormat.PREFER_ARGB_8888)
                             .override(width,width)

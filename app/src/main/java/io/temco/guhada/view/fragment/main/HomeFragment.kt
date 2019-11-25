@@ -67,7 +67,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         mHandler = Handler(context?.mainLooper)
 
         getBestItemList(true)
-        getNewInItemList(true)
         setEvenBus()
     }
 
@@ -99,6 +98,11 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     private fun initHeader() {
         mBinding.layoutHeader.clickListener = this
         mViewModel.getPlusItem()
+        if(!::newInData.isInitialized) {
+            mHandler.postDelayed(Runnable {
+                getNewInItemList()
+            }, 2000)
+        }
         // Tab
         setTabLayout()
         setViewPager()
@@ -246,7 +250,8 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         // Dummy
         val titles = resources.getStringArray(R.array.main_titles)
         for (t in titles) {
-            addCustomTabs(t, false)
+            if(t == "이벤트" || t == "럭키드로우") addCustomTabsRed(t, false)
+            else addCustomTabs(t, false)
         }
     }
 
@@ -260,26 +265,35 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         }
     }
 
+
+    private fun addCustomTabsRed(title: String, isSelect: Boolean) {
+        if (context != null) {
+            val v = layoutInflater.inflate(R.layout.layout_tab_category_red, null)
+            (v.findViewById(R.id.text_title) as TextView).text = title
+            val tab = mBinding.layoutTab.newTab().setCustomView(v)
+            mBinding.layoutTab.addTab(tab)
+            if (isSelect) tab.select()
+        }
+    }
+
     private fun getBestItemList(init : Boolean) {
         MainDataRepository().getBestItem(Info.MAIN_UNIT_PER_PAGE, object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 if(resultFlag){
                     bestData = value as HomeDeal
                     isFinishedBestData = true
-                    if(init && isFinishedBestData && isFinishedNewinData) initHeader()
+                    if(init && isFinishedBestData) initHeader()
                 }
             }
         })
     }
 
-    private fun getNewInItemList(init : Boolean) {
+    private fun getNewInItemList() {
         MainDataRepository().getNewIn(Info.MAIN_UNIT_PER_PAGE, object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 if(resultFlag){
                     newInData = value as HomeDeal
-                    isFinishedNewinData = true
-                    if(init && isFinishedBestData && isFinishedNewinData) initHeader()
-                    //for (i in 0..3) mainCustomLayoutListenerMap[i]?.loadNewInDataList(i, newInData!!)
+                    for (i in 0..3) mainCustomLayoutListenerMap[i]?.loadNewInDataList(i, newInData!!)
                 }
             }
         })

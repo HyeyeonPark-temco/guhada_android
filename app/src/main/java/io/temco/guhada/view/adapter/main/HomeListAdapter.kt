@@ -169,29 +169,28 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                 binding.subtitle.visibility = View.VISIBLE
                 binding.title.text = item.title
                 setTabLayout(model, position)
-                binding.tab0.setOnClickListener{
-                    /*if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex != 0){
-                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = 0
-                        model.getListAdapter().notifyItemChanged(position)
-                    }*/
-                }
-                binding.tab1.setOnClickListener{
-                    /*if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex != 1){
-                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = 1
-                        model.getListAdapter().notifyItemChanged(position)
-                    }*/
-                }
-                binding.tab2.setOnClickListener{
-                    /*if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex != 2){
-                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = 2
-                        model.getListAdapter().notifyItemChanged(position)
-                    }*/
-                }
-                binding.tab3.setOnClickListener{
-                    /*if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex != 3){
-                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = 3
-                        model.getListAdapter().notifyItemChanged(position)
-                    }*/
+                if(CustomLog.flag)CustomLog.L("SubTitleLayoutViewHolder","item index",item.index, "item currentSubTitleIndex",
+                        item.currentSubTitleIndex, "subTitleIndex",item.subTitleIndex, "listSize",item.listSize[item.currentSubTitleIndex])
+                binding.setClickTabListener {
+                    var tabIndex = when(it.id){
+                        R.id.tab_1->1
+                        R.id.tab_2->2
+                        R.id.tab_3->3
+                        else -> 0
+                    }
+                    if(model.currentSubTitleIndexArray[item.subTitleIndex] != tabIndex){
+                        if(CustomLog.flag)CustomLog.L("SubTitleLayoutViewHolder "+position,"item index",item.index,
+                                "item currentSubTitleIndex",item.currentSubTitleIndex, "subTitleIndex",item.subTitleIndex, "listSize 0",item.listSize[tabIndex])
+
+                        model.currentSubTitleIndexArray[item.subTitleIndex] = tabIndex
+                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = tabIndex
+                        var homeDeal = when(item.subTitleIndex){
+                            1->model.bestData
+                            2->model.newInData
+                            else -> model.premiumData
+                        }
+                        setTabItems(position, tabIndex, item, homeDeal, model)
+                    }
                 }
             }
         }
@@ -207,6 +206,26 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                     tabTitle[i].setTextColor((containerView.context as Activity).resources.getColor(R.color.warm_grey_six))
                 }
             }
+        }
+
+        private fun setTabItems(position : Int,currentSubTitleIndex : Int, item : SubTitleLayout, homeDeal: HomeDeal, model: HomeListViewModel){
+            for(i in 0 until item.listSize[item.currentSubTitleIndex]){
+                if(CustomLog.flag)CustomLog.L("SubTitleLayoutViewHolder "+position, "downTo index",i)
+                model.getListAdapter().items.removeAt(position+1)
+            }
+            var dealList = when(currentSubTitleIndex){
+                1-> homeDeal.womenList!!
+                2-> homeDeal.menList!!
+                3-> homeDeal.kidsList!!
+                else->homeDeal.allList!!
+            }
+            var list = arrayListOf<MainBaseModel>()
+            for (deal in dealList){
+                var dealItem = DealItem(model.getListAdapter().items.size, HomeType.DealItemOne, deal)
+                list.add(dealItem)
+            }
+            model.getListAdapter().items.addAll(position+1, list)
+            model.getListAdapter().notifyItemRangeChanged(position, dealList.size+1)
         }
     }
 
@@ -253,7 +272,6 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
 
                 if(!::request.isInitialized){
                     request = RequestOptions()
-                            .skipMemoryCache(true)
                             .fitCenter()
                             .format(DecodeFormat.PREFER_ARGB_8888)
                             .override(width,width)
@@ -290,12 +308,6 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                     binding.textPriceSalePer.setVisibility(View.GONE)
                     binding.textPricediscount.setVisibility(View.GONE)
                 }
-                /*if (data.setDiscount) {
-                mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.intValue())));
-                mBinding.textPriceSalePer.setText(String.format(context.getString(R.string.product_price_sale_per), data.discountRate));
-            } else {
-                mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.intValue())));
-            }*/
 
                 // Ship
                 binding.textShipFree.setVisibility(if (item.deal.freeShipping) View.VISIBLE else View.GONE)

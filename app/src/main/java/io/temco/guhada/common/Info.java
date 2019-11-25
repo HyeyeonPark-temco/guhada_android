@@ -11,7 +11,7 @@ public class Info {
     public static final int LIST_PAGE_UNIT = 30;
     public static final int LIST_PAGE_THRESHOLD = 10;
 
-    public static final int MAIN_UNIT_PER_PAGE = 100;
+    public static final int MAIN_UNIT_PER_PAGE = 60;
 
     ////////////////////////////////////////////////
     // RESULT CODE
