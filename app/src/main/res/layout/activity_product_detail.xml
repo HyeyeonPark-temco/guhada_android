@@ -15,239 +15,239 @@
             type="io.temco.guhada.data.model.product.Product" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbarlayout_productdetail"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsingtoolbarlayout_productdetail"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbarlayout_productdetail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/collapsingtoolbarlayout_productdetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white_four"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/include_productdetail_contentheader"
-                        layout="@layout/layout_productdetail_header" /> <!-- 상단 상품 정보(이미지, 상품 명, 가격 등) 영역 -->
-
-                    <include
-                        android:id="@+id/include_productdetail_contentsummary"
-                        layout="@layout/layout_productdetail_summary" />    <!-- 배송정보, 혜택정보, 셀러 정보 영역 -->
-                </LinearLayout>
-
-                <include
-                    android:id="@+id/include_productdetail_header"
-                    layout="@layout/header_productdetail" />
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tablayout_productdetail"
-                style="@style/TabLayoutPurpleIndicatorStyle"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1">
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:text="" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/productdetail_button_detail" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/productdetail_button_qna" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabitem_productdetail_store"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:icon="@drawable/background_color_dot_brick"
-                    android:layout="@layout/item_productdetail_tab"
-                    android:text="@string/productdetail_button_store" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:text="" />
-            </com.google.android.material.tabs.TabLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-            <View
-                android:id="@+id/productdetail_scrollflag_content"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/common_white"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/scrollview_productdetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fillViewport="true"
-                app:layout_constraintBottom_toTopOf="@+id/button_productdetail_payment"
-                app:layout_constraintTop_toBottomOf="@+id/productdetail_scrollflag_content">
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_productdetail_bodycontainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <WebView
-                        android:id="@+id/webview_productdetail_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp" />
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
+                        android:background="@color/white_four"
                         android:orientation="vertical">
 
-                        <TextView
-                            style="@style/TextBold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/productdetail_tag"
-                            android:textColor="@color/greyish_brown_two"
-                            android:textSize="@dimen/text_16" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerview_productdetail_tag"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:orientation="horizontal"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                        <include
+                            android:id="@+id/include_productdetail_contentheader"
+                            layout="@layout/layout_productdetail_header" /> <!-- 상단 상품 정보(이미지, 상품 명, 가격 등) 영역 -->
 
                         <include
-                            android:id="@+id/include_productdetail_contentinfo"
-                            layout="@layout/layout_productdetail_info" />   <!-- 상품 정보 영역 (상품상태, 상품번호, 원산지) -->
-
-                        <View
-                            android:id="@+id/productdetail_scrollflag_review"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/common_white" />
-
-                        <FrameLayout
-                            android:id="@+id/framelayout_productdetail_review"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" /> <!-- 상품 리뷰 -->
-
-                        <View
-                            android:id="@+id/productdetail_scrollflag_qna"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp" />  <!-- 상품 문의 -->
-
-                        <FrameLayout
-                            android:id="@+id/framelayout_productdetail_claim"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <include
-                            android:id="@+id/include_productdetail_contentshipping"
-                            layout="@layout/layout_productdetail_shipping" />   <!-- 교환/반품 안내 영역 (배송정보, AS 안내사항, 교환/반품 안내) -->
-
-                        <include
-                            android:id="@+id/include_productdetail_contentnotifies"
-                            layout="@layout/layout_productdetail_productnotifies" />    <!-- 상품 고시 정보 영역 -->
-
-                        <View
-                            android:id="@+id/productdetail_scrollflag_recommend"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp" />
-
-                        <FrameLayout
-                            android:id="@+id/framelayout_productdetail_store"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
+                            android:id="@+id/include_productdetail_contentsummary"
+                            layout="@layout/layout_productdetail_summary" />    <!-- 배송정보, 혜택정보, 셀러 정보 영역 -->
                     </LinearLayout>
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
 
-            <View
-                android:id="@+id/view_productdetail_menu"
+                    <include
+                        android:id="@+id/include_productdetail_header"
+                        layout="@layout/header_productdetail" />
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tablayout_productdetail"
+                    style="@style/TabLayoutPurpleIndicatorStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:text="" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/productdetail_button_detail" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/productdetail_button_qna" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tabitem_productdetail_store"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:icon="@drawable/background_color_dot_brick"
+                        android:layout="@layout/item_productdetail_tab"
+                        android:text="@string/productdetail_button_store" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:text="" />
+                </com.google.android.material.tabs.TabLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/black_overlay"
-                android:onClick="@{()->viewModel.onClickCloseMenu()}"
-                android:visibility="@{viewModel.menuVisibility}"
-                app:layout_constraintBottom_toBottomOf="@+id/button_productdetail_bag"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <FrameLayout
-                android:id="@+id/framelayout_productdetail_menu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.menuVisibility,default = visible}"
-                app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <View
+                    android:id="@+id/productdetail_scrollflag_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/common_white" />
 
-            <Button
-                android:id="@+id/button_productdetail_bag"
-                style="@style/InactivatedButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@color/greyish_brown_two"
-                android:clickable="@{product.purchasable}"
-                android:fontFamily="sans-serif-medium"
-                android:onClick="@{()->viewModel.onClickCart()}"
-                android:text="@string/productdetail_button_bag"
-                android:textSize="@dimen/text_18"
-                android:visibility="@{viewModel.bottomBtnVisibility == View.VISIBLE &amp;&amp; product.purchasable ? View.VISIBLE : View.GONE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/button_productdetail_payment" />
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scrollview_productdetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true">
 
-            <Button
-                android:id="@+id/button_productdetail_payment"
-                style="@style/ActivatedButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@{product.purchasable ? @color/common_blue_purple : @color/silver}"
-                android:clickable="@{product.purchasable}"
-                android:fontFamily="sans-serif-medium"
-                android:onClick="@{()->viewModel.onClickPayment()}"
-                android:text="@{product.purchasable ? @string/productdetail_button_buy : product.reasonOfUnpurchasable, default= @string/productdetail_button_buy}"
-                android:textSize="@dimen/text_18"
-                android:visibility="@{viewModel.bottomBtnVisibility}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toRightOf="@id/button_productdetail_bag"
-                app:layout_constraintRight_toRightOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:id="@+id/linearlayout_productdetail_bodycontainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                        <WebView
+                            android:id="@+id/webview_productdetail_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="20dp" />
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
+                            <TextView
+                                style="@style/TextBold"
+                                android:layout_width="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/productdetail_tag"
+                                android:textColor="@color/greyish_brown_two"
+                                android:textSize="@dimen/text_16" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerview_productdetail_tag"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                            <include
+                                android:id="@+id/include_productdetail_contentinfo"
+                                layout="@layout/layout_productdetail_info" />   <!-- 상품 정보 영역 (상품상태, 상품번호, 원산지) -->
+
+                            <View
+                                android:id="@+id/productdetail_scrollflag_review"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/common_white" />
+
+                            <FrameLayout
+                                android:id="@+id/framelayout_productdetail_review"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" /> <!-- 상품 리뷰 -->
+
+                            <View
+                                android:id="@+id/productdetail_scrollflag_qna"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />  <!-- 상품 문의 -->
+
+                            <FrameLayout
+                                android:id="@+id/framelayout_productdetail_claim"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <include
+                                android:id="@+id/include_productdetail_contentshipping"
+                                layout="@layout/layout_productdetail_shipping" />   <!-- 교환/반품 안내 영역 (배송정보, AS 안내사항, 교환/반품 안내) -->
+
+                            <include
+                                android:id="@+id/include_productdetail_contentnotifies"
+                                layout="@layout/layout_productdetail_productnotifies" />    <!-- 상품 고시 정보 영역 -->
+
+                            <View
+                                android:id="@+id/productdetail_scrollflag_recommend"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp" />
+
+                            <FrameLayout
+                                android:id="@+id/framelayout_productdetail_store"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <View
+            android:id="@+id/view_productdetail_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_overlay"
+            android:onClick="@{()->viewModel.onClickCloseMenu()}"
+            android:visibility="@{viewModel.menuVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/button_productdetail_bag"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/framelayout_productdetail_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.menuVisibility,default = visible}"
+            app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button_productdetail_bag"
+            style="@style/InactivatedButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@color/greyish_brown_two"
+            android:clickable="@{product.purchasable}"
+            android:fontFamily="sans-serif-medium"
+            android:onClick="@{()->viewModel.onClickCart()}"
+            android:text="@string/productdetail_button_bag"
+            android:textSize="@dimen/text_18"
+            android:visibility="@{viewModel.bottomBtnVisible &amp;&amp; product.purchasable ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/button_productdetail_payment" />
+
+        <Button
+            android:id="@+id/button_productdetail_payment"
+            style="@style/ActivatedButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@{product.purchasable ? @color/common_blue_purple : @color/silver}"
+            android:clickable="@{product.purchasable}"
+            android:fontFamily="sans-serif-medium"
+            android:onClick="@{()->viewModel.onClickPayment()}"
+            android:text="@{product.purchasable ? @string/productdetail_button_buy : product.reasonOfUnpurchasable, default= @string/productdetail_button_buy}"
+            android:textSize="@dimen/text_18"
+            android:visibility="@{viewModel.bottomBtnVisible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/button_productdetail_bag"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

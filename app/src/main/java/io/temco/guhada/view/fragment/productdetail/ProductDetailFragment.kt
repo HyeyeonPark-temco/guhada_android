@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.addListener
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -308,7 +309,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab?.position != 0 && tab?.position != 4) {
+                if (animFlag && tab?.position != 0 && tab?.position != 4) {
                     setTabTextStyle(tab = tab, textStyle = Typeface.BOLD, textColor = mBinding.root.context.resources.getColor(R.color.common_blue_purple))
                     this@ProductDetailFragment.scrollToElement(tab?.position ?: DETAIL_TAB_POS)
                 }
@@ -581,45 +582,42 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun setDetectScrollView() {
-        // val scrollBounds = Rect()
+        mBinding.scrollviewProductdetail.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            val claimHeight = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
+            val storeHeight = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top
+
+            when {
+                scrollY in 0 until claimHeight -> {
+                    animFlag = false
+                    mBinding.tablayoutProductdetail.getTabAt(1)?.select()
+                    animFlag =  true
+                }
+                scrollY in claimHeight..storeHeight -> {
+                    animFlag = false
+                    mBinding.tablayoutProductdetail.getTabAt(2)?.select()
+                    animFlag =  true
+                }
+                scrollY > storeHeight -> {
+                    animFlag = false
+                    mBinding.tablayoutProductdetail.getTabAt(3)?.select()
+                    animFlag =  true
+                }
+            }
+        }
+
         mBinding.appbarlayoutProductdetail.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            Log.e("스크롤", "verticalOffset: $verticalOffset      totalScrollRange:  ${appBarLayout.totalScrollRange}")
-            if (verticalOffset != 0 && Math.abs(verticalOffset) - appBarLayout.totalScrollRange < 1000) {    // collapsed
-                if (mViewModel.bottomBtnVisibility.get() == View.GONE) {
-                    mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
+            if (verticalOffset != 0 && verticalOffset + appBarLayout.totalScrollRange < 1500) {    // collapsed
+                if (!mViewModel.bottomBtnVisible.get()) {
+                    mViewModel.bottomBtnVisible = ObservableBoolean(true)
+                    mViewModel.notifyPropertyChanged(BR.bottomBtnVisible)
                 }
             } else {    // expanded
-                if (mViewModel.bottomBtnVisibility.get() == View.VISIBLE) {
-                    mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
+                if (mViewModel.bottomBtnVisible.get()) {
+                    mViewModel.bottomBtnVisible = ObservableBoolean(false)
+                    mViewModel.notifyPropertyChanged(BR.bottomBtnVisible)
                 }
             }
         })
-
-//        mBinding.scrollviewProductdetail.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-//            val height = mBinding.includeProductdetailHeader.toolbarProductdetailHeader.height + mBinding.includeProductdetailContentsummary.linearlayoutProductdetailSummayContainer.height
-//            if (animFlag) {
-//                Log.e("스크롤 ", "scrollY: $scrollY       oldScrollY: $oldScrollY       height: $height")
-//                if (oldScrollY > 0 &&   mViewModel.bottomBtnVisibility.get() == View.GONE) {
-//
-//
-//                    if (scrollY - oldScrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.GONE) {
-//                        animFlag = false
-//                        mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
-//                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
-//                        animFlag = true
-//                    }
-//                } else {
-//
-////                    Log.e("스크롤 GONE ", "oldScrollY: $oldScrollY       height: $height")
-//                    if (oldScrollY - scrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.VISIBLE) {
-//                        animFlag = false
-//                        mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
-//                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
-//                        animFlag = true
-//                    }
-//                }
-//            }
-//        }
     }
 
     override fun showSideMenu() = this.mainListener.showSideMenu(true)
@@ -630,7 +628,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     override fun scrollToElement(pos: Int) {
         var h = 0
         when (pos) {
-            1 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
+            1 -> h = 0 // (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
             2 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
             3 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top + mStoreFragment.getStoreFlagHeight()
         }

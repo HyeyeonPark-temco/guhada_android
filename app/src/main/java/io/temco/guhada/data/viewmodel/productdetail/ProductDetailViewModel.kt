@@ -55,13 +55,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var menuVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
-    var bottomBtnVisibility = ObservableInt(View.GONE)
+    var bottomBtnVisible = ObservableBoolean(false)
         @Bindable
         get() = field
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.bottomBtnVisibility)
-        }
+
     var imagePos = 1
         @Bindable
         get() = field
