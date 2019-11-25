@@ -43,6 +43,9 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     lateinit var premiumData : HomeDeal
     lateinit var bestData: HomeDeal
     lateinit var newInData: HomeDeal
+
+    private var isFinishedBestData = false
+    private var isFinishedNewinData = false
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -64,7 +67,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         mHandler = Handler(context?.mainLooper)
 
         getBestItemList(true)
-        getNewInItemList()
+        getNewInItemList(true)
         setEvenBus()
     }
 
@@ -262,18 +265,21 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 if(resultFlag){
                     bestData = value as HomeDeal
-                    if(init) initHeader()
+                    isFinishedBestData = true
+                    if(init && isFinishedBestData && isFinishedNewinData) initHeader()
                 }
             }
         })
     }
 
-    private fun getNewInItemList() {
-        MainDataRepository().getNewIn(60, object : OnCallBackListener {
+    private fun getNewInItemList(init : Boolean) {
+        MainDataRepository().getNewIn(Info.MAIN_UNIT_PER_PAGE, object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 if(resultFlag){
                     newInData = value as HomeDeal
-                    for (i in 0..3) mainCustomLayoutListenerMap[i]?.loadNewInDataList(i, newInData!!)
+                    isFinishedNewinData = true
+                    if(init && isFinishedBestData && isFinishedNewinData) initHeader()
+                    //for (i in 0..3) mainCustomLayoutListenerMap[i]?.loadNewInDataList(i, newInData!!)
                 }
             }
         })

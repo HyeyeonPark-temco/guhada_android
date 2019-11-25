@@ -3,6 +3,7 @@ package io.temco.guhada.data.viewmodel.main
 import android.content.Context
 import androidx.lifecycle.LiveData
 import io.temco.guhada.R
+import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
@@ -28,29 +29,68 @@ class WomenListViewModel(val context : Context) : BaseObservableViewModel() {
     private var adapter : WomenListAdapter = WomenListAdapter(this, listData)
     fun getListAdapter() = adapter
 
+    val currentSubTitleIndexArray = arrayOf(1,1,1)
+
+    var premiumItemSize = 0
+    var bestItemSize = 0
+    var newInItemSize = 0
+
     var premiumData : HomeDeal? = null
     var bestData : HomeDeal? = null
     var newInData : HomeDeal? = null
 
     fun setListData(){
+        premiumItemSize = 0
+        bestItemSize = 0
+        newInItemSize = 0
+
         listData.clear()
-        var premiumSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
-                "PREMIUM ITEM", arrayOf(premiumData?.allList!!.size, premiumData?.womenList!!.size, premiumData?.menList!!.size, premiumData?.kidsList!!.size), 1, premiumData!!,false)
+
+        addListViewItem(premiumData!!,"PREMIUM ITEM",  Type.SerchFilterCondition.PLUS.name, currentSubTitleIndexArray[0])
+        addListViewItem(bestData!!,"BEST ITEM",  Type.SerchFilterCondition.BEST.name, currentSubTitleIndexArray[1])
+        /*var premiumSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "PREMIUM ITEM", arrayOf(premiumData?.allList!!.size, premiumData?.womenList!!.size, premiumData?.menList!!.size, premiumData?.kidsList!!.size), currentSubTitleIndexArray[0], premiumData!!,false)
+        premiumItemSize = premiumSubTitle.listSize[currentSubTitleIndexArray[0]]
         listData.add(premiumSubTitle)
 
         var bestSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
-                "BEST ITEM", arrayOf(bestData?.allList!!.size, bestData?.womenList!!.size, bestData?.menList!!.size, bestData?.kidsList!!.size), 1, bestData!!,false)
-        listData.add(bestSubTitle)
+                "BEST ITEM", arrayOf(bestData?.allList!!.size, bestData?.womenList!!.size, bestData?.menList!!.size, bestData?.kidsList!!.size), currentSubTitleIndexArray[1], bestData!!,false)
+        bestItemSize = bestSubTitle.listSize[currentSubTitleIndexArray[1]]
+        listData.add(bestSubTitle)*/
+
         adapter.notifyDataSetChanged()
         if(newInData != null) setNewInData()
     }
 
     fun setNewInData(){
-        var newInSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
-                "NEW IN", arrayOf(newInData?.allList!!.size, newInData?.womenList!!.size, newInData?.menList!!.size, newInData?.kidsList!!.size), 1, newInData!!,false)
-        listData.add(newInSubTitle)
+        addListViewItem(newInData!!,"NEW IN",  Type.SerchFilterCondition.NEW.name, currentSubTitleIndexArray[2])
+        /*var newInSubTitle = SubTitleItemList(listData.size, HomeType.SubTitleList,
+                "NEW IN", arrayOf(newInData?.allList!!.size, newInData?.womenList!!.size, newInData?.menList!!.size, newInData?.kidsList!!.size), currentSubTitleIndexArray[2], newInData!!,false)
+        newInItemSize = newInSubTitle.listSize[currentSubTitleIndexArray[2]]
+        listData.add(newInSubTitle)*/
+
         adapter.notifyItemInserted(listData.size)
         getHotKeyword()
+    }
+
+
+    private fun addListViewItem(homeDeal : HomeDeal, title : String, typeNm : String, currentSubTitleIndex : Int){
+        var subTitleLayout = SubTitleLayout(listData.size, HomeType.SubTitleLayout, title,
+                arrayOf(homeDeal.allList!!.size, homeDeal.womenList!!.size, homeDeal.menList!!.size, homeDeal.kidsList!!.size),
+                true, currentSubTitleIndex)
+        listData.add(subTitleLayout)
+        var dealList = when(currentSubTitleIndex){
+            1-> homeDeal.womenList!!
+            2-> homeDeal.menList!!
+            3-> homeDeal.kidsList!!
+            else->homeDeal.allList!!
+        }
+        for (deal in dealList){
+            var dealItem = DealItem(listData.size, HomeType.DealItemOne, deal)
+            listData.add(dealItem)
+        }
+        var bestViewMore = ViewMoreLayout(listData.size, HomeType.ViewMoreLayout, currentSubTitleIndex, typeNm)
+        listData.add(bestViewMore)
     }
 
 

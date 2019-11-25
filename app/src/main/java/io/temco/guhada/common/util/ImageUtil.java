@@ -111,6 +111,10 @@ public class ImageUtil {
         loadGlideImage(manager, view, url, new RequestOptions().placeholder(placeHolder));
     }
 
+    public static void loadImage(RequestManager manager, ImageView view, String url, RequestOptions options) {
+        loadGlideImage(manager, view, url, options);
+    }
+
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////

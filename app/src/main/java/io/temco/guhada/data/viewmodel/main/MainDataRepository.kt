@@ -59,7 +59,7 @@ class MainDataRepository {
      * NEW IN
      */
     fun getNewIn(unitPerPage : Int, listener : OnCallBackListener) {
-        ProductServer.getProductByNewArrivals(unitPerPage,OnServerListener { success, o ->
+        SearchServer.getProductByNewArrivals(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var list =  (o as BaseModel<*>).data as HomeDeal

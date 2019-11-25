@@ -15,12 +15,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
@@ -33,14 +38,11 @@ import io.temco.guhada.data.viewmodel.main.HomeListViewModel
 import io.temco.guhada.databinding.*
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.activity.ProductFilterListActivity
-import io.temco.guhada.view.activity.SearchWordActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
 import io.temco.guhada.view.viewpager.InfiniteViewPager
 import java.lang.ref.WeakReference
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -73,6 +75,9 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
         when(items[position].type){
             HomeType.MainEvent->return R.layout.customlayout_main_item_mainevent
             HomeType.SubTitleList->return R.layout.customlayout_main_item_subtitlelist
+            HomeType.SubTitleLayout->return R.layout.customlayout_main_item_subtitle
+            HomeType.DealItemOne->return R.layout.customlayout_main_item_dealone
+            HomeType.ViewMoreLayout->return R.layout.customlayout_main_item_viewmore
             HomeType.Dummy->return R.layout.customlayout_main_item_dummy
             HomeType.Keyword->return R.layout.customlayout_main_item_keyword
             HomeType.Footer->return R.layout.item_terminfo_footer
@@ -91,6 +96,18 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
             HomeType.MainEvent->{
                 val binding : CustomlayoutMainItemMaineventBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return MainEventViewHolder(binding.root, binding)
+            }
+            HomeType.SubTitleLayout->{
+                val binding : CustomlayoutMainItemSubtitleBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return SubTitleLayoutViewHolder(binding.root, binding)
+            }
+            HomeType.DealItemOne->{
+                val binding : CustomlayoutMainItemDealoneBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return DealOneViewHolder(binding.root, binding)
+            }
+            HomeType.ViewMoreLayout->{
+                val binding : CustomlayoutMainItemViewmoreBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return ViewMoreViewHolder(binding.root, binding)
             }
             HomeType.SubTitleList->{
                 val binding : CustomlayoutMainItemSubtitlelistBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
@@ -136,6 +153,175 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
     class PaddingViewHolder(private val containerView: View, val binding: CustomlayoutMainItemPaddingBinding) : ListViewHolder(containerView, binding){
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) { }
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+    }
+
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class SubTitleLayoutViewHolder(private val containerView: View, val binding: CustomlayoutMainItemSubtitleBinding) : ListViewHolder(containerView, binding){
+        var tabImg = arrayListOf(binding.tabImg0,binding.tabImg1,binding.tabImg2,binding.tabImg3)
+        var tabTitle = arrayListOf(binding.tabTitle0,binding.tabTitle1,binding.tabTitle2,binding.tabTitle3)
+
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+        override fun bind(model: HomeListViewModel, position: Int, item: MainBaseModel) {
+            if(item is SubTitleLayout){
+                binding.subtitle.visibility = View.VISIBLE
+                binding.title.text = item.title
+                setTabLayout(model, position)
+                binding.tab0.setOnClickListener{
+                    /*if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex != 0){
+                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = 0
+                        model.getListAdapter().notifyItemChanged(position)
+                    }*/
+                }
+                binding.tab1.setOnClickListener{
+                    /*if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex != 1){
+                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = 1
+                        model.getListAdapter().notifyItemChanged(position)
+                    }*/
+                }
+                binding.tab2.setOnClickListener{
+                    /*if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex != 2){
+                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = 2
+                        model.getListAdapter().notifyItemChanged(position)
+                    }*/
+                }
+                binding.tab3.setOnClickListener{
+                    /*if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex != 3){
+                        (model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex = 3
+                        model.getListAdapter().notifyItemChanged(position)
+                    }*/
+                }
+            }
+        }
+
+        private fun setTabLayout(model: HomeListViewModel, position : Int) {
+            val size = tabImg.size-1
+            for (i in 0..size){
+                if((model.getListAdapter().items[position] as SubTitleLayout).currentSubTitleIndex == i){
+                    tabImg[i].setBackgroundResource(R.color.black_four)
+                    tabTitle[i].setTextColor((containerView.context as Activity).resources.getColor(R.color.black_four))
+                }else{
+                    tabImg[i].setBackgroundResource(R.color.common_white)
+                    tabTitle[i].setTextColor((containerView.context as Activity).resources.getColor(R.color.warm_grey_six))
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class DealOneViewHolder(private val containerView: View, val binding: CustomlayoutMainItemDealoneBinding) : ListViewHolder(containerView, binding){
+        internal var width = 0
+        internal var margin = 0
+        internal lateinit var request : RequestOptions
+
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
+            if(item is DealItem){
+                if (width == 0) {
+                    val matrix = DisplayMetrics()
+                    (viewModel.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+                    width = (matrix.widthPixels - CommonViewUtil.dipToPixel(viewModel.context, 24)) / 2
+                    margin = CommonViewUtil.dipToPixel(viewModel.context, 10)
+                }
+
+                val param = LinearLayout.LayoutParams(width, width)
+                if (position % 2 == 0) {
+                    param.leftMargin = 0
+                    param.rightMargin = margin
+                } else {
+                    param.leftMargin = 0
+                    param.rightMargin = 0
+                }
+                binding.relativeImageLayout.setLayoutParams(param)
+
+                val imageParams = RelativeLayout.LayoutParams(width, width)
+                binding.imageThumb.setLayoutParams(imageParams)
+
+                // Brand
+                binding.textBrand.setText(item.deal.brandName)
+
+                // Season
+                binding.textSeason.setText(item.deal.productSeason)
+
+                // Title
+                binding.textTitle.setText(item.deal.productName)
+
+                if(!::request.isInitialized){
+                    request = RequestOptions()
+                            .skipMemoryCache(true)
+                            .fitCenter()
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                            .override(width,width)
+                            .downsample(DownsampleStrategy.AT_MOST)
+                }
+                // Thumbnail
+                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url ,request)
+
+                // Option
+                if (binding.layoutColor.getChildCount() > 0) {
+                    binding.layoutColor.removeAllViews()
+                }
+                if (item.deal.options != null && item.deal.options.size > 0) {
+                    for (o in item.deal.options) {
+                        when (Type.ProductOption.getType(o.type)) {
+                            Type.ProductOption.RGB, Type.ProductOption.COLOR -> addColor(viewModel.context, binding.layoutColor, 5, o.attributes) // 5 Units
+                            Type.ProductOption.TEXT -> addText(viewModel.context, o.attributes)
+                        }
+                    }
+                }
+
+                binding.textSellerName.setText(item.deal.sellerName)
+
+                // Price
+                if (item.deal.discountRate > 0) {
+                    binding.textPrice.setText(TextUtil.getDecimalFormat(item.deal.discountPrice.toInt()))
+                    binding.textPriceSalePer.setVisibility(View.VISIBLE)
+                    binding.textPriceSalePer.setText(String.format(viewModel.context.getString(R.string.product_price_sale_per), item.deal.discountRate))
+                    binding.textPricediscount.setVisibility(View.VISIBLE)
+                    binding.textPricediscount.setPaintFlags(binding.textPricediscount.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
+                    binding.textPricediscount.setText(TextUtil.getDecimalFormat(item.deal.sellPrice.toInt()))
+                } else {
+                    binding.textPrice.setText(TextUtil.getDecimalFormat(item.deal.sellPrice.toInt()))
+                    binding.textPriceSalePer.setVisibility(View.GONE)
+                    binding.textPricediscount.setVisibility(View.GONE)
+                }
+                /*if (data.setDiscount) {
+                mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.intValue())));
+                mBinding.textPriceSalePer.setText(String.format(context.getString(R.string.product_price_sale_per), data.discountRate));
+            } else {
+                mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.intValue())));
+            }*/
+
+                // Ship
+                binding.textShipFree.setVisibility(if (item.deal.freeShipping) View.VISIBLE else View.GONE)
+                binding.executePendingBindings()
+            }
+        }
+    }
+
+
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class ViewMoreViewHolder(private val containerView: View, val binding: CustomlayoutMainItemViewmoreBinding) : ListViewHolder(containerView, binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
+            if(item is ViewMoreLayout){
+                binding.setClickListener {
+                    var intent = Intent(itemView.context as MainActivity, ProductFilterListActivity::class.java)
+                    intent.putExtra("type", Type.ProductListViewType.VIEW_MORE)
+                    intent.putExtra("search_word", item.moreType)
+                    intent.putExtra("search_Category", if(item.currentSubTitleIndex==0) "" else item.currentSubTitleIndex.toString())
+                    (itemView.context as MainActivity).startActivityForResult(intent, Flag.RequestCode.BASE)
+                }
+            }
+        }
     }
 
     /**

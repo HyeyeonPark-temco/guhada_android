@@ -84,8 +84,8 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                     for (category in o){
                         var data = CategoryEntity(category, category.label, 0,category.hierarchies[category.hierarchies.size-1])
                         db.categoryDao().insert(data)
-
-                        if(!category.children.isNullOrEmpty()){
+                        setChildCategory(category, 1, category.label)
+                        /*if(!category.children.isNullOrEmpty()){
                             for (category2 in category.children) {
                                 var data2 = CategoryEntity(category2,category.label, 1, category2.hierarchies[category2.hierarchies.size - 1])
                                 db.categoryDao().insert(data2)
@@ -99,6 +99,20 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                                             for (category4 in category3.children) {
                                                 var data4 = CategoryEntity(category4,category.label, 3, category4.hierarchies[category4.hierarchies.size - 1])
                                                 db.categoryDao().insert(data4)
+
+                                                if(!category4.children.isNullOrEmpty()){
+                                                    for (category5 in category4.children) {
+                                                        var data5 = CategoryEntity(category5,category.label, 3, category5.hierarchies[category5.hierarchies.size - 1])
+                                                        db.categoryDao().insert(data5)
+
+                                                        if(!category5.children.isNullOrEmpty()){
+                                                            for (category6 in category5.children) {
+                                                                var data6 = CategoryEntity(category6,category.label, 3, category6.hierarchies[category6.hierarchies.size - 1])
+                                                                db.categoryDao().insert(data6)
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
 
@@ -106,7 +120,7 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                                 }
 
                             }
-                        }
+                        }*/
                     }
                     db.categoryDao().getAll().size
                 }.subscribeOn(Schedulers.io())
@@ -120,6 +134,16 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                 })
             }
         })
+    }
+
+    private fun setChildCategory(category : Category, depth : Int, label : String){
+        if(!category.children.isNullOrEmpty()) {
+            for (category_child in category.children) {
+                var data = CategoryEntity(category_child, label, depth, category_child.hierarchies[category_child.hierarchies.size - 1])
+                db.categoryDao().insert(data)
+                setChildCategory(category_child, depth + 1,label)
+            }
+        }
     }
 
     private fun getAllBrands() {
