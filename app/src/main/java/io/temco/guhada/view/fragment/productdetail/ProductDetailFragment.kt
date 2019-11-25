@@ -302,6 +302,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
         mBinding.tablayoutProductdetail.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
+                if (animFlag && tab?.position != 0 && tab?.position != 4) {
+                    setTabTextStyle(tab = tab, textStyle = Typeface.BOLD, textColor = mBinding.root.context.resources.getColor(R.color.common_blue_purple))
+                    this@ProductDetailFragment.scrollToElement(tab?.position ?: DETAIL_TAB_POS)
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -590,17 +594,17 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 scrollY in 0 until claimHeight -> {
                     animFlag = false
                     mBinding.tablayoutProductdetail.getTabAt(1)?.select()
-                    animFlag =  true
+                    animFlag = true
                 }
                 scrollY in claimHeight..storeHeight -> {
                     animFlag = false
                     mBinding.tablayoutProductdetail.getTabAt(2)?.select()
-                    animFlag =  true
+                    animFlag = true
                 }
                 scrollY > storeHeight -> {
                     animFlag = false
                     mBinding.tablayoutProductdetail.getTabAt(3)?.select()
-                    animFlag =  true
+                    animFlag = true
                 }
             }
         }

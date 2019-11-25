@@ -356,14 +356,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
 //    LISTENER
 
-    // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
-    fun onClickTab(view: View) {
-        val pos = view.tag.toString()
-        selectedTab = ObservableInt(pos.toInt())
-        listener?.scrollToElement(pos.toInt())
-        notifyPropertyChanged(BR.selectedTab)
-    }
-
     fun onClickRefundInfo() {
         refundInfoExpanded = ObservableBoolean(!refundInfoExpanded.get())
         notifyPropertyChanged(BR.refundInfoExpanded)
