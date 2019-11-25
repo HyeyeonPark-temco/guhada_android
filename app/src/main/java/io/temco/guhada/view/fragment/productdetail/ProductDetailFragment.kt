@@ -9,7 +9,6 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
@@ -32,7 +31,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import com.kochava.base.Tracker
-import io.fabric.sdk.android.services.common.CommonUtils
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -332,8 +330,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         ll = (mBinding.tablayoutProductdetail.getChildAt(0) as LinearLayout).getChildAt(4) as LinearLayout
         ll.layoutParams = lp
         ll.isEnabled = false
-
-
     }
 
     private fun setTabTextStyle(tab: TabLayout.Tab?, textStyle: Int, textColor: Int) {
@@ -588,7 +584,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun setDetectScrollView() {
         mBinding.scrollviewProductdetail.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             val claimHeight = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-            val storeHeight = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top
+            val storeHeight = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top + mStoreFragment.getStoreFlagHeight()
 
             when {
                 scrollY in 0 until claimHeight -> {
@@ -596,12 +592,12 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                     mBinding.tablayoutProductdetail.getTabAt(1)?.select()
                     animFlag = true
                 }
-                scrollY in claimHeight..storeHeight -> {
+                scrollY in claimHeight until storeHeight -> {
                     animFlag = false
                     mBinding.tablayoutProductdetail.getTabAt(2)?.select()
                     animFlag = true
                 }
-                scrollY > storeHeight -> {
+                scrollY >= storeHeight -> {
                     animFlag = false
                     mBinding.tablayoutProductdetail.getTabAt(3)?.select()
                     animFlag = true
