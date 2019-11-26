@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.text.Editable
 import android.text.Html
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
@@ -186,20 +187,23 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
 
-            for (item in mViewModel.productList)
+            for (item in it.orderList)
             // [Tracking] 결제 성공
                 Tracker.Event(TrackingEvent.Product.Buy_Product.eventName).let { event ->
                     event.addCustom("dealId", item.dealId.toString())
-                    event.addCustom("season", item.season)
-                    event.addCustom("name", item.name)
-                    event.addCustom("sellPrice", item.sellPrice.toString())
+                    event.addCustom("sellerId", item.sellerId.toString())
+                    event.addCustom("brandName", item.brandName)
+                    event.addCustom("productName", item.productName)
+                    event.addCustom("originalPrice", item.originalPrice.toString())
                     event.addCustom("discountPrice", item.discountPrice.toString())
+                    if (!TextUtils.isEmpty(item.season)) event.addCustom("season", item.season)
 
-                    val brandId = intent.getIntExtra("brandId", -1)
-                    if (brandId > 0) event.addCustom("brandId", brandId.toString())
 
-                    val sellerId = intent.getLongExtra("sellerId", -1)
-                    if (sellerId > 0) event.addCustom("sellerId", sellerId.toString())
+//                    val brandId = intent.getIntExtra("brandId", -1)
+//                    if (brandId > 0) event.addCustom("brandId", brandId.toString())
+
+//                    val sellerId = intent.getLongExtra("sellerId", -1)
+//                    if (sellerId > 0) event.addCustom("sellerId", sellerId.toString())
 
 //                    if (item.productId > 0) event.addCustom("productId", item.productId.toString())
 

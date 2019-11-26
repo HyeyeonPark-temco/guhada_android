@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
@@ -189,10 +190,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             it.addCustom("productId", product.productId.toString())
             it.addCustom("brandId", product.brandId.toString())
             it.addCustom("sellerId", product.sellerId.toString())
-            it.addCustom("season", product.season)
             it.addCustom("name", product.name)
             it.addCustom("sellPrice", product.sellPrice.toString())
             it.addCustom("discountPrice", product.discountPrice.toString())
+            if (!TextUtils.isEmpty(product.season)) it.addCustom("season", product.season)
             TrackingUtil.sendKochavaEvent(it)
         }
     }
