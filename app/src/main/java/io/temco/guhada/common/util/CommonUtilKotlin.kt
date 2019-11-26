@@ -137,6 +137,15 @@ object CommonUtilKotlin  {
         if(TextUtils.isEmpty(param)) return
         if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage param",param,"param2",param2)
         when(param){
+            SchemeMoveType.MAIN.code->{
+                if(isMainActivity){
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
             SchemeMoveType.JOIN.code->{
                 CommonUtil.startLoginPage(act)
                 if(isFinished)act.finish()

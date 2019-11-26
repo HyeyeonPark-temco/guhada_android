@@ -121,7 +121,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 viewPagerAdapter = object : CustomViewPagerAdapter<String>(it, tabtitle, tabtitle) {
                     override fun setViewLayout(container: ViewGroup, item: String, position: Int): View {
                         var vw: View
-                        mBinding.viewLine.visibility = View.GONE
 
                         when (position) {
                             0 -> {
@@ -186,7 +185,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                     mHomeFragment = this@HomeFragment
                                     mainListListener = this@HomeFragment
                                 }
-                                mBinding.viewLine.visibility = View.VISIBLE
                             }
                             5 -> {
                                 vw = LuckyDrawListLayout(it).apply {
@@ -219,6 +217,10 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
                 currentPagerIndex = position
+                when(position){
+                    1,2,3-> mBinding.viewLine.visibility = View.GONE
+                    else -> mBinding.viewLine.visibility = View.VISIBLE
+                }
                 if (customLayoutMap.containsKey(currentPagerIndex)) {
                     customLayoutMap.get(currentPagerIndex)!!.onFocusView()
                     if (customLayoutMap.isNotEmpty()) {
@@ -255,7 +257,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         // Dummy
         val titles = resources.getStringArray(R.array.main_titles)
         for (t in titles) {
-            if(t == "이벤트" || t == "럭키드로우") addCustomTabsRed(t, false)
+            if(t == "타임딜" || t == "럭키드로우") addCustomTabsRed(t, false)
             else addCustomTabs(t, false)
         }
     }

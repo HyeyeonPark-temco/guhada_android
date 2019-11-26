@@ -156,17 +156,18 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                     val matrix = DisplayMetrics()
                     (viewModel.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
                     width = (matrix.widthPixels - CommonViewUtil.dipToPixel(viewModel.context, 24)) / 2
-                    margin = CommonViewUtil.dipToPixel(viewModel.context, 10)
+                    margin = CommonViewUtil.dipToPixel(viewModel.context, 8)
                 }
 
                 val param = LinearLayout.LayoutParams(width, width)
                 if (position % 2 == 0) {
-                    param.leftMargin = 0
+                    param.leftMargin = margin/2
                     param.rightMargin = margin
                 } else {
-                    param.leftMargin = 0
-                    param.rightMargin = 0
+                    param.leftMargin = margin
+                    param.rightMargin = margin/2
                 }
+                if(CustomLog.flag)CustomLog.L("DealOneViewHolder","position",position,"param.leftMargin",param.leftMargin,"param.rightMargin",param.rightMargin)
                 binding.relativeImageLayout.setLayoutParams(param)
 
                 val imageParams = RelativeLayout.LayoutParams(width, width)

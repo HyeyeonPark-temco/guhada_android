@@ -20,6 +20,7 @@
             android:orientation="horizontal"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
