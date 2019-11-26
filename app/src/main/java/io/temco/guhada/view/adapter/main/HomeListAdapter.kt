@@ -179,6 +179,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         else -> 0
                     }
                     if(model.currentSubTitleIndexArray[item.subTitleIndex] != tabIndex){
+                        var oldIndex = model.currentSubTitleIndexArray[item.subTitleIndex]
                         if(CustomLog.flag)CustomLog.L("SubTitleLayoutViewHolder "+position,"item index",item.index,
                                 "item currentSubTitleIndex",item.currentSubTitleIndex, "subTitleIndex",item.subTitleIndex, "listSize 0",item.listSize[tabIndex])
 
@@ -189,7 +190,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                             2->model.newInData
                             else -> model.premiumData
                         }
-                        setTabItems(position, tabIndex, item, homeDeal, model)
+                        setTabItems(oldIndex, position, tabIndex, item, homeDeal, model)
                     }
                 }
             }
@@ -208,10 +209,11 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
             }
         }
 
-        private fun setTabItems(position : Int,currentSubTitleIndex : Int, item : SubTitleLayout, homeDeal: HomeDeal, model: HomeListViewModel){
-            for(i in 0 until item.listSize[item.currentSubTitleIndex]){
+        private fun setTabItems(oldIndex : Int, position : Int,currentSubTitleIndex : Int, item : SubTitleLayout, homeDeal: HomeDeal, model: HomeListViewModel){
+            for(i in item.listSize[oldIndex]+position downTo position+1 ){
                 if(CustomLog.flag)CustomLog.L("SubTitleLayoutViewHolder "+position, "downTo index",i)
-                model.getListAdapter().items.removeAt(position+1)
+                model.getListAdapter().items.removeAt(i)
+                //model.getListAdapter().notifyItemRemoved(i)
             }
             var dealList = when(currentSubTitleIndex){
                 1-> homeDeal.womenList!!
@@ -222,10 +224,11 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
             var list = arrayListOf<MainBaseModel>()
             for (deal in dealList){
                 var dealItem = DealItem(model.getListAdapter().items.size, HomeType.DealItemOne, deal)
+                if(CustomLog.flag)CustomLog.L("SubTitleLayoutViewHolder "+position, "add",deal.productName)
                 list.add(dealItem)
             }
             model.getListAdapter().items.addAll(position+1, list)
-            model.getListAdapter().notifyItemRangeChanged(position, dealList.size+1)
+            model.getListAdapter().notifyItemRangeChanged(position, model.getListAdapter().items.size)
         }
     }
 
@@ -442,7 +445,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                 if(CustomLog.flag)CustomLog.E(e)
             }
             homeRolling()
-         }
+        }
 
         fun homeRolling(){
             try{
