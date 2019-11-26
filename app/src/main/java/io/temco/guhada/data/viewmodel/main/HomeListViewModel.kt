@@ -30,7 +30,7 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
     lateinit var bestData : HomeDeal
     lateinit var newInData : HomeDeal
 
-    lateinit var mainBanner: List<MainBanner>
+    lateinit var mainBanner: ArrayList<MainBanner>
 
     var currentSubTitleIndexArray = arrayOf(0,0,0)
 
@@ -47,7 +47,8 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
         }
 
     fun setListData(){
-        setHeaderData(listData)
+        //setHeaderData(listData)
+        setMainBannerData(listData, mainBanner)
         premiumItemSize = 0
         bestItemSize = 0
         newInItemSize = 0
@@ -104,6 +105,16 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
         ddd.add(event)
         list.add(event)
         //list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
+        // ------------------------------------------------------------------
+    }
+
+
+    private fun setMainBannerData(list : ArrayList<MainBaseModel>, bannerList: ArrayList<MainBanner>) {
+        var evenList = arrayListOf<MainBanner>()
+        for (e in bannerList){
+            if(e.mainUse) evenList.add(e)
+        }
+        list.add(MainBannerEvent(0, HomeType.MainBanner, evenList))
         // ------------------------------------------------------------------
     }
 

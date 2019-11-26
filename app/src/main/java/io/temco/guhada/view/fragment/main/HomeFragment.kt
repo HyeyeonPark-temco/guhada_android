@@ -30,6 +30,7 @@ import io.temco.guhada.view.custom.layout.main.*
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListener, OnMainListListener {
@@ -45,7 +46,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     lateinit var bestData: HomeDeal
     lateinit var newInData: HomeDeal
 
-    lateinit var mainBanner: List<MainBanner>
+    lateinit var mainBanner: ArrayList<MainBanner>
 
     private var isFinishedBestData = false
     private var isFinishedBannerData = false
@@ -310,7 +311,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 if(CustomLog.flag)CustomLog.L("getMainBannerList","MainBanner callBackListener",resultFlag)
                 if(resultFlag){
                     isFinishedBannerData = true
-                    mainBanner = value as List<MainBanner>
+                    mainBanner = value as ArrayList<MainBanner>
                     if(init && isFinishedBestData && isFinishedBannerData) initHeader()
                 }
             }

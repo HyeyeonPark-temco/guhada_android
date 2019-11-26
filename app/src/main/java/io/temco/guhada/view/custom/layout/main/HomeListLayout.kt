@@ -152,7 +152,7 @@ class HomeListLayout constructor(
         }
     }
 
-    fun setData(premiumData : HomeDeal, bestData : HomeDeal, mainBanner: List<MainBanner>){
+    fun setData(premiumData : HomeDeal, bestData : HomeDeal, mainBanner: ArrayList<MainBanner>){
         mViewModel.premiumData = premiumData
         mViewModel.bestData = bestData
         mViewModel.mainBanner = mainBanner

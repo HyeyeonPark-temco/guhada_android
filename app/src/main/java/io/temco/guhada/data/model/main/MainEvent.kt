@@ -13,6 +13,15 @@ class MainEvent(index: Int,
 
 }
 
+/**
+ * @author park jungho
+ * 19.07.18
+ * 메인 홈화면의 첫 이벤트 데이터
+ */
+class MainBannerEvent(index: Int,
+                type: HomeType,
+                val eventList : ArrayList<MainBanner>) : MainBaseModel(index, type,2)
+
 
 data class EventData(val id : Int,
                      val imgPath : String,
@@ -25,7 +34,7 @@ data class EventData(val id : Int,
 
 
 data class MainBanner(val id : Int,
-                      val MainBanner : Boolean,
+                      val mainUse : Boolean,
                       val title : String,
                       val largeImageUrl : String,
                       val mediumImageUrl : String,
@@ -36,7 +45,7 @@ data class MainBanner(val id : Int,
                       val backgroundColor : String,
                       val mobileAppLink : String){
     override fun toString(): String {
-        if(CustomLog.flag)return "MainBanner(id=$id, MainBanner=$MainBanner, title='$title', largeImageUrl='$largeImageUrl', mediumImageUrl='$mediumImageUrl', mobileImageUrl='$mobileImageUrl', communityImageUrl='$communityImageUrl', imgRes=$imgRes, link='$link', backgroundColor='$backgroundColor', mobileAppLink='$mobileAppLink')"
+        if(CustomLog.flag)return "MainBanner(id=$id, mainUse=$mainUse, title='$title', largeImageUrl='$largeImageUrl', mediumImageUrl='$mediumImageUrl', mobileImageUrl='$mobileImageUrl', communityImageUrl='$communityImageUrl', imgRes=$imgRes, link='$link', backgroundColor='$backgroundColor', mobileAppLink='$mobileAppLink')"
         else return ""
     }
 }

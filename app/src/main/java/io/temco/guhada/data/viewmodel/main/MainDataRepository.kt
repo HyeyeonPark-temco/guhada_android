@@ -113,8 +113,8 @@ class MainDataRepository {
         SettleServer.getMainBanner(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        val type = object : TypeToken<List<MainBanner>>() {}.type
-                        val list = Gson().fromJson<List<MainBanner>>((o as BaseModel<*>).message, type)
+                        val type = object : TypeToken<ArrayList<MainBanner>>() {}.type
+                        val list = Gson().fromJson<ArrayList<MainBanner>>((o as BaseModel<*>).message, type)
                         listener.callBackListener(true, list)
                     },
                     dataNotFoundTask = {

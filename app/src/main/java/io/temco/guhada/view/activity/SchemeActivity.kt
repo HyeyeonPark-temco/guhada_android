@@ -36,6 +36,7 @@ class SchemeActivity : BindActivity<io.temco.guhada.databinding.ActivityCustomdi
     override fun init() {
         try{
             val uriData : Uri = intent.data
+            if(CustomLog.flag)CustomLog.L("SchemeActivity","query",intent.data.query?:"")
             val pgState = uriData.getQueryParameter("pg_state")
             val arg1 = uriData.getQueryParameter("arg1")?:""
             val arg2 = uriData.getQueryParameter("arg2")?:""
