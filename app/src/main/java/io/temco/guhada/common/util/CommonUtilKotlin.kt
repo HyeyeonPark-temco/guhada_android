@@ -3,6 +3,7 @@ package io.temco.guhada.common.util
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
+import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -198,7 +199,9 @@ object CommonUtilKotlin  {
             }
             SchemeMoveType.SEARCH.code->{
                 if(isMainActivity){
-                    CommonUtil.startSearchListActivity(act,param2,true)
+                    var deStr : String = if(param2.matches(Regex(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))) param2 else String(Base64.decode(param2, Base64.URL_SAFE))
+                    if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage SEARCH param2",param2,"deStr",deStr)
+                    CommonUtil.startSearchListActivity(act,deStr,true)
                 }else{
                     BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag,true, isMainActivity)
                     act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
