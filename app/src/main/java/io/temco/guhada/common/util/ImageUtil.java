@@ -104,7 +104,7 @@ public class ImageUtil {
         loadGlideImage(manager, view, url, null);
     }
 
-    // 메인에서 사용
+    // 메인(타임딜, 럭키드로우)에서 사용
     public static void loadImage(Context context, ImageView view, String url, @Nullable Integer widthPx, @Nullable Integer heightPx) {
         if (requestManager == null)
             requestManager = Glide.with((Activity) context);
@@ -112,13 +112,13 @@ public class ImageUtil {
         if (widthPx != null && heightPx != null) {
             requestManager.load(url)
                     .apply(RequestOptions.fitCenterTransform())
-                    .thumbnail(0.1f)
+                    .thumbnail(0.2f)
                     .override(widthPx, heightPx)
                     .into(view);
         } else {
             requestManager.load(url)
                     .apply(RequestOptions.fitCenterTransform())
-                    .thumbnail(0.1f)
+                    .thumbnail(0.2f)
                     .into(view);
         }
 
@@ -197,7 +197,7 @@ public class ImageUtil {
 
     ////////////////////////////////////////////////
 
-    // 메인에서 사용
+    // 메인(타임딜, 럭키드로우)에서 사용
     public static void clearGlide(Context context, ImageView view){
         if(requestManager == null)
             requestManager = Glide.with(context);

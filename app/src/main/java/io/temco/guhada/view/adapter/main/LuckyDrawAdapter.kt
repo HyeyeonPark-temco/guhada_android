@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -381,12 +382,12 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
         }
     }
 
+    // 럭키드로우
     override fun onViewRecycled(holder: ListViewHolder) {
         super.onViewRecycled(holder)
 
-        // 메인-럭키드로우 image clear
-        if(holder.binding is CustomlayoutMainItemLuckydraweventBinding)
-            ImageUtil.clearGlide(holder.binding.root.context, (holder.binding as CustomlayoutMainItemLuckydraweventBinding).imageThumb)
+//        if(holder.binding is CustomlayoutMainItemLuckydraweventBinding)
+//            ImageUtil.clearGlide(holder.binding.root.context, (holder.binding as CustomlayoutMainItemLuckydraweventBinding).imageThumb)
     }
 
     /**

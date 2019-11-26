@@ -484,7 +484,10 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                     TrackingUtil.sendKochavaEvent(TrackingEvent.MainEvent.View_Time_Deal_Product.eventName, id.toString())
                     CommonUtil.startProductActivity(viewModel.context as Activity, id)
                 }
-                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url)
+
+                val context = containerView.context
+                val size = CommonViewUtil.convertDpToPixel(240, context)
+                ImageUtil.loadImage(context, binding.imageThumb, item.deal.productImage.url, size, size)
 
                 if (item.deal.options != null && item.deal.options.size > 0) {
                     for (o in item.deal.options) {
@@ -638,11 +641,12 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
         }
     }
 
+    // 타임딜
     override fun onViewRecycled(holder: ListViewHolder) {
         super.onViewRecycled(holder)
 
-        if (holder.binding is CustomlayoutMainItemTimedealBinding)
-            ImageUtil.clearGlide(holder.binding.root.context, (holder.binding as CustomlayoutMainItemTimedealBinding).imageThumb)
+//        if(holder.binding is CustomlayoutMainItemTimedealBinding)
+//            ImageUtil.clearGlide(holder.binding.root.context, (holder.binding as CustomlayoutMainItemTimedealBinding).imageThumb)
     }
 
     companion object {
