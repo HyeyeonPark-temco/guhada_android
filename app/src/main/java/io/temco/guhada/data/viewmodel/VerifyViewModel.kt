@@ -121,14 +121,16 @@ class VerifyViewModel : BaseObservableViewModel() {
     // TODO 인증 완료 화면 미정 [2019.09.05]
     private fun verifyNumber() {
         UserServer.verifyNumber(OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        CountTimer.stopTimer()
-                        updateEmailVerify()
-                    },
-                    invalidVerificationNumberTask = {
-                        ToastUtil.showMessage(it.message)
-                    })
+            if (success && o is BaseModel<*>) {
+                if (o.resultCode == ResultCode.SUCCESS.flag) {
+                    CountTimer.stopTimer()
+                    updateEmailVerify()
+                } else {
+                    ToastUtil.showMessage(o.message)
+                }
+            } else {
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+            }
         }, verification = Verification().apply {
             this.verificationTarget = mVerifyEmail.get() ?: "" //mUser.email
             this.verificationTargetType = VerificationType.EMAIL.type

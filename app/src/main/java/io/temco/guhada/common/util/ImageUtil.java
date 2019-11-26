@@ -128,10 +128,6 @@ public class ImageUtil {
                     .thumbnail(0.2f)
                     .into(view);
         }
-
-//        requestManager.load(url);
-//        requestManager.
-
 //        loadGlideImage(requestManager, view, url, null);
     }
 
