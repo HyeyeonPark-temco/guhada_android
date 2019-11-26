@@ -1,5 +1,6 @@
 package io.temco.guhada.common.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
@@ -8,12 +9,18 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 public class ImageUtil {
+
+    private static RequestManager requestManager;
 
     ////////////////////////////////////////////////
     // PUBLIC
@@ -99,6 +106,36 @@ public class ImageUtil {
         loadGlideImage(manager, view, url, null);
     }
 
+    // 메인(타임딜, 럭키드로우)에서 사용
+    public static void loadImage(Context context, ImageView view, String url, @Nullable Integer widthPx, @Nullable Integer heightPx) {
+        if (requestManager == null)
+            requestManager = Glide.with((Activity) context);
+
+        RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .fitCenter();
+
+        if (widthPx != null && heightPx != null) {
+            requestManager.load(url)
+                    .downsample(DownsampleStrategy.AT_MOST)
+                    .apply(options)
+                    .thumbnail(0.2f)
+
+                    .into(view);
+        } else {
+            requestManager.load(url)
+                    .downsample(DownsampleStrategy.AT_MOST)
+                    .apply(options)
+                    .thumbnail(0.2f)
+                    .into(view);
+        }
+
+//        requestManager.load(url);
+//        requestManager.
+
+//        loadGlideImage(requestManager, view, url, null);
+    }
+
+
     public static void loadImage(RequestManager manager, ImageView view, String url, int width, int height) {
         loadGlideImage(manager, view, url, new RequestOptions().override(width, height));
     }
@@ -156,7 +193,7 @@ public class ImageUtil {
             manager.load(url)
                     .apply(RequestOptions.fitCenterTransform())
                     .apply(options)
-                    .thumbnail(0.9f)
+                    .thumbnail(0.1f)
                     .into(view);
         }
     }
@@ -173,4 +210,11 @@ public class ImageUtil {
     }
 
     ////////////////////////////////////////////////
+
+    // 메인(타임딜, 럭키드로우)에서 사용
+    public static void clearGlide(Context context, ImageView view) {
+        if (requestManager == null)
+            requestManager = Glide.with(context);
+        requestManager.clear(view);
+    }
 }

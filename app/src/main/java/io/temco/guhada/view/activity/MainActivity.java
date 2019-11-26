@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -93,14 +95,18 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         mDisposable = new CompositeDisposable();
         mDb = GuhadaDB.Companion.getInstance(this);
         mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
-        if(getIntent().getExtras() != null && getIntent().getExtras().containsKey("premiumData")){
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("premiumData")) {
             premiumData = (HomeDeal) getIntent().getSerializableExtra("premiumData");
-            if(CustomLog.getFlag())CustomLog.L("MainActivity","premiumData",premiumData);
+            if (CustomLog.getFlag()) CustomLog.L("MainActivity", "premiumData", premiumData);
 
-            if(CustomLog.getFlag())CustomLog.L("MainActivity","getPlusItem kidsList size",premiumData.getKidsList().size());
-            if(CustomLog.getFlag())CustomLog.L("MainActivity","getPlusItem menList size",premiumData.getMenList().size());
-            if(CustomLog.getFlag())CustomLog.L("MainActivity","getPlusItem womenList size",premiumData.getWomenList().size());
-            if(CustomLog.getFlag())CustomLog.L("MainActivity","getPlusItem allList size",premiumData.getAllList().size());
+            if (CustomLog.getFlag())
+                CustomLog.L("MainActivity", "getPlusItem kidsList size", premiumData.getKidsList().size());
+            if (CustomLog.getFlag())
+                CustomLog.L("MainActivity", "getPlusItem menList size", premiumData.getMenList().size());
+            if (CustomLog.getFlag())
+                CustomLog.L("MainActivity", "getPlusItem womenList size", premiumData.getWomenList().size());
+            if (CustomLog.getFlag())
+                CustomLog.L("MainActivity", "getPlusItem allList size", premiumData.getAllList().size());
         }
         CommonUtil.getUserIp();
         setEventBus();
@@ -118,11 +124,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         if (((BaseApplication) getApplicationContext()).getMoveToMain() != null && ((BaseApplication) getApplicationContext()).getMoveToMain().isMoveToMain()) {
             if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() != -1) {
                 if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN) {
-                    if(!TextUtils.isEmpty(((BaseApplication) getApplicationContext()).getMoveToMain().getState())){
+                    if (!TextUtils.isEmpty(((BaseApplication) getApplicationContext()).getMoveToMain().getState())) {
                         CommonUtilKotlin.moveEventPage(this,
                                 ((BaseApplication) getApplicationContext()).getMoveToMain().getState(),
                                 ((BaseApplication) getApplicationContext()).getMoveToMain().getArg1(),
-                                true,false);
+                                true, false);
                     }
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(2);
@@ -138,7 +144,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                             mHandler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (CustomLog.getFlag())CustomLog.L("GO_TO_MAIN_HOME selectTab", "index", 0, "currentViewPagerIndex", currentViewPagerIndex);
+                                    if (CustomLog.getFlag())
+                                        CustomLog.L("GO_TO_MAIN_HOME selectTab", "index", 0, "currentViewPagerIndex", currentViewPagerIndex);
                                     EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE, moveMainIndex));
                                     moveMainIndex = 0;
                                 }
@@ -197,7 +204,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (CustomLog.getFlag())CustomLog.L("MainActivity", "onActivityResult", "requestCode", requestCode);
+        if (CustomLog.getFlag())
+            CustomLog.L("MainActivity", "onActivityResult", "requestCode", requestCode);
         String msg = "";
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -249,7 +257,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     if (data != null) {
                         mPagerAdapter.removeAll();
                         String text = data.getExtras().getString("search_word");
-                        if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
+                        if (CustomLog.INSTANCE.getFlag())
+                            CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
                         mPagerAdapter.setProductSearchData(text);
                     }
                     break;
@@ -534,7 +543,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 mBrandListDialog.setOnBrandListener(brand -> CommonUtil.startBrandScreen(this, brand, false));
             }
 
-            if(!mBrandListDialog.isAdded())
+            if (!mBrandListDialog.isAdded())
                 mBrandListDialog.show(getSupportFragmentManager(), getBaseTag());
         }
     }
@@ -590,5 +599,19 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     public HomeDeal getPremiumData() {
         return premiumData;
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Glide.get(this).trimMemory(level);
+        if (CustomLog.getFlag()) CustomLog.L(getBaseTag(), "onTrimMemory");
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Glide.get(this).clearMemory();
+        if (CustomLog.getFlag()) CustomLog.L(getBaseTag(), "onLowMemory");
     }
 }

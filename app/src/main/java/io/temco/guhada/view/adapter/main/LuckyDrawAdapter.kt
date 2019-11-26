@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Handler
 import android.text.TextUtils
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -49,6 +51,15 @@ import java.util.*
  * @author park jungho
  * 19.07.18
  * 메인 홈에서 사용했던 recycler adapter
+ *
+ *
+ * ViewHolder 종류
+ * - LuckyDrawTitleViewHolder: 메인 리스트의 더미 화면
+ * - LuckyDrawEventViewHolder: 메인 리스트의 더미 화면
+ * - LuckyDrawFooterViewHolder: 메인 리스트의 더미 화면
+ * - MainEventViewHolder: 메인 리스트의 event viewpager
+ * - TermViewHolder: 메인 리스트의 더미 화면
+ * - PaddingViewHolder: 메인 리스트의 빈 화면
  */
 class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, LuckyDrawAdapter.ListViewHolder>(list) {
@@ -145,12 +156,12 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
      */
     inner class LuckyDrawTitleViewHolder(private val containerView: View, val binding: CustomlayoutMainItemLuckydrawtitleBinding) : ListViewHolder(containerView, binding) {
 
-        var currentAdIndex : Int = -1
+        var currentAdIndex: Int = -1
         var eventListSize = 0
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<LuckyDrawTitleList>? = null
 
-        private lateinit var layoutInflater : LayoutInflater
-        private lateinit var imgs : Array<ImageView>
+        private lateinit var layoutInflater: LayoutInflater
+        private lateinit var imgs: Array<ImageView>
 
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
         override fun bind(viewModel: LuckyDrawViewModel, position: Int, item: MainBaseModel) {
@@ -160,29 +171,29 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                 binding.viewModel = model
                 isViewPagerIdle = true
 
-                if(CustomLog.flag)CustomLog.L("LuckyDrawTitleViewHolder","item-----",item)
+                if (CustomLog.flag) CustomLog.L("LuckyDrawTitleViewHolder", "item-----", item)
 
-                if(item.eventTime.remainedTimeForStart <= 0){
+                if (item.eventTime.remainedTimeForStart <= 0) {
                     val runnable = customRunnableMap[1]
                     if (runnable != null) mHandler.removeCallbacks(runnable)
                     binding.linearlayoutLuckytitleTimer.visibility = View.VISIBLE
                     val current = Calendar.getInstance().timeInMillis /*- (item.eventTime.now*1000 - Calendar.getInstance().timeInMillis)*/
                     item.displayTime = item.expiredTimeLong - current
                     // 스레드 시작
-                    if(!::imgs.isInitialized)imgs = arrayOf(binding.imageviewLuckytitleTimerH0,binding.imageviewLuckytitleTimerH1,
-                            binding.imageviewLuckytitleTimerM0,binding.imageviewLuckytitleTimerM1,
-                            binding.imageviewLuckytitleTimerS0,binding.imageviewLuckytitleTimerS1)
+                    if (!::imgs.isInitialized) imgs = arrayOf(binding.imageviewLuckytitleTimerH0, binding.imageviewLuckytitleTimerH1,
+                            binding.imageviewLuckytitleTimerM0, binding.imageviewLuckytitleTimerM1,
+                            binding.imageviewLuckytitleTimerS0, binding.imageviewLuckytitleTimerS1)
                     if (runnable == null) customRunnableMap[1] = CustomRunnable(item.displayTime, imgs, mHandler)
                     val startDelayMS: Long = 1000L - Calendar.getInstance().get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
                     mHandler.postDelayed(customRunnableMap[1], startDelayMS)
 
-                }else binding.linearlayoutLuckytitleTimer.visibility = View.GONE
+                } else binding.linearlayoutLuckytitleTimer.visibility = View.GONE
 
                 (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
                 if (infiniteAdapter == null) {
                     infiniteAdapter = object : InfiniteGeneralFixedPagerAdapter<LuckyDrawTitleList>(data.eventTile, true, true) {
                         override fun getPageView(paramViewGroup: ViewGroup, paramInt: Int, item: LuckyDrawTitleList): View {
-                            if(!::layoutInflater.isInitialized) layoutInflater = LayoutInflater.from(viewModel.context)
+                            if (!::layoutInflater.isInitialized) layoutInflater = LayoutInflater.from(viewModel.context)
                             val binding: ItemLuckydrawIntroPagerBinding = DataBindingUtil.inflate(layoutInflater, R.layout.item_luckydraw_intro_pager, paramViewGroup, false)
                             ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.titleImageUrl)
                             binding.textLuckypager1.text = DateUtil.getCalendarToString(Type.DateFormat.TYPE_6, item.requestFromAt)
@@ -210,18 +221,19 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                         override fun onPageScrollStateChanged(state: Int) {
                             isViewPagerIdle = state == ViewPager.SCROLL_STATE_IDLE
                         }
+
                         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
                         override fun onPageSelected(position: Int) {
                             currentAdIndex = position
-                            binding.tabLayout.setScrollPosition(binding.viewPager.realCurrentItem, 0f , true)
+                            binding.tabLayout.setScrollPosition(binding.viewPager.realCurrentItem, 0f, true)
                         }
                     })
-                    if(!::layoutInflater.isInitialized) layoutInflater = LayoutInflater.from(viewModel.context)
-                    for (i in 0 until data.eventTile.size){
+                    if (!::layoutInflater.isInitialized) layoutInflater = LayoutInflater.from(viewModel.context)
+                    for (i in 0 until data.eventTile.size) {
                         val dot = layoutInflater.inflate(R.layout.item_tablayout_dot, null)
                         var tab = binding.tabLayout.newTab().setCustomView(dot)
                         binding.tabLayout.addTab(tab)
-                        if(i == 0) tab.select()
+                        if (i == 0) tab.select()
                     }
 
                     var mScroller = ViewPager::class.java.getDeclaredField("mScroller")
@@ -229,9 +241,9 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                     var sInterpolator = OvershootInterpolator()
                     var scroller = FixedSpeedScroller(binding.viewPager.getContext(), sInterpolator)
                     mScroller.set(binding.viewPager, scroller)
-                    binding.viewPager.setPageTransformer(false,object : ViewPager.PageTransformer{
+                    binding.viewPager.setPageTransformer(false, object : ViewPager.PageTransformer {
                         override fun transformPage(page: View, position: Float) {
-                            if(position <= -1.0F || position >= 1.0F) {
+                            if (position <= -1.0F || position >= 1.0F) {
                                 //page.translationX = page.width * position
                                 page.alpha = 0.0F
                                 /*if (position < -1) {
@@ -239,7 +251,7 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                                 } else if (position > 0 && position <= 1) {
                                     page.translationX = -page.width * position
                                 }*/
-                            } else if( position == 0.0F ) {
+                            } else if (position == 0.0F) {
                                 //page.translationX = (page.width * position)
                                 page.alpha = 1.0F
                             } else {
@@ -302,66 +314,66 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
                 binding.viewModel = viewModel
                 binding.luckydraw = item.eventData
                 binding.index = position
-                if(TextUtils.isEmpty(binding.imageThumb.contentDescription) || binding.imageThumb.contentDescription.toString() != item.eventData.imageUrl){
-                    ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.eventData.imageUrl)
+                if (TextUtils.isEmpty(binding.imageThumb.contentDescription) || binding.imageThumb.contentDescription.toString() != item.eventData.imageUrl) {
+                    ImageUtil.loadImage(containerView.context, binding.imageThumb, item.eventData.imageUrl, CommonViewUtil.convertDpToPixel(240, containerView.context), CommonViewUtil.convertDpToPixel(240, containerView.context))
                     binding.imageThumb.contentDescription = item.eventData.imageUrl
                 }
 
                 binding.textLuckydrawInfoDesc1.text = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, item.eventData.requestFromAt) + " - " +
                         DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, item.eventData.requestToAt))
                 binding.textLuckydrawInfoDesc2.text = DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, item.eventData.winnerAnnouncementAt)
-                binding.textLuckydrawInfoDesc3.text = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, item.eventData.winnerBuyFromAt)+ " - " +
+                binding.textLuckydrawInfoDesc3.text = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, item.eventData.winnerBuyFromAt) + " - " +
                         DateUtil.getCalendarToString(Type.DateFormat.TYPE_7, item.eventData.winnerBuyToAt))
 
 
                 binding.layoutLuckydraw.setOnClickListener {
                     item.eventData.isDetailShow = !item.eventData.isDetailShow
-                    if(item.eventData.isDetailShow){
+                    if (item.eventData.isDetailShow) {
                         binding.layoutLuckydrawInfo.visibility = View.VISIBLE
                         binding.imageviewLuckydrawInfoarrow.setImageResource(R.drawable.detail_icon_arrow_close)
-                    }else{
+                    } else {
                         binding.layoutLuckydrawInfo.visibility = View.GONE
                         binding.imageviewLuckydrawInfoarrow.setImageResource(R.drawable.detail_icon_arrow_open)
                     }
                     //viewModel.getListAdapter().notifyItemChanged(position)
                 }
 
-                if(position == 1){
+                if (position == 1) {
                     binding.relativeLuckydrawRibbon.visibility = View.VISIBLE
                     binding.textLuckydrawRibbon.text = DateUtil.getCalendarToString(Type.DateFormat.TYPE_6, item.eventData.requestFromAt)
-                }else{
+                } else {
                     binding.relativeLuckydrawRibbon.visibility = View.GONE
                 }
 
                 binding.textStatus.setOnClickListener(null)
-                when(item.eventData.statusCode){
-                    Status.START.code->{
+                when (item.eventData.statusCode) {
+                    Status.START.code -> {
                         binding.textStatus.setBackgroundResource(R.drawable.background_color_round_f43143)
                         binding.textStatus.setTextColor(Color.parseColor("#ffffff"))
                         binding.textStatus.setOnClickListener {
                             var intent = Intent(viewModel.context as Activity, LuckyEventDialogActivity::class.java)
-                            intent.putExtra("eventData",item.eventData)
-                            (viewModel.context as Activity).startActivityForResult(intent,Flag.RequestCode.LUCKY_DRAW_EVENT)
+                            intent.putExtra("eventData", item.eventData)
+                            (viewModel.context as Activity).startActivityForResult(intent, Flag.RequestCode.LUCKY_DRAW_EVENT)
                         }
                     }
-                    Status.NORMAL.code, Status.READY.code ->{
+                    Status.NORMAL.code, Status.READY.code -> {
                         binding.textStatus.setBackgroundResource(R.drawable.background_color_round_border_f43143)
                         binding.textStatus.setTextColor(Color.parseColor("#f43143"))
                     }
-                    Status.OUT_OF_TIME.code->{
+                    Status.OUT_OF_TIME.code -> {
                         binding.textStatus.setBackgroundResource(R.drawable.background_color_round_c9c9c9)
                         binding.textStatus.setTextColor(Color.parseColor("#ffffff"))
                     }
-                    Status.WINNER_ANNOUNCEMENT.code->{
+                    Status.WINNER_ANNOUNCEMENT.code -> {
                         binding.textStatus.setBackgroundResource(R.drawable.background_color_round_13182e)
                         binding.textStatus.setTextColor(Color.parseColor("#ffffff"))
                         binding.textStatus.setOnClickListener {
                             var intent = Intent(viewModel.context as Activity, LuckyEventDialogActivity::class.java)
-                            intent.putExtra("eventData",item.eventData)
-                            (viewModel.context as Activity).startActivityForResult(intent,Flag.RequestCode.LUCKY_DRAW_EVENT)
+                            intent.putExtra("eventData", item.eventData)
+                            (viewModel.context as Activity).startActivityForResult(intent, Flag.RequestCode.LUCKY_DRAW_EVENT)
                         }
                     }
-                    Status.REQUESTED.code->{
+                    Status.REQUESTED.code -> {
                         binding.textStatus.setBackgroundResource(R.drawable.background_color_round_c9c9c9)
                         binding.textStatus.setTextColor(Color.parseColor("#ffffff"))
                     }
@@ -370,13 +382,20 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
         }
     }
 
+    // 럭키드로우
+    override fun onViewRecycled(holder: ListViewHolder) {
+        super.onViewRecycled(holder)
+
+//        if(holder.binding is CustomlayoutMainItemLuckydraweventBinding)
+//            ImageUtil.clearGlide(holder.binding.root.context, (holder.binding as CustomlayoutMainItemLuckydraweventBinding).imageThumb)
+    }
 
     /**
      * 메인 리스트에 더미 화면 view holder
      */
     class LuckyDrawFooterViewHolder(private val containerView: View, val binding: CustomlayoutMainItemLuckydrawfooterBinding) : ListViewHolder(containerView, binding) {
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
-        override fun bind(viewModel: LuckyDrawViewModel, position: Int, item: MainBaseModel) { }
+        override fun bind(viewModel: LuckyDrawViewModel, position: Int, item: MainBaseModel) {}
     }
 
     /**
@@ -396,7 +415,7 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
         var eventListSize = 0
 
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
 
         override fun bind(viewModel: LuckyDrawViewModel, position: Int, item: MainBaseModel) {
             if (item is MainEvent) {
@@ -467,7 +486,6 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
     }
 
 
-
     /**
      * 메인 리스트에 더미 화면 view holder
      */
@@ -522,7 +540,7 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
         override fun bind(viewModel: LuckyDrawViewModel, position: Int, item: MainBaseModel) {
             if (item is DummyImage) {
-                binding.imageDummy.layoutParams  = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, CommonViewUtil.dipToPixel(itemView.context, item.imageHeight))
+                binding.imageDummy.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, CommonViewUtil.dipToPixel(itemView.context, item.imageHeight))
                 binding.imageDummy.setBackgroundColor(Color.TRANSPARENT)
                 //binding.imageDummy.setBackgroundResource(item.imageRes)
             }
@@ -536,18 +554,19 @@ class LuckyDrawAdapter(private val model: LuckyDrawViewModel, val list: ArrayLis
      * @since 2019.10.24
      */
     class CustomRunnable(var remainEndAt: Long, var image: Array<ImageView>, var handler: Handler) : Runnable {
-        val imgRes = arrayListOf(R.drawable.number_0,R.drawable.number_1,R.drawable.number_2,R.drawable.number_3,
-            R.drawable.number_4,R.drawable.number_5,R.drawable.number_6,R.drawable.number_7,R.drawable.number_8,R.drawable.number_9)
+        val imgRes = arrayListOf(R.drawable.number_0, R.drawable.number_1, R.drawable.number_2, R.drawable.number_3,
+                R.drawable.number_4, R.drawable.number_5, R.drawable.number_6, R.drawable.number_7, R.drawable.number_8, R.drawable.number_9)
+
         override fun run() {
-            var time = DateUtil.getTimerText(remainEndAt).replace(":","")
-            image[0].setBackgroundResource(imgRes[time.substring(0,1).toInt()])
-            image[1].setBackgroundResource(imgRes[time.substring(1,2).toInt()])
+            var time = DateUtil.getTimerText(remainEndAt).replace(":", "")
+            image[0].setBackgroundResource(imgRes[time.substring(0, 1).toInt()])
+            image[1].setBackgroundResource(imgRes[time.substring(1, 2).toInt()])
 
-            image[2].setBackgroundResource(imgRes[time.substring(2,3).toInt()])
-            image[3].setBackgroundResource(imgRes[time.substring(3,4).toInt()])
+            image[2].setBackgroundResource(imgRes[time.substring(2, 3).toInt()])
+            image[3].setBackgroundResource(imgRes[time.substring(3, 4).toInt()])
 
-            image[4].setBackgroundResource(imgRes[time.substring(4,5).toInt()])
-            image[5].setBackgroundResource(imgRes[time.substring(5,6).toInt()])
+            image[4].setBackgroundResource(imgRes[time.substring(4, 5).toInt()])
+            image[5].setBackgroundResource(imgRes[time.substring(5, 6).toInt()])
             var startDelayMS: Long = 1000L - Calendar.getInstance().get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
             if (startDelayMS <= 10L) startDelayMS = 1000L
             remainEndAt -= 1000
