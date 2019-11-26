@@ -9,6 +9,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
@@ -103,11 +104,27 @@ public class ImageUtil {
         loadGlideImage(manager, view, url, null);
     }
 
-    public static void loadImage(Context context, ImageView view, String url) {
-        if(requestManager == null)
-            requestManager = Glide.with((Activity)context);
-        loadGlideImage(requestManager, view, url, null);
+    // 메인에서 사용
+    public static void loadImage(Context context, ImageView view, String url, @Nullable Integer widthPx, @Nullable Integer heightPx) {
+        if (requestManager == null)
+            requestManager = Glide.with((Activity) context);
+
+        if (widthPx != null && heightPx != null) {
+            requestManager.load(url)
+                    .apply(RequestOptions.fitCenterTransform())
+                    .thumbnail(0.1f)
+                    .override(widthPx, heightPx)
+                    .into(view);
+        } else {
+            requestManager.load(url)
+                    .apply(RequestOptions.fitCenterTransform())
+                    .thumbnail(0.1f)
+                    .into(view);
+        }
+
+//        loadGlideImage(requestManager, view, url, null);
     }
+
 
     public static void loadImage(RequestManager manager, ImageView view, String url, int width, int height) {
         loadGlideImage(manager, view, url, new RequestOptions().override(width, height));
@@ -179,4 +196,11 @@ public class ImageUtil {
     }
 
     ////////////////////////////////////////////////
+
+    // 메인에서 사용
+    public static void clearGlide(Context context, ImageView view){
+        if(requestManager == null)
+            requestManager = Glide.with(context);
+        requestManager.clear(view);
+    }
 }

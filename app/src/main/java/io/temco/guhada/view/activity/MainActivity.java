@@ -3,12 +3,15 @@ package io.temco.guhada.view.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -577,5 +580,20 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     public Disposable getDisposable() {
         return disposable;
+    }
+
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Glide.get(this).trimMemory(level);
+        if(CustomLog.getFlag()) CustomLog.L(getBaseTag(), "onTrimMemory");
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Glide.get(this).clearMemory();
+        if(CustomLog.getFlag()) CustomLog.L(getBaseTag(), "onLowMemory");
     }
 }
