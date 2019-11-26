@@ -29,10 +29,10 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
     var mVerifyEmailVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
-    var mTimerSecond = ObservableField("60")
+    var mTimerSecond = ObservableField("00")
         @Bindable
         get() = field
-    var mTimerMinute = ObservableField("02")
+    var mTimerMinute = ObservableField("00")
         @Bindable
         get() = field
 
@@ -115,8 +115,8 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
                         mVerifyEmailVisibility = ObservableInt(View.VISIBLE)
                         notifyPropertyChanged(BR.mVerifyEmailVisibility)
 
-                        val second = java.lang.Double.parseDouble((o.data as LinkedTreeMap<*, *>)["data"]!!.toString())
-                        val minute = (second / 60000).toInt()
+                        val expire = model.data as Double
+                        val minute = (expire / 60000).toInt()
                         if (minute.toString().length == 1) {
                             mTimerSecond = ObservableField("60")
                             mTimerMinute = ObservableField("0${minute - 1}")
