@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel.productdetail
 
+import android.text.TextUtils
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
@@ -445,14 +446,23 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
                         // [Tracking] 장바구니 담기
                         Tracker.Event(TrackingEvent.Cart.Add_To_Cart.eventName).let {
-                            it.addCustom("dealId", product.value?.dealId.toString())
-                            it.addCustom("productId", product.value?.productId.toString())
-                            it.addCustom("brandId", product.value?.brandId.toString())
-                            it.addCustom("sellerId", product.value?.sellerId.toString())
-                            it.addCustom("season", product.value?.season ?: cart.season)
-                            it.addCustom("name", product.value?.name ?: cart.dealName)
-                            it.addCustom("sellPrice", product.value?.sellPrice.toString())
-                            it.addCustom("discountPrice", product.value?.discountPrice.toString())
+                            it.addCustom("dealId", cart.dealId)
+                            it.addCustom("sellerId", cart.sellerId)
+                            it.addCustom("brandName", cart.brandName)
+                            it.addCustom("dealName", cart.dealName)
+                            it.addCustom("sellPrice", cart.sellPrice.toString())
+                            it.addCustom("discountPrice", cart.discountPrice.toString())
+                            if (!TextUtils.isEmpty(cart.season)) it.addCustom("season", cart.season)
+
+//                            it.addCustom("dealId", product.value?.dealId.toString())
+//                            it.addCustom("productId", product.value?.productId.toString())
+//                            it.addCustom("brandId", product.value?.brandId.toString())
+//                            it.addCustom("sellerId", product.value?.sellerId.toString())
+//                            it.addCustom("season", product.value?.season ?: cart.season)
+//                            it.addCustom("name", product.value?.name ?: cart.dealName)
+//                            it.addCustom("sellPrice", product.value?.sellPrice.toString())
+//                            it.addCustom("discountPrice", product.value?.discountPrice.toString())
+
                             TrackingUtil.sendKochavaEvent(it)
                         }
 
