@@ -323,6 +323,14 @@
             android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
+        <!-- 구하다 토큰 생성 다이얼로그 -->
+        <activity
+            android:name=".view.activity.GuhadaTokenAddressCreateDialog"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.Transparent2"
+            android:windowSoftInputMode="adjustUnspecified" />
+
+
         <activity
             android:name=".view.activity.SchemeActivity"
             android:screenOrientation="unspecified"

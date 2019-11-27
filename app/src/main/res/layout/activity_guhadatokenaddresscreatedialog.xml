@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="onClickCloseButton"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickAddressCreate"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickAddressCopy"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.GuhadaTokenAddressCreateDialogViewModel" />
+    </data>
+
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@color/toast_background" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="1"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:background="@color/common_white"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="67dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/common_white"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="15dp">
+
+                    <TextView
+                        style="@style/HeaderTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/guhadatoken_addressdialog_title"
+                        android:layout_marginLeft="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/button_header_back"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:onClick="@{onClickCloseButton}"
+                        android:src="@drawable/bag_icon_delete"
+                        android:layout_marginRight="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@color/black_four"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="45dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/guhada_big_logo"/>
+
+                    <TextView
+                        style="@style/TextBold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="30dp"
+                        android:gravity="center"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_16"
+                        android:text="@string/guhadatoken_addressdialog_guhada" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="30dp">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:weightSum="1"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/button_addshippingaddress_confirm"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:layout_marginLeft="3dp"
+                                android:text="@string/guhadatoken_addressdialog_button"
+                                android:onClick="@{onClickAddressCreate}"
+                                android:background="@color/common_blue_purple"
+                                android:textColor="@color/common_white"
+                                android:textSize="@dimen/text_18"/>
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/guhadatoken_addressdialog_desc1" />
+
+                    </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/pale_grey"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="3dp"
+                            android:layout_height="3dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/background_color_dot_pinkishgrey"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_12"
+                            android:text="@{@string/guhadatoken_addressdialog_desc2(0,0)}" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="3dp"
+                            android:layout_height="3dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/background_color_dot_pinkishgrey"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/guhadatoken_addressdialog_desc3" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="3dp"
+                            android:layout_height="3dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/background_color_dot_pinkishgrey"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/warm_grey_two"
+                            android:fontFamily="sans-serif"
+                            android:textStyle="normal"
+                            android:letterSpacing="-0.02"
+                            android:lineSpacingExtra="7sp"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/guhadatoken_addressdialog_desc4" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="3dp"
+                            android:layout_height="3dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/background_color_dot_pinkishgrey"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/guhadatoken_addressdialog_desc5" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>
