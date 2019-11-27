@@ -302,58 +302,62 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     /**
      * 혜택 정보-포인트 적립
+     * 미로그인 상태에서도 노출
      * @author Hyeyeon Park
      */
     fun getDueSavePoint() {
-        ServerCallbackUtil.callWithToken(task = { accessToken ->
-            val pointProcessParam = PointProcessParam()
+        val pointProcessParam = PointProcessParam()
 
-            val orderProd = OrderItemResponse().apply {
-                this.dcategoryId = product.value?.dCategoryId ?: 0
-                this.dealId = product.value?.dealId ?: 0L
-                this.discountPrice = product.value?.discountPrice ?: 0
-                this.lcategoryId = product.value?.lCategoryId ?: 0
-                this.mcategoryId = product.value?.mCategoryId ?: 0
-                this.scategoryId = product.value?.sCategoryId ?: 0
-                this.productPrice = product.value?.sellPrice ?: 0
-                this.orderProdList.add(OrderItemResponse.OrderOption().apply {
-                    this.price = product.value?.totalPrice ?: 0
-                })
-            }
+        val orderProd = OrderItemResponse().apply {
+            this.dcategoryId = product.value?.dCategoryId ?: 0
+            this.dealId = product.value?.dealId ?: 0L
+            this.discountPrice = product.value?.discountPrice ?: 0
+            this.lcategoryId = product.value?.lCategoryId ?: 0
+            this.mcategoryId = product.value?.mCategoryId ?: 0
+            this.scategoryId = product.value?.sCategoryId ?: 0
+            this.productPrice = product.value?.sellPrice ?: 0
+            this.orderProdList.add(OrderItemResponse.OrderOption().apply {
+                this.price = product.value?.totalPrice ?: 0
+            })
+        }
 
-            val bundle = PointProcessParam.PointBundle().apply {
-                this.bundlePrice = product.value?.shipExpense ?: 0
-                this.orderProdList.add(orderProd)
-            }
+        val bundle = PointProcessParam.PointBundle().apply {
+            this.bundlePrice = product.value?.shipExpense ?: 0
+            this.orderProdList.add(orderProd)
+        }
 
-            pointProcessParam.bundleList.add(bundle)
+        pointProcessParam.bundleList.add(bundle)
 
-            if (pointProcessParam.bundleList.isNotEmpty()) {
-                pointProcessParam.consumptionPoint = 0
-                pointProcessParam.consumptionType = PointProcessParam.PointConsumption.BUY.type
-                pointProcessParam.pointType = PointProcessParam.PointSave.BUY.type
-                pointProcessParam.serviceType = PointRequest.ServiceType.AOS.type
+        if (pointProcessParam.bundleList.isNotEmpty()) {
+            pointProcessParam.consumptionPoint = 0
+            pointProcessParam.consumptionType = PointProcessParam.PointConsumption.BUY.type
+            pointProcessParam.pointType = PointProcessParam.PointSave.BUY.type
+            pointProcessParam.serviceType = PointRequest.ServiceType.AOS.type
 
-                BenefitServer.getDueSavePoint(listener = OnServerListener { success, o ->
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                val expectedPointResponse = it.data as ExpectedPointResponse
-                                this.mExpectedPoint.postValue(expectedPointResponse)
-                            },
-                            dataIsNull = {
-                                if (it is BaseModel<*>) {
-                                    ToastUtil.showMessage(it.message)
-                                    if (CustomLog.flag) CustomLog.E("[process/total-due-save] ${it.message}")
-                                }
-                            },
-                            serverRuntimeErrorTask = {
+            val listener = OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            val expectedPointResponse = it.data as ExpectedPointResponse
+                            this.mExpectedPoint.postValue(expectedPointResponse)
+                        },
+                        dataIsNull = {
+                            if (it is BaseModel<*>) {
                                 ToastUtil.showMessage(it.message)
                                 if (CustomLog.flag) CustomLog.E("[process/total-due-save] ${it.message}")
-                            })
-                }, accessToken = accessToken, pointProcessParam = pointProcessParam)
+                            }
+                        },
+                        serverRuntimeErrorTask = {
+                            ToastUtil.showMessage(it.message)
+                            if (CustomLog.flag) CustomLog.E("[process/total-due-save] ${it.message}")
+                        })
             }
-        }, invalidTokenTask = {})
+
+            ServerCallbackUtil.callWithToken(
+                    task = { BenefitServer.getDueSavePoint(listener = listener, accessToken = it, pointProcessParam = pointProcessParam) },
+                    invalidTokenTask = { BenefitServer.getDueSavePoint(listener = listener, pointProcessParam = pointProcessParam) })
+        }
     }
+
 
 //    LISTENER
 
