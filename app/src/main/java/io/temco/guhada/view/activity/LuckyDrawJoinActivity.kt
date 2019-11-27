@@ -8,6 +8,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CountTimer
 import io.temco.guhada.data.model.event.EventUser
@@ -39,7 +40,7 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
             intent.getSerializableExtra("snsUser").let {
                 if (it != null) {
                     this.mSnsSignUp = it as EventUser.SnsSignUp
-                    this.mEmail = it.email
+                    this.mEmail = if (CommonUtil.validateEmail(it.email)) it.email else ""
                     this.mIsSns = true
                 }
             }

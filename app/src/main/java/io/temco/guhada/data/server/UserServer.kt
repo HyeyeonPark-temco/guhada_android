@@ -2,9 +2,10 @@ package io.temco.guhada.data.server
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.sns.SnsLoginModule
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
@@ -21,9 +22,8 @@ import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.*
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.UserService
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -69,28 +69,13 @@ class UserServer {
          * 네이버 유저 프로필 가져오기
          */
         @JvmStatic
-        fun getNaverProfile(listener: OnServerListener, accessToken: String) {
-            val NAVER_API_SUCCESS = "00"
-            RetrofitManager.createService(Type.Server.NAVER_PROFILE, UserService::class.java).getNaverProfile("Bearer $accessToken").enqueue(object : Callback<NaverResponse> {
-                override fun onResponse(call: Call<NaverResponse>, response: Response<NaverResponse>) {
-                    if (response.isSuccessful) {
-                        val naverResponse = response.body()
-                        if (naverResponse != null && !naverResponse.resultCode.isNullOrEmpty()) {
-                            if (naverResponse.resultCode == NAVER_API_SUCCESS && naverResponse.message == "success") {
-                                listener.onResult(true, naverResponse.user)
-                            }
-                        } else {
-                            listener.onResult(false, response.message())
-                        }
-                    } else {
-                        listener.onResult(false, response.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<NaverResponse>, t: Throwable) {
-                    CommonUtil.debug("[NAVER] FAILED: " + t.message)
-                }
-            })
+        fun getNaverProfile(listener: OnServerListener) {
+            CoroutineScope(Dispatchers.Default).launch {
+                val string = SnsLoginModule.mNaverLoginModule.requestApi(BaseApplication.getInstance(), SnsLoginModule.mNaverLoginModule.getAccessToken(BaseApplication.getInstance()), "https://openapi.naver.com/v1/nid/me")
+                val obj = JSONObject(string)
+                val naverResponse = Gson().fromJson<NaverResponse>(obj.toString(), NaverResponse::class.java)
+                listener.onResult(string.isNotEmpty(), naverResponse.user)
+            }
         }
 
         /**
@@ -565,7 +550,7 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
