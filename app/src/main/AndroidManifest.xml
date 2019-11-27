@@ -109,9 +109,6 @@
             android:name=".view.activity.WriteClaimActivity"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".view.activity.ProductDetailActivity"
-            android:screenOrientation="portrait" />
 
         <activity android:name=".view.activity.CardInterestActivity"
             android:screenOrientation="portrait" />
