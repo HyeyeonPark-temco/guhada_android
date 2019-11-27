@@ -456,6 +456,29 @@ class SearchServer {
 
 
 
+        /**
+         * @author park jungho
+         * 19.07.18
+         * 신상품 목록 조회
+         */
+        @JvmStatic
+        fun getProductByNewArrivals(unitPerPage: Int, listener: OnServerListener?) {
+            if (listener != null) {
+                val call = RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, false).getProductByNewArrivals(unitPerPage)
+                RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
+                    override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+
+                    override fun onFailure(call: Call<BaseModel<HomeDeal>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+            }
+        }
+
+
+
     }
 
 }

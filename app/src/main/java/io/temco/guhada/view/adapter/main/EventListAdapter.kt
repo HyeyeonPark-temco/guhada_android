@@ -10,6 +10,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -135,8 +136,12 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: EventListViewModel, position: Int, item: MainBaseModel) {
             if(item is EventList){
+                if(TextUtils.isEmpty(item.eventData.bgColor)){
+                    binding.imageviewMaineventEvent.scaleType = ImageView.ScaleType.FIT_XY
+                }else {
+                    binding.imageviewMaineventEvent.scaleType = ImageView.ScaleType.CENTER
+                }
                 ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageviewMaineventEvent, item.eventData.imgUrlM)
-                binding.imageviewMaineventEvent.setBackgroundColor(Color.parseColor(item.eventData.bgColor))
                 binding.textviewMaineventTitle.text = item.eventData.eventTitle
                 binding.textviewMaineventDate.text = (item.eventData.eventStartDate.split(" ")[0] + " ~ " +item.eventData.eventEndDate.split(" ")[0])
                 binding.layoutEventContent.setOnClickListener(null)
@@ -152,6 +157,12 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
                         }
 
                     }
+                }
+                try{
+                    if(!TextUtils.isEmpty(item.eventData.bgColor))
+                        binding.imageviewMaineventEvent.setBackgroundColor(Color.parseColor(item.eventData.bgColor))
+                }catch (e : Exception){
+                    if(CustomLog.flag)CustomLog.E(e)
                 }
             }
         }

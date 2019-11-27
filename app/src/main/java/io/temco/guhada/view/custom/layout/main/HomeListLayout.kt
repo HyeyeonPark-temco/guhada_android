@@ -2,6 +2,7 @@ package io.temco.guhada.view.custom.layout.main
 
 import android.app.Activity
 import android.content.Context
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.ViewCompat
@@ -15,10 +16,13 @@ import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnMainCustomLayoutListener
+import io.temco.guhada.common.listener.OnMainListListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.data.model.main.MainBaseModel
+import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.model.main.MainBanner
 import io.temco.guhada.data.viewmodel.main.HomeListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainHomelistBinding
 import io.temco.guhada.view.WrapGridLayoutManager
@@ -32,18 +36,19 @@ class HomeListLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMainHomelistBinding, HomeListViewModel>(context, attrs, defStyleAttr){
+) : BaseListLayout<CustomlayoutMainHomelistBinding, HomeListViewModel>(context, attrs, defStyleAttr) , OnMainCustomLayoutListener{
     var mHomeFragment: HomeFragment? = null
 
     private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
     private var recentViewCount = -1
+
+    lateinit var mainListListener : OnMainListListener
 
     override fun getBaseTag() = HomeListLayout::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_main_homelist
     override fun init() {
         mViewModel = HomeListViewModel(context)
         mBinding.viewModel = mViewModel
-        if(CustomLog.flag) CustomLog.L("HomeListRepository","HomeListLayout ", "init -----")
 
         mBinding.recyclerView.setHasFixedSize(true)
         mBinding.recyclerView.layoutManager = WrapGridLayoutManager(context as Activity, 2,LinearLayoutManager.VERTICAL, false)
@@ -52,7 +57,7 @@ class HomeListLayout constructor(
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
                     override fun getSpanSize(position: Int): Int {
-                        return mViewModel.listData.value!![position].gridSpanCount
+                        return mViewModel.listData[position].gridSpanCount
                     }
                 }
 
@@ -73,14 +78,6 @@ class HomeListLayout constructor(
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) { }
         })
 
-        mViewModel.listData.observe(this,
-                androidx.lifecycle.Observer<ArrayList<MainBaseModel>> {
-                    //if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 1----------------",it.size)
-                    mViewModel.getListAdapter().notifyDataSetChanged()
-                    //if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 2----------------",mViewModel.getListAdapter().items.size)
-                }
-        )
-
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
             (context as MainActivity).selectTab(4, false, true)
@@ -96,6 +93,7 @@ class HomeListLayout constructor(
         } else {
             mBinding.recyclerView.scrollToPosition(0)
         }
+        mainListListener.requestDataList(0,"scrollToTop")
     }
 
     // Floating Button
@@ -152,6 +150,14 @@ class HomeListLayout constructor(
                 }
             }
         }
+    }
+
+    fun setData(premiumData : HomeDeal, bestData : HomeDeal, mainBanner: ArrayList<MainBanner>){
+        mViewModel.premiumData = premiumData
+        mViewModel.bestData = bestData
+        mViewModel.mainBanner = mainBanner
+        mViewModel.setListData()
+        if (CustomLog.flag) CustomLog.L("HomeListLayout", "mainBanner", mViewModel.mainBanner)
     }
 
     fun listScrollTop() {
@@ -253,6 +259,21 @@ class HomeListLayout constructor(
                 .start()
     }
 
+    override fun updateDataList(tabIndex: Int, type: String) {
+        if(CustomLog.flag)CustomLog.L("HomeListLayout","updateDataList","tabIndex","type",type)
+
+    }
+
+    override fun loadNewInDataList(tabIndex: Int, value: HomeDeal) {
+        if(CustomLog.flag)CustomLog.L("HomeListLayout","loadNewInDataList","tabIndex")
+        mViewModel.newInData = value
+        mViewModel.setNewInData()
+        if (CustomLog.flag) CustomLog.L("HomeFragment", "newInData kidsList size", mViewModel.newInData?.kidsList!!.size)
+        if (CustomLog.flag) CustomLog.L("HomeFragment", "newInData menList size", mViewModel.newInData?.menList!!.size)
+        if (CustomLog.flag) CustomLog.L("HomeFragment", "newInData womenList size", mViewModel.newInData?.womenList!!.size)
+        if (CustomLog.flag) CustomLog.L("HomeFragment", "newInData allList size", mViewModel.newInData?.allList!!.size)
+    }
+
     override fun onFocusView() {
         mViewModel.getListAdapter().notifyDataSetChanged()
     }
@@ -269,5 +290,7 @@ class HomeListLayout constructor(
     }
     override fun onStop() { }
     override fun onDestroy() { }
+
+    fun getViewModel() = mViewModel
 
 }

@@ -335,9 +335,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
 
-                <data
-                    android:host="client"
-                    android:scheme="guhada"/>
+                <data android:host="client" android:scheme="guhada"/>
             </intent-filter>
         </activity>
         <!-- custom web view activity -->

@@ -102,4 +102,16 @@ interface SearchService {
     fun getProductByPlusItem(@Query("unitPerPage") unitPerPage: Int): Call<BaseModel<HomeDeal>>
 
 
+
+    /**
+     * @author park jungho
+     * 19.07.18
+     * 신상품 목록 조회
+     * @param unitPerPage 내려받을 페이지 수
+     *
+     */
+    @GET("/ps/main-home/deals/new-arrivals")
+    fun getProductByNewArrivals(@Query("unitPerPage") unitPerPage: Int): Call<BaseModel<HomeDeal>>
+
+
 }

@@ -2,6 +2,7 @@ package io.temco.guhada.view.fragment.main
 
 import android.annotation.SuppressLint
 import android.graphics.Point
+import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,17 @@ import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Info
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnMainCustomLayoutListener
+import io.temco.guhada.common.listener.OnMainListListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.model.main.MainBanner
+import io.temco.guhada.data.viewmodel.main.MainDataRepository
+import io.temco.guhada.data.viewmodel.main.MainListPageViewModel
 import io.temco.guhada.databinding.FragmentMainHomeBinding
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
@@ -21,15 +30,26 @@ import io.temco.guhada.view.custom.layout.main.*
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 import java.util.*
+import kotlin.collections.ArrayList
 
 
-class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListener {
+class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListener, OnMainListListener {
 
     // -------- LOCAL VALUE --------
+    private lateinit var mViewModel: MainListPageViewModel
     private var viewPagerAdapter: CustomViewPagerAdapter<String>? = null
     private var currentPagerIndex: Int = 0
     lateinit var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>>
     lateinit var mHandler: Handler
+    lateinit var mainCustomLayoutListenerMap : WeakHashMap<Int,OnMainCustomLayoutListener>
+    lateinit var premiumData : HomeDeal
+    lateinit var bestData: HomeDeal
+    lateinit var newInData: HomeDeal
+
+    lateinit var mainBanner: ArrayList<MainBanner>
+
+    private var isFinishedBestData = false
+    private var isFinishedBannerData = false
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -38,10 +58,20 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
 
     override fun getBaseTag() = HomeFragment::class.java.simpleName
     override fun getLayoutId() = R.layout.fragment_main_home
+
     override fun init() {
+        mViewModel = MainListPageViewModel(context!!)
+        mBinding.viewModel = mViewModel
+
+        arguments?.getSerializable("premiumData")?.let {
+            premiumData = it as HomeDeal
+        }
+
         customLayoutMap = WeakHashMap()
         mHandler = Handler(context?.mainLooper)
-        initHeader()
+
+        getMainBannerList(true)
+        getBestItemList(true)
         setEvenBus()
     }
 
@@ -69,27 +99,15 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     // PRIVATE
     ////////////////////////////////////////////////
 
-    // 최근본 상품 Count 조회
-    /*private fun setRecentProductCount() {
-        try {
-            CommonUtilKotlin.recentProductCount((context as MainActivity).getmDisposable(), (context as MainActivity).getmDb(), object : OnCallBackListener {
-                override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    try {
-                        recentProductCount = value.toString().toInt()
-                    } catch (e: Exception) {
-                        recentProductCount = 0
-                        if (CustomLog.flag) CustomLog.E(e)
-                    }
-                }
-            })
-        } catch (e: Exception) {
-            if (CustomLog.flag) CustomLog.E(e)
-        }
-    }*/
 
     private fun initHeader() {
         mBinding.layoutHeader.clickListener = this
-
+        mViewModel.getPlusItem()
+        if(!::newInData.isInitialized) {
+            mHandler.postDelayed(Runnable {
+                getNewInItemList()
+            }, 2000)
+        }
         // Tab
         setTabLayout()
         setViewPager()
@@ -99,35 +117,89 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         if (viewPagerAdapter == null) {
             context?.let {
                 var tabtitle = resources.getStringArray(R.array.main_titles)
+                if(!::mainCustomLayoutListenerMap.isInitialized) mainCustomLayoutListenerMap = WeakHashMap()
                 viewPagerAdapter = object : CustomViewPagerAdapter<String>(it, tabtitle, tabtitle) {
                     override fun setViewLayout(container: ViewGroup, item: String, position: Int): View {
                         var vw: View
-                        mBinding.viewLine.visibility = View.GONE
+
                         when (position) {
                             0 -> {
-                                vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = HomeListLayout(it).apply {
+                                    mHomeFragment = this@HomeFragment
+                                    mainListListener = this@HomeFragment
+                                    mainCustomLayoutListenerMap[position] = this
+                                }
+                                vw.setData(premiumData, bestData, mainBanner)
+                                if(::newInData.isInitialized) mainCustomLayoutListenerMap[position]?.loadNewInDataList(position, newInData)
                             }
                             1 -> {
-                                vw = WomenListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = WomenListLayout(it).apply {
+                                    mHomeFragment = this@HomeFragment
+                                    mainListListener = this@HomeFragment
+                                    mainCustomLayoutListenerMap[position] = this
+                                }
+                                if(!::newInData.isInitialized){
+                                    mHandler.postDelayed(Runnable {
+                                        (customLayoutMap[1] as WomenListLayout)?.setData(premiumData, bestData)
+                                        if(::newInData.isInitialized) mainCustomLayoutListenerMap[position]?.loadNewInDataList(position, newInData)
+                                    },1000)
+                                }else{
+                                    vw.setData(premiumData, bestData)
+                                    if(::newInData.isInitialized) mainCustomLayoutListenerMap[position]?.loadNewInDataList(position, newInData)
+                                }
                             }
                             2 -> {
-                                vw = MenListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = MenListLayout(it).apply {
+                                    mHomeFragment = this@HomeFragment
+                                    mainListListener = this@HomeFragment
+                                    mainCustomLayoutListenerMap[position] = this
+                                }
+                                if(!::newInData.isInitialized){
+                                    mHandler.postDelayed(Runnable {
+                                        (customLayoutMap[2] as MenListLayout)?.setData(premiumData, bestData)
+                                        if(::newInData.isInitialized) mainCustomLayoutListenerMap[position]?.loadNewInDataList(position, newInData)
+                                    },1300)
+                                }else{
+                                    vw.setData(premiumData, bestData)
+                                    if(::newInData.isInitialized) mainCustomLayoutListenerMap[position]?.loadNewInDataList(position, newInData)
+                                }
                             }
                             3 -> {
-                                vw = KidsListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = KidsListLayout(it).apply {
+                                    mHomeFragment = this@HomeFragment
+                                    mainListListener = this@HomeFragment
+                                    mainCustomLayoutListenerMap[position] = this
+                                }
+                                if(!::newInData.isInitialized){
+                                    mHandler.postDelayed(Runnable {
+                                        (customLayoutMap[3] as KidsListLayout)?.setData(premiumData, bestData)
+                                        if(::newInData.isInitialized) mainCustomLayoutListenerMap[position]?.loadNewInDataList(position, newInData)
+                                    },1600)
+                                }else{
+                                    vw.setData(premiumData, bestData)
+                                    if(::newInData.isInitialized) mainCustomLayoutListenerMap[position]?.loadNewInDataList(position, newInData)
+                                }
                             }
                             4 -> {
-                                vw = TimeDealListLayout(it).apply { mHomeFragment = this@HomeFragment }
-                                mBinding.viewLine.visibility = View.VISIBLE
+                                vw = TimeDealListLayout(it).apply {
+                                    mHomeFragment = this@HomeFragment
+                                    mainListListener = this@HomeFragment
+                                }
                             }
                             5 -> {
-                                vw = LuckyDrawListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = LuckyDrawListLayout(it).apply {
+                                    mHomeFragment = this@HomeFragment
+                                    mainListListener = this@HomeFragment
+                                }
                             }
                             6 -> {
-                                vw = EventListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                vw = EventListLayout(it).apply {
+                                    mHomeFragment = this@HomeFragment
+                                    mainListListener = this@HomeFragment
+                                }
                             }
                             else -> {
-                                vw = HomeListLayout(it)
+                                vw = EventListLayout(it)
                             }
                             // WomenListLayout,KidsListLayout,MenListLayout
                         }
@@ -145,6 +217,10 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
                 currentPagerIndex = position
+                when(position){
+                    1,2,3-> mBinding.viewLine.visibility = View.GONE
+                    else -> mBinding.viewLine.visibility = View.VISIBLE
+                }
                 if (customLayoutMap.containsKey(currentPagerIndex)) {
                     customLayoutMap.get(currentPagerIndex)!!.onFocusView()
                     if (customLayoutMap.isNotEmpty()) {
@@ -181,7 +257,8 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         // Dummy
         val titles = resources.getStringArray(R.array.main_titles)
         for (t in titles) {
-            addCustomTabs(t, false)
+            if(t == "타임딜" || t == "럭키드로우") addCustomTabsRed(t, false)
+            else addCustomTabs(t, false)
         }
     }
 
@@ -193,6 +270,54 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
             mBinding.layoutTab.addTab(tab)
             if (isSelect) tab.select()
         }
+    }
+
+
+    private fun addCustomTabsRed(title: String, isSelect: Boolean) {
+        if (context != null) {
+            val v = layoutInflater.inflate(R.layout.layout_tab_category_red, null)
+            (v.findViewById(R.id.text_title) as TextView).text = title
+            val tab = mBinding.layoutTab.newTab().setCustomView(v)
+            mBinding.layoutTab.addTab(tab)
+            if (isSelect) tab.select()
+        }
+    }
+
+    private fun getBestItemList(init : Boolean) {
+        MainDataRepository().getBestItem(Info.MAIN_UNIT_PER_PAGE, object : OnCallBackListener {
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(resultFlag){
+                    bestData = value as HomeDeal
+                    isFinishedBestData = true
+                    if(init && isFinishedBestData && isFinishedBannerData) initHeader()
+                }
+            }
+        })
+    }
+
+    private fun getNewInItemList() {
+        MainDataRepository().getNewIn(Info.MAIN_UNIT_PER_PAGE, object : OnCallBackListener {
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(resultFlag){
+                    newInData = value as HomeDeal
+                    for (i in 0..3) mainCustomLayoutListenerMap[i]?.loadNewInDataList(i, newInData!!)
+                }
+            }
+        })
+    }
+
+
+    private fun getMainBannerList(init : Boolean) {
+        MainDataRepository().getMainBanner(object : OnCallBackListener {
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag)CustomLog.L("getMainBannerList","MainBanner callBackListener",resultFlag)
+                if(resultFlag){
+                    isFinishedBannerData = true
+                    mainBanner = value as ArrayList<MainBanner>
+                    if(init && isFinishedBestData && isFinishedBannerData) initHeader()
+                }
+            }
+        })
     }
 
 
@@ -281,6 +406,13 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
             for (v in customLayoutMap) {
                 v.value.onDestroy()
             }
+        }
+    }
+
+    override fun requestDataList(tabIndex: Int, type: String) {
+        if(CustomLog.flag)CustomLog.L("HomeFragment","requestDataList","tabIndex","type",type)
+        if(::mainCustomLayoutListenerMap.isInitialized && mainCustomLayoutListenerMap.containsKey(tabIndex)){
+            mainCustomLayoutListenerMap[tabIndex]?.updateDataList(tabIndex,type)
         }
     }
 

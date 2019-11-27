@@ -2,6 +2,7 @@ package io.temco.guhada.view.custom.layout.main
 
 import android.app.Activity
 import android.content.Context
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.ViewCompat
@@ -18,16 +19,17 @@ import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.listener.OnCallBackListener
-import io.temco.guhada.common.listener.OnClickSelectItemListener
+import io.temco.guhada.common.listener.*
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.CategoryEntity
 import io.temco.guhada.data.db.entity.CategoryLabelType
+import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.body.FilterBody
-import io.temco.guhada.data.model.main.MainBaseModel
+import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.viewmodel.main.KidsListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainKidslistBinding
 import io.temco.guhada.view.WrapGridLayoutManager
@@ -36,27 +38,26 @@ import io.temco.guhada.view.adapter.main.SubTitleListAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.fragment.main.HomeFragment
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
-import io.temco.guhada.data.server.SearchServer
-import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.data.model.ProductList
 
 
 class KidsListLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMainKidslistBinding,KidsListViewModel>(context, attrs, defStyleAttr) {
+) : BaseListLayout<CustomlayoutMainKidslistBinding,KidsListViewModel>(context, attrs, defStyleAttr) , OnMainCustomLayoutListener {
     var mHomeFragment: HomeFragment? = null
 
     private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
     private var recentViewCount = -1
+
+    lateinit var mainListListener : OnMainListListener
 
     override fun getBaseTag() = KidsListLayout::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_main_kidslist
     override fun init() {
         mViewModel = KidsListViewModel(context)
         mBinding.viewModel = mViewModel
-        if(CustomLog.flag) CustomLog.L("HomeListRepository","HomeListLayout ", "init -----")
+        if(CustomLog.flag) CustomLog.L("KidsListLayout","HomeListLayout", "init -----")
 
         mBinding.recyclerView.setHasFixedSize(true)
         mBinding.recyclerView.layoutManager = WrapGridLayoutManager(context as Activity, 2, LinearLayoutManager.VERTICAL, false)
@@ -65,7 +66,7 @@ class KidsListLayout constructor(
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int {
-                return mViewModel.listData.value!![position].gridSpanCount
+                return mViewModel.listData[position].gridSpanCount
             }
         }
 
@@ -85,15 +86,6 @@ class KidsListLayout constructor(
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) { }
         })
-
-        mViewModel.listData.observe(this,
-                androidx.lifecycle.Observer<ArrayList<MainBaseModel>> {
-                    //if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 1----------------",it.size)
-                    mViewModel.getListAdapter().notifyDataSetChanged()
-                    //if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 2----------------",mViewModel.getListAdapter().items.size)
-                }
-        )
-
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
             (context as MainActivity).selectTab(4, false,true)
@@ -113,6 +105,7 @@ class KidsListLayout constructor(
         } else {
             mBinding.recyclerView.scrollToPosition(0)
         }
+        mainListListener.requestDataList(3,"scrollToTop")
     }
 
     // Floating Button
@@ -334,11 +327,32 @@ class KidsListLayout constructor(
         })
     }
 
+
+    fun setData(premiumData : HomeDeal, bestData : HomeDeal){
+        mViewModel.premiumData = premiumData
+        mViewModel.bestData = bestData
+        mViewModel.setListData()
+    }
+
     fun listScrollTop() {
         try{  mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
             if(CustomLog.flag)CustomLog.E(e)
         }
         scrollToTop(false)
+    }
+
+    override fun updateDataList(tabIndex: Int, type: String) {
+        if(CustomLog.flag)CustomLog.L("KidsListLayout","updateDataList","tabIndex","type",type)
+    }
+
+    override fun loadNewInDataList(tabIndex: Int, value: HomeDeal) {
+        if(CustomLog.flag)CustomLog.L("KidsListLayout","loadNewInDataList","tabIndex")
+        mViewModel.newInData = value
+        mViewModel.setNewInData()
+        if (CustomLog.flag) CustomLog.L("KidsListLayout", "newInData kidsList size", mViewModel.newInData?.kidsList!!.size)
+        if (CustomLog.flag) CustomLog.L("KidsListLayout", "newInData menList size", mViewModel.newInData?.menList!!.size)
+        if (CustomLog.flag) CustomLog.L("KidsListLayout", "newInData womenList size", mViewModel.newInData?.womenList!!.size)
+        if (CustomLog.flag) CustomLog.L("KidsListLayout", "newInData allList size", mViewModel.newInData?.allList!!.size)
     }
 
     override fun onFocusView() {  }
@@ -348,4 +362,7 @@ class KidsListLayout constructor(
     override fun onPause() { }
     override fun onStop() { }
     override fun onDestroy() { }
+
+    fun getViewModel() = mViewModel
+
 }

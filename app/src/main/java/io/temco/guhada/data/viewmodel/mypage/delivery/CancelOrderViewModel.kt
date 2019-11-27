@@ -21,6 +21,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
     var selectedCausePos = -1
     var cause = ""
     var successCancelOrderTask: (result: PurchaseOrder) -> Unit = {}
+    var failCancelOrderTask: (msg : String) -> Unit = {}
     var mExpectedRefundPrice = MutableLiveData<ExpectedRefundPrice>()
     var mExpectedRefundInfo = MutableLiveData<ExpectedRefundPrice.ExpectedRefundInfo>()
 
@@ -64,10 +65,12 @@ class CancelOrderViewModel : BaseObservableViewModel() {
             val cancelRequest = CancelRequest().apply {
                 when {
                     selectedCausePos < 0 -> {
+                        failCancelOrderTask(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_cause))
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_cause))
                         return
                     }
                     cause.isEmpty() -> {
+                        failCancelOrderTask(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_hint_cause))
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_hint_cause))
                         return
                     }

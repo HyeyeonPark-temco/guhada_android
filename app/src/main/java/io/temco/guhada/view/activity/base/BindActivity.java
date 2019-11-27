@@ -24,6 +24,8 @@ import java.util.WeakHashMap;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
+import io.temco.guhada.common.listener.OnBaseDialogListener;
+import io.temco.guhada.common.util.CommonViewUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.server.ProductServer;
@@ -49,7 +51,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
     private final String TAG_COMPANY = "TAG_COMPANY";
     private final String TAG_ID = "TAG_ID";
     private final String COMPANY_NAME = "GUHADA";
-    private Handler handler;
+    public Handler mHandler;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -66,8 +68,8 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
             if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) {
                 initNfc();
             }
+            mHandler = new Handler(this.getMainLooper());
             init();
-            handler = new Handler(this.getMainLooper());
             if(BaseApplication.getInstance().getActivityState() == null) {
                 BaseApplication.getInstance().setActivityState(new HashMap<>());
             }
@@ -201,24 +203,34 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        /*if (resultCode == Flag.RequestCode.GO_TO_MAIN) {
-            if (!"MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
-                setResult(Flag.RequestCode.GO_TO_MAIN);
-                finish();
-            }
-        } else {
+        if(resultCode == Flag.RequestCode.FINISH_APP){
+            setResult(Flag.RequestCode.FINISH_APP);
+            finish();
+        }else{
             super.onActivityResult(requestCode, resultCode, data);
-        }*/
+        }
     }
 
     public void clickCheck(){
-        handler.postDelayed(new Runnable() {
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 isClickAble = true;
             }
         },500);
     }
+
+    public Runnable timeOutDialog = new Runnable() {
+        @Override
+        public void run() {
+            CommonViewUtil.INSTANCE.showDialog(BindActivity.this, getResources().getString(R.string.common_message_timeout), false, new OnBaseDialogListener() {
+                @Override
+                public void onClickOk() {
+                    setResult(Flag.RequestCode.FINISH_APP);
+                    finish();
+                }
+            });
+        }
+    };
 
 }

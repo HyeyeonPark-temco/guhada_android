@@ -597,6 +597,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
     }
 
+    /**
+     *  본인인증, 이메일 인증 확인
+     *  Call users API > Check emailVerify field > Call users/identity-verify API > Check mobileVerified (200: verified)
+     *  @author Hyeyeon Park
+     */
     private fun checkValidation() {
         Preferences.getToken().accessToken.let { token ->
             if (!token.isNullOrEmpty()) {

@@ -11,6 +11,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.PurchaseStatus
+import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.OrderChangeCause
 import io.temco.guhada.data.model.order.PurchaseOrder
@@ -33,6 +34,8 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
 
     override fun getViewType(): Type.View = Type.View.REQUEST_CANCEL_ORDER
 
+    lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
+
     override fun init() {
         initViewModel()
         initHeader()
@@ -41,6 +44,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
 
     private fun initViewModel() {
         mViewModel = CancelOrderViewModel()
+        if(::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil = LoadingIndicatorUtil(this)
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mOrderProdGroupId = it
@@ -64,11 +68,15 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
         })
 
         mViewModel.successCancelOrderTask = {
+            loadingIndicatorUtil.dismiss()
             val intent = Intent(this, SuccessCancelOrderActivity::class.java)
             intent.putExtra("purchaseOrder", it)
             startActivity(intent)
             setResult(Activity.RESULT_OK)
             finish()
+        }
+        mViewModel.failCancelOrderTask = {
+            loadingIndicatorUtil.dismiss()
         }
     }
 
@@ -141,9 +149,15 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
         mBinding.includeRequestcancelorderButton.confirmText = getString(R.string.requestorderstatus_cancel_button_submit)
         mBinding.includeRequestcancelorderButton.setOnClickCancel { finish() }
         mBinding.includeRequestcancelorderButton.setOnClickConfirm {
+            loadingIndicatorUtil.show()
             mViewModel.cause = mBinding.includeRequestcancelorderCause.edittextRequestorderstatusCause.text.toString()
             mViewModel.cancelOrder()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(!::loadingIndicatorUtil.isInitialized)loadingIndicatorUtil.dismiss()
     }
 
     companion object {

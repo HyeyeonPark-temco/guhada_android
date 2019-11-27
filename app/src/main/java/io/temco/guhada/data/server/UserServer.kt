@@ -113,7 +113,7 @@ class UserServer {
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).verifyEmail(user = user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).verifyEmail(user = user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
 
         /**
          * 핸드폰 번호로 인증번호 전송하기
@@ -938,5 +938,12 @@ class UserServer {
                 .updateEventUser(accessToken = accessToken, eventUser = eventUser).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
 
+        /**
+         * 회원탈퇴
+         * @author Hyeyeon Park
+         * @since 2019.11.21
+         */
+        fun withdraw(listener: OnServerListener, accessToken: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false)
+                .withdraw(accessToken = accessToken).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
     }
 }

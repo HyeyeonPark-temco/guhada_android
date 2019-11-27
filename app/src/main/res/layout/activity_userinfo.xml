@@ -1250,7 +1250,7 @@
                         android:layout_marginBottom="60dp"
                         android:background="@drawable/drawable_border_esix"
                         android:gravity="center"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:text="@string/mypage_userinfo_passwaord_infotitle29"
                         android:textColor="@color/color_dbdbdb"
                         android:textSize="@dimen/text_13" />

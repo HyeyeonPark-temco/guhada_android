@@ -22,8 +22,8 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class VerifyViewModel : BaseObservableViewModel() {
-    private val START_MINUTE = "02"
-    private val START_SECOND = "60"
+    private var START_MINUTE = "00"
+    private var START_SECOND = "00"
 
     var mVerificationNumber = "" // 인증번호
     var mUser = User()
@@ -109,6 +109,9 @@ class VerifyViewModel : BaseObservableViewModel() {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.verify_message_send))
                             mActiveSendButton = ObservableBoolean(true)
                             notifyPropertyChanged(BR.mActiveSendButton)
+
+                            val expire = it.data as Double
+                            START_MINUTE = (expire / 60000).toInt().toString()
                             startTimer(minute = START_MINUTE, second = START_SECOND)
                         },
                         wrongInfoTask = {
@@ -121,14 +124,16 @@ class VerifyViewModel : BaseObservableViewModel() {
     // TODO 인증 완료 화면 미정 [2019.09.05]
     private fun verifyNumber() {
         UserServer.verifyNumber(OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        CountTimer.stopTimer()
-                        updateEmailVerify()
-                    },
-                    invalidVerificationNumberTask = {
-                        ToastUtil.showMessage(it.message)
-                    })
+            if (success && o is BaseModel<*>) {
+                if (o.resultCode == ResultCode.SUCCESS.flag) {
+                    CountTimer.stopTimer()
+                    updateEmailVerify()
+                } else {
+                    ToastUtil.showMessage(o.message)
+                }
+            } else {
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+            }
         }, verification = Verification().apply {
             this.verificationTarget = mVerifyEmail.get() ?: "" //mUser.email
             this.verificationTargetType = VerificationType.EMAIL.type

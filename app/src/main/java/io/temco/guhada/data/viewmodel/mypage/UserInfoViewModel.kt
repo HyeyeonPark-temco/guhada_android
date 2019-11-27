@@ -264,6 +264,25 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
         })
     }
 
+    /**
+     * 회원탈퇴
+     * @author Hyeyeon Park
+     * @since 2019.11.21
+     */
+    fun withdraw(successTask: () -> Unit) {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            UserServer.withdraw(OnServerListener { success, o ->
+                if (success && o is BaseModel<*>) {
+                    if (o.resultCode == ResultCode.SUCCESS.flag) {
+                        successTask()
+                    } else {
+                        val message = if (o.message.isNullOrEmpty()) BaseApplication.getInstance().getString(R.string.common_message_servererror) else o.message
+                        ToastUtil.showMessage(message)
+                    }
+                }
+            }, accessToken = accessToken)
+        })
+    }
 }
 
 

@@ -38,7 +38,6 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     private lateinit var mDetailFragment : CommunityDetailContentsFragment
     private lateinit var mCommentFragment : CommentListFragment
     private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
-    private lateinit var mHandler: Handler
 
     private var detailReload = false
     private var isLoadData = false

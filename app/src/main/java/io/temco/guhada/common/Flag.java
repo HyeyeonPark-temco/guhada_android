@@ -4,6 +4,7 @@ public class Flag {
 
     public static class RequestCode {
         public static final int BASE = 100;
+        public static final int FINISH_APP = -88888;
         public static final int GO_TO_MAIN = -9999;
         public static final int GO_TO_MAIN_HOME = -9997;
         public static final int GO_TO_MAIN_COMUNITY = -9996;

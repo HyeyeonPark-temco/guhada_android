@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel.productdetail
 
+import android.text.TextUtils
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
@@ -28,7 +29,6 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.order.OrderItemResponse
-import io.temco.guhada.data.model.point.ExpectedPoint
 import io.temco.guhada.data.model.point.ExpectedPointResponse
 import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.model.point.PointRequest
@@ -56,13 +56,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var menuVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
-    var bottomBtnVisibility = ObservableInt(View.GONE)
+    var bottomBtnVisible = ObservableBoolean(false)
         @Bindable
         get() = field
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.bottomBtnVisibility)
-        }
+
     var imagePos = 1
         @Bindable
         get() = field
@@ -122,8 +119,17 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     // 혜택 정보
     var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
-
     var mSetBadgeTask: () -> Unit = {}
+
+    // 북마크
+    var mIsBookMarkSaved = ObservableBoolean(false)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            mBookMarkVisible = true
+        }
+    var mBookMarkVisible = false
 
     fun getDetail() {
         ProductServer.getProductDetail(OnServerListener { success, o ->
@@ -197,10 +203,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     fun getBookMark(target: String, targetId: Long) {
         ServerCallbackUtil.callWithToken(
                 task = {
-                    if (CustomLog.flag) CustomLog.L("getBookMark", "callWithToken", it)
-                    var userId = -1
                     if (it != null) {
-                        userId = JWT(it.substring(7, it.length)).getClaim("userId").asInt() ?: -1
+                        if (CustomLog.flag) CustomLog.L("getBookMark", "callWithToken", it)
+                        val userId = JWT(it.substring(7, it.length)).getClaim("userId").asInt()
+                                ?: -1
                         UserServer.getBookMark(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
@@ -272,17 +278,12 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                 this.mReviewSummary = ObservableField(it.data as ReviewSummary)
                                 notifyPropertyChanged(BR.mReviewSummary)
                             },
-                            failedTask = {
-
-                            },
-                            dataNotFoundTask = {
-
-                            },
+                            failedTask = {},
+                            dataNotFoundTask = {},
                             serverRuntimeErrorTask = {})
                 }, productId = product.value?.productId!!)
             }
         }
-
     }
 
     /**
@@ -301,68 +302,64 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     /**
      * 혜택 정보-포인트 적립
+     * 미로그인 상태에서도 노출
      * @author Hyeyeon Park
      */
     fun getDueSavePoint() {
-        ServerCallbackUtil.callWithToken(task = { accessToken ->
-            val pointProcessParam = PointProcessParam()
+        val pointProcessParam = PointProcessParam()
 
-            val orderProd = OrderItemResponse().apply {
-                this.dcategoryId = product.value?.dCategoryId ?: 0
-                this.dealId = product.value?.dealId ?: 0L
-                this.discountPrice = product.value?.discountPrice ?: 0
-                this.lcategoryId = product.value?.lCategoryId ?: 0
-                this.mcategoryId = product.value?.mCategoryId ?: 0
-                this.scategoryId = product.value?.sCategoryId ?: 0
-                this.productPrice = product.value?.sellPrice ?: 0
-                this.orderProdList.add(OrderItemResponse.OrderOption().apply {
-                    this.price = product.value?.totalPrice ?: 0
-                })
-            }
+        val orderProd = OrderItemResponse().apply {
+            this.dcategoryId = product.value?.dCategoryId ?: 0
+            this.dealId = product.value?.dealId ?: 0L
+            this.discountPrice = product.value?.discountPrice ?: 0
+            this.lcategoryId = product.value?.lCategoryId ?: 0
+            this.mcategoryId = product.value?.mCategoryId ?: 0
+            this.scategoryId = product.value?.sCategoryId ?: 0
+            this.productPrice = product.value?.sellPrice ?: 0
+            this.orderProdList.add(OrderItemResponse.OrderOption().apply {
+                this.price = product.value?.totalPrice ?: 0
+            })
+        }
 
-            val bundle = PointProcessParam.PointBundle().apply {
-                this.bundlePrice = product.value?.shipExpense ?: 0
-                this.orderProdList.add(orderProd)
-            }
+        val bundle = PointProcessParam.PointBundle().apply {
+            this.bundlePrice = product.value?.shipExpense ?: 0
+            this.orderProdList.add(orderProd)
+        }
 
-            pointProcessParam.bundleList.add(bundle)
+        pointProcessParam.bundleList.add(bundle)
 
-            if (pointProcessParam.bundleList.isNotEmpty()) {
-                pointProcessParam.consumptionPoint = 0
-                pointProcessParam.consumptionType = PointProcessParam.PointConsumption.BUY.type
-                pointProcessParam.pointType = PointProcessParam.PointSave.BUY.type
-                pointProcessParam.serviceType = PointRequest.ServiceType.AOS.type
+        if (pointProcessParam.bundleList.isNotEmpty()) {
+            pointProcessParam.consumptionPoint = 0
+            pointProcessParam.consumptionType = PointProcessParam.PointConsumption.BUY.type
+            pointProcessParam.pointType = PointProcessParam.PointSave.BUY.type
+            pointProcessParam.serviceType = PointRequest.ServiceType.AOS.type
 
-                BenefitServer.getDueSavePoint(listener = OnServerListener { success, o ->
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                val expectedPointResponse = it.data as ExpectedPointResponse
-                                this.mExpectedPoint.postValue(expectedPointResponse)
-                            },
-                            dataIsNull = {
-                                if (it is BaseModel<*>) {
-                                    ToastUtil.showMessage(it.message)
-                                    if (CustomLog.flag) CustomLog.E("[process/total-due-save] ${it.message}")
-                                }
-                            },
-                            serverRuntimeErrorTask = {
+            val listener = OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            val expectedPointResponse = it.data as ExpectedPointResponse
+                            this.mExpectedPoint.postValue(expectedPointResponse)
+                        },
+                        dataIsNull = {
+                            if (it is BaseModel<*>) {
                                 ToastUtil.showMessage(it.message)
                                 if (CustomLog.flag) CustomLog.E("[process/total-due-save] ${it.message}")
-                            })
-                }, accessToken = accessToken, pointProcessParam = pointProcessParam)
+                            }
+                        },
+                        serverRuntimeErrorTask = {
+                            ToastUtil.showMessage(it.message)
+                            if (CustomLog.flag) CustomLog.E("[process/total-due-save] ${it.message}")
+                        })
             }
-        }, invalidTokenTask = {})
+
+            ServerCallbackUtil.callWithToken(
+                    task = { BenefitServer.getDueSavePoint(listener = listener, accessToken = it, pointProcessParam = pointProcessParam) },
+                    invalidTokenTask = { BenefitServer.getDueSavePoint(listener = listener, pointProcessParam = pointProcessParam) })
+        }
     }
+
 
 //    LISTENER
-
-    // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
-    fun onClickTab(view: View) {
-        val pos = view.tag.toString()
-        selectedTab = ObservableInt(pos.toInt())
-        listener?.scrollToElement(pos.toInt())
-        notifyPropertyChanged(BR.selectedTab)
-    }
 
     fun onClickRefundInfo() {
         refundInfoExpanded = ObservableBoolean(!refundInfoExpanded.get())
@@ -453,24 +450,32 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
                         // [Tracking] 장바구니 담기
                         Tracker.Event(TrackingEvent.Cart.Add_To_Cart.eventName).let {
-                            it.addCustom("dealId", product.value?.dealId.toString())
-                            it.addCustom("productId", product.value?.productId.toString())
-                            it.addCustom("brandId", product.value?.brandId.toString())
-                            it.addCustom("sellerId", product.value?.sellerId.toString())
-                            it.addCustom("season", product.value?.season ?: cart.season)
-                            it.addCustom("name", product.value?.name ?: cart.dealName)
-                            it.addCustom("sellPrice", product.value?.sellPrice.toString())
-                            it.addCustom("discountPrice", product.value?.discountPrice.toString())
+                            it.addCustom("dealId", cart.dealId)
+                            it.addCustom("sellerId", cart.sellerId)
+                            it.addCustom("brandName", cart.brandName)
+                            it.addCustom("dealName", cart.dealName)
+                            it.addCustom("sellPrice", cart.sellPrice.toString())
+                            it.addCustom("discountPrice", cart.discountPrice.toString())
+                            if (!TextUtils.isEmpty(cart.season)) it.addCustom("season", cart.season)
+
+//                            it.addCustom("dealId", product.value?.dealId.toString())
+//                            it.addCustom("productId", product.value?.productId.toString())
+//                            it.addCustom("brandId", product.value?.brandId.toString())
+//                            it.addCustom("sellerId", product.value?.sellerId.toString())
+//                            it.addCustom("season", product.value?.season ?: cart.season)
+//                            it.addCustom("name", product.value?.name ?: cart.dealName)
+//                            it.addCustom("sellPrice", product.value?.sellPrice.toString())
+//                            it.addCustom("discountPrice", product.value?.discountPrice.toString())
+
                             TrackingUtil.sendKochavaEvent(it)
                         }
 
-                        if (cart.cartValidStatus.status){
+                        if (cart.cartValidStatus.status) {
                             listener?.showAddCartResult()
                             CommonUtil.getCartItemCount()
                             //BaseApplication.getInstance().plusCartCount()
                             mSetBadgeTask()
-                        }
-                        else {
+                        } else {
                             ToastUtil.showMessage(cart.cartValidStatus.cartErrorMessage)
                         }
                     } else {
@@ -498,6 +503,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     UserServer.saveBookMark(OnServerListener { success, o ->
                         ServerCallbackUtil.executeByResultCode(success, o,
                                 successTask = {
+                                    mIsBookMarkSaved = ObservableBoolean(true)
+                                    notifyPropertyChanged(BR.mIsBookMarkSaved)
+
                                     if (CustomLog.flag) CustomLog.L("saveBookMark", "successTask")
 
                                     when (target) {
@@ -526,6 +534,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     UserServer.deleteBookMark(OnServerListener { success, o ->
                         ServerCallbackUtil.executeByResultCode(success, o,
                                 successTask = {
+                                    mIsBookMarkSaved = ObservableBoolean(false)
+                                    notifyPropertyChanged(BR.mIsBookMarkSaved)
+
                                     if (CustomLog.flag) CustomLog.L("deleteBookMark", "successTask")
 
                                     when (target) {
@@ -548,28 +559,19 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     fun onClickBookMark() {
         if (initBookMarkData) {
-            if (productBookMark.get()) {
+            if (productBookMark.get())
                 deleteBookMark(Type.BookMarkTarget.PRODUCT.name, product.value!!.productId)
-            } else {
+            else
                 saveBookMark(Type.BookMarkTarget.PRODUCT.name, product.value!!.productId)
-            }
             productBookMark.set(!productBookMark.get())
-        }
+        } else
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
     }
 
+    fun onClickSearch() = listener?.showSearchWordActivity()
 
-    fun onClickSearch() {
-        listener?.showSearchWordActivity()
-    }
+    fun onClickShoppingBag() = listener?.showShoppingBagActivity()
 
-
-    fun onClickShoppingBag() {
-        listener?.showShoppingBagActivity()
-    }
-
-
-    fun onClickReport() {
-        listener?.showReportActivity()
-    }
+    fun onClickReport() = listener?.showReportActivity()
 
 }

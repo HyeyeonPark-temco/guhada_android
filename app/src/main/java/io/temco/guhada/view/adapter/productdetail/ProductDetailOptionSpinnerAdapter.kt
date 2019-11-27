@@ -38,10 +38,9 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
         setPadding(position = position)
         setOptionText(option = option)
 
-//        mBinding.viewProductdetailOptionspinnerLine1.visibility = if (position == 0) View.VISIBLE else View.GONE
         mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.size - 1) View.VISIBLE else View.GONE
 
-        if (option.rgb1?.isNotEmpty() ?: false) {
+        if (option.rgb1?.isNotEmpty() == true) {
             mBinding.imageviewProductdetailOptionspinner.visibility = View.VISIBLE
             mBinding.imageviewProductdetailOptionspinner.setBackgroundColor(Color.parseColor(option.rgb1))
         } else
@@ -52,36 +51,20 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
     }
 
     private fun setOptionText(option: OptionInfo) {
-        var optionText = getOptionText(option = option)
-
-        if (option.stock == 0) {
-            mBinding.textviewProductdetailOptionspinner.text = "$optionText ${BaseApplication.getInstance().getString(R.string.productdetail_option_soldout)}"
-            mBinding.textviewProductdetailOptionspinner.setTextColor(context.resources.getColor(R.color.pinkish_grey))
-        } else {
-            if (option.price > 0)
-                optionText += " ${String.format(BaseApplication.getInstance().getString(R.string.productdetail_option_extraprice_format), option.price)}"
-            mBinding.textviewProductdetailOptionspinner.text = optionText
-            mBinding.textviewProductdetailOptionspinner.setTextColor(context.resources.getColor(R.color.greyish_brown_two))
+        mBinding.textviewProductdetailOptionspinner.text = option.getOptionText()
+        mBinding.textviewProductdetailOptionspinnerExtraprice.text = when {
+            option.stock == 0 -> mBinding.root.context.getString(R.string.productdetail_option_soldout)
+            option.price > 0 -> String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)
+            else -> ""
         }
+        val textColor = if (option.stock == 0) mBinding.root.context.resources.getColor(R.color.pinkish_grey) else mBinding.root.context.resources.getColor(R.color.greyish_brown_two)
+        mBinding.textviewProductdetailOptionspinner.setTextColor(textColor)
+        mBinding.textviewProductdetailOptionspinnerExtraprice.setTextColor(textColor)
     }
 
     private fun setOptionRgb(option: OptionInfo) {
         if (!option.rgb1.isNullOrEmpty())
             mBinding.imageviewProductdetailOptionspinner.setBackgroundColor(Color.parseColor(option.rgb1))
-    }
-
-    fun getOptionText(option: OptionInfo): String {
-        var optionText = ""
-        if (!option.attribute1.isNullOrEmpty())
-            optionText = "${option.attribute1}"
-
-        if (!option.attribute2.isNullOrEmpty())
-            optionText = "$optionText, ${option.attribute2}"
-
-        if (!option.attribute3.isNullOrEmpty())
-            optionText = "$optionText, ${option.attribute3}"
-
-        return optionText
     }
 
     private fun setPadding(position: Int) {

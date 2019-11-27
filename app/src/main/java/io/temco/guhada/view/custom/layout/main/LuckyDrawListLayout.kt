@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
-import androidx.core.widget.NestedScrollView
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +19,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnMainListListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
@@ -58,6 +57,8 @@ class LuckyDrawListLayout constructor(
 
     private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
     private var recentViewCount = -1
+
+    lateinit var mainListListener : OnMainListListener
 
     override fun getBaseTag() = KidsListLayout::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_main_luckydraw

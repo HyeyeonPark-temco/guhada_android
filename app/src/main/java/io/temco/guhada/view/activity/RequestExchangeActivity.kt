@@ -207,36 +207,6 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mBinding.includeRequestexchangeCollection.title = resources.getString(R.string.requestorderstatus_exchange_way_title)
         mBinding.includeRequestexchangeCollection.description = resources.getString(R.string.requestorderstatus_exchange_way_description)
 
-        // [신청서 수정] 택배사
-        if (!purchaseOrder.exchangePickingShipCompany.isNullOrEmpty()) {
-            mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayTrue.isChecked = true
-            mBinding.includeRequestexchangeCollection.textviewRequestorderstatusShippingcompany.text = purchaseOrder.exchangePickingShipCompany
-
-            mBinding.includeRequestexchangeCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.VISIBLE
-            mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.visibility = View.VISIBLE
-
-            if (!purchaseOrder.exchangePickingInvoiceNo.isNullOrEmpty()) {
-                mBinding.includeRequestexchangeCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
-                mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = View.GONE
-                mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.exchangePickingInvoiceNo)
-            }
-        }else {
-            mViewModel.mExchangeRequest.alreadySend = false
-            mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
-            mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayTrue.isChecked = false
-
-            // 택배사 및 송장번호 입력 란
-            mBinding.includeRequestexchangeCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.GONE
-            mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.visibility = View.GONE
-            mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = View.GONE
-            mBinding.includeRequestexchangeCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
-
-            // 택배사 및 송장번호 초기화
-            mViewModel.mExchangeRequest.shippingCompanyCode = ""
-            mViewModel.mExchangeRequest.shippingCompanyName = ""
-            mViewModel.mExchangeRequest.invoiceNo = 0L
-        }
-
         // LISTENER
         mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayTrue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -266,6 +236,23 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 mViewModel.mExchangeRequest.shippingCompanyName = ""
                 mViewModel.mExchangeRequest.invoiceNo = 0L
             }
+        }
+
+        // [신청서 수정] 택배사
+        if (!purchaseOrder.exchangePickingShipCompany.isNullOrEmpty()) {
+            mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayTrue.isChecked = true
+            mBinding.includeRequestexchangeCollection.textviewRequestorderstatusShippingcompany.text = purchaseOrder.exchangePickingShipCompany
+
+            mBinding.includeRequestexchangeCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.VISIBLE
+            mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.visibility = View.VISIBLE
+
+            if (!purchaseOrder.exchangePickingInvoiceNo.isNullOrEmpty()) {
+                mBinding.includeRequestexchangeCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
+                mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = View.GONE
+                mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.exchangePickingInvoiceNo)
+            }
+        }else {
+            mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
         }
 
         mViewModel.mShippingCompanyList.observe(this, Observer {

@@ -13,81 +13,104 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager_productdetail_images"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewpager_productdetail_images"
-                    android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:background="@color/black_overlay"
-                    android:overScrollMode="never"
-                    app:productImage="@{viewModel.product.imageUrls}" />
-
-            </RelativeLayout>
+                android:layout_height="360dp"
+                android:background="@color/black_overlay"
+                android:overScrollMode="never"
+                app:productImage="@{viewModel.product.imageUrls}" />
 
             <FrameLayout
-                android:layout_width="wrap_content"
-                android:minWidth="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/background_color_blackoverlay"
-                android:orientation="horizontal"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:id="@+id/framelayout_productdetail_bookmark"
+                android:layout_width="110dp"
+                android:layout_gravity="center"
+                android:layout_height="110dp"
+                app:fade="@{viewModel.mIsBookMarkSaved}"
+                app:visible="@{viewModel.mBookMarkVisible}"
+                android:visibility="gone"
+                android:background="@drawable/oval_all_purpleoverlay">
 
                 <LinearLayout
-                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:orientation="vertical">
 
-                <TextView
-                    style="@style/TextMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(viewModel.imagePos), default=1}"
-                    android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_12" />
+                    <ImageView
+                        android:id="@+id/imageview_productdetail_bookmark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@{viewModel.mIsBookMarkSaved ? @drawable/bookmark_w_btn_on : @drawable/bookmark_w_btn_off, default = @drawable/bookmark_w_btn_on}" />
 
-                <TextView
-                    style="@style/TextMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:text="/"
-                    android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    style="@style/TextMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.product.imageUrls != null ? String.valueOf(viewModel.product.imageUrls.size) : String.valueOf(1), default=1}"
-                    android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_12" />
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="@{viewModel.mIsBookMarkSaved ? @string/productdetail_bookmark_on : @string/productdetail_bookmark_off, default = @string/productdetail_bookmark_on}"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_12" />
                 </LinearLayout>
             </FrameLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/background_color_blackoverlay"
+                android:minWidth="50dp"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(viewModel.imagePos), default=1}"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="/"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.product.imageUrls != null ? String.valueOf(viewModel.product.imageUrls.size) : String.valueOf(1), default=1}"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_12" />
+                </LinearLayout>
+            </FrameLayout>
+
+        </FrameLayout>
 
 
         <LinearLayout
@@ -105,8 +128,8 @@
                 android:layout_marginEnd="20dp">
 
                 <TextView
-                    style="@style/TextBold"
                     android:id="@+id/textView10"
+                    style="@style/TextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()->viewModel.onClickBrand()}"
@@ -146,8 +169,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="9dp"
-                android:lineSpacingExtra="4dp"
                 android:layout_marginEnd="20dp"
+                android:lineSpacingExtra="4dp"
                 android:text="@{viewModel.product.name == null ? `` : viewModel.product.season+ ` ` +viewModel.product.name}"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_18" />
@@ -263,7 +286,7 @@
                     android:id="@+id/checkBox5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@{viewModel.productBookMark ? @drawable/detail_icon_bookmark_on : @drawable/selector_bookmark_productdetail}"
+                    android:background="@{viewModel.productBookMark ? @drawable/detail_icon_bookmark_on : @drawable/selector_bookmark_productdetail, default= @drawable/selector_bookmark_productdetail}"
                     android:button="@null"
                     android:onClick="@{()->viewModel.onClickBookMark()}"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -24,6 +24,7 @@ import kotlin.collections.ArrayList
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.text.SpannableStringBuilder
+import io.temco.guhada.common.util.CustomLog
 import java.lang.Exception
 import java.util.regex.Pattern
 
@@ -168,13 +169,14 @@ class SearchWordAdapter (private val model : ViewModel, list : ArrayList<SearchW
 
     /**
      * 메인 리스트에 event viewpager view holder
+     * Fatal Exception: java.util.regex.PatternSyntaxException 수정
      */
     inner class SearchWordAutoComplete(private val containerView: View, val binding: ItemSearchwordAutocompleteListBinding) : ListViewHolder(containerView, binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) { }
         override fun bind(viewModel: SearchWordViewModel, position: Int, item: SearchWord) {
             if(item is SearchAutoComplete){
                 val sb = SpannableStringBuilder(item.name)
-                val p = Pattern.compile(item.searchWord, Pattern.CASE_INSENSITIVE)
+                val p = Pattern.compile(item.searchWord.replace("(","\\(").replace(")","\\)"), Pattern.CASE_INSENSITIVE)
                 val m = p.matcher(item.name)
                 while (m.find()) {
                     sb.setSpan(ForegroundColorSpan(Color.parseColor("#5d2ed1")), m.start(), m.end(), Spannable.SPAN_INCLUSIVE_INCLUSIVE)

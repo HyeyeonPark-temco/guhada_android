@@ -356,6 +356,15 @@ public class CommonUtil {
     }
 
 
+    public static void startSearchListActivity(Activity act, String text, boolean isNewAct){
+        Intent intent = new Intent(act, ProductFilterListActivity.class);
+        intent.putExtra("type", Type.ProductListViewType.SEARCH);
+        intent.putExtra("search_word", text);
+        intent.putExtra("isNewActivity",isNewAct);
+        act.startActivityForResult(intent, Flag.RequestCode.BASE);
+    }
+
+
     /**
      * @param act
      * @author park jungho

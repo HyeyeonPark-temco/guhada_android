@@ -20,13 +20,14 @@
             android:orientation="horizontal"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="38dp"
             android:background="#eeeeee"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <io.temco.guhada.view.custom.recycler.CustomRecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

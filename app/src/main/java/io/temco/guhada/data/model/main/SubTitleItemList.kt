@@ -1,9 +1,6 @@
 package io.temco.guhada.data.model.main
 
 
-import io.temco.guhada.common.util.CustomLog
-import java.util.*
-
 /**
  * @author park jungho
  * 19.07.18

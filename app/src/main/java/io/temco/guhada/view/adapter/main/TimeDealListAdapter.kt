@@ -481,10 +481,13 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                 binding.itemLayout.contentDescription = item.deal.dealId.toString()
                 binding.itemLayout.setOnClickListener {
                     var id = it.contentDescription.toString().toLong()
-                    TrackingUtil.sendKochavaEvent(TrackingEvent.MainEvent.View_Time_Deal_Product.eventName,id.toString())
+                    TrackingUtil.sendKochavaEvent(TrackingEvent.MainEvent.View_Time_Deal_Product.eventName, id.toString())
                     CommonUtil.startProductActivity(viewModel.context as Activity, id)
                 }
-                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url)
+
+                val context = containerView.context
+                val size = CommonViewUtil.convertDpToPixel(240, context)
+                ImageUtil.loadImage(context, binding.imageThumb, item.deal.productImage.url, size, size)
 
                 if (item.deal.options != null && item.deal.options.size > 0) {
                     for (o in item.deal.options) {
@@ -615,7 +618,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
         override fun bind(viewModel: TimeDealListViewModel, position: Int, item: MainBaseModel) {
             if (item is DummyImage) {
-                binding.imageDummy.layoutParams  = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, CommonViewUtil.dipToPixel(itemView.context, item.imageHeight))
+                binding.imageDummy.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, CommonViewUtil.dipToPixel(itemView.context, item.imageHeight))
                 binding.imageDummy.setBackgroundColor(Color.TRANSPARENT)
                 //binding.imageDummy.setBackgroundResource(item.imageRes)
             }
@@ -638,6 +641,14 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
         }
     }
 
+    // 타임딜
+    override fun onViewRecycled(holder: ListViewHolder) {
+        super.onViewRecycled(holder)
+
+//        if(holder.binding is CustomlayoutMainItemTimedealBinding)
+//            ImageUtil.clearGlide(holder.binding.root.context, (holder.binding as CustomlayoutMainItemTimedealBinding).imageThumb)
+    }
+
     companion object {
         @JvmStatic
         @BindingAdapter("cancelLine")
@@ -645,7 +656,6 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
             if (addCancelLine)
                 this.paintFlags = (this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
         }
-
     }
 
 }

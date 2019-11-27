@@ -3,6 +3,7 @@ package io.temco.guhada.common.util
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
+import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -134,27 +135,84 @@ object CommonUtilKotlin  {
     @JvmStatic
     fun moveEventPage(act : Activity, param : String, param2 : String, isMainActivity : Boolean, isFinished : Boolean){
         if(TextUtils.isEmpty(param)) return
-        if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage param",param)
+        if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage param",param,"param2",param2)
         when(param){
-            "join"->{
-                CommonUtil.startLoginPage(act)
-                if(isFinished)act.finish()
-            }
-            "timedeal"->{
+            SchemeMoveType.MAIN.code->{
                 if(isMainActivity){
-                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.TIME_DEAL))
                 }else{
-                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, Info.MainHomeIndex.TIME_DEAL,true, isMainActivity)
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag,true, isMainActivity)
                     act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
                     act.onBackPressed()
                 }
                 if(isFinished)act.finish()
             }
-            "luckydraw"->{
+            SchemeMoveType.JOIN.code->{
+                CommonUtil.startLoginPage(act)
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.TIMEDEAL.code->{
+                if(isMainActivity){
+                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.TIME_DEAL))
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, Info.MainHomeIndex.TIME_DEAL,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.LUCKYDRAW.code->{
                 if(isMainActivity){
                     EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.LUCKY_DRAW))
                 }else{
-                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, Info.MainHomeIndex.LUCKY_DRAW,true, isMainActivity)
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, Info.MainHomeIndex.LUCKY_DRAW,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.EVENT.code->{
+                if(isMainActivity){
+                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.EVENT_LIST))
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, Info.MainHomeIndex.EVENT_LIST,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.MAIN.code->{
+                if(isMainActivity){
+
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.PRODUCT.code->{
+                if(isMainActivity){
+                    if(!TextUtils.isEmpty(param2)){
+                        try {
+                            CommonUtil.startProductActivity(act, param2.toLong())
+                        }catch (e : Exception){
+                            if(CustomLog.flag)CustomLog.E(e)
+                        }
+                    }
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag,true, isMainActivity)
+                    act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                    act.onBackPressed()
+                }
+                if(isFinished)act.finish()
+            }
+            SchemeMoveType.SEARCH.code->{
+                if(isMainActivity){
+                    var deStr : String = if(param2.matches(Regex(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))) param2 else String(Base64.decode(param2, Base64.URL_SAFE))
+                    if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage SEARCH param2",param2,"deStr",deStr)
+                    CommonUtil.startSearchListActivity(act,deStr,true)
+                }else{
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag,true, isMainActivity)
                     act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
                     act.onBackPressed()
                 }
