@@ -145,6 +145,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     snsSignUp.setSnsId(snsId);
                     snsSignUp.setProfileJson(profile);
                     snsSignUp.setSnsType(snsType);
+                    snsSignUp.setEmail(email);
 
                     Intent intent = new Intent(LoginActivity.this, LuckyDrawJoinActivity.class);
                     intent.putExtra("snsUser", snsSignUp);
@@ -319,19 +320,20 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case Flag.RequestCode.KAKAO_LOGIN:
-                    mViewModel.getTempSnsUser().setSnsType("KAKAO");
-                    SnsLoginModule.kakaoLogin((UserProfile) mViewModel.getSnsUser(), getSnsLoginServerListener());
-                    break;
                 case Flag.RequestCode.NAVER_LOGIN:
-                    mViewModel.getTempSnsUser().setSnsType("NAVER");
-                    SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser(), getSnsLoginServerListener());
-                    break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
-                    if (mViewModel.getSnsUser() == null)
-                        if (CustomLog.getFlag())
-                            CustomLog.L("onActivityResult RC_GOOGLE_LOGIN", "getSnsUser ", "null -----");
-                    mViewModel.getTempSnsUser().setSnsType("GOOGLE");
-                    SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser(), getSnsLoginServerListener());
+                    if (mViewModel.getSnsUser() instanceof GoogleSignInAccount) {
+                        mViewModel.getTempSnsUser().setSnsType("GOOGLE");
+                        SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser(), getSnsLoginServerListener());
+                    } else if (mViewModel.getSnsUser() instanceof UserProfile) {
+                        mViewModel.getTempSnsUser().setSnsType("KAKAO");
+                        SnsLoginModule.kakaoLogin((UserProfile) mViewModel.getSnsUser(), getSnsLoginServerListener());
+                    } else if (mViewModel.getSnsUser() instanceof NaverUser) {
+                        mViewModel.getTempSnsUser().setSnsType("NAVER");
+                        SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser(), getSnsLoginServerListener());
+                    } else {
+                        ToastUtil.showMessage(getString(R.string.common_message_error));
+                    }
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
                     mViewModel.getTempSnsUser().setSnsType("FACEBOOK");
