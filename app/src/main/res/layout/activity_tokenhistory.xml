@@ -37,7 +37,7 @@
 
                     <include
                         android:id="@+id/include_token_info"
-                        layout="@layout/item_mypagetoken" />
+                        layout="@layout/item_mypage_token" />
 
                     <View
                         android:layout_width="match_parent"

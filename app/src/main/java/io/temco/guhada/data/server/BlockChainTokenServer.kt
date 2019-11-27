@@ -45,41 +45,33 @@ class BlockChainTokenServer {
             }
         }
 
-
-
-        /**
-         * 마이페이지 상품문의 리스트 조회
-         */
         @JvmStatic
-        fun getTokenList(listener: OnServerListener, accessToken : String) {
+        fun getTokenList(listener: OnServerListener, accessToken: String) {
             RetrofitManager.createService(Type.Server.BLOCKCHAIN_TOKEN, BlockChainTokenService::class.java, true)
                     .getTokenList(accessToken = accessToken).enqueue(object : Callback<BaseModel<TokenList>> {
                         override fun onResponse(call: Call<BaseModel<TokenList>>, response: Response<BaseModel<TokenList>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<TokenList>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     })
         }
 
-
-        /**
-         * 마이페이지 상품문의 리스트 조회
-         */
         @JvmStatic
-        fun getTokenAddress(listener: OnServerListener, accessToken : String, tokenName: String) {
+        fun getTokenAddress(listener: OnServerListener, accessToken: String, tokenName: String) {
             RetrofitManager.createService(Type.Server.BLOCKCHAIN_TOKEN, BlockChainTokenService::class.java, true)
                     .getTokenAddress(accessToken = accessToken, tokenName = tokenName).enqueue(object : Callback<BaseModel<JSONObject>> {
                         override fun onResponse(call: Call<BaseModel<JSONObject>>, response: Response<BaseModel<JSONObject>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<JSONObject>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     })
         }
-
 
 
     }

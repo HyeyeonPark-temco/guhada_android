@@ -50,6 +50,8 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/constraintlayout_mypagetoken_empty"
+                        android:visibility="gone"
                         android:background="@color/common_white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
