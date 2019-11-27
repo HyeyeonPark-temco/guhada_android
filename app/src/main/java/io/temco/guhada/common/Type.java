@@ -77,7 +77,8 @@ public class Type {
         LUCKY_EVENT_DIALOG,
         PHOTO_PAGER,
         CARD_INTEREST,
-        LUCKY_DRAW_JOIN
+        LUCKY_DRAW_JOIN,
+        GUHADA_TOKEN
     }
 
     // Main
@@ -92,7 +93,7 @@ public class Type {
     /** 임시 서버 연결 여부 (true: TempServer name; false: dev) **/
     public static boolean isTempServer= true;
     public static String[] ServerTypeArray = { "http://dev.", "http://qa.", "https://stg.", "https://" };
-    public static String serverType = ServerTypeArray[1];
+    public static String serverType = ServerTypeArray[0];
     ////////////////////////////////////////////////
     // Server
     public enum Server {
@@ -113,6 +114,7 @@ public class Type {
         STG_ORDER,
         WEB,
         SETTLE,
+        BLOCKCHAIN_TOKEN,
         SHIP;
 
         public static String getUrl(Server type) {
@@ -149,6 +151,8 @@ public class Type {
                     return getShipUrl();
                 case SETTLE:
                     return getSettleUrl();
+                case BLOCKCHAIN_TOKEN:
+                    return getBlockchainUrl();
                 default:
                     return "";
             }
@@ -348,6 +352,20 @@ public class Type {
                 else return "http://dev.m.guhada.com";
         }
     }
+    public static String getBlockchainUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.blockchain.guhada.com/";
+            case STAGE:
+                return "https://stg.blockchain.guhada.com/";
+            case RELEASE:
+                return "https://blockchain.guhada.com/";
+            default:
+                if(isTempServer)return serverType+"blockchain.guhada.com/";
+                else return "http://dev.blockchain.guhada.com/";
+        }
+    }
+
 
     ////////////////////////////////////////////////
     // Language
