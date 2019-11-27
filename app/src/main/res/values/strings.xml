@@ -1381,8 +1381,7 @@
     <string name="guhadatoken_addressdialog_desc5">위 주소는 입금전용 주소입니다.</string>
     
     <string name="mypage_token_deposit">입금</string>
-
-
+    <string name="mypage_token_empty">토큰 내역이 없습니다.</string>
 
 
 </resources>
