@@ -13,6 +13,11 @@ import io.temco.guhada.data.model.blockchain.TokenHistory
 import io.temco.guhada.databinding.ItemTokenhistoryBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
+/**
+ * 토큰 히스토리 리스트 Adapter
+ * @author Hyeyeon Park
+ * @since 2019.11.28
+ */
 class TokenHistoryAdapter : RecyclerView.Adapter<TokenHistoryAdapter.Holder>() {
     var mList = mutableListOf<TokenHistory.TokenItemResponse>()
 
@@ -22,6 +27,12 @@ class TokenHistoryAdapter : RecyclerView.Adapter<TokenHistoryAdapter.Holder>() {
     override fun getItemCount(): Int = mList.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(mList[position])
+
+    fun addItems(items: MutableList<TokenHistory.TokenItemResponse>) {
+        val startPos = mList.size
+        mList.addAll(items)
+        this.notifyItemChanged(startPos, items.size)
+    }
 
     inner class Holder(binding: ItemTokenhistoryBinding) : BaseViewHolder<ItemTokenhistoryBinding>(binding.root) {
         fun bind(item: TokenHistory.TokenItemResponse) {

@@ -1,6 +1,8 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import androidx.lifecycle.MutableLiveData
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
@@ -20,7 +22,7 @@ class MyPageTokenViewModel : BaseObservableViewModel() {
     val mTokenList = MutableLiveData<List<TokenList>>()
     var mTokenHistory = MutableLiveData<TokenHistory>()
     var mHistoryPage = 1
-    var mHistoryUnitPerPage = 5
+    var mHistoryUnitPerPage = 10
     lateinit var mToken: TokenList
 
     fun getTokenList() {
@@ -51,6 +53,11 @@ class MyPageTokenViewModel : BaseObservableViewModel() {
                 }, accessToken = it, tokenName = mToken.tokenName, page = mHistoryPage, unitPerPage = mHistoryUnitPerPage)
             }, invalidTokenTask = { invalidTokenTask() })
         else invalidTokenTask()
+    }
+
+    fun onClickMoreHistory() {
+        mHistoryPage++
+        getTokenHistoryList(invalidTokenTask = { ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))})
     }
 
 }

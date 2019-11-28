@@ -25,7 +25,6 @@ class MyPageTokenAdapter : RecyclerView.Adapter<MyPageTokenAdapter.Holder>() {
                     val item = mList[this@apply.adapterPosition]
                     val context = this.binding.root.context
                     val intent = Intent(context, TokenHistoryActivity::class.java)
-                    intent.putExtra("tokenName", item.tokenName)
                     intent.putExtra("token", item)
                     context.startActivity(intent)
                 }

@@ -5,4 +5,4 @@ import java.io.Serializable
 data class TokenList(var tokenName : String = "",
                      val tokenNameText : String = "",
                      val tokenImageUrl : String = "",
-                     val balance: Int) : Serializable
+                     var balance: Int) : Serializable
