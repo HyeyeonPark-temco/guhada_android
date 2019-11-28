@@ -78,7 +78,8 @@ public class Type {
         PHOTO_PAGER,
         CARD_INTEREST,
         LUCKY_DRAW_JOIN,
-        GUHADA_TOKEN
+        GUHADA_TOKEN,
+        MYPAGE_TOKEN
     }
 
     // Main

@@ -1379,9 +1379,10 @@
     <string name="guhadatoken_addressdialog_desc3">구하다 토큰과 포인트는 출금이 불가합니다.</string>
     <string name="guhadatoken_addressdialog_desc4">위 주소로 구하다만 입금 가능합니다. 해당 주소로\n다른 암호화폐를 입금 시도할 경우에 발생할 수 있는\n오류/손실은 복구 불가능합니다.</string>
     <string name="guhadatoken_addressdialog_desc5">위 주소는 입금전용 주소입니다.</string>
-
-
-
+    
+    <string name="mypage_token_deposit">입금</string>
+    <string name="mypage_token_empty">토큰 내역이 없습니다.</string>
+    <string name="mypage_token_format">%,2d %s</string>
 
 
 </resources>
