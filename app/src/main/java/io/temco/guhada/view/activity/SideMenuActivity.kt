@@ -113,7 +113,6 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                 //CommonUtilKotlin.startActivityUserClaimGuhada(this@SideMenuActivity)
             }
             R.id.image_close -> {
-                CommonUtilKotlin.moveGuhadaTokenAddress(this, "GuhadaAirdrop")
                 onBackPressed()
             }
             R.id.layout_brand -> BrandSubActivity.startActivityForResult(this, REQUEST_CODE_BRAND)

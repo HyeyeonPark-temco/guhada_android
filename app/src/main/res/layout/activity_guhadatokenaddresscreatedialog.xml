@@ -86,6 +86,7 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/imageview_guhadatoken_logo"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginTop="45dp"
@@ -93,6 +94,7 @@
                         android:background="@drawable/guhada_big_logo"/>
 
                     <TextView
+                        android:id="@+id/textview_guhadatoken_tokenName"
                         style="@style/TextBold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -127,7 +129,9 @@
                             android:layout_height="match_parent"
                             android:background="@drawable/drawable_border_esix"
                             android:layout_weight="1">
+
                             <TextView
+                                android:id="@+id/textview_addshippingaddress_address"
                                 style="@style/TextRegularSingleLine"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -138,7 +142,6 @@
                         </HorizontalScrollView>
 
                         <Button
-                            android:id="@+id/button_addshippingaddress_confirm"
                             android:layout_width="90dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
@@ -178,7 +181,7 @@
                                 android:layout_marginLeft="8dp"
                                 android:textColor="@color/warm_grey_two"
                                 android:textSize="@dimen/text_12"
-                                android:text="@{@string/guhadatoken_addressdialog_desc2(pointRatio,tokenRatio)}" />
+                                android:text="@{@string/guhadatoken_addressdialog_desc2(tokenRatio,pointRatio)}" />
                         </LinearLayout>
 
 
