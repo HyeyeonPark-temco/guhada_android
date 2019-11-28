@@ -539,11 +539,11 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         override fun onItemClick(position: Int) {
                             if(CustomLog.flag)CustomLog.L("MainEventViewHolder","itemView setOnClickListener",binding.viewPager.realCurrentItem,"position",position)
                             if(!TextUtils.isEmpty(data.eventList[position].link) && "/" != data.eventList[position].link){
-                                var link : String = data.eventList[position].mobileAppLink
-                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link)
+                                var link : String? = data.eventList[position].mobileAppLink
+                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link?:"null")
                                 //link = "guhada://client?pg_state=search&arg1=2019%20%EA%B8%B0%ED%9A%8D%EC%A0%84%20%ED%8C%A8%EB%94%A9"
-                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link)
-                                if(link.startsWith("guhada://client",true)){
+                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link?:"null")
+                                if(link != null && link.startsWith("guhada://client",true)){
                                     val uriData : Uri = Uri.parse(link)
                                     val pgState = uriData.getQueryParameter("pg_state")
                                     val arg1 = uriData.getQueryParameter("arg1")?:""
@@ -555,7 +555,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                                     }
                                     CommonUtilKotlin.moveEventPage(model.context as Activity, pgState,arg1,true,false)
                                 }else{
-                                    CommonUtilKotlin.moveEventPage(model.context as Activity, link,"",true,false)
+                                    if(link!=null) CommonUtilKotlin.moveEventPage(model.context as Activity, link?:"null","",true,false)
                                 }
                                 //EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, index))
                             }
