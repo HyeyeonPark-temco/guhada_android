@@ -1,6 +1,7 @@
 package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.blockchain.TokenHistory
 import io.temco.guhada.data.model.blockchain.TokenList
 import org.json.JSONObject
 import retrofit2.Call
@@ -22,5 +23,13 @@ interface BlockChainTokenService {
      */
     @GET("/blockchain-wallet/token-address")
     fun getTokenAddress(@Header("Authorization") accessToken: String, @Query("tokenName") tokenName: String): Call<BaseModel<JSONObject>>
+
+    /**
+     * 마이페이지 > 토큰 > 상세 히스토리
+     * @author Hyeyeon Park
+     * @since 2019.11.28
+     */
+    @GET("/blockchain-wallet/my-token-history")
+    fun getTokenHistoryList(@Header("Authorization") accessToken: String, @Query("tokenName") tokenName: String, @Query("page") page : Int, @Query("unitPerPage") unitPerPage: Int) : Call<BaseModel<TokenHistory>>
 
 }

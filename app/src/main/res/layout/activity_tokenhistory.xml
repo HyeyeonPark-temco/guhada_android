@@ -33,7 +33,7 @@
                     android:background="@color/pale_grey"
                     android:orientation="vertical"
                     android:paddingTop="40dp"
-                    android:paddingBottom="33dp">
+                    android:paddingBottom="40dp">
 
                     <include
                         android:id="@+id/include_token_info"
@@ -86,6 +86,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_token_history"
                     android:layout_width="match_parent"
+                    android:overScrollMode="never"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

@@ -1,6 +1,5 @@
 package io.temco.guhada.view.adapter.mypage
 
-import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ class MyPageTokenAdapter : RecyclerView.Adapter<MyPageTokenAdapter.Holder>() {
                     val context = this.binding.root.context
                     val intent = Intent(context, TokenHistoryActivity::class.java)
                     intent.putExtra("tokenName", item.tokenName)
+                    intent.putExtra("token", item)
                     context.startActivity(intent)
                 }
             }
