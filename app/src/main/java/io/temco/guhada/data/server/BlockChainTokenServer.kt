@@ -12,10 +12,12 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
-import io.temco.guhada.data.model.blockchain.TokenAddress
-import io.temco.guhada.data.model.blockchain.TokenList
-import io.temco.guhada.data.retrofit.manager.RetrofitManager
-import io.temco.guhada.data.retrofit.service.BlockChainTokenService
+
+import io.temco.guhada.data .model.blockchain.TokenAddress
+import io.temco.guhada.data .model.blockchain.TokenHistory
+import io.temco.guhada.data .model.blockchain.TokenList
+import io.temco.guhada.data .retrofit.manager.RetrofitManager
+import io.temco.guhada.data .retrofit.service.BlockChainTokenService
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,42 +48,53 @@ class BlockChainTokenServer {
             }
         }
 
-
-
-        /**
-         * 마이페이지 상품문의 리스트 조회
-         */
         @JvmStatic
-        fun getTokenList(listener: OnServerListener, accessToken : String) {
+        fun getTokenList(listener: OnServerListener, accessToken: String) {
             RetrofitManager.createService(Type.Server.BLOCKCHAIN_TOKEN, BlockChainTokenService::class.java, true)
                     .getTokenList(accessToken = accessToken).enqueue(object : Callback<BaseModel<TokenList>> {
                         override fun onResponse(call: Call<BaseModel<TokenList>>, response: Response<BaseModel<TokenList>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<TokenList>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     })
         }
 
-
-        /**
-         * 마이페이지 상품문의 리스트 조회
-         */
         @JvmStatic
-        fun getTokenAddress(listener: OnServerListener, accessToken : String, tokenName: String) {
+        fun getTokenAddress(listener: OnServerListener, accessToken: String, tokenName: String) {
             RetrofitManager.createService(Type.Server.BLOCKCHAIN_TOKEN, BlockChainTokenService::class.java, true)
                     .getTokenAddress(accessToken = accessToken, tokenName = tokenName).enqueue(object : Callback<BaseModel<TokenAddress>> {
                         override fun onResponse(call: Call<BaseModel<TokenAddress>>, response: Response<BaseModel<TokenAddress>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<TokenAddress>>, t: Throwable) {
+
                             listener.onResult(false, t.message)
                         }
                     })
         }
 
+        /**
+         * 마이페이지 > 토큰 > 상세 히스토리
+         * @author Hyeyeon Park
+         * @since 2019.11.28
+         */
+        @JvmStatic
+        fun getTokenHistoryList(listener: OnServerListener, accessToken: String, tokenName: String, page: Int, unitPerPage: Int) {
+            RetrofitManager.createService(Type.Server.BLOCKCHAIN_TOKEN, BlockChainTokenService::class.java, true)
+                    .getTokenHistoryList(accessToken = accessToken, tokenName = tokenName, page = page, unitPerPage = unitPerPage).enqueue(object : Callback<BaseModel<TokenHistory>> {
+                        override fun onResponse(call: Call<BaseModel<TokenHistory>>, response: Response<BaseModel<TokenHistory>>) {
+                            resultListener(listener, call, response)
+                        }
 
+                        override fun onFailure(call: Call<BaseModel<TokenHistory>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    })
+        }
 
     }
 

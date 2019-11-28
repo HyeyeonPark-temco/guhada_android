@@ -109,7 +109,6 @@
             android:name=".view.activity.WriteClaimActivity"
             android:screenOrientation="portrait" />
 
-
         <activity android:name=".view.activity.CardInterestActivity"
             android:screenOrientation="portrait" />
 
@@ -177,6 +176,9 @@
             android:screenOrientation="unspecified"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".view.activity.TokenHistoryActivity"
+            android:screenOrientation="portrait" />
 
 
         <!-- Search -->
