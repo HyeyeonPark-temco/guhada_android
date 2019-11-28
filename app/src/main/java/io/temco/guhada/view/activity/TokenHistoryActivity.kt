@@ -34,12 +34,16 @@ class TokenHistoryActivity : BindActivity<ActivityTokenhistoryBinding>(), SwipeR
     override fun init() {
         val token = intent.getSerializableExtra("token")
         if (token != null) {
-            initViewModel(token as TokenList)
-            mViewModel.getTokenHistoryList()
+            initHeader(token  as TokenList)
+            initViewModel(token)
 
+            mViewModel.getTokenHistoryList()
             mBinding.swipeRefreshLayout.setOnRefreshListener(this)
-            mBinding.includeTokenHeader.title = token.tokenNameText
-            mBinding.includeTokenHeader.setOnClickBackButton { finish() }
+            mBinding.includeTokenInfo.buttonTokenDeposit.setOnClickListener {
+                // 입금
+                val tokenName = token.tokenName
+
+            }
             mBinding.includeTokenInfo.token = mViewModel.mToken
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
@@ -47,6 +51,10 @@ class TokenHistoryActivity : BindActivity<ActivityTokenhistoryBinding>(), SwipeR
             ToastUtil.showMessage(getString(R.string.common_message_error))
             finish()
         }
+    }
+    private fun initHeader(token: TokenList){
+        mBinding.includeTokenHeader.title = token.tokenNameText
+        mBinding.includeTokenHeader.setOnClickBackButton { finish() }
     }
 
     private fun initViewModel(token: TokenList) {

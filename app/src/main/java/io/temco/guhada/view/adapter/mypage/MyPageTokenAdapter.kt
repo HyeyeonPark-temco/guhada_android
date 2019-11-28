@@ -22,11 +22,15 @@ class MyPageTokenAdapter : RecyclerView.Adapter<MyPageTokenAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_mypage_token, parent, false)).apply {
                 this.binding.linearlayoutTokenContainer.setOnClickListener {
-                    val item = mList[this@apply.adapterPosition]
                     val context = this.binding.root.context
                     val intent = Intent(context, TokenHistoryActivity::class.java)
-                    intent.putExtra("token", item)
+                    intent.putExtra("token", mList[this@apply.adapterPosition])
                     context.startActivity(intent)
+                }
+                this.binding.buttonTokenDeposit.setOnClickListener {
+                    // 입금
+                    val tokenName = mList[this@apply.adapterPosition].tokenName
+
                 }
             }
 
