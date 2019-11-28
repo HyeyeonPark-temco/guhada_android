@@ -1375,7 +1375,7 @@
     <string name="guhadatoken_addressdialog_button">입금 주소 생성하기</string>
     <string name="guhadatoken_addressdialog_desc1">주소 생성 버튼을 클릭하면 고유의 구하다 입금 주소가 발급됩니다.</string>
     <string name="guhadatoken_addressdialog_copy">주소 복사</string>
-    <string name="guhadatoken_addressdialog_desc2">구하다 토큰 입금 시, %1$s토큰 당 %2$s 포인트로 자동 전환됩니다.</string>
+    <string name="guhadatoken_addressdialog_desc2">구하다 토큰 입금 시, %1$s 토큰 당 %2$s 포인트로 자동 전환됩니다.</string>
     <string name="guhadatoken_addressdialog_desc3">구하다 토큰과 포인트는 출금이 불가합니다.</string>
     <string name="guhadatoken_addressdialog_desc4">위 주소로 구하다만 입금 가능합니다. 해당 주소로\n다른 암호화폐를 입금 시도할 경우에 발생할 수 있는\n오류/손실은 복구 불가능합니다.</string>
     <string name="guhadatoken_addressdialog_desc5">위 주소는 입금전용 주소입니다.</string>
