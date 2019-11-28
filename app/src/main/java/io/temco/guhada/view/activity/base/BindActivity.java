@@ -64,16 +64,17 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         super.onCreate(savedInstanceState);
         try{
             mBinding = DataBindingUtil.setContentView(this, getLayoutId());
-            // Init
-            if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) {
-                initNfc();
-            }
             mHandler = new Handler(this.getMainLooper());
-            init();
+            // Init
             if(BaseApplication.getInstance().getActivityState() == null) {
                 BaseApplication.getInstance().setActivityState(new HashMap<>());
             }
             BaseApplication.getInstance().getActivityState().put(this.getClass().getSimpleName(),"onCreate");
+            /*if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) {
+                initNfc();
+            }*/
+
+            init();
         }catch (Exception e){
             if(CustomLog.getFlag())CustomLog.E(e);
         }

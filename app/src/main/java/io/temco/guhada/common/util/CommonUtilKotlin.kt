@@ -14,6 +14,7 @@ import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.view.activity.CustomWebViewActivity
+import io.temco.guhada.view.activity.GuhadaTokenAddressCreateDialog
 import io.temco.guhada.view.activity.UserClaimGuhadaActivity
 import io.temco.guhada.view.activity.UserClaimSellerActivity
 
@@ -219,6 +220,13 @@ object CommonUtilKotlin  {
                 if(isFinished)act.finish()
             }
         }
+    }
+
+
+    fun moveGuhadaTokenAddress(act : Activity, tokenName : String){
+        val intent = Intent(act, GuhadaTokenAddressCreateDialog::class.java)
+        intent.putExtra("tokenName",tokenName)
+        act.startActivityForResult(intent,Flag.RequestCode.GUHADA_TOKEN_ADDRESS)
     }
 
 }

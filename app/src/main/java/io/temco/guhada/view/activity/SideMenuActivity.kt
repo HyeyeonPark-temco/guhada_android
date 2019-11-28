@@ -15,6 +15,7 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnCategoryListListener
 import io.temco.guhada.common.sns.SnsLoginModule
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.model.Brand
@@ -112,7 +113,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                 //CommonUtilKotlin.startActivityUserClaimGuhada(this@SideMenuActivity)
             }
             R.id.image_close -> {
-                startActivityForResult(Intent(this, GuhadaTokenAddressCreateDialog::class.java),9)
+                CommonUtilKotlin.moveGuhadaTokenAddress(this, "GuhadaAirdrop")
                 onBackPressed()
             }
             R.id.layout_brand -> BrandSubActivity.startActivityForResult(this, REQUEST_CODE_BRAND)

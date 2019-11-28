@@ -12,6 +12,7 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
+import io.temco.guhada.data.model.blockchain.TokenAddress
 import io.temco.guhada.data.model.blockchain.TokenList
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.BlockChainTokenService
@@ -70,11 +71,11 @@ class BlockChainTokenServer {
         @JvmStatic
         fun getTokenAddress(listener: OnServerListener, accessToken : String, tokenName: String) {
             RetrofitManager.createService(Type.Server.BLOCKCHAIN_TOKEN, BlockChainTokenService::class.java, true)
-                    .getTokenAddress(accessToken = accessToken, tokenName = tokenName).enqueue(object : Callback<BaseModel<JSONObject>> {
-                        override fun onResponse(call: Call<BaseModel<JSONObject>>, response: Response<BaseModel<JSONObject>>) {
+                    .getTokenAddress(accessToken = accessToken, tokenName = tokenName).enqueue(object : Callback<BaseModel<TokenAddress>> {
+                        override fun onResponse(call: Call<BaseModel<TokenAddress>>, response: Response<BaseModel<TokenAddress>>) {
                             resultListener(listener, call, response)
                         }
-                        override fun onFailure(call: Call<BaseModel<JSONObject>>, t: Throwable) {
+                        override fun onFailure(call: Call<BaseModel<TokenAddress>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     })

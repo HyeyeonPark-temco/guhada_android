@@ -8,6 +8,7 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.blockchain.TokenAddress
 import io.temco.guhada.data.server.BlockChainTokenServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
@@ -25,6 +26,22 @@ class GuhadaTokenAddressCreateDialogViewModel (val context : Context) : BaseObse
                     listener.callBackListener(false,BaseApplication.getInstance().getString(R.string.common_message_servererror))
                 }
             }, accessToken = accessToken)
+        },invalidTokenTask = {
+            listener.callBackListener(false, "invalidTokenTask")
+        })
+    }
+
+
+    fun getTokenAddress(tokenName : String, listener: OnCallBackListener){
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            BlockChainTokenServer.getTokenAddress(OnServerListener { success, o ->
+                if(CustomLog.flag) CustomLog.L("GuhadaTokenAddressCreateDialog","getTokenAddress",o.toString())
+                if (success && o is BaseModel<*>) {
+                    listener.callBackListener(true,o.data as TokenAddress)
+                }else{
+                    listener.callBackListener(false,BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                }
+            }, accessToken = accessToken,tokenName = tokenName)
         },invalidTokenTask = {
             listener.callBackListener(false, "invalidTokenTask")
         })

@@ -2,7 +2,6 @@ package io.temco.guhada.view.fragment.main
 
 import android.annotation.SuppressLint
 import android.graphics.Point
-import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,6 @@ import io.temco.guhada.view.custom.layout.main.*
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListener, OnMainListListener {
@@ -255,10 +253,12 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         }
         // Tab
         // Dummy
-        val titles = resources.getStringArray(R.array.main_titles)
-        for (t in titles) {
-            if(t == "타임딜" || t == "럭키드로우") addCustomTabsRed(t, false)
-            else addCustomTabs(t, false)
+        if(context != null){
+            val titles = context!!.resources!!.getStringArray(R.array.main_titles)
+            for (t in titles) {
+                if(t == "타임딜" || t == "럭키드로우") addCustomTabsRed(t, false)
+                else addCustomTabs(t, false)
+            }
         }
     }
 

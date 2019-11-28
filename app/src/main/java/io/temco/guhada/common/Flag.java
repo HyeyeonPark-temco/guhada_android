@@ -68,6 +68,8 @@ public class Flag {
         public static final int MYPAGE_MOVE = 20000;
         public static final int HOME_MOVE = 20001;
         public static final int CART_BADGE = 20002;
+
+        public static final int GUHADA_TOKEN_ADDRESS = 20005;
     }
 
     public static class ResultCode {
