@@ -36,15 +36,17 @@ class GuhadaTokenAddressCreateDialog : BindActivity<ActivityGuhadatokenaddresscr
         mBinding.setOnClickCloseButton { onBackPressed() }
 
         tokenName = intent?.extras?.getString("tokenName") ?:""
-        if(TextUtils.isEmpty(tokenName)) finish()
+        if(TextUtils.isEmpty(tokenName)) onBackPressed()
 
         mBinding.relativeGuhadatokenContent.visibility = View.GONE
         getData()
     }
 
     override fun onBackPressed() {
+        overridePendingTransition(0, 0)
         setResult(Activity.RESULT_CANCELED)
         finish()
+        overridePendingTransition(0, 0)
     }
 
     override fun onDestroy() {
