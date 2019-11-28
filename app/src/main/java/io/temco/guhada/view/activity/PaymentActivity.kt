@@ -543,7 +543,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     mViewModel.mEmailVerification = ObservableBoolean(emailVerification ?: false)
                     mViewModel.notifyPropertyChanged(BR.mEmailVerification)
 
-                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification ?: false && emailVerification ?: false) View.GONE else View.VISIBLE
+                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification ?: false /* && emailVerification ?: false */) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()
                 }
             }

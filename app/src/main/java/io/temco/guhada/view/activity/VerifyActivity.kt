@@ -33,7 +33,7 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
 
     private fun initViewModel() {
         mViewModel = VerifyViewModel().apply {
-            this.mEmailVerification = ObservableBoolean(intent.getBooleanExtra("emailVerification", false))
+//            this.mEmailVerification = ObservableBoolean(intent.getBooleanExtra("emailVerification", false))
             this.mMobileVerification = ObservableBoolean(intent.getBooleanExtra("mobileVerification", false))
             intent.getSerializableExtra("user").let {
                 this.mUser =
@@ -57,7 +57,7 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
     private fun closeActivity() {
         if (::mViewModel.isInitialized) {
             this.intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
-            this.intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
+//            this.intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
             this.intent.putExtra("name", mViewModel.mVerification.name)
             this.intent.putExtra("phoneNumber", mViewModel.mVerification.mobile)
             this.intent.putExtra("di", mViewModel.mVerification.diCode)
