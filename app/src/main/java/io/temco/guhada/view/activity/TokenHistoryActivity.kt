@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.blockchain.TokenList
 import io.temco.guhada.data.viewmodel.mypage.MyPageTokenViewModel
@@ -34,16 +35,12 @@ class TokenHistoryActivity : BindActivity<ActivityTokenhistoryBinding>(), SwipeR
     override fun init() {
         val token = intent.getSerializableExtra("token")
         if (token != null) {
-            initHeader(token  as TokenList)
+            initHeader(token as TokenList)
             initViewModel(token)
 
             mViewModel.getTokenHistoryList()
             mBinding.swipeRefreshLayout.setOnRefreshListener(this)
-            mBinding.includeTokenInfo.buttonTokenDeposit.setOnClickListener {
-                // 입금
-                val tokenName = token.tokenName
-
-            }
+            mBinding.includeTokenInfo.buttonTokenDeposit.setOnClickListener { CommonUtilKotlin.moveGuhadaTokenAddress(this, token.tokenName) }
             mBinding.includeTokenInfo.token = mViewModel.mToken
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
@@ -52,7 +49,8 @@ class TokenHistoryActivity : BindActivity<ActivityTokenhistoryBinding>(), SwipeR
             finish()
         }
     }
-    private fun initHeader(token: TokenList){
+
+    private fun initHeader(token: TokenList) {
         mBinding.includeTokenHeader.title = token.tokenNameText
         mBinding.includeTokenHeader.setOnClickBackButton { finish() }
     }

@@ -1,11 +1,13 @@
 package io.temco.guhada.view.adapter.mypage
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.data.model.blockchain.TokenList
 import io.temco.guhada.databinding.ItemMypageTokenBinding
 import io.temco.guhada.view.activity.TokenHistoryActivity
@@ -27,11 +29,7 @@ class MyPageTokenAdapter : RecyclerView.Adapter<MyPageTokenAdapter.Holder>() {
                     intent.putExtra("token", mList[this@apply.adapterPosition])
                     context.startActivity(intent)
                 }
-                this.binding.buttonTokenDeposit.setOnClickListener {
-                    // 입금
-                    val tokenName = mList[this@apply.adapterPosition].tokenName
-
-                }
+                this.binding.buttonTokenDeposit.setOnClickListener { CommonUtilKotlin.moveGuhadaTokenAddress(this.binding.root.context as Activity, mList[this@apply.adapterPosition].tokenName) }
             }
 
     override fun getItemCount(): Int = mList.size
