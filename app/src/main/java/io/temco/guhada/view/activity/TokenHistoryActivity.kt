@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.ToastUtil
@@ -16,22 +17,27 @@ import io.temco.guhada.view.adapter.TokenHistoryAdapter
  * @author Hyeyeon Park
  * @since 2019.11.27
  */
-class TokenHistoryActivity : BindActivity<ActivityTokenhistoryBinding>() {
+class TokenHistoryActivity : BindActivity<ActivityTokenhistoryBinding>(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var mViewModel: MyPageTokenViewModel
 
     override fun getBaseTag(): String = this::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_tokenhistory
     override fun getViewType(): Type.View = Type.View.MYPAGE_TOKEN
 
+    override fun onRefresh() {
+        mBinding.swipeRefreshLayout.isRefreshing = false
+        (mBinding.recyclerviewTokenHistory.adapter as TokenHistoryAdapter).clear()
+        mViewModel.mHistoryPage = 1
+        mViewModel.getTokenHistoryList()
+    }
+
     override fun init() {
         val token = intent.getSerializableExtra("token")
         if (token != null) {
             initViewModel(token as TokenList)
-            mViewModel.getTokenHistoryList(invalidTokenTask = {
-                ToastUtil.showMessage(getString(R.string.login_message_requiredlogin))
-                finish()
-            })
+            mViewModel.getTokenHistoryList()
 
+            mBinding.swipeRefreshLayout.setOnRefreshListener(this)
             mBinding.includeTokenHeader.title = token.tokenNameText
             mBinding.includeTokenHeader.setOnClickBackButton { finish() }
             mBinding.includeTokenInfo.token = mViewModel.mToken
@@ -46,6 +52,10 @@ class TokenHistoryActivity : BindActivity<ActivityTokenhistoryBinding>() {
     private fun initViewModel(token: TokenList) {
         mViewModel = MyPageTokenViewModel().apply {
             this.mToken = token
+            this.mInvalidTokenTask = {
+                ToastUtil.showMessage(getString(R.string.login_message_requiredlogin))
+                finish()
+            }
             this.mTokenHistory.observe(this@TokenHistoryActivity, Observer {
                 if (it.userTokenItemResponseList.isEmpty() && mBinding.recyclerviewTokenHistory.adapter?.itemCount == 0) {
                     mBinding.constraintlayoutTokenEmpty.visibility = View.VISIBLE

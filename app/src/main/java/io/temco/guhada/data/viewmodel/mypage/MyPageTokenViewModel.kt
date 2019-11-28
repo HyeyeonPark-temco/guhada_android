@@ -23,6 +23,7 @@ class MyPageTokenViewModel : BaseObservableViewModel() {
     var mTokenHistory = MutableLiveData<TokenHistory>()
     var mHistoryPage = 1
     var mHistoryUnitPerPage = 10
+    var mInvalidTokenTask: () -> Unit = {}
     lateinit var mToken: TokenList
 
     fun getTokenList() {
@@ -39,7 +40,7 @@ class MyPageTokenViewModel : BaseObservableViewModel() {
         })
     }
 
-    fun getTokenHistoryList(invalidTokenTask: () -> Unit) {
+    fun getTokenHistoryList() {
         if (::mToken.isInitialized)
             ServerCallbackUtil.callWithToken(task = {
                 BlockChainTokenServer.getTokenHistoryList(OnServerListener { success, o ->
@@ -50,14 +51,10 @@ class MyPageTokenViewModel : BaseObservableViewModel() {
                             else
                                 ToastUtil.showMessage(o.message)
                     }
-                }, accessToken = it, tokenName = mToken.tokenName, page = mHistoryPage, unitPerPage = mHistoryUnitPerPage)
-            }, invalidTokenTask = { invalidTokenTask() })
-        else invalidTokenTask()
+                }, accessToken = it, tokenName = mToken.tokenName, page = mHistoryPage++, unitPerPage = mHistoryUnitPerPage)
+            }, invalidTokenTask = { mInvalidTokenTask() })
+        else mInvalidTokenTask()
     }
 
-    fun onClickMoreHistory() {
-        mHistoryPage++
-        getTokenHistoryList(invalidTokenTask = { ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))})
-    }
-
+    fun onClickMoreHistory() = getTokenHistoryList()
 }

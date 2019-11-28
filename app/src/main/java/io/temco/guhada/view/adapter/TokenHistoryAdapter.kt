@@ -34,6 +34,11 @@ class TokenHistoryAdapter : RecyclerView.Adapter<TokenHistoryAdapter.Holder>() {
         this.notifyItemChanged(startPos, items.size)
     }
 
+    fun clear(){
+        mList.clear()
+        this.notifyDataSetChanged()
+    }
+
     inner class Holder(binding: ItemTokenhistoryBinding) : BaseViewHolder<ItemTokenhistoryBinding>(binding.root) {
         fun bind(item: TokenHistory.TokenItemResponse) {
             mBinding.item = item
