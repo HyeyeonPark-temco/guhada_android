@@ -91,7 +91,7 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="45dp"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/guhada_big_logo"/>
+                        android:src="@drawable/guhada_big_logo"/>
 
                     <TextView
                         android:id="@+id/textview_guhadatoken_tokenName"

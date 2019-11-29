@@ -160,11 +160,12 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
                                 CommonUtilKotlin.startActivityWebview(viewModel.context as Activity, "이벤트",
                                         item.eventData.imgDetailUrlM?:"",item.eventData.mobileAppLink)
                             }else{
-                                var link : String = item.eventData.mobileAppLink
-                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link)
+                                var link : String? = item.eventData.mobileAppLink
+                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link ?: "null")
                                 //link = "guhada://client?pg_state=search&arg1=%EA%B8%B0%ED%9A%8D%20%ED%8C%A8%EB%94%A9%EC%A0%84"
-                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link)
-                                if(link.startsWith("guhada://client",true)){
+                                //link = "guhada://client?pg_state=search&arg1=기획전%20패딩"
+                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link ?: "null")
+                                if(link != null && link.startsWith("guhada://client",true)){
                                     val uriData : Uri = Uri.parse(link)
                                     val pgState = uriData.getQueryParameter("pg_state")
                                     val arg1 = uriData.getQueryParameter("arg1")?:""
@@ -176,7 +177,7 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
                                     }
                                     CommonUtilKotlin.moveEventPage(viewModel.context as Activity, pgState,arg1,true,false)
                                 }else{
-                                    CommonUtilKotlin.moveEventPage(viewModel.context as Activity, link,"",true,false)
+                                    if(link!=null)CommonUtilKotlin.moveEventPage(viewModel.context as Activity, link,"",true,false)
                                 }
                             }
                             //EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, index))
