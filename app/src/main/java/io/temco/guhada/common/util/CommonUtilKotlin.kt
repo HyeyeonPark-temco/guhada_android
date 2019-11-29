@@ -13,10 +13,7 @@ import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.data.db.GuhadaDB
-import io.temco.guhada.view.activity.CustomWebViewActivity
-import io.temco.guhada.view.activity.GuhadaTokenAddressCreateDialog
-import io.temco.guhada.view.activity.UserClaimGuhadaActivity
-import io.temco.guhada.view.activity.UserClaimSellerActivity
+import io.temco.guhada.view.activity.*
 
 object CommonUtilKotlin  {
 
@@ -75,7 +72,7 @@ object CommonUtilKotlin  {
 
 
     fun startActivityWebview(activity: Activity, title : String, url : String, param : String = "") {
-        val intent = Intent(activity, CustomWebViewActivity::class.java)
+        val intent = Intent(activity, CustomWebViewActivity::class.java) //CustomWebViewEventActivity
         intent.putExtra("title",title)
         intent.putExtra("url",url)
         if(!TextUtils.isEmpty(param)){

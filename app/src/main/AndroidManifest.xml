@@ -351,6 +351,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
+        <activity
+            android:name=".view.activity.CustomWebViewEventActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <!-- image detail -->
         <activity
             android:name=".view.activity.PhotoPagerActivity"
