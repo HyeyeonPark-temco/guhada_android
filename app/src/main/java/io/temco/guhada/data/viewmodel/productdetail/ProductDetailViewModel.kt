@@ -52,7 +52,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         get() = field
     var dealId: Long = 0
     var product: MutableLiveData<Product> = MutableLiveData()
-    var tags: List<String> = ArrayList()
     var menuVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
@@ -136,7 +135,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         val data = it.data as Product
-                        tags = data.tag.split("/")
                         product.postValue(data)
                     },
                     failedTask = {
