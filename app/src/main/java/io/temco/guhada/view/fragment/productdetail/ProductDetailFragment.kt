@@ -148,6 +148,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             initContentHeader()
             initContent(product)
             hideLoadingIndicator()
+            mBinding.recyclerviewProductdetailTag.adapter = ProductDetailTagAdapter().apply {
+                this.list = product.tag.split("/").toMutableList()
+            }
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
@@ -1022,17 +1025,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             val intent = Intent(context, ProductFragmentDetailActivity::class.java)
             intent.putExtra(Info.INTENT_DEAL_ID, id)
             context.startActivity(intent)
-        }
-
-        @JvmStatic
-        @BindingAdapter("productTags")
-        fun RecyclerView.bindTags(list: MutableList<String>?) {
-            if (list != null && list.isNotEmpty()) {
-                if (this.adapter == null) {
-                    this.adapter = ProductDetailTagAdapter()
-                }
-                (this.adapter as ProductDetailTagAdapter).setItems(list)
-            }
         }
 
         @JvmStatic

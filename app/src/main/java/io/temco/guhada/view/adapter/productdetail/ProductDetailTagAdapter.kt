@@ -16,10 +16,11 @@ import io.temco.guhada.view.activity.ProductFilterListActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailTagAdapter : RecyclerView.Adapter<ProductDetailTagAdapter.Holder>() {
-    private var list: MutableList<String> = ArrayList()
+    var list: MutableList<String> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate<ItemProductdetailTagBinding>(LayoutInflater.from(parent.context), R.layout.item_productdetail_tag, parent, false))
+
     override fun getItemCount(): Int = list.size
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(list[position])
@@ -35,7 +36,7 @@ class ProductDetailTagAdapter : RecyclerView.Adapter<ProductDetailTagAdapter.Hol
             binding.value = value
             binding.setClickListener {
                 //CommonUtil.startSearchWordActivity(binding.root.context as Activity, value, true)
-                if(!TextUtils.isEmpty(value)){
+                if (!TextUtils.isEmpty(value)) {
                     var intent = Intent(binding.root.context as Activity, ProductFilterListActivity::class.java)
                     intent.putExtra("type", Type.ProductListViewType.SEARCH)
                     intent.putExtra("search_word", value)
