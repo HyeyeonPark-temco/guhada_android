@@ -47,9 +47,6 @@ class SettleServer {
             }
         }
 
-        /**
-         * 중복된 이메일인지 검증
-         */
         @JvmStatic
         fun checkAppVersion(listener: OnServerListener) {
             RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).appVersion().enqueue(object : Callback<BaseModel<AppVersionCheck>> {
@@ -72,7 +69,6 @@ class SettleServer {
         fun getCardInterst(listener: OnServerListener) =
                 RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, false, false).getCardInterest()
                         .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<CardInterest>>> { listener.onResult(it.isSuccessful, it.body()) })
-
 
 
         /**

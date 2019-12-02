@@ -26,6 +26,7 @@
             android:layout_height="wrap_content">
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollview_mypagepoint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fillViewport="true"
@@ -160,16 +161,16 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/framelayout_mypagepoint_calendarfilter"
-                        app:pointHistories="@{viewModel.pointHistory.content}" />
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_mypagepoint_calendarfilter" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintlayout_mypagepoint_empty"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
                         android:background="@color/common_white"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        android:visibility="@{viewModel.pointHistory.empty ? View.VISIBLE : View.GONE}"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/framelayout_mypagepoint_calendarfilter"
                         app:layout_constraintVertical_bias="0">
@@ -206,7 +207,7 @@
                         android:paddingTop="16dp"
                         android:paddingEnd="40dp"
                         android:paddingBottom="16dp"
-                        android:visibility="@{viewModel.pointHistory.last ? View.GONE : View.VISIBLE}"
+                        android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagepoint">

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
@@ -51,12 +52,13 @@ class MyPageDeliveryCerLayout constructor(
                 mBinding.textviewMypagedeliverycerEmpty.visibility = View.GONE
             }
 
-            mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage == 0 || (it.page == it.totalPage)) View.GONE else View.VISIBLE
+//            mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage == 0 || (it.page == it.totalPage)) View.GONE else View.VISIBLE
             mBinding.executePendingBindings()
         })
 
         initCalendarFilter()
         setEventBus()
+        setScrollView()
         mViewModel.setDate(mViewModel.mDefaultDay) // [default] before 3 month
 
         mBinding.viewModel = mViewModel
@@ -79,6 +81,13 @@ class MyPageDeliveryCerLayout constructor(
         }
     }
 
+    private fun setScrollView() {
+        mBinding.scrollviewMypagedeliverycer.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (v != null && scrollY == (v.getChildAt(0)?.measuredHeight!! - v.measuredHeight)) {
+                mViewModel.getCancelOrderHistories()
+            }
+        }
+    }
 
     override fun onRefresh() {
         mViewModel.page = 1
@@ -93,13 +102,13 @@ class MyPageDeliveryCerLayout constructor(
         mBinding.calendarfilterMypageDeliver.setDate(CustomCalendarFilter.CalendarPeriod.THREE_MONTH.date)
     }
 
-    override fun onFocusView() { }
-    override fun onReleaseView() { }
-    override fun onStart() { }
-    override fun onResume() { }
-    override fun onPause() { }
-    override fun onStop() { }
-    override fun onDestroy() { }
+    override fun onFocusView() {}
+    override fun onReleaseView() {}
+    override fun onStart() {}
+    override fun onResume() {}
+    override fun onPause() {}
+    override fun onStop() {}
+    override fun onDestroy() {}
 
     // CustomCalendarListener
     override fun onClickWeek() = changeDate()

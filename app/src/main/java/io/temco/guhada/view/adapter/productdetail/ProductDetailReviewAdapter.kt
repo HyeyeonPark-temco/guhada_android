@@ -117,9 +117,7 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
             }
 
             mViewModel.getBookMarks(target = BookMarkTarget.REVIEW.target, successTask = {
-                for (item
-
-                in (it.content))
+                for (item in (it.content))
                     if (item.target == BookMarkTarget.REVIEW.target && item.targetId == reviewContent.review.id) {
                         mBinding.imageviewProdudctdetailReviewlike.tag = "true"
                         mBinding.imageviewProdudctdetailReviewlike.setImageResource(R.drawable.detail_icon_thumbsup_on)
