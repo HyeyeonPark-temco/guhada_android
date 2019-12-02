@@ -509,9 +509,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     if (this.user.get() != null) {
                         if (this.order.user.mobile.isNullOrEmpty()) {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifymobile))
-                        } else if (!mEmailVerification.get()) {
+                        } /*else if (!mEmailVerification.get()) {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
-                        } /*else if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
+                        } */ /*else if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
                         } */ else if (this@PaymentViewModel.selectedShippingAddress == null) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))

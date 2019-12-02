@@ -35,13 +35,10 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
     var pointSummary: ObservableField<PointSummary> = ObservableField()
         @Bindable
         get() = field
-    var pointList: MutableLiveData<MutableList<Point>> = MutableLiveData()
-    var pointHistory: ObservableField<PointHistory> = ObservableField()
-        @Bindable
-        get() = field
     var fromDate = ""
     var toDate = ""
     var page = 1
+    var mPointHistory = MutableLiveData<PointHistory>()
 
     private val UNIT_PER_PAGE = 8
     private val ORDER_TYPE_DESC = "DESC"
@@ -60,45 +57,28 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
         })
     }
 
-    fun getPoints() {
-        ServerCallbackUtil.callWithToken(task = { token ->
-            BenefitServer.getPoints(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            this.pointList.apply { it.list as MutableList<Point> }
-                        })
-            }, token, orderType = ORDER_TYPE_DESC, sortType = SORT_TYPE, page = page++, unitPerPage = UNIT_PER_PAGE)
-        })
-    }
-
     fun getPointHistories() {
-        ServerCallbackUtil.callWithToken(task = { token ->
-            val userId = JWT(token.split("Bearer ")[1]).getClaim("userId").asInt() ?: 0
-            BenefitServer.getPointHistories(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            if (page > 2 && pointHistory.get()?.content?.isNotEmpty() ?: false) {
-                                val history = it.data as PointHistory
-                                pointHistory.get()?.content?.addAll(history.content)
-                                pointHistory.get()?.last = history.last
-                            } else {
-                                pointHistory = ObservableField(it.data as PointHistory)
-                            }
-                            notifyPropertyChanged(BR.pointHistory)
-                        })
-            }, accessToken = token, fromAt = fromDate, toAt = toDate, historyStatus = "", charge = false, sortType = SORT_TYPE, orderType = ORDER_TYPE_DESC, page = page++, unitPerPage = UNIT_PER_PAGE, userId = userId)
-        })
+        if (page <= mPointHistory.value?.totalPages ?: page)
+            ServerCallbackUtil.callWithToken(task = { token ->
+                val userId = JWT(token.split("Bearer ")[1]).getClaim("userId").asInt() ?: 0
+                BenefitServer.getPointHistories(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                mPointHistory.postValue(it.data as PointHistory)
+                            })
+                }, accessToken = token, fromAt = fromDate, toAt = toDate, historyStatus = "", charge = false, sortType = SORT_TYPE, orderType = ORDER_TYPE_DESC, page = page++, unitPerPage = UNIT_PER_PAGE, userId = userId)
+            })
     }
 
     fun onClickMore() = getPointHistories()
 
-    // 미사용
     fun onClickDelete(pointId: Long) {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             BenefitServer.deletePoint(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             page = 1
+                            mPointHistory = MutableLiveData(PointHistory().apply { this.totalPages = 1 })
                             getPointHistories()
                         })
             }, accessToken = accessToken, pointId = pointId)

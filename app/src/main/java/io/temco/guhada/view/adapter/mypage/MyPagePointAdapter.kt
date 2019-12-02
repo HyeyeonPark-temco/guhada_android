@@ -32,6 +32,17 @@ class MyPagePointAdapter(val mViewModel: MyPagePointViewModel) : RecyclerView.Ad
         notifyDataSetChanged()
     }
 
+    fun addAllItems(items: MutableList<PointHistory.PointHistoryContent>) {
+        val startPos = list.size
+        this.list.addAll(items)
+        notifyItemRangeChanged(startPos, items.size)
+    }
+
+    fun clearList() {
+        list.clear()
+        notifyDataSetChanged()
+    }
+
     inner class Holder(binding: ItemMypagePointBinding) : BaseViewHolder<ItemMypagePointBinding>(binding.root) {
         fun bind(item: PointHistory.PointHistoryContent) {
             mBinding.item = item
