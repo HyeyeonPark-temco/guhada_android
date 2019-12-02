@@ -34,6 +34,7 @@
     <string name="common_cancel">취소</string>
     <string name="common_check">조회</string>
     <string name="common_remaining">보유</string>
+    <string name="common_close">닫기</string>
 
     <string name="common_top">TOP</string>
     <string name="common_category">카테고리</string>
@@ -1388,6 +1389,8 @@
     <string name="mypage_token_deposit">입금</string>
     <string name="mypage_token_empty">토큰 내역이 없습니다.</string>
     <string name="mypage_token_format">%,2d %s</string>
+
+    <string name="first_purchase_dialog_stop">그만보기</string>
 
 
 </resources>

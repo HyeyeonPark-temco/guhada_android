@@ -8,7 +8,6 @@ public class Type {
     ////////////////////////////////////////////////
     // Build
     public enum Build {
-
         DEV,
         QA,
         STAGE,

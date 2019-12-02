@@ -1,11 +1,15 @@
 package io.temco.guhada.view.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import android.text.TextUtils
 import android.view.View
 import android.webkit.*
+import io.reactivex.functions.Consumer
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusData
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonUtil
@@ -73,6 +77,7 @@ class CustomWebViewEventActivity : BindActivity<ActivityCustomwebvieweventBindin
                 }
             }
         }
+        setEvenBus()
     }
 
     override fun onBackPressed() {
@@ -102,6 +107,33 @@ class CustomWebViewEventActivity : BindActivity<ActivityCustomwebvieweventBindin
             R.id.image_side_menu -> CommonUtil.startMenuActivity(this@CustomWebViewEventActivity, Flag.RequestCode.SIDE_MENU)
             R.id.image_search -> CommonUtil.startSearchWordActivity(this@CustomWebViewEventActivity, null, true)
             R.id.image_shop_cart -> CommonUtil.startCartActivity(this@CustomWebViewEventActivity)
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        /**
+         * 상단 툴바 장바구니 뱃지
+         * @author Hyeyeon Park
+         * @since 2019.11.05
+         */
+        CommonUtil.getCartItemCount()
+    }
+
+
+    @SuppressLint("CheckResult")
+    private fun setEvenBus() {
+        EventBusHelper.mSubject.subscribe { (requestCode, data) ->
+            if (requestCode == Flag.RequestCode.CART_BADGE) {
+                val count = Integer.parseInt(data!!.toString())
+                if (count > 0) {
+                    mBinding.textviewBadge.setVisibility(View.VISIBLE)
+                    mBinding.textviewBadge.setText(count.toString() + "")
+                } else {
+                    mBinding.textviewBadge.setVisibility(View.GONE)
+                }
+            }
         }
     }
     ////////////////////////////////////////////////////////////////////////////////

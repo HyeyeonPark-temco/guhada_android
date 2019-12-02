@@ -72,7 +72,7 @@ object CommonUtilKotlin  {
 
 
     fun startActivityWebview(activity: Activity, title : String, url : String, param : String = "") {
-        val intent = Intent(activity, CustomWebViewActivity::class.java) //CustomWebViewEventActivity
+        val intent = Intent(activity, CustomWebViewEventActivity::class.java) //CustomWebViewEventActivity
         intent.putExtra("title",title)
         intent.putExtra("url",url)
         if(!TextUtils.isEmpty(param)){
@@ -80,6 +80,29 @@ object CommonUtilKotlin  {
         }
         activity.startActivityForResult(intent, Flag.RequestCode.BASE)
     }
+
+
+    /**
+     * 첫구매 관련 팝업
+     * FIRST_VIEW - 첫구매 안내 팝업
+     * FIRST_PURCHASE - 첫구매 후 팝업
+     */
+    @JvmStatic
+    fun startActivityFirstPurchaseDialog(activity: Activity, state : FirstPurchaseType) {
+        if(state == FirstPurchaseType.FIRST_VIEW){
+            if(TextUtils.isEmpty(Preferences.getFirstPurchasViewDialog())){
+                val intent = Intent(activity, FirstPurchaseDialogActivity::class.java)
+                intent.putExtra("state",state)
+                activity.startActivityForResult(intent, Flag.RequestCode.BASE)
+            }
+        }else{
+            val intent = Intent(activity, FirstPurchaseDialogActivity::class.java)
+            intent.putExtra("state",state)
+            activity.startActivityForResult(intent, Flag.RequestCode.BASE)
+        }
+    }
+
+
 
 
 //    fun startActivityImageDetail(activity: Activity, title : String?, path : String) {

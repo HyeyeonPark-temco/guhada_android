@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.RequestManager
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
+import io.temco.guhada.common.Info
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Deal
@@ -34,13 +35,15 @@ class MyPageBookMarkLayout constructor(
         defStyleAttr: Int = 0
 ) : BaseListLayout<CustomlayoutMypageBookmarkBinding, MyPageBookMarkViewModel>(context, disposable, attrs, defStyleAttr) , SwipeRefreshLayout.OnRefreshListener{
 
+    private lateinit var recyclerLayoutManager : WrapGridLayoutManager
+
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_bookmark
     override fun init() {
         mViewModel = MyPageBookMarkViewModel(context, disposable)
         mBinding.viewModel = mViewModel
-
-        mBinding.recyclerviewMypagebookmarkList.layoutManager = WrapGridLayoutManager(context as Activity, 2, LinearLayoutManager.VERTICAL, false)
+        recyclerLayoutManager = WrapGridLayoutManager(context as Activity, 2, LinearLayoutManager.VERTICAL, false)
+        mBinding.recyclerviewMypagebookmarkList.layoutManager = recyclerLayoutManager
         mBinding.recyclerviewMypagebookmarkList.setHasFixedSize(true)
 
         (mBinding.recyclerviewMypagebookmarkList.layoutManager as WrapGridLayoutManager).orientation = RecyclerView.VERTICAL
@@ -52,6 +55,21 @@ class MyPageBookMarkLayout constructor(
                     }
                 }
         )
+        mBinding.recyclerviewMypagebookmarkList.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(CustomLog.flag)CustomLog.L("MyPageBookMarkLayout","itemCount",mViewModel.getListAdapter().itemCount,"findLastVisibleItemPosition",recyclerLayoutManager.findLastVisibleItemPosition())
+                synchronized(this){
+                    if (mViewModel.getListAdapter().itemCount - recyclerLayoutManager.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading) {
+                        mViewModel.isLoading = true
+                        mViewModel.getMyPageBookMarkList()
+                    }
+                }
+            }
+        })
         mViewModel.listData.observe(this,
                 androidx.lifecycle.Observer<ArrayList<Deal>> {
                     if(it.isNullOrEmpty()){

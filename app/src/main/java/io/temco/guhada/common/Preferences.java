@@ -32,6 +32,7 @@ public class Preferences {
     private static final String KEY_USER_TOKEN = "token";
     private static final String KEY_IS_ID_SAVED = "is_id_saved";
     private static final String KEY_SAVED_ID = "saved_id";
+    private static final String KEY_FIRST_PURCHAS_VIEW_DIALOG = "first_purchase_view_dialog";
     private static final String KEY_USERINFO_PASSWORD_CONFIRM = "userinfo_password_confirm";
     // -----------------------------
 
@@ -242,6 +243,16 @@ public class Preferences {
 
     public static String getSavedId() {
         return getString(KEY_SAVED_ID);
+    }
+
+
+    // is id saved
+    public static void setFirstPurchasViewDialog(String date) {
+        putString(KEY_FIRST_PURCHAS_VIEW_DIALOG, date);
+    }
+
+    public static String getFirstPurchasViewDialog() {
+        return getString(KEY_FIRST_PURCHAS_VIEW_DIALOG);
     }
 
     // Language

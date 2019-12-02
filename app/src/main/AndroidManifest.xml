@@ -389,6 +389,14 @@
             android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
+        <!-- First Purchase Dialog -->
+        <activity
+            android:name=".view.activity.FirstPurchaseDialogActivity"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.Transparent2"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+
 
         <!-- Kakao -->
         <activity
