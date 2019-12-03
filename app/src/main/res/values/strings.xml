@@ -351,6 +351,7 @@
 
     <string name="productdetail_format_buypoint">구매확정 시 %,2d원 적립</string>
     <string name="productdetail_format_reviewpoint">리뷰 작성 시 최대 %,2d원 적립</string>
+    <string name="productdetail_format_firstorder">첫 구매 시 추가 %,2d원 적립</string>
 
     <string name="productdetail_option">옵션선택</string>
     <string name="productdetail_sizeinfo">사이즈정보</string>

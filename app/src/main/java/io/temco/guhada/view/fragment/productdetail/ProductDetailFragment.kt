@@ -365,13 +365,22 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel.mExpectedPoint.observe(this, Observer {
             var advantageBuyPoint = 0
             var advantageReviewPoint = 0
+            var advantageFirstOrderPoint = 0
 
             for (item in it.dueSavePointList) {
                 when (item.dueSaveType) {
                     PointProcessParam.PointSave.BUY.type -> advantageBuyPoint = item.totalPoint
                     PointProcessParam.PointSave.REVIEW.type -> advantageReviewPoint = item.totalPoint
+                    PointProcessParam.PointSave.FIRST_ORDER.type ->advantageFirstOrderPoint = item.totalPoint
                 }
             }
+
+            if(advantageFirstOrderPoint > 0 ){
+                mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointFirstorder.text = String.format(mBinding.root.context.resources.getString(R.string.productdetail_format_firstorder), advantageFirstOrderPoint)
+                mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointFirstorder.visibility = View.VISIBLE
+            }
+            else
+                mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointFirstorder.visibility = View.GONE
 
             if (advantageBuyPoint == 0 && advantageReviewPoint == 0) {
                 mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantagepoint.visibility = View.GONE
