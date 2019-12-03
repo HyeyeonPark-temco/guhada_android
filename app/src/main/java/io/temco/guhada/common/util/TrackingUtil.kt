@@ -9,7 +9,7 @@ import io.temco.guhada.BuildConfig
  * @author Hyeyeon Park
  */
 object TrackingUtil {
-    private var mFlag = !BuildConfig.DEBUG
+    private var mFlag = BuildConfig.BUILD_TYPE.contentEquals("release")
 
     @JvmStatic
     fun sendKochavaEvent(eventName: String, value: String = "") {
@@ -17,7 +17,7 @@ object TrackingUtil {
     }
 
     @JvmStatic
-    fun sendKochavaEvent(event: Tracker.Event) {
+    fun sendKochavaEvent(event: Tracker.Event){
         if (mFlag) Tracker.sendEvent(event)
     }
 }
