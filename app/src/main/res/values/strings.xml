@@ -1177,6 +1177,7 @@
     <string name="confirmpurchase_point_confirm2">포인트</string>
     <string name="confirmpurchase_point_review1">리뷰작성 시</string>
     <string name="confirmpurchase_point_review2">포인트 최대</string>
+    <string name="confirmpurchase_point_review3">포인트 추가</string>
     <string name="confirmpurchase_point_title">포인트 적립 유의사항</string>
     <string name="confirmpurchase_point_description1">한달 사용 리뷰 작성 포인트는 위와 별개이며, 구매확정 이후 31일부터 [마이페이지 > 상품리뷰] 에서 작성가능합니다.</string>
     <string name="confirmpurchase_point_description2">텍스트 리뷰와 포토/동영상 리뷰 적립 혜택은 중복으로 지급되지 않으며, 최초 작성한 리뷰 기준으로 지급됩니다.</string>
