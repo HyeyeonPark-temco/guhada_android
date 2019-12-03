@@ -265,6 +265,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         var productDiscount = 0
         var reviewPoint = 0
         var buyPoint = 0
+        var firstOrderPoint = 0
 
         for (item in info.discountInfoResponseList) {
             when (item.discountType) {
@@ -277,6 +278,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             when (item.dueSaveType) {
                 PointProcessParam.PointSave.REVIEW.type -> reviewPoint = item.totalPoint
                 PointProcessParam.PointSave.BUY.type -> buyPoint = item.totalPoint
+                PointProcessParam.PointSave.FIRST_ORDER.type -> firstOrderPoint = item.totalPoint
             }
         }
 
@@ -284,6 +286,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentDiscountresult.productDiscount = productDiscount
         mBinding.includePaymentDiscountresult.reviewPoint = reviewPoint
         mBinding.includePaymentDiscountresult.buyPoint = buyPoint
+        mBinding.includePaymentDiscountresult.firstOrderPoint = firstOrderPoint
 
         mBinding.includePaymentDiscountresult.constraintlayoutDiscountresultCoupondiscount.visibility = if (couponDiscount > 0) View.VISIBLE else View.GONE
         mBinding.includePaymentDiscountresult.constraintlayoutDiscountresultProductdiscount.visibility = if (productDiscount > 0) View.VISIBLE else View.GONE

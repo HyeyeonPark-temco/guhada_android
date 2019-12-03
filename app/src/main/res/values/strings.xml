@@ -537,6 +537,8 @@
     <string name="payment_text_discountpoint">포인트 사용</string>
     <string name="payment_text_expectedpoint">적립 예정 내역</string>
     <string name="payment_text_fixbuy">구매 확정</string>
+    <string name="payment_text_firstorder">첫 구매</string>
+    <string name="payment_text_review">리뷰 작성</string>
     <string name="payment_text_textreview">텍스트 리뷰</string>
     <string name="payment_text_photoreview">포토 리뷰</string>
 
