@@ -2,13 +2,13 @@ package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.data.model.point.Point
 import io.temco.guhada.data.model.point.PointHistory
 import io.temco.guhada.data.model.point.PointSummary
 import io.temco.guhada.data.server.BenefitServer
@@ -39,6 +39,9 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
     var toDate = ""
     var page = 1
     var mPointHistory = MutableLiveData<PointHistory>()
+    var mEmptyVisible = ObservableBoolean(true)
+        @Bindable
+        get() = field
 
     private val UNIT_PER_PAGE = 8
     private val ORDER_TYPE_DESC = "DESC"
@@ -72,14 +75,18 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
 
     fun onClickMore() = getPointHistories()
 
-    fun onClickDelete(pointId: Long) {
+    fun onClickDelete(listener: OnServerListener?, pointId: Long) {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             BenefitServer.deletePoint(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            page = 1
-                            mPointHistory = MutableLiveData(PointHistory().apply { this.totalPages = 1 })
-                            getPointHistories()
+                            if (listener == null) {
+                                page = 1
+                                mPointHistory = MutableLiveData(PointHistory().apply { this.totalPages = 1 })
+                                getPointHistories()
+                            } else {
+                                listener.onResult(true, o)
+                            }
                         })
             }, accessToken = accessToken, pointId = pointId)
         })
