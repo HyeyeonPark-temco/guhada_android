@@ -755,6 +755,7 @@ class UserServer {
                     }
                 })
 
+
         /**
          * 이메일 본인인증 업데이트
          * @author Hyeyeon Park
@@ -775,35 +776,78 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             resultListener(listener, call, response)
                         }
-
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
+        }
+
+
+
+        /**
+         * 회원 좋아요 가져오기
+         * @author park jungho
+         * @since 2019.12.02
+         */
+        @JvmStatic
+        fun getLikes(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId: Long) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .getLikes(accessToken,target,targetId,userId).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            resultListener(listener, call, response)
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
         }
 
 
         /**
-         * 회원 좋아요 저장하기 (비동기)
-         * @since 2019.09.26
+         * 회원 좋아요 저장하기
+         * @since 2019.12.02
          * @author park jungho
          */
         @JvmStatic
-        fun saveLikesAsync(accessToken: String, userId: Long, response: LikesModel): Deferred<BaseModel<Any>> = GlobalScope.async {
-            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).saveLikesAsync(accessToken = accessToken, userId = userId, response = response).await()
+        fun saveLikes(listener: OnServerListener, accessToken: String, userId: Long, response: LikesModel) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .saveLikes(accessToken, userId, response).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            resultListener(listener, call, response)
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
         }
 
         /**
-         * 회원 좋아요 삭제하기 (비동기)
-         * @since 2019.09.26
+         * 회원 좋아요 저장하기
+         * @since 2019.12.02
          * @author park jungho
          */
         @JvmStatic
-        fun deleteLikesAsync(accessToken: String, userId: Long, id: Long): Deferred<BaseModel<Any>> = GlobalScope.async {
-            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).deleteLikesAsync(accessToken = accessToken, userId = userId, id = id).await()
+        fun deleteLikes(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId: Long) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .deleteLikes(accessToken, target, targetId, userId).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            resultListener(listener, call, response)
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+             )
         }
+
+
 
         /**
          * 닉네임으로 유저 정보 가져오기

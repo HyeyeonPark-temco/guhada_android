@@ -88,16 +88,19 @@ object CommonUtilKotlin  {
      * FIRST_PURCHASE - 첫구매 후 팝업
      */
     @JvmStatic
-    fun startActivityFirstPurchaseDialog(activity: Activity, state : FirstPurchaseType) {
-        if(state == FirstPurchaseType.FIRST_VIEW){
-            if(TextUtils.isEmpty(Preferences.getFirstPurchasViewDialog())){
-                val intent = Intent(activity, FirstPurchaseDialogActivity::class.java)
+    fun startActivityPopupDialog(activity: Activity, imgPath:String, state : PopupViewType) {
+        if(state == PopupViewType.POPUP_VIEW_STOP){
+            var str = Preferences.getMainBannerViewDialog(imgPath)
+            if(TextUtils.isEmpty(str) || str != imgPath){
+                val intent = Intent(activity, MainBannerPopupActivity::class.java)
                 intent.putExtra("state",state)
+                intent.putExtra("imgPath",imgPath)
                 activity.startActivityForResult(intent, Flag.RequestCode.BASE)
             }
         }else{
-            val intent = Intent(activity, FirstPurchaseDialogActivity::class.java)
+            val intent = Intent(activity, MainBannerPopupActivity::class.java)
             intent.putExtra("state",state)
+            intent.putExtra("imgPath",imgPath)
             activity.startActivityForResult(intent, Flag.RequestCode.BASE)
         }
     }

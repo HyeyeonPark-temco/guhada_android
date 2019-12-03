@@ -102,7 +102,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         setEventBus();
         initMainPager();
 
-        CommonUtilKotlin.startActivityFirstPurchaseDialog(this,FirstPurchaseType.FIRST_VIEW);
+        //CommonUtilKotlin.startActivityFirstPurchaseDialog(this,FirstPurchaseType.FIRST_VIEW);
     }
 
     @Override

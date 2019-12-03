@@ -391,12 +391,16 @@
 
         <!-- First Purchase Dialog -->
         <activity
-            android:name=".view.activity.FirstPurchaseDialogActivity"
+            android:name=".view.activity.MainBannerPopupActivity"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
-
+        <!-- 기획전 상세 -->
+        <activity
+            android:name=".view.activity.PlanningDealDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!-- Kakao -->
         <activity

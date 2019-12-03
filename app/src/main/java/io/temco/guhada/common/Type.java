@@ -78,6 +78,7 @@ public class Type {
         CARD_INTEREST,
         LUCKY_DRAW_JOIN,
         GUHADA_TOKEN,
+        PLANNING_DEAL,
         MYPAGE_TOKEN
     }
 

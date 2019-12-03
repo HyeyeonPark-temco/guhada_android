@@ -35,8 +35,8 @@ import io.temco.guhada.view.adapter.mypage.MyPageReviewAdapter
 class MyPageReviewViewModel (val context : Context, val mLoadingIndicatorUtil: LoadingIndicatorUtil) : BaseObservableViewModel() {
     val mRequestManager: RequestManager by lazy { Glide.with(context) }
 
-    var isLoading1 = false
-    var isLoading2 = false
+    var isLoading1 = true
+    var isLoading2 = true
 
     val INIT_PAGE_NUMBER = 0
     private var repository = MyPageReviewRepository(this@MyPageReviewViewModel)

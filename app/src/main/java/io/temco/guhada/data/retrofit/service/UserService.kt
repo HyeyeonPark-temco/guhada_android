@@ -522,21 +522,51 @@ interface UserService {
 
 
     /**
-     * BookMark 정보 추가 (비동기)
-     * @author Hyeyeon Park
-     * @since 2019.08.27
+     * 회원 좋아요 가져오기
+     * @author park jungho
+     * @since 2019.12.02
      */
-    @POST("/users/{userId}/likes")
-    fun saveLikesAsync(@Header("Authorization") accessToken: String, @Query("userId") userId: Long, @Body response: LikesModel): Deferred<BaseModel<Any>>
+    @GET("/users/{userId}/likes")
+    fun getLikes(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long, @Query("userId") userId: Long): Call<BaseModel<Any>>
 
 
     /**
-     * BookMark 정보 삭제 (비동기)
-     * @author Hyeyeon Park
-     * @since 2019.08.27
+     * 회원 좋아요 정보 추가
+     * @author park jungho
+     * @since 2019.12.02
+     */
+    @POST("/users/{userId}/likes")
+    fun saveLikes(@Header("Authorization") accessToken: String, @Query("userId") userId: Long, @Body response: LikesModel): Call<BaseModel<Any>>
+
+
+    /**
+     * 회원 좋아요 정보 삭제
+     * @author park jungho
+     * @since 2019.12.02
      */
     @DELETE("/users/{userId}/likes/{id}")
-    fun deleteLikesAsync(@Header("Authorization") accessToken: String, @Query("userId") userId: Long, @Query("id") id: Long): Deferred<BaseModel<Any>>
+    fun deleteLikes(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long, @Query("userId") userId: Long): Call<BaseModel<Any>>
+
+
+    /**
+     * 회원 좋아요 가져오기
+     * /users/{userId}/likes/{id}
+     * @author park jungho
+     * @since 2019.12.02
+     */
+    @GET("/users/{userId}/likes/{id}")
+    fun getUserLike(@Header("Authorization") accessToken: String, @Path("userId ") userId : Long, @Path("id ") id : Long): Call<BaseModel<Any>>
+
+
+    /**
+     * 회원 좋아요 COUNT 가져오기
+     * /users/likes/{target}/count
+     * @author park jungho
+     * @since 2019.12.02
+     */
+    @GET("/users/{userId}/likes/{id}")
+    fun getUserLikeCount(@Header("Authorization") accessToken: String, @Path("userId ") userId : Long, @Path("id ") id : Long): Call<BaseModel<Any>>
+
 
     /**
      * 닉네임으로 유저 정보 가져오기 API
@@ -546,6 +576,7 @@ interface UserService {
     @GET("/users/nickname/{nickname}")
     fun getUserByNickName(@Path("nickname") nickName: String): Call<BaseModel<Any>>
 
+
     /**
      * 은행 정보 가져오기 API
      * @since 2019.09.28
@@ -553,6 +584,7 @@ interface UserService {
      */
     @GET("/banks")
     fun getBanks(): Call<BaseModel<MutableList<PurchaseOrder.Bank>>>
+
 
     /**
      * 아이디 발송하기

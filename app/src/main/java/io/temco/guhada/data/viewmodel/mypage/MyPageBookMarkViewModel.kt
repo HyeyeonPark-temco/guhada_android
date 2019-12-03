@@ -45,7 +45,7 @@ class MyPageBookMarkViewModel (val context : Context, var mDisposable : Composit
 
     private val _listData : SingleLiveEvent<ArrayList<Deal>> = repository.getList()
     private val adapter = MyPageDealListAdapter(this,listData.value!!)
-    var isLoading = false
+    var isLoading = true
 
     val listData : LiveData<ArrayList<Deal>> get() = _listData
 
