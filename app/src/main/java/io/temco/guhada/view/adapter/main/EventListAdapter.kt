@@ -147,13 +147,40 @@ class EventListAdapter(private val model : EventListViewModel, list : ArrayList<
                 binding.layoutEventContent.setOnClickListener(null)
                 if(item.eventData.detailPage){
                     binding.layoutEventContent.setOnClickListener {
-                        if(!TextUtils.isEmpty(item.eventData.mobileAppLink)){
+                        /*if(!TextUtils.isEmpty(item.eventData.mobileAppLink)){
                             if(!TextUtils.isEmpty(item.eventData.imgDetailUrlM)){
                                 CommonUtilKotlin.startActivityWebview(viewModel.context as Activity, "이벤트",
                                         item.eventData.imgDetailUrlM?:"",item.eventData.mobileAppLink)
                             }else{
                                 CommonUtilKotlin.moveEventPage(viewModel.context as Activity,item.eventData.mobileAppLink,"",true,false)
                             }
+                        }*/
+                        if(!TextUtils.isEmpty(item.eventData.mobileAppLink) && "/" != item.eventData.mobileAppLink){
+                            if(!TextUtils.isEmpty(item.eventData.imgDetailUrlM)){
+                                CommonUtilKotlin.startActivityWebview(viewModel.context as Activity, "이벤트",
+                                        item.eventData.imgDetailUrlM?:"",item.eventData.mobileAppLink)
+                            }else{
+                                var link : String? = item.eventData.mobileAppLink
+                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link ?: "null")
+                                //link = "guhada://client?pg_state=search&arg1=%EA%B8%B0%ED%9A%8D%20%ED%8C%A8%EB%94%A9%EC%A0%84"
+                                //link = "guhada://client?pg_state=search&arg1=기획전%20패딩"
+                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link ?: "null")
+                                if(link != null && link.startsWith("guhada://client",true)){
+                                    val uriData : Uri = Uri.parse(link)
+                                    val pgState = uriData.getQueryParameter("pg_state")
+                                    val arg1 = uriData.getQueryParameter("arg1")?:""
+                                    val arg2 = uriData.getQueryParameter("arg2")?:""
+                                    if(!TextUtils.isEmpty(pgState)) {
+                                        if (CustomLog.flag) CustomLog.L("SchemeActivity", "pgState", pgState)
+                                        if (CustomLog.flag) CustomLog.L("SchemeActivity", "arg1", arg1)
+                                        if (CustomLog.flag) CustomLog.L("SchemeActivity", "arg2", arg2)
+                                    }
+                                    CommonUtilKotlin.moveEventPage(viewModel.context as Activity, pgState,arg1,true,false)
+                                }else{
+                                    if(link!=null)CommonUtilKotlin.moveEventPage(viewModel.context as Activity, link,"",true,false)
+                                }
+                            }
+                            //EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, index))
                         }
 
                     }

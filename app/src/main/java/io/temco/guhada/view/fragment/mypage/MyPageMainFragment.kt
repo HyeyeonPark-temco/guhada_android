@@ -23,7 +23,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 import java.util.*
 
-enum class MyPageTabType { DELIVERY, DELIVERY_CANCEL_EX, POINT, COUPON, BOOKMARK, FOLLOW_SELLER, LAST_VIEW, REVIEW, CLAIM, ADDRESS }
+enum class MyPageTabType { DELIVERY, DELIVERY_CANCEL_EX, POINT, COUPON, BOOKMARK, TOKEN, FOLLOW_SELLER, LAST_VIEW, REVIEW, CLAIM, ADDRESS }
 /**
  * 19.07.22
  * @author park jungho
@@ -188,24 +188,27 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
                                 vw = MyPageBookMarkLayout(it, mDisposable)
                             }
                             5 -> {
-                                vw = MyPageFollowLayout(it)
+                                vw = MyPageTokenLayout(it)
                             }
                             6 -> {
-                                vw = MyPageRecentLayout(it, mDisposable)
+                                vw = MyPageFollowLayout(it)
                             }
                             7 -> {
-                                vw = MyPageReviewLayout(it)
+                                vw = MyPageRecentLayout(it, mDisposable)
                             }
                             8 -> {
-                                vw = MyPageClaimLayout(it)
+                                vw = MyPageReviewLayout(it)
                             }
                             9 -> {
+                                vw = MyPageClaimLayout(it)
+                            }
+                            10 -> {
                                 vw = MyPageAddressLayout(it)
                             }
                             /*11 -> {
                                 vw = MyPageGradeLayout(it)
                             }*/
-                            10 -> {
+                            11 -> {
                                 vw = MyPageUserInfoLayout(it)
                             }
                             else -> {

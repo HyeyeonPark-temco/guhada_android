@@ -134,10 +134,11 @@
                         android:layout_height="wrap_content"
                         android:onClick="@{()->viewModel.onClickVerify()}"
                         android:orientation="horizontal"
-                        android:visibility="@{(viewModel.order.user.name != null &amp;&amp; !viewModel.order.user.name.isEmpty()) &amp;&amp; (viewModel.order.user.mobile  != null &amp;&amp; !viewModel.order.user.mobile.isEmpty()) &amp;&amp; viewModel.order.user.emailVerify ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{(viewModel.order.user.name != null &amp;&amp; !viewModel.order.user.name.isEmpty()) &amp;&amp; (viewModel.order.user.mobile != null &amp;&amp; !viewModel.order.user.mobile.isEmpty()) ? View.GONE : View.VISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
+                        <!--android:visibility="@{(viewModel.order.user.name != null &amp;&amp; !viewModel.order.user.name.isEmpty()) &amp;&amp; (viewModel.order.user.mobile  != null &amp;&amp; !viewModel.order.user.mobile.isEmpty()) &amp;&amp; viewModel.order.user.emailVerify ? View.GONE : View.VISIBLE}"-->
                         <TextView
                             style="@style/PaymentContentDarkGreyTextStyle"
                             android:layout_width="wrap_content"
@@ -151,7 +152,9 @@
                             style="@style/PaymentContentDarkGreyTextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.mMobileVerification ? @string/verify_title_email : @string/verify_title_mobile}" />
+                            android:text="@string/verify_title_mobile" />
+
+                        <!--android:text="@{viewModel.mMobileVerification ? @string/verify_title_email : @string/verify_title_mobile}"-->
 
                         <ImageButton
                             android:id="@+id/imagebutton_payment_buyerverify"

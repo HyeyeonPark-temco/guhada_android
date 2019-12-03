@@ -60,13 +60,13 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
     }
 
     override fun init() {
-        mHandler.postDelayed(timeOutDialog, 60*1000)
         if (CustomLog.flag) CustomLog.L(this.javaClass.simpleName, "init")
         mDisposable = CompositeDisposable()
         db = GuhadaDB.getInstance(this)!!
         BaseApplication.getInstance().moveToMain = null
         var data : Serializable? = intent?.extras?.getSerializable("schemeData")
         if(data != null) schemeData = data as ActivityMoveToMain
+        mHandler.postDelayed(timeOutDialog, 60*1000)
         getAppVersionData()
 
         this.windowManager.defaultDisplay.getMetrics((this@SplashActivity.applicationContext as BaseApplication).matrix)
@@ -194,11 +194,16 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
         Preferences.setPasswordConfirm(false)
     }
 
+    override fun onStop() {
+        super.onStop()
+        mHandler.removeCallbacks(timeOutDialog)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        mHandler.removeCallbacks(timeOutDialog)
         if (mDisposable != null) mDisposable!!.dispose()
         GuhadaDB.destroyInstance()
-        mHandler.removeCallbacks(timeOutDialog)
     }
 
 

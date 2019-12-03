@@ -109,10 +109,6 @@
             android:name=".view.activity.WriteClaimActivity"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".view.activity.ProductDetailActivity"
-            android:screenOrientation="portrait" />
-
         <activity android:name=".view.activity.CardInterestActivity"
             android:screenOrientation="portrait" />
 
@@ -180,6 +176,9 @@
             android:screenOrientation="unspecified"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".view.activity.TokenHistoryActivity"
+            android:screenOrientation="portrait" />
 
 
         <!-- Search -->
@@ -322,6 +321,14 @@
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
+        <!-- 구하다 토큰 생성 다이얼로그 -->
+        <activity
+            android:name=".view.activity.GuhadaTokenAddressCreateDialog"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.Transparent2"
+            android:windowSoftInputMode="adjustUnspecified" />
+
 
         <activity
             android:name=".view.activity.SchemeActivity"

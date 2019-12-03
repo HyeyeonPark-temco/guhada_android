@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -36,15 +37,18 @@ class MyPageDeliveryLayout constructor(
 ) : BaseListLayout<CustomlayoutMypageDeliveryBinding, MyPageDeliveryViewModel>(context, attrs, defStyleAttr), SwipeRefreshLayout.OnRefreshListener, CustomCalendarFilter.CustomCalendarListener {
     // -------- LOCAL VALUE --------
     private var mRequestManager: RequestManager? = null
+//    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_delivery
     override fun init() {
         mBinding.lifecycleOwner = this
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
+//        mLoadingIndicatorUtil = LoadingIndicatorUtil(context)
 
         mViewModel = MyPageDeliveryViewModel(context)
         mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
+//            if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.hide()
             mBinding.listContents.adapter = MyPageDeliveryAdapter().apply {
                 this.type = MyPageDeliveryAdapter.Type.Delivery.type
                 this.list = it.orderItemList
@@ -60,7 +64,7 @@ class MyPageDeliveryLayout constructor(
                 mBinding.textviewMypageDeliveryEmpty.visibility = View.GONE
             }
 
-            mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage == 0 || (it.page == it.totalPage)) View.GONE else View.VISIBLE
+//            mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage == 0 || (it.page == it.totalPage)) View.GONE else View.VISIBLE
             mBinding.executePendingBindings()
         })
 
@@ -69,6 +73,7 @@ class MyPageDeliveryLayout constructor(
 
         initCalendarFilter()
         setEventBus()
+        setScrollView()
 
         mViewModel.getOrders()
         mViewModel.getOrderStatus()
@@ -86,6 +91,15 @@ class MyPageDeliveryLayout constructor(
                     mViewModel.getOrders()
                     mViewModel.getOrderStatus()
                 }
+            }
+        }
+    }
+
+    private fun setScrollView() {
+        mBinding.scrollviewMypageDelivery.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (v != null && scrollY == (v.getChildAt(0)?.measuredHeight!! - v.measuredHeight)) {
+//                if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
+                mViewModel.getOrders()
             }
         }
     }
@@ -136,11 +150,13 @@ class MyPageDeliveryLayout constructor(
 
 ////////////////////////////////////////////////
 
-    override fun onFocusView() { }
-    override fun onReleaseView() { }
-    override fun onStart() { }
-    override fun onResume() { }
-    override fun onPause() { }
-    override fun onStop() { }
-    override fun onDestroy() { }
+    override fun onFocusView() {}
+    override fun onReleaseView() {}
+    override fun onStart() {}
+    override fun onResume() {}
+    override fun onPause() {}
+    override fun onStop() {}
+    override fun onDestroy() {
+//        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.dismiss()
+    }
 }

@@ -154,7 +154,7 @@
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.product.modelNumber}"
+                    android:text="@{String.valueOf(viewModel.product.dealId)}"
                     android:textColor="@color/greyish"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toBottomOf="parent"

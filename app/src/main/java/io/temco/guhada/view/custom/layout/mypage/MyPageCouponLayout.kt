@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.viewmodel.mypage.MyPageCouponViewModel
@@ -39,7 +37,6 @@ class MyPageCouponLayout constructor(
         initTabs()
         initViewPager()
 
-
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
@@ -65,7 +62,7 @@ class MyPageCouponLayout constructor(
         else fragment.setCoupons(list)
 
         fragment.checkEmptyVisible()
-        fragment.checkMoreVisible()
+//        fragment.checkMoreVisible()
     }
 
     private fun initViewPager() {

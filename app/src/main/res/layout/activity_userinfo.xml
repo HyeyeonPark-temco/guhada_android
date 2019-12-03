@@ -394,6 +394,42 @@
                         android:visibility="@{loginType != 0 ? View.VISIBLE: View.GONE, default= gone}"
                         android:weightSum="2">
 
+                        <!-- 회원정보수정 - 배송지 - 네이버 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:visibility="visible"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:src="@{loginType == 1 ? @drawable/member_btn_naver_on : @drawable/member_btn_naver_off}" />
+
+                                <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone" />
+                            </FrameLayout>
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="10dp"
+                                android:gravity="center"
+                                android:text="@string/mypage_userinfo_passwaord_infotitle8"
+                                android:textColor="@color/greyish"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
 
                         <!-- 회원정보수정 - 배송지 - 카카오톡 -->
                         <LinearLayout
@@ -432,6 +468,20 @@
                         </LinearLayout>
                         <!-- ====================================================================== -->
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                        android:layout_marginBottom="30dp"
+                        android:orientation="horizontal"
+                        android:visibility="@{loginType != 0 ? View.VISIBLE: View.GONE, default= gone}"
+                        android:weightSum="2">
+
                         <!-- 회원정보수정 페이스북 -->
                         <LinearLayout
                             android:layout_width="0dp"
@@ -455,7 +505,6 @@
                                     android:visibility="gone" />
                             </FrameLayout>
 
-
                             <TextView
                                 style="@style/TextMedium"
                                 android:layout_width="wrap_content"
@@ -468,20 +517,6 @@
                                 android:textSize="@dimen/text_13" />
                         </LinearLayout>
                         <!-- ====================================================================== -->
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
-                        android:layout_marginBottom="30dp"
-                        android:orientation="horizontal"
-                        android:visibility="@{loginType != 0 ? View.VISIBLE: View.GONE, default= gone}"
-                        android:weightSum="2">
 
                         <!-- 회원정보수정 - 배송지 - 구글 -->
                         <LinearLayout
@@ -508,42 +543,6 @@
                                 android:textSize="@dimen/text_13" />
                         </LinearLayout>
                         <!-- ====================================================================== -->
-
-                        <!-- 회원정보수정 - 배송지 - 네이버 -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:visibility="invisible"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <FrameLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <ImageView
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:src="@{loginType == 1 ? @drawable/member_btn_naver_on : @drawable/member_btn_naver_off}" />
-
-                                <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:visibility="gone" />
-                            </FrameLayout>
-
-                            <TextView
-                                style="@style/TextMedium"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="10dp"
-                                android:gravity="center"
-                                android:text="@string/mypage_userinfo_passwaord_infotitle8"
-                                android:textColor="@color/greyish"
-                                android:textSize="@dimen/text_13" />
-                        </LinearLayout>
 
                     </LinearLayout>
                     <!-- ====================================================================== -->

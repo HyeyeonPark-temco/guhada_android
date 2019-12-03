@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,8 +12,6 @@ import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
@@ -25,8 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
@@ -36,9 +31,6 @@ import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.nhn.android.naverlogin.data.OAuthLoginState;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
@@ -56,7 +48,7 @@ import io.temco.guhada.data.model.user.UserProfile;
 import io.temco.guhada.data.server.UserServer;
 
 public class SnsLoginModule {
-    private static OAuthLogin mNaverLoginModule;
+    public static OAuthLogin mNaverLoginModule;
     private static KakaoSessionCallback mKakaoSessionCallback;
     private static GoogleSignInClient mGoogleSignInClient;
     private static CallbackManager mFacebookCallback;
@@ -68,6 +60,7 @@ public class SnsLoginModule {
     public static void initNaverLogin(OAuthLoginButton button, OnSnsLoginListener loginListener, OnServerListener serverListener) {
         Resources resources = BaseApplication.getInstance().getResources();
         mNaverLoginModule = OAuthLogin.getInstance();
+        mNaverLoginModule.showDevelopersLog(true);
         mNaverLoginModule.init(BaseApplication.getInstance(), resources.getString(R.string.naver_oauth_client_id), resources.getString(R.string.naver_oauth_client_secret),
                 resources.getString(R.string.naver_oauth_client_name));
 
@@ -81,7 +74,8 @@ public class SnsLoginModule {
                     long expireAt = mNaverLoginModule.getExpiresAt(context);
                     String tokenType = mNaverLoginModule.getTokenType(context);
                     OAuthLoginState state = mNaverLoginModule.getState(context);
-                    CommonUtil.debug("[NAVER] LOGIN-SUCCESS: AccessToken " + accessToken);
+                    if (CustomLog.getFlag())
+                        CustomLog.L("[NAVER] LOGIN-SUCCESS: AccessToken " + accessToken);
 
                     // CALL NAVER USER PROFILE
                     OnServerListener listener = (successGetProfile, o) -> {
@@ -110,15 +104,17 @@ public class SnsLoginModule {
                             }, "NAVER", ((NaverUser) o).getId(), naverUser.getEmail());
                         } else {
                             String message = o.equals("") ? "네이버 로그인 오류" : o.toString();
-                            CommonUtil.debug("[NAVER] PROFILE-FAILED: " + message);
+                            if (CustomLog.getFlag())
+                                CustomLog.L("[NAVER] PROFILE-FAILED: " + message);
                         }
                     };
 
-                    UserServer.getNaverProfile(listener, accessToken);
+                    UserServer.getNaverProfile(listener);
                 } else {
                     String errorCode = mNaverLoginModule.getLastErrorCode(context).getCode();
                     String errorDesc = mNaverLoginModule.getLastErrorDesc(context);
-                    CommonUtil.debug("[NAVER] LOGIN-FAILED: " + "errorCode:" + errorCode + ", errorDesc:" + errorDesc);
+                    if (CustomLog.getFlag())
+                        CustomLog.L("[NAVER] LOGIN-FAILED: " + "errorCode:" + errorCode + ", errorDesc:" + errorDesc);
                 }
             }
         });
