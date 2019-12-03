@@ -1,6 +1,7 @@
 package io.temco.guhada.common.util
 
 import com.kochava.base.Tracker
+import io.temco.guhada.BuildConfig
 
 /**
  * Tracking 관련 Util
@@ -8,7 +9,7 @@ import com.kochava.base.Tracker
  * @author Hyeyeon Park
  */
 object TrackingUtil {
-    private var mFlag = true
+    private var mFlag = !BuildConfig.DEBUG
 
     @JvmStatic
     fun sendKochavaEvent(eventName: String, value: String = "") {
@@ -16,7 +17,7 @@ object TrackingUtil {
     }
 
     @JvmStatic
-    fun sendKochavaEvent(event:Tracker.Event) {
+    fun sendKochavaEvent(event: Tracker.Event) {
         if (mFlag) Tracker.sendEvent(event)
     }
 }
