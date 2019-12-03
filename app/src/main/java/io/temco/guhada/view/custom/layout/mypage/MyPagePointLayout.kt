@@ -2,7 +2,6 @@ package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,7 +18,7 @@ import io.temco.guhada.view.custom.layout.common.BaseListLayout
  * @author park jungho
  *
  * 마이페이지 - 포인트 화면
- *
+ * @author Hyeyeon Park
  */
 class MyPagePointLayout constructor(
         context: Context,
@@ -41,9 +40,10 @@ class MyPagePointLayout constructor(
                         mBinding.recyclerviewMypagepoint.adapter = MyPagePointAdapter(mViewModel)
 
                     (mBinding.recyclerviewMypagepoint.adapter as MyPagePointAdapter).addAllItems(it.content)
-                    mBinding.constraintlayoutMypagepointEmpty.visibility = View.GONE
-                } else
-                    mBinding.constraintlayoutMypagepointEmpty.visibility = View.VISIBLE
+                    mViewModel.mEmptyVisible.set(false)
+                } else {
+                    mViewModel.mEmptyVisible.set(true)
+                }
 
                 hideIndicator()
             })
@@ -61,7 +61,7 @@ class MyPagePointLayout constructor(
     private fun setScrollView() {
         mBinding.scrollviewMypagepoint.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             if (v != null && scrollY == (v.getChildAt(0)?.measuredHeight!! - v.measuredHeight)) {
-                if (mViewModel.mPointHistory.value?.totalElements ?: 0 > 0) {
+                if (mBinding.recyclerviewMypagepoint.adapter?.itemCount ?: 0 > 0 && mViewModel.mPointHistory.value?.totalElements ?: 0 > 0) {
                     showIndicator()
                     mViewModel.getPointHistories()
                 }
@@ -85,7 +85,6 @@ class MyPagePointLayout constructor(
 
     // CustomCalendarListener
     override fun onClickWeek() = onClickCheck()
-
     override fun onClickMonth() = onClickCheck()
     override fun onClickThreeMonth() = onClickCheck()
     override fun onClickYear() = onClickCheck()
@@ -122,15 +121,7 @@ class MyPagePointLayout constructor(
     override fun onReleaseView() {}
     override fun onStart() {}
     override fun onResume() {}
-    override fun onPause() {
-        dismissIndicator()
-    }
-
-    override fun onStop() {
-        dismissIndicator()
-    }
-
-    override fun onDestroy() {
-        dismissIndicator()
-    }
+    override fun onPause() = dismissIndicator()
+    override fun onStop() = dismissIndicator()
+    override fun onDestroy() = dismissIndicator()
 }
