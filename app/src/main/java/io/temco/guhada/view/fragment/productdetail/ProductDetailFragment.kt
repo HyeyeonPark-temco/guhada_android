@@ -391,9 +391,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 //                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.VISIBLE
 
                 if (advantageBuyPoint > 0 && advantageReviewPoint > 0)
-                    (mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                        this.topMargin = CommonViewUtil.convertDpToPixel(dp = 6, context = mBinding.root.context)
-                    }
+//                    (mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.layoutParams as ViewGroup.MarginLayoutParams).apply {
+//                        this.topMargin = CommonViewUtil.convertDpToPixel(dp = 6, context = mBinding.root.context)
+//                    }
 
                 if (advantageBuyPoint > 0) {
                     mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointBuy.visibility = View.VISIBLE
