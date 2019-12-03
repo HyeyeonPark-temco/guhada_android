@@ -242,7 +242,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="bottom"
-                        android:onClick="@{clickListenerClaimStatus}"
                         android:orientation="horizontal">
 
                         <TextView
@@ -250,7 +249,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="1dp"
-                            android:text="@{viewModel.selectedStatusMessage}"
                             android:gravity="center"
                             android:textColor="@color/black_four"
                             android:textSize="@dimen/text_13" />
