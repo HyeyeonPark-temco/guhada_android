@@ -97,20 +97,12 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("premiumData")) {
             premiumData = (HomeDeal) getIntent().getSerializableExtra("premiumData");
-            if (CustomLog.getFlag()) CustomLog.L("MainActivity", "premiumData", premiumData);
-
-            if (CustomLog.getFlag())
-                CustomLog.L("MainActivity", "getPlusItem kidsList size", premiumData.getKidsList().size());
-            if (CustomLog.getFlag())
-                CustomLog.L("MainActivity", "getPlusItem menList size", premiumData.getMenList().size());
-            if (CustomLog.getFlag())
-                CustomLog.L("MainActivity", "getPlusItem womenList size", premiumData.getWomenList().size());
-            if (CustomLog.getFlag())
-                CustomLog.L("MainActivity", "getPlusItem allList size", premiumData.getAllList().size());
         }
         CommonUtil.getUserIp();
         setEventBus();
         initMainPager();
+
+        //CommonUtilKotlin.startActivityFirstPurchaseDialog(this,FirstPurchaseType.FIRST_VIEW);
     }
 
     @Override

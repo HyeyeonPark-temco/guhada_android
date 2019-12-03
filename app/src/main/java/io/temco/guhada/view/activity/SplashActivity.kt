@@ -87,42 +87,6 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                         var data = CategoryEntity(category, category.label, 0,category.hierarchies[category.hierarchies.size-1])
                         db.categoryDao().insert(data)
                         setChildCategory(category, 1, category.label)
-                        /*if(!category.children.isNullOrEmpty()){
-                            for (category2 in category.children) {
-                                var data2 = CategoryEntity(category2,category.label, 1, category2.hierarchies[category2.hierarchies.size - 1])
-                                db.categoryDao().insert(data2)
-
-                                if(!category2.children.isNullOrEmpty()){
-                                    for (category3 in category2.children) {
-                                        var data3 = CategoryEntity(category3,category.label, 2, category3.hierarchies[category3.hierarchies.size - 1])
-                                        db.categoryDao().insert(data3)
-
-                                        if(!category3.children.isNullOrEmpty()){
-                                            for (category4 in category3.children) {
-                                                var data4 = CategoryEntity(category4,category.label, 3, category4.hierarchies[category4.hierarchies.size - 1])
-                                                db.categoryDao().insert(data4)
-
-                                                if(!category4.children.isNullOrEmpty()){
-                                                    for (category5 in category4.children) {
-                                                        var data5 = CategoryEntity(category5,category.label, 3, category5.hierarchies[category5.hierarchies.size - 1])
-                                                        db.categoryDao().insert(data5)
-
-                                                        if(!category5.children.isNullOrEmpty()){
-                                                            for (category6 in category5.children) {
-                                                                var data6 = CategoryEntity(category6,category.label, 3, category6.hierarchies[category6.hierarchies.size - 1])
-                                                                db.categoryDao().insert(data6)
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                }
-
-                            }
-                        }*/
                     }
                     db.categoryDao().getAll().size
                 }.subscribeOn(Schedulers.io())

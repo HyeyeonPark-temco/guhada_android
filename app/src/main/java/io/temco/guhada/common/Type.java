@@ -8,7 +8,6 @@ public class Type {
     ////////////////////////////////////////////////
     // Build
     public enum Build {
-
         DEV,
         QA,
         STAGE,
@@ -79,6 +78,7 @@ public class Type {
         CARD_INTEREST,
         LUCKY_DRAW_JOIN,
         GUHADA_TOKEN,
+        PLANNING_DEAL,
         MYPAGE_TOKEN
     }
 

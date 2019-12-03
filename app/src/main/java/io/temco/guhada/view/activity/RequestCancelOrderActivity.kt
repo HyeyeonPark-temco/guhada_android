@@ -44,7 +44,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
 
     private fun initViewModel() {
         mViewModel = CancelOrderViewModel()
-        if(::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil = LoadingIndicatorUtil(this)
+        if(!::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil = LoadingIndicatorUtil(this)
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mOrderProdGroupId = it

@@ -33,6 +33,8 @@ class MyPageReviewLayout constructor(
 ) : BaseListLayout<CustomlayoutMypageReviewBinding, MyPageReviewViewModel>(context, attrs, defStyleAttr) , SwipeRefreshLayout.OnRefreshListener{
 
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+    private lateinit var recyclerLayoutManager1 : WrapContentLinearLayoutManager
+    private lateinit var recyclerLayoutManager2 : WrapContentLinearLayoutManager
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_review
@@ -42,10 +44,21 @@ class MyPageReviewLayout constructor(
         mBinding.viewModel = mViewModel
 
         mBinding.recyclerViewReviewTab1.setHasFixedSize(true)
-        mBinding.recyclerViewReviewTab1.layoutManager = WrapContentLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-        (mBinding.recyclerViewReviewTab1.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
-        (mBinding.recyclerViewReviewTab1.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+        recyclerLayoutManager1 = WrapContentLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false).apply {
+            orientation = RecyclerView.VERTICAL
+            recycleChildrenOnDetach = true
+        }
+        mBinding.recyclerViewReviewTab1.layoutManager = recyclerLayoutManager1
+        mBinding.recyclerViewReviewTab1.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(CustomLog.flag)CustomLog.L("MyPageBookMarkLayout","itemCount",mViewModel.getAvailableAdapter().itemCount,"findLastVisibleItemPosition",recyclerLayoutManager1.findLastVisibleItemPosition())
+                if (mViewModel.getAvailableAdapter().itemCount - recyclerLayoutManager1.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading1) {
+                    mViewModel.isLoading1 = true
+                    mViewModel.getMoreTab1List()
+                }
+            }
+        })
 
         mViewModel.listAvailableReviewOrder.observe(this,
                 androidx.lifecycle.Observer<ArrayList<MyPageReviewBase>> {
@@ -59,10 +72,21 @@ class MyPageReviewLayout constructor(
         )
 
         mBinding.recyclerViewReviewTab2.setHasFixedSize(true)
-        mBinding.recyclerViewReviewTab2.layoutManager = WrapContentLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-        (mBinding.recyclerViewReviewTab2.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
-        (mBinding.recyclerViewReviewTab2.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+        recyclerLayoutManager2 = WrapContentLinearLayoutManager(context, LinearLayoutManager.VERTICAL, false).apply {
+            orientation = RecyclerView.VERTICAL
+            recycleChildrenOnDetach = true
+        }
+        mBinding.recyclerViewReviewTab2.layoutManager = recyclerLayoutManager2
+        mBinding.recyclerViewReviewTab2.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(CustomLog.flag)CustomLog.L("MyPageBookMarkLayout","itemCount",mViewModel.getReviewAdapter().itemCount,"findLastVisibleItemPosition",recyclerLayoutManager2.findLastVisibleItemPosition())
+                if (mViewModel.getReviewAdapter().itemCount - recyclerLayoutManager2.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading2) {
+                    mViewModel.isLoading2 = true
+                    mViewModel.getMoreTab2List()
+                }
+            }
+        })
 
         mViewModel.listUserMyPageReview.observe(this,
                 androidx.lifecycle.Observer<ArrayList<MyPageReviewBase>> {
