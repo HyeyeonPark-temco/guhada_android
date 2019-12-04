@@ -105,9 +105,9 @@
                         android:layout_marginBottom="20dp"
                         android:orientation="vertical"
                         android:overScrollMode="never"
-                        app:paymentOrderItemCollapsed ="@{viewModel.productVisible}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:orderItem="@{viewModel.order.orderItemList}" />
+                        app:orderItem="@{viewModel.order.orderItemList}"
+                        app:paymentOrderItemCollapsed="@{viewModel.productVisible}" />
 
 
                 </LinearLayout>
@@ -408,12 +408,13 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:background="@{viewModel.termsChecked ? @color/common_blue_purple : @color/cloudy_blue, default = @color/cloudy_blue}"
-                    android:clickable="@{viewModel.termsChecked, default = false}"
+                    android:background="@color/common_blue_purple"
                     android:onClick="@{()->viewModel.onClickPay()}"
                     android:text="@string/payment_button_submit"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_18" />
+                <!--android:background="@{viewModel.termsChecked ? @color/common_blue_purple : @color/cloudy_blue, default = @color/cloudy_blue}"-->
+                <!--android:clickable="@{viewModel.termsChecked, default = false}"-->
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

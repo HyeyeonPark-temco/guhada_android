@@ -495,7 +495,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 결제하기 버튼 클릭
     fun onClickPay() {
-        if (termsChecked.get()) {
+//        if (termsChecked.get()) {
             for (i in 0 until paymentWays.size)
                 if (paymentWays[i])
                     selectedMethod = order.paymentsMethod[i]
@@ -592,9 +592,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             } else {
                 listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_selectpaymentway))
             }
-        } else {
-            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_confirmtemrs))
-        }
+//        } else {
+//            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_confirmtemrs))
+//        }
     }
 
     /**

@@ -546,7 +546,8 @@
     <string name="payment_text_mobile">휴대폰 결제</string>
     <string name="payment_text_realtimetransfer">실시간 계좌이체</string>
     <string name="payment_text_transfer">무통장 입금</string>
-    <string name="payment_text_terms">구매 및 결제대행서비스 이용약관 동의</string>
+    <string name="payment_text_terms1">구매 및 결제대행서비스 이용약관 동의</string>
+    <string name="payment_text_terms2">위 주문 내용을 확인 하였으며, 회원 본인 결제에 동의</string>
 
     <string name="payment_text_defaultshippingaddress">배송지를 선택해 주세요</string>
     <string name="payment_text_emptyshippingaddress">등록된 배송지가 없습니다.</string>
