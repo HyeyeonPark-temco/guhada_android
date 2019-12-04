@@ -59,7 +59,7 @@ class GatewayServer {
         @JvmStatic
         fun getBookMarkProduct(listener: OnServerListener, accessToken : String, page: Int) {
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
-                    .getBookMarkProduct(accessToken, page, 4).enqueue(object : Callback<BaseModel<BookMarkProduct>> {
+                    .getBookMarkProduct(accessToken, page).enqueue(object : Callback<BaseModel<BookMarkProduct>> {
                         override fun onResponse(call: Call<BaseModel<BookMarkProduct>>, response: Response<BaseModel<BookMarkProduct>>) {
                             if(response.code() in 200..400 && response.body() != null){
                                 listener.onResult(true, response.body())

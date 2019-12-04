@@ -13,10 +13,7 @@ import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.data.db.GuhadaDB
-import io.temco.guhada.view.activity.CustomWebViewActivity
-import io.temco.guhada.view.activity.GuhadaTokenAddressCreateDialog
-import io.temco.guhada.view.activity.UserClaimGuhadaActivity
-import io.temco.guhada.view.activity.UserClaimSellerActivity
+import io.temco.guhada.view.activity.*
 
 object CommonUtilKotlin  {
 
@@ -75,7 +72,7 @@ object CommonUtilKotlin  {
 
 
     fun startActivityWebview(activity: Activity, title : String, url : String, param : String = "") {
-        val intent = Intent(activity, CustomWebViewActivity::class.java)
+        val intent = Intent(activity, CustomWebViewEventActivity::class.java) //CustomWebViewEventActivity
         intent.putExtra("title",title)
         intent.putExtra("url",url)
         if(!TextUtils.isEmpty(param)){
@@ -83,6 +80,32 @@ object CommonUtilKotlin  {
         }
         activity.startActivityForResult(intent, Flag.RequestCode.BASE)
     }
+
+
+    /**
+     * 첫구매 관련 팝업
+     * FIRST_VIEW - 첫구매 안내 팝업
+     * FIRST_PURCHASE - 첫구매 후 팝업
+     */
+    @JvmStatic
+    fun startActivityPopupDialog(activity: Activity, imgPath:String, state : PopupViewType) {
+        if(state == PopupViewType.POPUP_VIEW_STOP){
+            var str = Preferences.getMainBannerViewDialog(imgPath)
+            if(TextUtils.isEmpty(str) || str != imgPath){
+                val intent = Intent(activity, MainBannerPopupActivity::class.java)
+                intent.putExtra("state",state)
+                intent.putExtra("imgPath",imgPath)
+                activity.startActivityForResult(intent, Flag.RequestCode.BASE)
+            }
+        }else{
+            val intent = Intent(activity, MainBannerPopupActivity::class.java)
+            intent.putExtra("state",state)
+            intent.putExtra("imgPath",imgPath)
+            activity.startActivityForResult(intent, Flag.RequestCode.BASE)
+        }
+    }
+
+
 
 
 //    fun startActivityImageDetail(activity: Activity, title : String?, path : String) {

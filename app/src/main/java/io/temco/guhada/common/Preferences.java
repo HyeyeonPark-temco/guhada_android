@@ -244,6 +244,16 @@ public class Preferences {
         return getString(KEY_SAVED_ID);
     }
 
+
+    // is id saved
+    public static void setMainBannerViewDialog(String key,String date) {
+        putString(key, date);
+    }
+
+    public static String getMainBannerViewDialog(String key) {
+        return getString(key);
+    }
+
     // Language
     public static void setLanguage(Type.Language type) {
         putString(KEY_LANGUAGE, Type.Language.get(type));

@@ -35,6 +35,9 @@ import io.temco.guhada.view.adapter.mypage.MyPageReviewAdapter
 class MyPageReviewViewModel (val context : Context, val mLoadingIndicatorUtil: LoadingIndicatorUtil) : BaseObservableViewModel() {
     val mRequestManager: RequestManager by lazy { Glide.with(context) }
 
+    var isLoading1 = true
+    var isLoading2 = true
+
     val INIT_PAGE_NUMBER = 0
     private var repository = MyPageReviewRepository(this@MyPageReviewViewModel)
     private val _listAvailableReviewOrder : SingleLiveEvent<ArrayList<MyPageReviewBase>> = repository.getAvailableReviewOrderList()
@@ -170,9 +173,9 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                         OrderServer.getMypageReviewAvailableList(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
-                                        if(!availableReviewOrderList.value.isNullOrEmpty() && availableReviewOrderList.value!!.get(availableReviewOrderList.value!!.size-1).isMoreList){
+                                        /*if(!availableReviewOrderList.value.isNullOrEmpty() && availableReviewOrderList.value!!.get(availableReviewOrderList.value!!.size-1).isMoreList){
                                             availableReviewOrderList.value!!.removeAt(availableReviewOrderList.value!!.size-1)
-                                        }
+                                        }*/
                                         var startRange = model.getAvailableAdapter().items.size
                                         var data = (o as BaseModel<*>).data as MyPageOrderReview
                                         if(!data.orderItemList.isNullOrEmpty()){
@@ -180,11 +183,11 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                                             if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getAvailableReviewOrderMore ", "init ----- list",data)
                                             model.mypageReviewtab1Title.set(data.count)
                                             availableReviewOrderList.value!!.addAll(data.orderItemList)
-                                            if(data.totalPage > data.page+1){
+                                            /*if(data.totalPage > data.page+1){
                                                 var more = ReviewAvailableOrder()
                                                 more.isMoreList = true
                                                 availableReviewOrderList.value!!.add(more)
-                                            }
+                                            }*/
                                             model.tab1EmptyViewVisible.set(false)
                                             if(startRange == 0){
                                                 model.getAvailableAdapter().notifyDataSetChanged()
@@ -192,6 +195,7 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                                                 model.getAvailableAdapter().notifyItemRangeChanged(startRange, model.getAvailableAdapter().items.size)
                                             }
                                             listener?.onResultCallback()
+                                            model.isLoading1 = false
                                         }
                                     },
                                     dataNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getAvailableReviewOrderMore dataNotFoundTask ") },
@@ -231,18 +235,18 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                         UserServer.getMypageReviewList(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
-                                        if(!userMyPageReviewList.value.isNullOrEmpty() && userMyPageReviewList.value!!.get(userMyPageReviewList.value!!.size-1).isMoreList){
+                                        /*if(!userMyPageReviewList.value.isNullOrEmpty() && userMyPageReviewList.value!!.get(userMyPageReviewList.value!!.size-1).isMoreList){
                                             userMyPageReviewList.value!!.removeAt(userMyPageReviewList.value!!.size-1)
-                                        }
+                                        }*/
                                         var startRange = model.getReviewAdapter().items.size
                                         var data = (o as BaseModel<*>).data as MyPageReview
                                         model.mypageReviewtab2Title.set(data.totalElements)
                                         userMyPageReviewList.value!!.addAll(data.content)
-                                        if(data.totalPages > data.pageable.pageNumber+1){
+                                        /*if(data.totalPages > data.pageable.pageNumber+1){
                                             var more = MyPageReviewContent()
                                             more.isMoreList = true
                                             userMyPageReviewList.value!!.add(more)
-                                        }
+                                        }*/
                                         model.tab2EmptyViewVisible.set(false)
 
                                         if(startRange == 0){
@@ -251,6 +255,7 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                                             model.getReviewAdapter().notifyItemRangeChanged(startRange, model.getReviewAdapter().items.size)
                                         }
                                         listener?.onResultCallback()
+                                        model.isLoading2 = false
                                     },
                                     dataNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getUserMyPageReviewMore dataNotFoundTask ") },
                                     failedTask = {

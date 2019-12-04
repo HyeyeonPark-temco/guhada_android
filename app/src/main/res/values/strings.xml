@@ -34,6 +34,7 @@
     <string name="common_cancel">취소</string>
     <string name="common_check">조회</string>
     <string name="common_remaining">보유</string>
+    <string name="common_close">닫기</string>
 
     <string name="common_top">TOP</string>
     <string name="common_category">카테고리</string>
@@ -1376,13 +1377,20 @@
     <string name="guhadatoken_addressdialog_desc1">주소 생성 버튼을 클릭하면 고유의 구하다 입금 주소가 발급됩니다.</string>
     <string name="guhadatoken_addressdialog_copy">주소 복사</string>
     <string name="guhadatoken_addressdialog_desc2">구하다 토큰 입금 시, %1$s 토큰 당 %2$s 포인트로 자동 전환됩니다.</string>
-    <string name="guhadatoken_addressdialog_desc3">구하다 토큰과 포인트는 출금이 불가합니다.</string>
+    <string name="guhadatoken_addressdialog_desc3">위 주소는 구하다 입금전용 주소입니다.</string>
+    <string name="guhadatoken_addressdialog_desc4">타 암호화폐 입금시 오류/손실은 복구 불가합니다.</string>
+    <string name="guhadatoken_addressdialog_desc5">구하다 에어드랍 입금시 포인트로 자동 전환됩니다.</string>
+    <string name="guhadatoken_addressdialog_desc6">구하다 에어드랍 토큰은 입금시 출금이 불가합니다.</string>
+
+    <!--<string name="guhadatoken_addressdialog_desc3">구하다 토큰과 포인트는 출금이 불가합니다.</string>
     <string name="guhadatoken_addressdialog_desc4">위 주소로 구하다만 입금 가능합니다. 해당 주소로\n다른 암호화폐를 입금 시도할 경우에 발생할 수 있는\n오류/손실은 복구 불가능합니다.</string>
-    <string name="guhadatoken_addressdialog_desc5">위 주소는 입금전용 주소입니다.</string>
+    <string name="guhadatoken_addressdialog_desc5">위 주소는 입금전용 주소입니다.</string>-->
     
     <string name="mypage_token_deposit">입금</string>
     <string name="mypage_token_empty">토큰 내역이 없습니다.</string>
     <string name="mypage_token_format">%,2d %s</string>
+
+    <string name="first_purchase_dialog_stop">그만보기</string>
 
 
 </resources>
