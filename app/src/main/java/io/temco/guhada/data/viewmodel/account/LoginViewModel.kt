@@ -19,6 +19,7 @@ import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.common.util.TrackingUtil
 import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.model.base.BaseModel
@@ -68,7 +69,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     var tempSnsUser = SnsUser()
 
     // 럭키드로우 회원가입 분기 falg
-    var eventData : LuckyDrawList? = null
+    var eventData: LuckyDrawList? = null
 
 
     // CLICK LISTENER
@@ -190,7 +191,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     }
 
     fun joinSnsUser(listener: OnServerListener) {
-        if (tempSnsUser.snsType != null) {
+        if (tempSnsUser.snsType != null && snsUser != null) {
             when (tempSnsUser.snsType) {
                 "KAKAO" -> createSnsUser(
                         id = java.lang.Long.toString((snsUser as UserProfile).id),
@@ -216,14 +217,16 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                     createSnsUser(
                             id = tempSnsUser.snsId,
                             email = tempSnsUser.email,
-                            imageUrl = tempSnsUser.userProfile?.imageUrl?:"",
+                            imageUrl = tempSnsUser.userProfile?.imageUrl ?: "",
                             name = tempSnsUser.name
                     )
                 }
             }
-        }
 
-        UserServer.joinSnsUser(listener, tempSnsUser)
+            UserServer.joinSnsUser(listener, tempSnsUser)
+        } else {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+        }
     }
 
     private fun createSnsUser(id: String?, email: String?, imageUrl: String?, name: String?) {
