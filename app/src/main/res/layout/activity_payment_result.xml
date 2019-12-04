@@ -19,6 +19,10 @@
             type="Integer" />
 
         <variable
+            name="firstOrderPoint"
+            type="Integer" />
+
+        <variable
             name="totalDuePoint"
             type="Integer" />
 
@@ -667,7 +671,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
-                        android:visibility="@{viewModel.pointVisibility, default =gone}"
+                        android:visibility="@{viewModel.pointVisibility, default =visible}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -688,20 +692,11 @@
                             style="@style/PaymentResultContentGreyTextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{@string/common_priceunit_format(buyPoint)}"
-                            android:textSize="@dimen/text_13"
-                            app:layout_constraintEnd_toStartOf="@id/textview_paymentresult_buypoint3"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textview_paymentresult_buypoint3"
-                            style="@style/PaymentResultContentGreyTextStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/common_unit_point"
+                            android:text="@{@string/common_pointunit_format(buyPoint)}"
                             android:textSize="@dimen/text_13"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
 
                         <TextView
                             android:id="@+id/textview_paymentresult_reviewpoint1"
@@ -720,22 +715,36 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:text="@{@string/common_max + ` ` + @string/common_priceunit_format(reviewPoint)}"
-
+                            android:text="@{@string/common_max + ` ` + @string/common_pointunit_format(reviewPoint)}"
                             android:textSize="@dimen/text_13"
-                            app:layout_constraintEnd_toStartOf="@id/textview_paymentresult_reviewpoint3"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_buypoint1" />
 
+
                         <TextView
-                            android:id="@+id/textview_paymentresult_reviewpoint3"
+                            android:id="@+id/textview_paymentresult_firstorderpoint1"
                             style="@style/PaymentResultContentGreyTextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:text="@string/common_unit_point"
+                            android:text="@string/payment_text_firstorder"
                             android:textSize="@dimen/text_13"
+                            android:visibility="@{firstOrderPoint == 0 ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_reviewpoint1" />
+
+                        <TextView
+                            android:id="@+id/textview_paymentresult_firstorderpoint2"
+                            style="@style/PaymentResultContentGreyTextStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@{@string/common_max + ` ` + @string/common_pointunit_format(firstOrderPoint)}"
+                            android:textSize="@dimen/text_13"
+                            android:visibility="@{firstOrderPoint == 0 ? View.GONE : View.VISIBLE}"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_buypoint3" />
+                            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_reviewpoint1" />
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

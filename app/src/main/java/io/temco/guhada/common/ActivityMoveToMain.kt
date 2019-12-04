@@ -85,5 +85,6 @@ enum class SchemeMoveType(val code : String, var label:String) {
     JOIN("join", "가입이벤트"),
     TIMEDEAL("timedeal", "타임딜"),
     LUCKYDRAW("luckydraw", "럭키드로우"),
-    SELLER("seller", "판매자")
+    SELLER("seller", "판매자"),
+    PLANNING("planning", "기획전")
 }

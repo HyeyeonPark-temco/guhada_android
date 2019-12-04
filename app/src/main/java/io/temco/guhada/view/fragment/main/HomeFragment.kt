@@ -190,6 +190,12 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                     mainListListener = this@HomeFragment
                                 }
                             }
+                            /*6 -> {
+                                vw = PlanningDealListLayout(it).apply {
+                                    mHomeFragment = this@HomeFragment
+                                    mainListListener = this@HomeFragment
+                                }
+                            }*/
                             6 -> {
                                 vw = EventListLayout(it).apply {
                                     mHomeFragment = this@HomeFragment
@@ -340,6 +346,8 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                     3-> (customLayoutMap[currentPagerIndex] as KidsListLayout).listScrollTop()
                                     4-> (customLayoutMap[currentPagerIndex] as TimeDealListLayout).listScrollTop()
                                     5-> (customLayoutMap[currentPagerIndex] as LuckyDrawListLayout).listScrollTop()
+                                    //6-> (customLayoutMap[currentPagerIndex] as PlanningDealListLayout).listScrollTop()
+                                    6-> (customLayoutMap[currentPagerIndex] as EventListLayout).listScrollTop()
                                 }
 
                             }

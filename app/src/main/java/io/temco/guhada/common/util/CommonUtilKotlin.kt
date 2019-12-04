@@ -156,6 +156,9 @@ object CommonUtilKotlin  {
     }
 
 
+    /**
+     * 스키마 이동 설정
+     */
     @JvmStatic
     fun moveEventPage(act : Activity, param : String, param2 : String, isMainActivity : Boolean, isFinished : Boolean){
         if(TextUtils.isEmpty(param)) return
@@ -170,11 +173,12 @@ object CommonUtilKotlin  {
                 }
                 if(isFinished)act.finish()
             }
-            SchemeMoveType.JOIN.code->{
+            SchemeMoveType.JOIN.code->{  // 회원가입
                 CommonUtil.startLoginPage(act)
                 if(isFinished)act.finish()
             }
-            SchemeMoveType.TIMEDEAL.code->{
+
+            SchemeMoveType.TIMEDEAL.code->{ // 타임딜
                 if(isMainActivity){
                     EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.TIME_DEAL))
                 }else{
@@ -184,7 +188,7 @@ object CommonUtilKotlin  {
                 }
                 if(isFinished)act.finish()
             }
-            SchemeMoveType.LUCKYDRAW.code->{
+            SchemeMoveType.LUCKYDRAW.code->{ // 럭키드로우
                 if(isMainActivity){
                     EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.LUCKY_DRAW))
                 }else{
@@ -194,7 +198,7 @@ object CommonUtilKotlin  {
                 }
                 if(isFinished)act.finish()
             }
-            SchemeMoveType.EVENT.code->{
+            SchemeMoveType.EVENT.code->{ // 이벤트 리스트
                 if(isMainActivity){
                     EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.EVENT_LIST))
                 }else{
@@ -204,17 +208,17 @@ object CommonUtilKotlin  {
                 }
                 if(isFinished)act.finish()
             }
-            SchemeMoveType.MAIN.code->{
+            SchemeMoveType.PLANNING.code->{ // 기획전 리스트
                 if(isMainActivity){
-
+                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.PLANNING_LIST))
                 }else{
-                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag,true, isMainActivity)
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, Info.MainHomeIndex.PLANNING_LIST,true, isMainActivity)
                     act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
                     act.onBackPressed()
                 }
                 if(isFinished)act.finish()
             }
-            SchemeMoveType.PRODUCT.code->{
+            SchemeMoveType.PRODUCT.code->{ // 상품상세
                 if(isMainActivity){
                     if(!TextUtils.isEmpty(param2)){
                         try {
@@ -230,7 +234,7 @@ object CommonUtilKotlin  {
                 }
                 if(isFinished)act.finish()
             }
-            SchemeMoveType.SEARCH.code->{
+            SchemeMoveType.SEARCH.code->{ // 검색목록
                 if(isMainActivity){
                     var deStr : String = if(param2.matches(Regex(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))) param2 else String(Base64.decode(param2, Base64.URL_SAFE))
                     if(CustomLog.flag)CustomLog.L("CommonUtilKotlin","moveEventPage SEARCH param2",param2,"deStr",deStr)

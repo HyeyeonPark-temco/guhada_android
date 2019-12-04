@@ -3,7 +3,7 @@ package io.temco.guhada.data.model.main
 enum class HomeType { MainEvent, SubTitleList, StoreLinear, GridList, Deal, Dummy,
     Keyword, BestStore, Footer, TimeDeal, EventHeader, EventList, LuckyDrawTitle ,
     LuckyDrawTime, LuckyDrawEvent, LuckyDrawFooter, SubTitleLayout, DealItemOne,
-    ViewMoreLayout, MainBanner}
+    ViewMoreLayout, MainBanner, PlanningHeader, PlanningList}
 
 /**
  * @author park jungho

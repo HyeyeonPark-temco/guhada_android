@@ -30,6 +30,10 @@
         <variable
             name="reviewPoint"
             type="Integer" />
+
+        <variable
+            name="firstOrderPoint"
+            type="Integer" />
     </data>
 
     <LinearLayout
@@ -525,7 +529,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="리뷰 작성" />
-                <!--android:text="@string/payment_text_textreview"-->
+
                 <TextView
                     android:id="@+id/textview_payment_textreviewpoint"
                     style="@style/PaymentContentGreyTextStyle"
@@ -567,6 +571,36 @@
                     android:layout_height="wrap_content"
                     android:text="@string/common_unit_point" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_discountresult_firstorderpoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:visibility="@{firstOrderPoint == 0 ? View.GONE : View.VISIBLE}"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/payment_text_firstorder" />
+
+                <TextView
+                    android:id="@+id/textview_payment_firstorderpoint"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/common_max + ` ` + @string/common_price_format(firstOrderPoint)}" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_unit_point" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <View

@@ -5,6 +5,7 @@ import io.temco.guhada.data.model.CardInterest
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.event.EventListData
 import io.temco.guhada.data.model.main.MainBanner
+import io.temco.guhada.data.model.main.PlanningListData
 import io.temco.guhada.data.model.search.Popular
 import retrofit2.Call
 import retrofit2.http.GET
@@ -36,5 +37,9 @@ interface SettleService {
 
     @GET("selectMainBanner")
     fun getMainBanner(): Call<BaseModel<MainBanner>>
+
+
+    @GET("event/list")
+    fun getPlanningList(@Query("eventProgress") eventProgress : String): Call<BaseModel<PlanningListData>>
 
 }

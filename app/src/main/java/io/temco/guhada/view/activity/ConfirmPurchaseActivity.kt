@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
@@ -64,12 +65,21 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
             }
         }
 
+        var firstOrderPoint = 0
         mViewModel.mExpectedPointResponse.observe(this, Observer {
             for (item in it.dueSavePointList) {
                 when (item.dueSaveType) {
                     PointProcessParam.PointSave.BUY.type -> mBinding.textviewConfirmpurchaseBuypoint.text = "${getString(R.string.confirmpurchase_point_confirm2)} ${String.format(getString(R.string.common_priceunit_format), item.totalPoint)}"
                     PointProcessParam.PointSave.REVIEW.type -> mBinding.textviewConfirmpurchaseReviewpoint.text = "${getString(R.string.confirmpurchase_point_review2)} ${String.format(getString(R.string.common_priceunit_format), item.totalPoint)}"
+                    PointProcessParam.PointSave.FIRST_ORDER.type -> firstOrderPoint = item.totalPoint
                 }
+            }
+
+            if (firstOrderPoint > 0) {
+                mBinding.linearlayoutConfirmpurchaseFirstorderpoint.visibility = View.VISIBLE
+                mBinding.textviewConfirmpurchaseFirstorderpoint.text = "${getString(R.string.confirmpurchase_point_review3)} ${String.format(getString(R.string.common_priceunit_format), firstOrderPoint)}"
+            } else {
+                mBinding.linearlayoutConfirmpurchaseFirstorderpoint.visibility = View.GONE
             }
         })
     }
