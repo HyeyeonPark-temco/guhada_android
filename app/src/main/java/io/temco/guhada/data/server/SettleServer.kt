@@ -12,9 +12,11 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.event.EventListData
 import io.temco.guhada.data.model.main.MainBanner
+import io.temco.guhada.data.model.main.PlanningListData
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.SettleService
 import io.temco.guhada.data.viewmodel.main.EventProgressType
+import io.temco.guhada.data.viewmodel.main.PlanningProgressType
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -101,5 +103,21 @@ class SettleServer {
             })
         }
 
+
+
+        /**
+         * 이벤트 리스트
+         */
+        @JvmStatic
+        fun getPlanningList(eventProgress : PlanningProgressType, listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getPlanningList(eventProgress.code).enqueue(object : Callback<BaseModel<PlanningListData>> {
+                override fun onResponse(call: Call<BaseModel<PlanningListData>>, response: Response<BaseModel<PlanningListData>>) {
+                    resultListener(listener, call, response)
+                }
+                override fun onFailure(call: Call<BaseModel<PlanningListData>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
     }
 }

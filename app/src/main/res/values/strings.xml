@@ -686,6 +686,7 @@
         <item>파워딜</item>
         <item>타임딜</item>
         <item>한정특가</item>
+        <item>기획전</item>
         <item>타임딜</item>-->
     <string-array name="main_titles">
         <item>홈</item>

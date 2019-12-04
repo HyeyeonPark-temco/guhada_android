@@ -34,8 +34,7 @@
                 android:id="@+id/imageview_mainbanner_view"
                 android:layout_width="340dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ad_popup_pay_login"/>
+                android:layout_gravity="center_horizontal"/>
 
             <TextView
                 style="@style/TextRegular"
