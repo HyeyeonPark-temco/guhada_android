@@ -277,9 +277,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                                 verifyEmailVisibility = View.VISIBLE;
                                 notifyPropertyChanged(BR.verifyEmailVisibility);
 
-                                Object result = ((LinkedTreeMap) ((BaseModel) o).data).get("data");
+                                Double result = (Double) ((BaseModel) o).data;
                                 int second;
-                                if (result != null) second = (int) Math.round((Double) result);
+                                if (result != null) second = (int) Math.round(result);
                                 else second = 600000;
                                 int minute = second / 60000;
 
