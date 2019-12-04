@@ -95,21 +95,22 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
         }
     }
 
-    private fun sendAnalyticEvent(product : PurchaseOrderResponse){
-        try{
+    private fun sendAnalyticEvent(product: PurchaseOrderResponse) {
+        try {
             if (getmFirebaseAnalytics() != null) {
                 val bundle = Bundle()
-                var sizeStr = if((product.orderList.size -1) > 0) "외 $product.orderList.size 건" else ""
+                var sizeStr = if ((product.orderList.size - 1) > 0) "외 $product.orderList.size 건" else ""
                 bundle.putString(FirebaseAnalytics.Param.PRICE, product.totalAmount.toString())
                 bundle.putString(FirebaseAnalytics.Param.TRANSACTION_ID, product.orderNumber.toString())
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.orderList[0].productName+sizeStr)
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.orderList[0].productName + sizeStr)
                 bundle.putString(FirebaseAnalytics.Param.ORIGIN, BuildConfig.BuildType.name)
                 getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, bundle)
             }
-        }catch (e : Exception){
-            if(CustomLog.flag)CustomLog.E(e)
+        } catch (e: Exception) {
+            if (CustomLog.flag) CustomLog.E(e)
         }
     }
+
     private fun initHeader() {
         mBinding.includePaymentresultHeader.title = "주문 완료"
         mBinding.includePaymentresultHeader.setOnClickBackButton {
@@ -155,26 +156,27 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
     private fun setDiscountPriceAndDueSavePoint(info: CalculatePaymentInfo) {
         var reviewPoint = 0
         var buyPoint = 0
+        var firstOrderPoint = 0
 
         for (item in info.totalDueSavePointResponseList) {
             when (item.dueSaveType) {
                 PointProcessParam.PointSave.REVIEW.type -> reviewPoint = item.totalPoint
                 PointProcessParam.PointSave.BUY.type -> buyPoint = item.totalPoint
+                PointProcessParam.PointSave.FIRST_ORDER.type -> firstOrderPoint = item.totalPoint
             }
         }
 
         mBinding.buyPoint = buyPoint
         mBinding.reviewPoint = reviewPoint
+        mBinding.firstOrderPoint = firstOrderPoint
         mBinding.totalDuePoint = info.totalDueSavePoint
 
         mBinding.textviewPaymentresultBuypoint1.visibility = if (buyPoint > 0) View.VISIBLE else View.GONE
         mBinding.textviewPaymentresultBuypoint2.visibility = if (buyPoint > 0) View.VISIBLE else View.GONE
-        mBinding.textviewPaymentresultBuypoint3.visibility = if (buyPoint > 0) View.VISIBLE else View.GONE
         mBinding.textviewPaymentresultReviewpoint1.visibility = if (reviewPoint > 0) View.VISIBLE else View.GONE
         mBinding.textviewPaymentresultReviewpoint2.visibility = if (reviewPoint > 0) View.VISIBLE else View.GONE
-        mBinding.textviewPaymentresultReviewpoint3.visibility = if (reviewPoint > 0) View.VISIBLE else View.GONE
 
-     //   mBinding.executePendingBindings()
+        //   mBinding.executePendingBindings()
     }
 
     interface OnPaymentResultListener {
@@ -188,7 +190,7 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
         @JvmStatic
         @BindingAdapter("purchaseOrders")
         fun RecyclerView.bindPurchaseOrders(list: MutableList<PurchaseOrder>) {
-            if(this.adapter == null)
+            if (this.adapter == null)
                 this.adapter = PaymentResultOrderAdapter()
             (this.adapter as PaymentResultOrderAdapter).setItems(list)
         }

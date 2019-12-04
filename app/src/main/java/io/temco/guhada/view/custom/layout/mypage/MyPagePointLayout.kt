@@ -61,7 +61,7 @@ class MyPagePointLayout constructor(
     private fun setScrollView() {
         mBinding.scrollviewMypagepoint.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             if (v != null && scrollY == (v.getChildAt(0)?.measuredHeight!! - v.measuredHeight)) {
-                if (mBinding.recyclerviewMypagepoint.adapter?.itemCount ?: 0 > 0 && mViewModel.mPointHistory.value?.totalElements ?: 0 > 0) {
+                if (mBinding.recyclerviewMypagepoint.adapter?.itemCount ?: 0 > 0 && mViewModel.mPointHistory.value?.totalElements ?: 0 > 0 &&  mViewModel.mPointHistory.value?.last == false) {
                     showIndicator()
                     mViewModel.getPointHistories()
                 }

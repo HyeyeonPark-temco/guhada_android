@@ -35,23 +35,23 @@
                 style="@style/PaymentTitleBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/payment_title_paymentway"
                 android:textSize="@dimen/text_15"
-                android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textview_payment_cardinterest"
-                android:layout_width="wrap_content"
                 style="@style/TextRegular"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/warm_grey"
-                android:textSize="@dimen/text_12"
                 android:layout_gravity="center"
                 android:text="@string/productdetail_advantage_cardinterest"
-                app:underLine="@{true}"/>
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_12"
+                app:underLine="@{true}" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -560,7 +560,8 @@
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:button="@drawable/selector_checkbox_all"
-                android:onCheckedChanged="@{(view, checked) -> viewModel.onTermsChecked(checked)}" />
+                android:onCheckedChanged="@{(view, checked) -> viewModel.onTermsChecked(checked)}"
+                android:visibility="gone" />
 
             <TextView
                 style="@style/TextMedium"
@@ -568,20 +569,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@string/payment_text_required"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone" />
 
             <TextView
                 style="@style/TextMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@string/payment_text_terms"
+                android:text="@string/payment_text_terms1"
+                android:textColor="@color/greyish_brown_two"
+                android:visibility="gone" />
+
+            <TextView
+                style="@style/TextMedium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_14"
+                android:text="@string/payment_text_terms2"
                 android:textColor="@color/greyish_brown_two" />
 
             <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
 
                 <TextView
                     android:layout_width="wrap_content"
