@@ -190,13 +190,13 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                     mainListListener = this@HomeFragment
                                 }
                             }
-                            6 -> {
+                            /*6 -> {
                                 vw = PlanningDealListLayout(it).apply {
                                     mHomeFragment = this@HomeFragment
                                     mainListListener = this@HomeFragment
                                 }
-                            }
-                            7 -> {
+                            }*/
+                            6 -> {
                                 vw = EventListLayout(it).apply {
                                     mHomeFragment = this@HomeFragment
                                     mainListListener = this@HomeFragment
