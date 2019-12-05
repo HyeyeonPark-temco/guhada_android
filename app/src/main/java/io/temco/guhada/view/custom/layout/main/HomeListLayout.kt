@@ -36,13 +36,13 @@ class HomeListLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMainHomelistBinding, HomeListViewModel>(context, attrs, defStyleAttr) , OnMainCustomLayoutListener{
+) : BaseListLayout<CustomlayoutMainHomelistBinding, HomeListViewModel>(context, attrs, defStyleAttr), OnMainCustomLayoutListener {
     var mHomeFragment: HomeFragment? = null
 
     private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
     private var recentViewCount = -1
 
-    lateinit var mainListListener : OnMainListListener
+    lateinit var mainListListener: OnMainListListener
 
     override fun getBaseTag() = HomeListLayout::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_main_homelist
@@ -51,15 +51,15 @@ class HomeListLayout constructor(
         mBinding.viewModel = mViewModel
 
         mBinding.recyclerView.setHasFixedSize(true)
-        mBinding.recyclerView.layoutManager = WrapGridLayoutManager(context as Activity, 2,LinearLayoutManager.VERTICAL, false)
+        mBinding.recyclerView.layoutManager = WrapGridLayoutManager(context as Activity, 2, LinearLayoutManager.VERTICAL, false)
 
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).orientation = RecyclerView.VERTICAL
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
-        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
-                    override fun getSpanSize(position: Int): Int {
-                        return mViewModel.listData[position].gridSpanCount
-                    }
-                }
+        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return mViewModel.listData[position].gridSpanCount
+            }
+        }
 
         mBinding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -75,13 +75,17 @@ class HomeListLayout constructor(
                 }
             }
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) { }
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {}
         })
 
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
             (context as MainActivity).selectTab(4, false, true)
-            EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE,MyPageTabType.LAST_VIEW.ordinal))
+            EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE, MyPageTabType.LAST_VIEW.ordinal))
+        }
+
+        mBinding.buttonFloatingKakaochat.buttonFloatingKakao.setOnClickListener {
+            CommonUtilKotlin.openKakaoChat(context as Activity)
         }
         getRecentProductCount()
     }
@@ -93,13 +97,14 @@ class HomeListLayout constructor(
         } else {
             mBinding.recyclerView.scrollToPosition(0)
         }
-        mainListListener.requestDataList(0,"scrollToTop")
+        mainListListener.requestDataList(0, "scrollToTop")
     }
 
     // Floating Button
     private fun changeFloatingButtonLayout(isShow: Boolean) {
         changeTopFloatingButton(isShow)
         changeItemFloatingButton(isShow)
+        changeKakaoChatButton(isShow)
     }
 
     private fun changeItemFloatingButton(isShow: Boolean) {
@@ -110,18 +115,33 @@ class HomeListLayout constructor(
         changeTopFloatingButton(isShow, false)
     }
 
+    private fun changeKakaoChatButton(isShow: Boolean) {
+        changeKakaoChatButton(isShow, false)
+    }
+
     private fun changeItemFloatingButton(isShow: Boolean, animate: Boolean) {
         if (CommonUtil.checkToken()) {
-            if(recentViewCount > 0){
+            if (recentViewCount > 0) {
                 changeLastView(mBinding.buttonFloatingItem.root, isShow, animate)
             }
-        }else{
+        } else {
             changeLastView(mBinding.buttonFloatingItem.root, false, false)
         }
     }
 
     private fun changeTopFloatingButton(isShow: Boolean, animate: Boolean) {
         changeScaleView(mBinding.buttonFloatingTop.root, isShow, animate)
+    }
+
+    private fun changeKakaoChatButton(isShow: Boolean, animate: Boolean) {
+        val view = mBinding.buttonFloatingKakaochat.root
+        if (isShow) {
+            if (animate) showScaleAnimation(view)
+            else view.visibility = View.VISIBLE
+        } else {
+            if (animate) hideScaleAnimation(view)
+            else view.visibility = View.GONE
+        }
     }
 
     /**
@@ -132,7 +152,7 @@ class HomeListLayout constructor(
     private fun changeScaleView(v: View, isShow: Boolean, animate: Boolean) {
         if (isShow) {
             if (v.visibility != View.VISIBLE) {
-                v.setOnClickListener{
+                v.setOnClickListener {
                     listScrollTop()
                 }
                 v.visibility = View.VISIBLE
@@ -152,7 +172,7 @@ class HomeListLayout constructor(
         }
     }
 
-    fun setData(premiumData : HomeDeal, bestData : HomeDeal, mainBanner: ArrayList<MainBanner>){
+    fun setData(premiumData: HomeDeal, bestData: HomeDeal, mainBanner: ArrayList<MainBanner>) {
         mViewModel.premiumData = premiumData
         mViewModel.bestData = bestData
         mViewModel.mainBanner = mainBanner
@@ -161,8 +181,10 @@ class HomeListLayout constructor(
     }
 
     fun listScrollTop() {
-        try{  mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
-            if(CustomLog.flag)CustomLog.E(e)
+        try {
+            mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true)
+        } catch (e: Exception) {
+            if (CustomLog.flag) CustomLog.E(e)
         }
         scrollToTop(false)
     }
@@ -201,9 +223,9 @@ class HomeListLayout constructor(
                         val count = value.toString()
                         recentViewCount = count.toInt()
                         mBinding.buttonFloatingItem.textviewFloatingCount.text = count
-                        if(mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() == 0){
+                        if (mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() == 0) {
                             changeLastView(mBinding.buttonFloatingItem.root, false, false)
-                        }else{
+                        } else {
                             changeLastView(mBinding.buttonFloatingItem.root, true, false)
                         }
                     } catch (e: Exception) {
@@ -260,12 +282,12 @@ class HomeListLayout constructor(
     }
 
     override fun updateDataList(tabIndex: Int, type: String) {
-        if(CustomLog.flag)CustomLog.L("HomeListLayout","updateDataList","tabIndex","type",type)
+        if (CustomLog.flag) CustomLog.L("HomeListLayout", "updateDataList", "tabIndex", "type", type)
 
     }
 
     override fun loadNewInDataList(tabIndex: Int, value: HomeDeal) {
-        if(CustomLog.flag)CustomLog.L("HomeListLayout","loadNewInDataList","tabIndex")
+        if (CustomLog.flag) CustomLog.L("HomeListLayout", "loadNewInDataList", "tabIndex")
         mViewModel.newInData = value
         mViewModel.setNewInData()
         if (CustomLog.flag) CustomLog.L("HomeFragment", "newInData kidsList size", mViewModel.newInData?.kidsList!!.size)
@@ -277,19 +299,23 @@ class HomeListLayout constructor(
     override fun onFocusView() {
         mViewModel.getListAdapter().notifyDataSetChanged()
     }
+
     override fun onReleaseView() {
         mViewModel.getListAdapter().clearRunnable()
     }
-    override fun onStart() { }
+
+    override fun onStart() {}
     override fun onResume() {
         mViewModel.getListAdapter().notifyDataSetChanged()
         setRecentProductCount()
     }
+
     override fun onPause() {
         mViewModel.getListAdapter().clearRunnable()
     }
-    override fun onStop() { }
-    override fun onDestroy() { }
+
+    override fun onStop() {}
+    override fun onDestroy() {}
 
     fun getViewModel() = mViewModel
 

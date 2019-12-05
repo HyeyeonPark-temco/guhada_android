@@ -265,7 +265,8 @@ object CommonUtilKotlin {
         try {
             PlusFriendService.getInstance().chat(activity, scheme)
         } catch (e: KakaoException) {
-            ToastUtil.showMessage(e.message)
+            if(CustomLog.flag) CustomLog.E(e.message?:"카카오 오픈채팅 에러")
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
         }
     }
 

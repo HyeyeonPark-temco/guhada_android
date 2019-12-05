@@ -11,6 +11,7 @@
 
     <!-- API KEY -->
     <string name="kakao_app_key">b6e5b0618148f61889b9e77c8a9a0e90</string>
+    <string name="kakao_chat_scheme">_yxolxbT</string>
     <string name="facebook_app_id">2172540836200592</string>
     <string name="fb_login_protocol_scheme">fb2172540836200592</string>
     <string name="naver_oauth_client_id">xVqkhxmKT5JReAs5tXje</string>
