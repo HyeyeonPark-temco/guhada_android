@@ -107,6 +107,7 @@ dependencies {
     implementation androidDependencies.supportCustomTabs
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
 
 //    implementation 'androidx.appcompat:appcompat:1.0.2'
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -133,7 +134,6 @@ dependencies {
     // KAKAO LOGIN
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
     implementation group: 'com.kakao.sdk', name: 'plusfriend', version: project.KAKAO_SDK_VERSION
-
     // FACEBOOK LOGIN
     implementation libraryDependencies.facebookLogin
     // NAVER

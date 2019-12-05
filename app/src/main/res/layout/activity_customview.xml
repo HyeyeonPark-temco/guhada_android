@@ -16,5 +16,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <io.temco.guhada.view.custom.CustomSpinnerView
+            android:layout_width="match_parent"
+            android:layout_marginStart="20dp"
+            app:placeHolder="HOLDER"
+            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 </layout>
