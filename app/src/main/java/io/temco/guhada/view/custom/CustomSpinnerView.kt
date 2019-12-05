@@ -20,7 +20,8 @@ import io.temco.guhada.databinding.LayoutCustomspinnerBinding
 class CustomSpinnerView : LinearLayout {
     private lateinit var mBinding: LayoutCustomspinnerBinding
     private var mList = mutableListOf<String>()
-    private lateinit var mPopup : ListPopupWindow
+    private lateinit var mPopup: ListPopupWindow
+    private var mOnItemClickTask: (position: Int) -> Unit = {}
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -39,13 +40,14 @@ class CustomSpinnerView : LinearLayout {
         mPopup = ListPopupWindow(context)
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSpinnerView)
-        val placeHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder) ?: "select"
+        val placeHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder)
+                ?: "select"
         typedArray.recycle()
 
         mBinding.textviewCustomspinnerPlaceholder.text = placeHolder
         mPopup.anchorView = mBinding.textviewCustomspinnerPlaceholder
         mPopup.isModal = false
-        mPopup.setAdapter( CustomSpinnerAdapter(list = mList))
+        mPopup.setAdapter(CustomSpinnerAdapter(list = mList))
 
         mBinding.textviewCustomspinnerPlaceholder.setOnClickListener {
             mBinding.motionlayoutCustomspinner.transitionToEnd()
@@ -56,6 +58,7 @@ class CustomSpinnerView : LinearLayout {
             mBinding.motionlayoutCustomspinner.transitionToStart()
             mBinding.textviewCustomspinnerPlaceholder.text = mList[position]
             mPopup.dismiss()
+            mOnItemClickTask(position)
         }
 
         mPopup.setOnDismissListener {
@@ -65,8 +68,12 @@ class CustomSpinnerView : LinearLayout {
         addView(mBinding.root)
     }
 
-    fun setItems(list : MutableList<String>) {
+    fun setItems(list: MutableList<String>) {
         this.mList = list
+    }
+
+    fun setOnItemClickTask(task: (position: Int) -> Unit) {
+        this.mOnItemClickTask = task
     }
 
     inner class CustomSpinnerAdapter(val list: MutableList<String>) : BaseAdapter() {
@@ -83,4 +90,5 @@ class CustomSpinnerView : LinearLayout {
         override fun getItemId(position: Int): Long = 0
         override fun getCount(): Int = list.size
     }
+
 }
