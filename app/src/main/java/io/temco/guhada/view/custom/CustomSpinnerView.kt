@@ -22,6 +22,7 @@ class CustomSpinnerView : LinearLayout {
     private var mList = mutableListOf<String>()
     private lateinit var mPopup: ListPopupWindow
     private var mOnItemClickTask: (position: Int) -> Unit = {}
+    private lateinit var mAdapter: CustomSpinnerAdapter
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -44,10 +45,10 @@ class CustomSpinnerView : LinearLayout {
                 ?: "select"
         typedArray.recycle()
 
+
         mBinding.textviewCustomspinnerPlaceholder.text = placeHolder
         mPopup.anchorView = mBinding.textviewCustomspinnerPlaceholder
         mPopup.isModal = false
-        mPopup.setAdapter(CustomSpinnerAdapter(list = mList))
 
         mBinding.textviewCustomspinnerPlaceholder.setOnClickListener {
             mBinding.motionlayoutCustomspinner.transitionToEnd()
@@ -55,8 +56,8 @@ class CustomSpinnerView : LinearLayout {
         }
 
         mPopup.setOnItemClickListener { parent, view, position, id ->
-            mBinding.motionlayoutCustomspinner.transitionToStart()
             mBinding.textviewCustomspinnerPlaceholder.text = mList[position]
+            mBinding.motionlayoutCustomspinner.transitionToStart()
             mPopup.dismiss()
             mOnItemClickTask(position)
         }
@@ -70,6 +71,8 @@ class CustomSpinnerView : LinearLayout {
 
     fun setItems(list: MutableList<String>) {
         this.mList = list
+        mAdapter = CustomSpinnerAdapter(list = mList)
+        mPopup.setAdapter(mAdapter)
     }
 
     fun setOnItemClickTask(task: (position: Int) -> Unit) {
