@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="io.temco.guhada.data.model.main.DealItem" />
+            type="io.temco.guhada.data.model.Deal" />
 
     </data>
 
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:text="@string/product_old"
-                    android:visibility="@{item.deal.brandNew ? View.GONE : View.VISIBLE, default=gone}"
+                    android:visibility="@{item.brandNew ? View.GONE : View.VISIBLE, default=gone}"
                     android:textColor="@color/dark_tan"
                     android:textSize="@dimen/text_11" />
 
@@ -93,7 +93,7 @@
                     android:layout_height="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_gravity="center_vertical"
-                    android:visibility="@{!item.deal.brandNew &amp;&amp; item.deal.internationalShipping ? View.VISIBLE : View.GONE, default=gone}"
+                    android:visibility="@{!item.brandNew &amp;&amp; item.internationalShipping ? View.VISIBLE : View.GONE, default=gone}"
                     android:layout_marginStart="10dp"
                     android:background="@color/white_three" />
 
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/airplane_icon"
-                    android:visibility="@{item.deal.internationalShipping ? View.VISIBLE: View.GONE, default = gone}" />
+                    android:visibility="@{item.internationalShipping ? View.VISIBLE: View.GONE, default = gone}" />
 
                 <TextView
                     style="@style/TextRegular"
@@ -114,7 +114,7 @@
                     android:textColor="@color/black_four"
                     android:layout_marginEnd="10dp"
                     android:textSize="@dimen/text_11"
-                    android:visibility="@{item.deal.internationalShipping ? View.VISIBLE: View.INVISIBLE, default = invisible}" />
+                    android:visibility="@{item.internationalShipping ? View.VISIBLE: View.INVISIBLE, default = invisible}" />
 
                 <!-- [19.12.06] 현재 "쿠폰" 미노출 -->
                 <TextView

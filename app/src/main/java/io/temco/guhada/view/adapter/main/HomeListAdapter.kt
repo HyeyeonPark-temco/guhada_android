@@ -323,7 +323,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                  *  @author Hyeyeon Park
                  *  @since 2019.12.06
                  */
-                binding.item = item
+                binding.item = item.deal
 
                 binding.executePendingBindings()
             }

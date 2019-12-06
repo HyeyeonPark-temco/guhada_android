@@ -236,7 +236,7 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
                  *  @author Hyeyeon Park
                  *  @since 2019.12.06
                  */
-                binding.item = item
+                binding.item = item.deal
 
                 binding.executePendingBindings()
             }

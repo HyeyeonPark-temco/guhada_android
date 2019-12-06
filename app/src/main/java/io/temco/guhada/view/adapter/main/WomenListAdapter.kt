@@ -232,7 +232,7 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                  *  @author Hyeyeon Park
                  *  @since 2019.12.06
                  */
-                binding.item = item
+                binding.item = item.deal
 
                 binding.executePendingBindings()
             }
