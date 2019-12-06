@@ -169,6 +169,10 @@
     <string name="product_price_sale_per">%d%%</string>
     <string name="product_ship_free">무료배송</string>
     <string name="product_ship_free_split">무료\n배송</string>
+    <string name="product_new">새제품</string>
+    <string name="product_old">빈티지</string>
+    <string name="product_international">해외배송</string>
+    <string name="product_coupon">쿠폰</string>
 
     <!-- BRAND -->
     <string name="brand_search_hint">브랜드명을 검색해주세요.</string>

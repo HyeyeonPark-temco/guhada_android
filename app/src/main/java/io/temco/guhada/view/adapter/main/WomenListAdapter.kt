@@ -226,6 +226,14 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                 }
                 // Ship
                 binding.textShipFree.setVisibility(if (item.deal.freeShipping) View.VISIBLE else View.GONE)
+
+                /**
+                 *  중고상품, 해외배송 여부 > data binding으로 처리
+                 *  @author Hyeyeon Park
+                 *  @since 2019.12.06
+                 */
+                binding.item = item
+
                 binding.executePendingBindings()
             }
         }
