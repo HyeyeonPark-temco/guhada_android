@@ -12,6 +12,10 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -22,6 +26,7 @@ import io.temco.guhada.common.EventBusHelper;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCallBackListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CustomLog;
@@ -29,9 +34,11 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.db.GuhadaDB;
 import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.model.MainPopup;
 import io.temco.guhada.data.model.UserShipping;
 import io.temco.guhada.data.model.claim.Claim;
 import io.temco.guhada.data.model.main.HomeDeal;
+import io.temco.guhada.data.viewmodel.main.MainDataRepository;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
@@ -101,8 +108,20 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         CommonUtil.getUserIp();
         setEventBus();
         initMainPager();
-
-        //CommonUtilKotlin.startActivityFirstPurchaseDialog(this,FirstPurchaseType.FIRST_VIEW);
+        MainDataRepository repository = new MainDataRepository();
+        repository.getMainPopup(new OnCallBackListener() {
+            @Override
+            public void callBackListener(boolean resultFlag, @NotNull Object value) {
+                if(resultFlag){
+                    ArrayList<MainPopup> list = (ArrayList<MainPopup>) value;
+                    for (MainPopup pop : list){
+                        if(("ALL".equalsIgnoreCase(pop.getAgent()) || "APP".equalsIgnoreCase(pop.getAgent())) && "진행중".equals(pop.getEventProgress()))
+                            CommonUtilKotlin.startActivityPopupDialog(MainActivity.this, pop.getImgUrlM() ,PopupViewType.POPUP_VIEW_STOP);
+                    }
+                    if(CustomLog.getFlag())CustomLog.L("MainActivity","value",list.toString());
+                }
+            }
+        });
     }
 
     @Override

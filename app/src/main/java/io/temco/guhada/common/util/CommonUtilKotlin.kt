@@ -91,7 +91,7 @@ object CommonUtilKotlin  {
     fun startActivityPopupDialog(activity: Activity, imgPath:String, state : PopupViewType) {
         if(state == PopupViewType.POPUP_VIEW_STOP){
             var str = Preferences.getMainBannerViewDialog(imgPath)
-            if(TextUtils.isEmpty(str) || str != imgPath){
+            if(TextUtils.isEmpty(str)){
                 val intent = Intent(activity, MainBannerPopupActivity::class.java)
                 intent.putExtra("state",state)
                 intent.putExtra("imgPath",imgPath)
@@ -255,5 +255,14 @@ object CommonUtilKotlin  {
         intent.putExtra("tokenName",tokenName)
         act.startActivityForResult(intent,Flag.RequestCode.GUHADA_TOKEN_ADDRESS)
     }
+
+
+    fun movePlanningDealDetail(act : Activity, id : Int, url : String){
+        val intent = Intent(act, PlanningDealDetailActivity::class.java)
+        intent.putExtra("planningDealDetailId",id)
+        intent.putExtra("url",url)
+        act.startActivityForResult(intent,Flag.RequestCode.PLANNING_DEAL_DETAIL)
+    }
+
 
 }

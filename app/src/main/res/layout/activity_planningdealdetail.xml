@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
-        <variable
-            name="title"
-            type="String" />
-
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -15,7 +10,6 @@
         <variable
             name="onClickBackButton"
             type="android.view.View.OnClickListener" />
-
     </data>
 
     <LinearLayout
@@ -27,6 +21,7 @@
             android:id="@+id/layout_header"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:background="@drawable/borderline_under_e6"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -62,7 +57,7 @@
                 android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@{title}"
+                android:text="기획전"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_17" />
 
@@ -111,167 +106,11 @@
             </LinearLayout>
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <io.temco.guhada.view.custom.recycler.CustomRecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/common_white">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="143dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="49dp"
-                        android:weightSum="1"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginBottom="8dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/TextMedium"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:minHeight="49dp"
-                            android:layout_weight="1"
-                            android:layout_marginBottom="1dp"
-                            android:text="9월의 마지막 혜택, 구하다 퍼플등급\n회원 15% 할인쿠폰 지급"
-                            android:fontFamily="sans-serif"
-                            android:textStyle="normal"
-                            android:lineSpacingExtra="9sp"
-                            android:textColor="@color/black_four"
-                            android:textSize="@dimen/text_18" />
-
-                        <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
-                            android:layout_marginLeft="6dp"
-                            android:background="@drawable/drawable_circle_e4"
-                            android:src="@drawable/com_btn_share"/>
-                    </LinearLayout>
-
-                    <TextView
-                        style="@style/TextRegular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:text="2019. 05. 01 ~ 2019. 05. 31"
-                        android:gravity="center"
-                        android:fontFamily="sans-serif"
-                        android:textStyle="normal"
-                        android:textColor="@color/warm_grey"
-                        android:lineSpacingExtra="7.2sp"
-                        android:textSize="@dimen/text_12" />
-
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <WebView
-                        android:id="@+id/webview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </RelativeLayout>
-
-                <TextView
-                    style="@style/TextMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="60dp"
-                    android:textSize="@dimen/text_20"
-                    android:textColor="@color/black_four"
-                    android:text="기획전 ITEM"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:weightSum="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/TextMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
-                        android:gravity="center"
-                        android:layout_marginBottom="1dp"
-                        android:textColor="@color/black_four"
-                        android:text="@string/mypage_recentlayout_totalsize1"
-                        android:textSize="@dimen/text_13" />
-
-                    <TextView
-                        style="@style/TextMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginRight="2dp"
-                        android:textColor="@color/blue_purple"
-                        android:textSize="@dimen/text_13" />
-                    <!--android:text="@{viewModel.mypageClaimTotalCountTxt}"-->
-
-                    <TextView
-                        style="@style/TextMedium"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
-                        android:text="@string/mypage_recentlayout_totalsize2"
-                        android:layout_marginBottom="1dp"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_13" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="bottom"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/TextMedium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="1dp"
-                            android:gravity="center"
-                            android:textColor="@color/black_four"
-                            android:textSize="@dimen/text_13" />
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginLeft="6dp"
-                            android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
-                            android:src="@drawable/detail_icon_arrow_open"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </LinearLayout>
-
 </layout>

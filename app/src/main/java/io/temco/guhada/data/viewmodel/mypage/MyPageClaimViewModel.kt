@@ -41,6 +41,9 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
     val listData1 : MutableLiveData<ArrayList<MyPageClaim.Content>> = MutableLiveData()
     val listData2 : MutableLiveData<ArrayList<MyPageClaimSellerContent>> = MutableLiveData()
 
+    var isLoading1 = true
+    var isLoading2 = true
+
     private var adapter1 : MyPageClaimAdapter
     private var adapter2 : MyPageSellerClaimAdapter
     fun getListAdapter1() = adapter1
@@ -231,26 +234,20 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
         ClaimServer.getMyPageClaimList(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        if(nextPage > 1){
-                            var idx = viewModel.listData1!!.value!!.size-1
-                            if(viewModel.listData1!!.value!![idx].inquiry.id == 0L){
-                                viewModel.listData1!!.value!!.removeAt(idx)
-                            }
-                        }
                         var data =  (o as BaseModel<*>).data as MyPageClaim
-                        if(data.totalPages > 0 && (data.totalPages-1 > data.pageable.pageNumber)){
-                            var page = MyPageClaim().Content()
-                            viewModel.totalPageNum1 = data.totalPages
-                            viewModel.pageNum1 = data.pageable.pageNumber
-                            data.content.add(page)
-                        }
                         if(data.content.size == 0 && data.pageable.pageNumber == 0){
                             viewModel.emptyClaimVisible1.set(true)
                         } else viewModel.emptyClaimVisible1.set(false)
                         viewModel.mypageClaimTotalCountTxt.set(data.totalElements.toString())
-
+                        if(CustomLog.flag)CustomLog.L("MyPageClaimLayout 1 getMoreClaimList1","mViewModel.totalPageNum1",viewModel.totalPageNum1,"mViewModel.pageNum1",viewModel.pageNum1)
+                        if(data.totalPages > 0 && (data.totalPages > data.pageable.pageNumber)){
+                            viewModel.totalPageNum1 = data.totalPages
+                            viewModel.pageNum1 = data.pageable.pageNumber
+                        }
+                        if(CustomLog.flag)CustomLog.L("MyPageClaimLayout 2 getMoreClaimList1","mViewModel.totalPageNum1",viewModel.totalPageNum1,"mViewModel.pageNum1",viewModel.pageNum1)
                         viewModel.getListAdapter1()!!.items.addAll(data.content)
                         viewModel.getListAdapter1().notifyDataSetChanged()
+                        viewModel.isLoading1 = false
                         listener?.run { onResultCallback() }
                     },
                     dataNotFoundTask = {
@@ -306,27 +303,19 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
                             ClaimServer.getMyPageSellerClaimList(OnServerListener { success, o ->
                                 ServerCallbackUtil.executeByResultCode(success, o,
                                         successTask = {
-                                            if(nextPage > 1){
-                                                var idx = viewModel.listData2!!.value!!.size-1
-                                                if(viewModel.listData2!!.value!![idx].id == 0){
-                                                    viewModel.listData2!!.value!!.removeAt(idx)
-                                                }
-                                            }
                                             var data =  (o as BaseModel<*>).data as MyPageClaimSeller
-                                            if(data.totalPages > 0 && (data.totalPages-1 > data.pageable.pageNumber)){
-                                                var page = MyPageClaimSellerContent()
-                                                viewModel.totalPageNum1 = data.totalPages
-                                                viewModel.pageNum1 = data.pageable.pageNumber
-                                                data.content.add(page)
-                                            }
                                             if(data.content.size == 0 && data.pageable.pageNumber == 0){
-                                                viewModel.emptyClaimVisible1.set(true)
-                                            } else viewModel.emptyClaimVisible1.set(false)
+                                                viewModel.emptyClaimVisible2.set(true)
+                                            } else viewModel.emptyClaimVisible2.set(false)
                                             viewModel.mypageSellerClaimTotalCountTxt.set(data.totalElements.toString())
-
+                                            if(data.totalPages > 0 && (data.totalPages > data.pageable.pageNumber)){
+                                                viewModel.totalPageNum2 = data.totalPages
+                                                viewModel.pageNum2 = data.pageable.pageNumber
+                                            }
                                             viewModel.getListAdapter2()!!.items.addAll(data.content)
                                             viewModel.getListAdapter2().notifyDataSetChanged()
                                             listener?.run { onResultCallback() }
+                                            viewModel.isLoading2 = false
                                         },
                                         dataNotFoundTask = {
                                             if(CustomLog.flag)CustomLog.L("getMoreClaimList","dataNotFoundTask")

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="endDate"
+            type="String" />
+        <variable
+            name="clickShareListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="143dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="49dp"
+            android:weightSum="1"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="49dp"
+                android:layout_weight="1"
+                android:text="@{title}"
+                android:fontFamily="sans-serif"
+                android:textStyle="normal"
+                android:lineSpacingExtra="9sp"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_18" />
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="6dp"
+                android:padding="10dp"
+                android:background="@drawable/drawable_circle_e4"
+                android:src="@drawable/com_btn_share"
+                android:onClick="@{clickShareListener}"/>
+        </LinearLayout>
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@{endDate}"
+            android:gravity="center"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="@color/warm_grey"
+            android:lineSpacingExtra="7.2sp"
+            android:textSize="@dimen/text_12" />
+
+    </LinearLayout>
+</layout>

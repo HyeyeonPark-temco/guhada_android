@@ -144,46 +144,8 @@ class PlanningDealListAdapter(private val model : PlanningDealListViewModel, lis
                 ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageviewMaineventEvent, item.planningData.imgUrlM)
                 binding.textviewMaineventTitle.text = item.planningData.eventTitle
                 binding.textviewMaineventDate.text = (item.planningData.eventStartDate.split(" ")[0] + " ~ " +item.planningData.eventEndDate.split(" ")[0])
-                binding.layoutEventContent.setOnClickListener(null)
-                if(item.planningData.detailPage){
-                    binding.layoutEventContent.setOnClickListener {
-                        /*if(!TextUtils.isEmpty(item.eventData.mobileAppLink)){
-                            if(!TextUtils.isEmpty(item.eventData.imgDetailUrlM)){
-                                CommonUtilKotlin.startActivityWebview(viewModel.context as Activity, "이벤트",
-                                        item.eventData.imgDetailUrlM?:"",item.eventData.mobileAppLink)
-                            }else{
-                                CommonUtilKotlin.moveEventPage(viewModel.context as Activity,item.eventData.mobileAppLink,"",true,false)
-                            }
-                        }*/
-                        if(!TextUtils.isEmpty(item.planningData.mobileAppLink) && "/" != item.planningData.mobileAppLink){
-                            if(!TextUtils.isEmpty(item.planningData.imgDetailUrlM)){
-                                CommonUtilKotlin.startActivityWebview(viewModel.context as Activity, "이벤트",
-                                        item.planningData.imgDetailUrlM?:"",item.planningData.mobileAppLink)
-                            }else{
-                                var link : String? = item.planningData.mobileAppLink
-                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link ?: "null")
-                                //link = "guhada://client?pg_state=search&arg1=%EA%B8%B0%ED%9A%8D%20%ED%8C%A8%EB%94%A9%EC%A0%84"
-                                //link = "guhada://client?pg_state=search&arg1=기획전%20패딩"
-                                if (CustomLog.flag) CustomLog.L("SchemeActivity", "link", link ?: "null")
-                                if(link != null && link.startsWith("guhada://client",true)){
-                                    val uriData : Uri = Uri.parse(link)
-                                    val pgState = uriData.getQueryParameter("pg_state")
-                                    val arg1 = uriData.getQueryParameter("arg1")?:""
-                                    val arg2 = uriData.getQueryParameter("arg2")?:""
-                                    if(!TextUtils.isEmpty(pgState)) {
-                                        if (CustomLog.flag) CustomLog.L("SchemeActivity", "pgState", pgState)
-                                        if (CustomLog.flag) CustomLog.L("SchemeActivity", "arg1", arg1)
-                                        if (CustomLog.flag) CustomLog.L("SchemeActivity", "arg2", arg2)
-                                    }
-                                    CommonUtilKotlin.moveEventPage(viewModel.context as Activity, pgState,arg1,true,false)
-                                }else{
-                                    if(link!=null)CommonUtilKotlin.moveEventPage(viewModel.context as Activity, link,"",true,false)
-                                }
-                            }
-                            //EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, index))
-                        }
-
-                    }
+                binding.layoutEventContent.setOnClickListener {
+                    CommonUtilKotlin.movePlanningDealDetail(viewModel.context as Activity,1,"https://qa-guhada.s3.amazonaws.com/images/event/new_detail_m.png")
                 }
                 try{
                     if(!TextUtils.isEmpty(item.planningData.bgColor))

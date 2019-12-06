@@ -61,9 +61,10 @@ class MyPageBookMarkLayout constructor(
             }
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if(CustomLog.flag)CustomLog.L("MyPageBookMarkLayout","itemCount",mViewModel.getListAdapter().itemCount,"findLastVisibleItemPosition",recyclerLayoutManager.findLastVisibleItemPosition())
                 synchronized(this){
-                    if (mViewModel.getListAdapter().itemCount - recyclerLayoutManager.findLastVisibleItemPosition() <= Info.LIST_PAGE_THRESHOLD && !mViewModel.isLoading) {
+                    if (mViewModel.getListAdapter().itemCount - recyclerLayoutManager.findLastVisibleItemPosition() <= Info.LIST_PAGE_THRESHOLD && mViewModel.totalPage > mViewModel.currentPage && !mViewModel.isLoading) {
+                        if(CustomLog.flag)CustomLog.L("MyPageBookMarkLayout","itemCount",mViewModel.getListAdapter().itemCount,"findLastVisibleItemPosition",recyclerLayoutManager.findLastVisibleItemPosition())
+                        if(CustomLog.flag)CustomLog.L("MyPageBookMarkLayout","mViewModel.totalPage",mViewModel.totalPage,"mViewModel.currentPage",mViewModel.currentPage)
                         mViewModel.isLoading = true
                         mViewModel.getMyPageBookMarkList()
                     }
