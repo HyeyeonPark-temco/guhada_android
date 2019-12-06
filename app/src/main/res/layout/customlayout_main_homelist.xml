@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.main.HomeListViewModel" />
@@ -16,15 +17,15 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#eeeeee"/>
+            android:background="#eeeeee" />
 
         <io.temco.guhada.view.custom.recycler.CustomRecyclerView
             android:id="@+id/recyclerView"
-            android:layout_marginTop="1dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
             android:background="@color/common_white"
-            app:setAdapter="@{viewModel.getListAdapter()}"/>
+            app:setAdapter="@{viewModel.getListAdapter()}" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -42,6 +43,14 @@
                 android:layout_width="@dimen/view_button_floating"
                 android:layout_height="@dimen/view_button_floating"
                 android:visibility="gone" />
+
+            <include
+                android:id="@+id/button_floating_kakaochat"
+                layout="@layout/layout_floating_button_kakaochat"
+                android:layout_width="@dimen/view_button_floating"
+                android:layout_marginTop="7dp"
+                android:visibility="gone"
+                android:layout_height="@dimen/view_button_floating"          />
 
             <include
                 android:id="@+id/button_floating_top"

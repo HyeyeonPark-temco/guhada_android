@@ -100,6 +100,15 @@ public class ProductOneViewHolder extends BaseProductViewHolder<ItemProductListO
             // Ship
             mBinding.textShipFree.setVisibility(View.GONE);
             //mBinding.textShipFree.setVisibility(data.freeShipping ? View.VISIBLE : View.GONE);
+
+            /**
+             *  중고상품, 해외배송 여부 > data binding으로 처리
+             *  @author Hyeyeon Park
+             *  @since 2019.12.06
+             */
+            mBinding.setItem(data);
+            mBinding.executePendingBindings();
+
         }
     }
 

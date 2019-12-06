@@ -95,6 +95,8 @@ class UserServer {
         /**
          * 이메일로 인증번호 전송하기
          * User 중 email, name 필드만 입력
+         * response: {"result":"SUCCESS","data":600000,"resultCode":200,"message":"success"}
+         * @author Hyeyeon Park
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =
