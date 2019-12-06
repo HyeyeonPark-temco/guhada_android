@@ -37,28 +37,29 @@ class CustomSpinnerView : LinearLayout {
     }
 
     private fun initView(context: Context, attrs: AttributeSet?) {
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.layout_customspinner, this, false)
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.layout_customspinner, this, true)
         mPopup = ListPopupWindow(context)
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSpinnerView)
         val placeHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder)
                 ?: "select"
-        typedArray.recycle()
-
+//        val height = typedArray.getDimension(R.styleable.CustomSpinnerView_android_layout_height, CommonViewUtil.convertDpToPixel(45, context).toFloat())
+//        (mBinding.textviewCustomspinnerPlaceholder.layoutParams as ConstraintLayout.LayoutParams).height = height.toInt()
 
         mBinding.textviewCustomspinnerPlaceholder.text = placeHolder
         mPopup.anchorView = mBinding.textviewCustomspinnerPlaceholder
-        mPopup.isModal = false
+        mPopup.isModal = true
+
+//        mPopup.setBackgroundDrawable(context.getDrawable(R.drawable.background_listpopup))
 
         mBinding.textviewCustomspinnerPlaceholder.setOnClickListener {
-            mBinding.motionlayoutCustomspinner.transitionToEnd()
-            mPopup.show()
+            if (mPopup.isShowing) dismiss()
+            else show()
         }
 
         mPopup.setOnItemClickListener { parent, view, position, id ->
             mBinding.textviewCustomspinnerPlaceholder.text = mList[position]
-            mBinding.motionlayoutCustomspinner.transitionToStart()
-            mPopup.dismiss()
+            dismiss()
             mOnItemClickTask(position)
         }
 
@@ -66,7 +67,8 @@ class CustomSpinnerView : LinearLayout {
             mBinding.motionlayoutCustomspinner.transitionToStart()
         }
 
-        addView(mBinding.root)
+        mBinding.executePendingBindings()
+        typedArray.recycle()
     }
 
     fun setItems(list: MutableList<String>) {
@@ -79,13 +81,23 @@ class CustomSpinnerView : LinearLayout {
         this.mOnItemClickTask = task
     }
 
+    private fun show() {
+        mBinding.motionlayoutCustomspinner.transitionToEnd()
+        mPopup.show()
+    }
+
+    private fun dismiss() {
+        mBinding.motionlayoutCustomspinner.transitionToStart()
+        mPopup.dismiss()
+    }
+
     inner class CustomSpinnerAdapter(val list: MutableList<String>) : BaseAdapter() {
         private lateinit var mBinding: ItemCustomspinnerBinding
 
         @SuppressLint("ViewHolder")
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_customspinner, parent, false)
-            mBinding.textviewCustomspinner.text = list[position]
+            mBinding.textviewCustomspinnerList.text = list[position]
             return mBinding.root
         }
 

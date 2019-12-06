@@ -5,13 +5,14 @@
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/motionlayout_customspinner"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         app:layoutDescription="@xml/motion_scene_customspinner">
 
         <TextView
             android:id="@+id/textview_customspinner_placeholder"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="45dp"
             android:paddingStart="15dp"
             android:paddingEnd="30dp"
             android:gravity="center_vertical"
@@ -29,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:src="@drawable/payment_icon_selectbox_close"
+            android:src="@drawable/payment_icon_selectbox_open"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

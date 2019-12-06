@@ -3,12 +3,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:id="@+id/linearlayout_customspinner_list"
+        android:layout_height="wrap_content"
         android:padding="15dp"
         android:orientation="vertical">
         <TextView
             style="@style/TextRegular"
-            android:id="@+id/textview_customspinner"
+            android:id="@+id/textview_customspinner_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_14"
