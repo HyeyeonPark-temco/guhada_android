@@ -12,6 +12,8 @@
         <!--name="status"-->
         <!--type="String" />-->
 
+        <import type="android.text.TextUtils" />
+
         <variable
             name="info"
             type="io.temco.guhada.data.model.ExpectedRefundPrice.ExpectedRefundInfo" />
@@ -24,18 +26,15 @@
         android:layout_height="wrap_content"
         android:background="@color/common_white"
         android:paddingLeft="20dp"
-        android:paddingTop="30dp"
         android:paddingRight="20dp"
-        android:paddingBottom="30dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintlayout_deliverydetail_orderinfo">
 
         <ImageView
             android:id="@+id/imageview_deliverydetail_profile"
-            android:layout_width="90dp"
-            android:layout_height="120dp"
-            android:layout_marginBottom="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:background="@color/common_white"
             app:imageUrl="@{info.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,16 +42,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textview_deliverydetail_brandname"
+            android:id="@+id/textview_deliverydetail_ordername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TextRegular"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="25dp"
-            android:text="@{info.brandName}"
+            android:text="@{@string/productdetail_info_number + ` ` + info.dealId}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_deliverydetail_profile"
             app:layout_constraintTop_toTopOf="parent" />
-        <!--android:text="@{viewModel.mPurchaseOrder.brandName}"/>-->
 
         <TextView
             android:id="@+id/textview_deliverydetail_productname"
@@ -60,18 +60,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="25dp"
             android:ellipsize="end"
             android:gravity="start"
             android:singleLine="true"
-            android:text="@{info.season != null ? info.season + ` ` + info.productName : info.productName}"
+            android:text="@{TextUtils.isEmpty(info.season) ?  @string/common_format_brackets(info.brandName) + ` `  +info.productName : @string/common_format_brackets(info.brandName) + ` ` + info.season + ` ` + info.productName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintLeft_toRightOf="@+id/imageview_deliverydetail_profile"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_brandname" />
+            app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_ordername" />
         <!--android:text="@{title}"-->
         <TextView
             android:id="@+id/textview_deliverydetail_option"
@@ -93,8 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="6dp"
-
+            android:layout_marginTop="3dp"
             android:text="@{@string/mypage_price_format(info.originalPrice)}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_14"
@@ -108,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:text="@{info.claimStatusText}"
             android:textColor="@color/common_blue_purple"

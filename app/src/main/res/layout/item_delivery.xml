@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+
         <variable
             name="item"
             type="io.temco.guhada.data.model.order.PurchaseOrder" />
@@ -78,16 +80,17 @@
 
         <ImageView
             android:id="@+id/imageview_delivery_profile"
-            android:layout_width="90dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="21dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:background="@color/common_white"
             app:imageUrl="@{item.imageUrl}"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerview_delivery_button"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintlayout_delivery_top" />
 
         <TextView
             android:id="@+id/textview_delivery_brandname"
+            style="@style/TextMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
@@ -104,12 +107,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="3dp"
             android:layout_marginEnd="25dp"
             android:ellipsize="end"
             android:gravity="start"
             android:singleLine="true"
-            android:text="@{item.season != null ? item.season + ` ` + item.productName : item.productName}"
+            android:text="@{TextUtils.isEmpty(item.season) ? item.productName : item.season + ` ` + item.productName }"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintHorizontal_bias="0"
@@ -132,11 +135,11 @@
 
         <TextView
             android:id="@+id/textview_delivery_price"
-            style="@style/TextBold"
+            style="@style/TextMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:text="@{@string/mypage_price_format(item.originalPrice)}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_14"
@@ -149,8 +152,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="16dp"
-            android:text="@{item.claimStatusText != null &amp;&amp; !item.claimStatusText.isEmpty() ? item.claimStatusText : item.purchaseStatusText}"
+            android:layout_marginTop="10dp"
+            android:text="@{TextUtils.isEmpty(item.claimStatusText) ? item.purchaseStatusText : item.claimStatusText}"
             android:textColor="@color/common_blue_purple"
             android:textSize="@dimen/text_14"
             app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"

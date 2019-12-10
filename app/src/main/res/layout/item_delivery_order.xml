@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+
         <variable
             name="purchaseOrder"
             type="io.temco.guhada.data.model.order.PurchaseOrder" />
@@ -27,37 +29,52 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
-            android:id="@+id/textview_paymentresult_brandname"
-            style="@style/TextBold"
+            android:id="@+id/textview_paymentresult_ordernumber"
+            style="@style/TextRegular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{purchaseOrder.brandName}"
+            android:text="@{@string/productdetail_info_number + ` ` + purchaseOrder.dealId}"
             android:textColor="@color/black_four"
-            android:textSize="@dimen/text_13"
+            android:textSize="@dimen/text_12"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textview_paymentresult_productname"
-            style="@style/TextMedium"
+            style="@style/TextRegular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{purchaseOrder.season != null &amp;&amp; !purchaseOrder.season.isEmpty() ? purchaseOrder.season + ` ` + purchaseOrder.productName : purchaseOrder.productName}"
+            android:text="@{purchaseOrder.season != null &amp;&amp; !purchaseOrder.season.isEmpty() ? @string/common_format_brackets(purchaseOrder.brandName) + ` ` + purchaseOrder.season + ` ` + purchaseOrder.productName : @string/common_format_brackets(purchaseOrder.brandName) + ` `  +purchaseOrder.productName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_brandname" />
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_ordernumber" />
+
+        <TextView
+            android:id="@+id/textview_paymentresult_attribute"
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="3dp"
+            android:text="@{attributeText}"
+            android:textColor="@color/warm_grey_two"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_productname" />
+
 
         <TextView
             android:id="@+id/textview_paymentresult_price"
@@ -65,12 +82,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:text="@{@string/common_priceunit_format(purchaseOrder.originalPrice)}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_14"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
-            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_productname" />
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_attribute" />
 
         <TextView
             android:id="@+id/textview_paymentresult_status"
@@ -79,13 +96,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="@{attributeText}"
-            android:textColor="@color/warm_grey_two"
+            android:text="@{TextUtils.isEmpty(purchaseOrder.claimStatusText) ? purchaseOrder.purchaseStatusText : purchaseOrder.claimStatusText}"
+            android:textColor="@color/common_blue_purple"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toTopOf="@+id/view_paymentresult_line"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
-            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_price" />
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_price"
+            app:layout_constraintVertical_bias="0" />
 
         <View
             android:id="@+id/view_paymentresult_line"
@@ -96,7 +113,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageview_paymentresult" />
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_status" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

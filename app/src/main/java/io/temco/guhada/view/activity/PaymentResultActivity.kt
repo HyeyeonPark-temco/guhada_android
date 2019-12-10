@@ -188,11 +188,11 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
 
     companion object {
         @JvmStatic
-        @BindingAdapter("purchaseOrders")
-        fun RecyclerView.bindPurchaseOrders(list: MutableList<PurchaseOrder>) {
+        @BindingAdapter(value = ["purchaseOrders", "isDetail"])
+        fun RecyclerView.bindPurchaseOrders(purchaseOrders: MutableList<PurchaseOrder>, isDetail: Boolean) {
             if (this.adapter == null)
-                this.adapter = PaymentResultOrderAdapter()
-            (this.adapter as PaymentResultOrderAdapter).setItems(list)
+                this.adapter = PaymentResultOrderAdapter().apply { this.mIsDetail = isDetail }
+            (this.adapter as PaymentResultOrderAdapter).setItems(purchaseOrders)
         }
     }
 }
