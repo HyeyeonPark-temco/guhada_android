@@ -108,6 +108,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         CommonUtil.getUserIp();
         setEventBus();
         initMainPager();
+
         MainDataRepository repository = new MainDataRepository();
         repository.getMainPopup(new OnCallBackListener() {
             @Override

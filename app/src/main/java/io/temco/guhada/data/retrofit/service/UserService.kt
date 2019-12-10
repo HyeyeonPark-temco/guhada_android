@@ -653,4 +653,14 @@ interface UserService {
     @DELETE("/users/withdraw")
     fun withdraw(@Header("Authorization") accessToken: String) : Call<BaseModel<Any>>
 
+
+
+    /**
+     * 비밀번호 확인 api
+     * @author park jungho
+     * @since 2019.12.10
+     */
+    @POST("/users/{userId}/password")
+    fun passwordCheck(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body body: JsonObject) : Call<BaseModel<Any>>
+
 }
