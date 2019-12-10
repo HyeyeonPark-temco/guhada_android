@@ -20,6 +20,7 @@ class PurchaseOrderResponse : Serializable {
     var totalPaymentPrice = 0
     var totalProdPrice = 0
     var totalShipPrice = 0
+    var etcMessage = ""     // 기타 요청 사항
 
     var buyerName = ""
     var buyerEmail = ""
