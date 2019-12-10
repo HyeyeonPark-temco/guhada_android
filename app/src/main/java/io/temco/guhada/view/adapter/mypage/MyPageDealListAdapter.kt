@@ -9,15 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.*
@@ -78,7 +73,6 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
     inner class MyPageProductListViewHolder(val containerView: View, val binding: ItemMypageProductListTwoBinding) : ListViewHolder(containerView,binding){
         internal var width = 0
         internal var height = 0
-        internal var layoutHeight = 0
         internal var margin = 0
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(model : ViewModel, position : Int, data : Deal){
@@ -87,18 +81,19 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
                 if (width == 0) {
                     val matrix = DisplayMetrics()
                     (itemView.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
-                    width = (matrix.widthPixels - CommonViewUtil.dipToPixel(itemView.context, 20)) / 2
-                    height = width
-                    margin = CommonViewUtil.dipToPixel(itemView.context, 4)
-                    layoutHeight = height + CommonViewUtil.dipToPixel(itemView.context, 160)
+                    width = (matrix.widthPixels - CommonViewUtil.dipToPixel(itemView.context, 24)) / 2
+                    margin = CommonViewUtil.dipToPixel(itemView.context, 8)
                 }
 
-                val param = LinearLayout.LayoutParams(width, height)
-                param.leftMargin = margin
-                param.leftMargin = margin
+                val param = LinearLayout.LayoutParams(width, width)
+                if (position % 2 == 0) {
+                    param.leftMargin = margin
+                    param.rightMargin = margin/2
+                } else {
+                    param.leftMargin = margin/2
+                    param.rightMargin = margin
+                }
                 binding.relativeImageLayout.setLayoutParams(param)
-                val imageParams = RelativeLayout.LayoutParams(width, layoutHeight)
-                binding.linearlayoutMypageproductlistadapterItemlayout.setLayoutParams(imageParams)
 
                 binding.linearlayoutMypageproductlistadapterItemlayout.tag = data.dealId.toString()
                 binding.linearlayoutMypageproductlistadapterItemlayout.setOnClickListener{

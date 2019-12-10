@@ -36,25 +36,49 @@ class MyPageClaimLayout constructor(
         defStyleAttr: Int = 0
 ) : BaseListLayout<CustomlayoutMypageClaimBinding, MyPageClaimViewModel>(context, attrs, defStyleAttr) , SwipeRefreshLayout.OnRefreshListener{
 
+    private lateinit var recyclerLayoutManager1 : WrapContentLinearLayoutManager
+    private lateinit var recyclerLayoutManager2 : WrapContentLinearLayoutManager
+
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_claim
     override fun init() {
         mViewModel = MyPageClaimViewModel(context)
         mBinding.viewModel = mViewModel
 
-        mBinding.recyclerviewMypageclaimlayoutList1.layoutManager = WrapContentLinearLayoutManager(context as Activity, LinearLayoutManager.VERTICAL, false)
+        recyclerLayoutManager1 = WrapContentLinearLayoutManager(context as Activity, LinearLayoutManager.VERTICAL, false).apply {
+            orientation = RecyclerView.VERTICAL
+            recycleChildrenOnDetach = true
+        }
+        mBinding.recyclerviewMypageclaimlayoutList1.layoutManager = recyclerLayoutManager1
         mBinding.recyclerviewMypageclaimlayoutList1.setHasFixedSize(true)
-        (mBinding.recyclerviewMypageclaimlayoutList1.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
-        (mBinding.recyclerviewMypageclaimlayoutList1.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+        mBinding.recyclerviewMypageclaimlayoutList1.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (mViewModel.getListAdapter1().itemCount - recyclerLayoutManager1.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading1 && mViewModel.totalPageNum1 > mViewModel.pageNum1+1) {
+                    mViewModel.isLoading1 = true
+                    mViewModel.getMoreCalimList(mViewModel.pageNum1+1)
+                }
+            }
+        })
 
-
-        mBinding.recyclerviewMypageclaimlayoutList2.layoutManager = WrapContentLinearLayoutManager(context as Activity, LinearLayoutManager.VERTICAL, false)
+        recyclerLayoutManager2 = WrapContentLinearLayoutManager(context as Activity, LinearLayoutManager.VERTICAL, false).apply {
+            orientation = RecyclerView.VERTICAL
+            recycleChildrenOnDetach = true
+        }
+        mBinding.recyclerviewMypageclaimlayoutList2.layoutManager = recyclerLayoutManager2
         mBinding.recyclerviewMypageclaimlayoutList2.setHasFixedSize(true)
-        (mBinding.recyclerviewMypageclaimlayoutList2.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
-        (mBinding.recyclerviewMypageclaimlayoutList2.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+        mBinding.recyclerviewMypageclaimlayoutList2.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (mViewModel.getListAdapter2().itemCount - recyclerLayoutManager2.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading2 && mViewModel.totalPageNum2 > mViewModel.pageNum2+1) {
+                    mViewModel.isLoading2 = true
+                    mViewModel.getMoreSellerCalimList(mViewModel.pageNum2+1)
+                }
+            }
+        })
+
 
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
-
         mBinding.setClickListenerClaimStatus {
             val popup = PopupMenu(this@MyPageClaimLayout.context, it)
             popup.menuInflater.inflate(R.menu.menu_mypage_claim, popup.menu)

@@ -63,15 +63,14 @@ object CommonUtilKotlin {
      *7. 채무 보증확인 /terms/guarantee
      */
 
-    fun startTermsPurchase(activity: Activity) = startActivityWebview(activity, activity.resources.getString(R.string.join_agreebuy), Type.Server.getUrl(Type.Server.WEB) + "terms/purchase")
-
-    fun startTermsSale(activity: Activity) = startActivityWebview(activity, activity.resources.getString(R.string.join_agreesell), Type.Server.getUrl(Type.Server.WEB) + "terms/sale")
-    fun startTermsPersonal(activity: Activity) = startActivityWebview(activity, activity.resources.getString(R.string.join_agreeprivacy), Type.Server.getUrl(Type.Server.WEB) + "terms/personal")
-    fun startTermsLocation(activity: Activity) = startActivityWebview(activity, "위치 기반 이용 약관", Type.Server.getUrl(Type.Server.WEB) + "terms/location")
-    fun startTermsYouth(activity: Activity) = startActivityWebview(activity, "청소년 보호법 이용 약관", Type.Server.getUrl(Type.Server.WEB) + "terms/youth")
-    fun startTermsPrivacy(activity: Activity) = startActivityWebview(activity, "개인 정보 보호 조치", Type.Server.getUrl(Type.Server.WEB) + "terms/privacy")
-    fun startTermsGuarantee(activity: Activity) = startActivityWebview(activity, "채무 보증확인", Type.Server.getUrl(Type.Server.WEB) + "terms/guarantee")
-    fun startTermsCompany(activity: Activity) = startActivityWebview(activity, "사업자정보확인", "http://ftc.go.kr/bizCommPop.do?wrkr_no=8768601259")
+    fun startTermsPurchase(activity: Activity)=startActivityWebview(activity,activity.resources.getString(R.string.join_agreebuy), Type.Server.getUrl(Type.Server.WEB)+"terms/purchase")
+    fun startTermsSale(activity: Activity)=startActivityWebview(activity,activity.resources.getString(R.string.join_agreesell), Type.Server.getUrl(Type.Server.WEB)+"terms/sale")
+    fun startTermsPersonal(activity: Activity)=startActivityWebview(activity,activity.resources.getString(R.string.join_agreeprivacy), Type.Server.getUrl(Type.Server.WEB)+"terms/personal")
+    fun startTermsLocation(activity: Activity)=startActivityWebview(activity,"위치 기반 이용 약관", Type.Server.getUrl(Type.Server.WEB)+"terms/location")
+    fun startTermsYouth(activity: Activity)=startActivityWebview(activity,"청소년 보호법 이용 약관", Type.Server.getUrl(Type.Server.WEB)+"terms/youth")
+    fun startTermsPrivacy(activity: Activity)=startActivityWebview(activity,"개인 정보 보호 조치", Type.Server.getUrl(Type.Server.WEB)+"terms/privacy")
+    fun startTermsGuarantee(activity: Activity)=startActivityWebview(activity,"채무 보증확인", Type.Server.getUrl(Type.Server.WEB)+"terms/guarantee")
+    fun startTermsCompany(activity: Activity)=startActivityWebview(activity,"사업자정보확인", "http://ftc.go.kr/bizCommPop.do?wrkr_no=8768601259")
 
 
     fun startActivityWebview(activity: Activity, title: String, url: String, param: String = "") {
@@ -94,7 +93,7 @@ object CommonUtilKotlin {
     fun startActivityPopupDialog(activity: Activity, imgPath: String, state: PopupViewType) {
         if (state == PopupViewType.POPUP_VIEW_STOP) {
             var str = Preferences.getMainBannerViewDialog(imgPath)
-            if (TextUtils.isEmpty(str) || str != imgPath) {
+            if(TextUtils.isEmpty(str)){
                 val intent = Intent(activity, MainBannerPopupActivity::class.java)
                 intent.putExtra("state", state)
                 intent.putExtra("imgPath", imgPath)
@@ -269,5 +268,14 @@ object CommonUtilKotlin {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
         }
     }
+
+
+    fun movePlanningDealDetail(act : Activity, id : Int, url : String){
+        val intent = Intent(act, PlanningDealDetailActivity::class.java)
+        intent.putExtra("planningDealDetailId",id)
+        intent.putExtra("url",url)
+        act.startActivityForResult(intent,Flag.RequestCode.PLANNING_DEAL_DETAIL)
+    }
+
 
 }
