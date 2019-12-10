@@ -57,6 +57,7 @@
     <string name="common_format_people">%,2d명</string>
     <string name="common_format_product">%,2d개</string>
     <string name="common_format_totalproduct">총 %,2d개</string>
+    <string name="common_format_brackets">[%s]</string>
     <string name="common_unit_person">명</string>
     <string name="common_unit_board">건</string>
     <string name="common_unit_price">원</string>
