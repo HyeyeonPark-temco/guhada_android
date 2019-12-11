@@ -113,7 +113,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                 //CommonUtilKotlin.movePlanningDealDetail(this@SideMenuActivity,1,"https://qa-guhada.s3.amazonaws.com/images/event/new_detail_m.png")
             }
             R.id.image_close -> {
-                if(CustomLog.flag)CommonUtilKotlin.movePlanningDealDetail(this@SideMenuActivity,1,"https://qa-guhada.s3.amazonaws.com/images/event/new_detail_m.png")
+                //if(CustomLog.flag)CommonUtilKotlin.movePlanningDealDetail(this@SideMenuActivity,1,"https://qa-guhada.s3.amazonaws.com/images/event/new_detail_m.png")
                 onBackPressed()
             }
             R.id.layout_brand -> BrandSubActivity.startActivityForResult(this, REQUEST_CODE_BRAND)

@@ -2,7 +2,6 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Handler
 import android.text.Editable
 import android.text.TextUtils
@@ -16,6 +15,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
@@ -26,6 +26,8 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.community.detail.CommentListFragment
 import io.temco.guhada.view.fragment.community.detail.CommunityDetailContentsFragment
+import io.temco.guhada.view.fragment.community.detail.CommunityPostListFragment
+
 /**
  * @author park jungho
  *
@@ -36,6 +38,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     private lateinit var mRequestManager: RequestManager
     private lateinit var mViewModel : CommunityDetailViewModel
     private lateinit var mDetailFragment : CommunityDetailContentsFragment
+    private lateinit var mPostListFragment : CommunityPostListFragment
     private lateinit var mCommentFragment : CommentListFragment
     private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
 
@@ -50,7 +53,6 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     override fun getBaseTag(): String = CommunityDetailActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_communitydetail
     override fun getViewType(): Type.View = Type.View.REVIEW_WRITE
-
 
     override fun init() {
         if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "init ---------------------")
@@ -164,9 +166,15 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
 
     private fun initIntent(){
         if(intent?.extras?.containsKey("bbsId")!!){
-            mViewModel.bbsId = intent.extras.getLong("bbsId")
-            mViewModel.info = intent.extras.getSerializable("info") as CommunityInfo
+            mViewModel.bbsId = intent?.extras?.getLong("bbsId") ?: 0L
+            mViewModel.info = intent?.extras?.getSerializable("info") as CommunityInfo
+            mViewModel.mFilterId = intent?.extras?.getInt("filterId") ?: 0
+            mViewModel.mOrder = intent?.extras?.getString("order") ?: CommunityOrderType.DATE_DESC.type
+            mViewModel.mCategoryId = intent?.extras?.getLong("categoryId") ?: -1L
             if(CustomLog.flag) CustomLog.L("CommunityDetailActivity", "mViewModel.info ",mViewModel.info.toString())
+            if(CustomLog.flag) CustomLog.L("CommunityDetailActivity", "mViewModel.filterId ",mViewModel.mFilterId)
+            if(CustomLog.flag) CustomLog.L("CommunityDetailActivity", "mViewModel.mOrder ",mViewModel.mOrder)
+            if(CustomLog.flag) CustomLog.L("CommunityDetailActivity", "mViewModel.mCategoryId ",mViewModel.mCategoryId)
         }
     }
 
@@ -187,6 +195,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                         mDetailFragment.setDetailView()
                     }else{
                         mViewModel.getCommentList()
+                        //mViewModel.repository.getCommunityList()
                         mBinding.layoutAppbar.setExpanded(true,true)
                     }
                     isLoadData = true
@@ -212,6 +221,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
             mHandler.postDelayed({
                 initDetail()
                 initComment()
+                //initPostList()
             },100)
         })
         mViewModel.getDetailData()
@@ -232,6 +242,15 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         mCommentFragment = CommentListFragment(mViewModel)
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutCommunitydetailComment.id, mCommentFragment)
+            it.commitAllowingStateLoss()
+        }
+    }
+
+
+    private fun initPostList() {
+        mPostListFragment = CommunityPostListFragment(mViewModel)
+        supportFragmentManager.beginTransaction().let {
+            it.add(mBinding.framelayoutCommunitydetailPostlist.id, mPostListFragment)
             it.commitAllowingStateLoss()
         }
     }

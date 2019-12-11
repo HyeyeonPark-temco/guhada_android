@@ -10,7 +10,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  * 19.12.10
  * 커뮤니티 상세에 게시글 목록
  */
-class CommunityDetailListFragment(val viewModel : CommunityDetailViewModel) : BaseFragment<FragmentCommentBinding>() {
+class CommunityPostListFragment(val viewModel : CommunityDetailViewModel) : BaseFragment<FragmentCommentBinding>() {
     // -------- LOCAL VALUE --------
     // -----------------------------
 
@@ -18,7 +18,7 @@ class CommunityDetailListFragment(val viewModel : CommunityDetailViewModel) : Ba
     // OVERRIDE
     ////////////////////////////////////////////////
 
-    override fun getBaseTag(): String = CommunityDetailListFragment::class.java.simpleName
+    override fun getBaseTag(): String = CommunityPostListFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.fragment_community_list
     override fun init() {
         mBinding.viewModel = viewModel

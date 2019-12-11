@@ -10,8 +10,10 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
+import com.google.gson.JsonObject
 import io.temco.guhada.BR
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.enum.ImageUploadTarget
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
@@ -24,6 +26,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.community.*
 import io.temco.guhada.data.server.CommunityServer
 import io.temco.guhada.data.server.GatewayServer
+import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.CommunityDetailActivity
@@ -44,6 +47,14 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
 
     var userId = -1L
     var bbsId = 0L
+
+    val UNIT_PER_PAGE = 10
+    var mPage = 0
+    var mFilterId = -1
+    var mOrder = CommunityOrderType.DATE_DESC.type
+    var mCategoryId = -1L
+    var mCommunityResponse: MutableLiveData<CommunityBoard.CommunityResponse> = MutableLiveData()
+
     var communityDetail: MutableLiveData<CommunityDetail> = MutableLiveData()
     var commentList : MutableLiveData<ArrayList<Comments>> = MutableLiveData()
     var commentAdapter : CommentListAdapter? = null
@@ -747,6 +758,53 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                     dataIsNull = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataIsNull ") }
             )
         },categoryId)
+    }
+
+
+    fun getCommunityList() {
+        // init filter id
+        if (viewModel.mCategoryId > 0) {
+            CommunityCriteria().apply {
+                this.categoryId = viewModel.info.communityCategoryId.toLong()
+                this.filterId = viewModel.mFilterId
+                this.deleted = false
+                this.inUse = true
+                this.query = ""
+                this.searchType = CommunityCriteria.SearchType.TITLE_CONTENTS.type
+            }.let { criteria ->
+                SearchServer.getCommunityBoardList(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                if (viewModel.mPage > 1) {
+                                    val newList = (it.data as CommunityBoard.CommunityResponse).bbs
+                                    viewModel.mCommunityResponse.value?.bbs?.addAll(newList)
+                                    viewModel.mCommunityResponse.postValue(viewModel.mCommunityResponse.value)
+                                } else {
+                                    viewModel.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
+                                }
+                            })
+                }, criteria = criteria, order = viewModel.mOrder, page = ++viewModel.mPage, unitPerPage = viewModel.UNIT_PER_PAGE)
+            }
+        } else {
+            // 전체글 조회
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("deleted", false)
+            jsonObject.addProperty("inUse", true)
+            jsonObject.addProperty("searchType", "CONTENTS")
+            SearchServer.getCommunityBoardList(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            if (viewModel.mPage > 1) {
+                                val newList = (it.data as CommunityBoard.CommunityResponse).bbs
+                                viewModel.mCommunityResponse.value?.bbs?.addAll(newList)
+                                viewModel.mCommunityResponse.postValue(viewModel.mCommunityResponse.value)
+                            } else {
+                                viewModel.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
+                            }
+                        })
+            }, criteria = jsonObject, order = viewModel.mOrder, page = ++viewModel.mPage, unitPerPage = viewModel.UNIT_PER_PAGE)
+        }
+
     }
 
 }
