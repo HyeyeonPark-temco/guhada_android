@@ -387,15 +387,16 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_shippingmemo" />
 
-                        <!--app:layout_constraintTop_toBottomOf="@+id/linearlayout_payment_shippingmemo"-->
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <include
+                    android:id="@+id/include_payment_etcmessage"
+                    layout="@layout/layout_payment_etcmessage" />
+
+                <include
                     android:id="@+id/include_payment_discount"
-                    layout="@layout/layout_payment_discount"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    layout="@layout/layout_payment_discount" />
 
                 <include
                     android:id="@+id/include_payment_discountresult"

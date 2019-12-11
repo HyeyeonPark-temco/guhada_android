@@ -93,6 +93,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentDiscount.viewModel = mViewModel
         mBinding.includePaymentDiscountresult.viewModel = mViewModel
         mBinding.includePaymentPaymentway.viewModel = mViewModel
+        mBinding.includePaymentEtcmessage.viewModel = mViewModel
         mBinding.includePaymentPaymentway.setPurchaseClickListener { CommonUtilKotlin.startTermsPurchase(this@PaymentActivity) }
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
