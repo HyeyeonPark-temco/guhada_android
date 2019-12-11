@@ -14,16 +14,17 @@ import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.databinding.ItemCustomspinnerBinding
 import io.temco.guhada.databinding.LayoutCustomspinnerBinding
+import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 
 /**
  * @author Hyeyeon Park
  */
 class CustomSpinnerView : LinearLayout {
     private lateinit var mBinding: LayoutCustomspinnerBinding
-    private var mList = mutableListOf<String>()
     private lateinit var mPopup: ListPopupWindow
-    private var mOnItemClickTask: (position: Int) -> Unit = {}
     private lateinit var mAdapter: CustomSpinnerAdapter
+    private var mList = mutableListOf<String>()
+    private var mOnItemClickTask: (position: Int) -> Unit = {}
 
     // attrs
     private var mPlaceHolder = "select"
@@ -85,11 +86,18 @@ class CustomSpinnerView : LinearLayout {
         mAdapter = CustomSpinnerAdapter(list = mList)
         mPopup.setAdapter(mAdapter)
         mPopup.listView?.overScrollMode = View.OVER_SCROLL_NEVER
+        setListHeight(list.size)
+    }
 
-        // list height
+    fun setAdapter(adapter : BaseAdapter){
+        mPopup.setAdapter(adapter)
+        setListHeight(adapter.count)
+    }
+
+    private fun setListHeight(itemCount : Int){
         val count =
-                if (mMaxVisibleCount > 0 && list.size > mMaxVisibleCount) mMaxVisibleCount
-                else list.size
+                if (mMaxVisibleCount > 0 && itemCount > mMaxVisibleCount) mMaxVisibleCount
+                else itemCount
 
         val height = CommonViewUtil.convertDpToPixel(context = context, dp = mItemHeight) * count
         mPopup.height = height + (mPopup.listView?.dividerHeight ?: 0 * count)
@@ -129,5 +137,6 @@ class CustomSpinnerView : LinearLayout {
         override fun getItemId(position: Int): Long = 0
         override fun getCount(): Int = list.size
     }
+
 
 }

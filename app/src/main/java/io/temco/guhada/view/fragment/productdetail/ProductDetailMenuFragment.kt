@@ -54,6 +54,8 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
         else initMenuSpinner()
         setSpinnerHeight()
 
+        mBinding.spinnerProductdetailOptionlist.setAdapter(mMenuSpinnerAdapter)
+
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
