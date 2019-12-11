@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.ListPopupWindow
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.databinding.ItemCustomspinnerBinding
 import io.temco.guhada.databinding.LayoutCustomspinnerBinding
 
@@ -23,6 +24,12 @@ class CustomSpinnerView : LinearLayout {
     private lateinit var mPopup: ListPopupWindow
     private var mOnItemClickTask: (position: Int) -> Unit = {}
     private lateinit var mAdapter: CustomSpinnerAdapter
+
+    // attrs
+    private var mPlaceHolder = "select"
+    private var mItemHeight = 0
+    private var mIsLarge = false
+    private var mMaxVisibleCount = 0
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -41,16 +48,18 @@ class CustomSpinnerView : LinearLayout {
         mPopup = ListPopupWindow(context)
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSpinnerView)
-        val placeHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder)
-                ?: "select"
-//        val height = typedArray.getDimension(R.styleable.CustomSpinnerView_android_layout_height, CommonViewUtil.convertDpToPixel(45, context).toFloat())
-//        (mBinding.textviewCustomspinnerPlaceholder.layoutParams as ConstraintLayout.LayoutParams).height = height.toInt()
+        mPlaceHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder) ?: "select"
+        mIsLarge = typedArray.getBoolean(R.styleable.CustomSpinnerView_isLarge, false)
+        val defaultItemHeight = if (mIsLarge) context.resources.getDimensionPixelSize(R.dimen.height_spinner_large) else context.resources.getDimensionPixelSize(R.dimen.height_spinner_default)
+        mItemHeight = typedArray.getDimensionPixelOffset(R.styleable.CustomSpinnerView_itemHeight, CommonViewUtil.convertPixelToDp(context = context, px = defaultItemHeight))
+        mMaxVisibleCount = typedArray.getInteger(R.styleable.CustomSpinnerView_maxVisibleCount, 0)
 
-        mBinding.textviewCustomspinnerPlaceholder.text = placeHolder
+        mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
+        mBinding.textviewCustomspinnerPlaceholder.layoutParams.height = CommonViewUtil.dipToPixel(context = context, dip = mItemHeight)
         mPopup.anchorView = mBinding.textviewCustomspinnerPlaceholder
         mPopup.isModal = true
 
-//        mPopup.setBackgroundDrawable(context.getDrawable(R.drawable.background_listpopup))
+        mPopup.setBackgroundDrawable(context.getDrawable(R.drawable.background_spinner_listpopup))
 
         mBinding.textviewCustomspinnerPlaceholder.setOnClickListener {
             if (mPopup.isShowing) dismiss()
@@ -75,10 +84,24 @@ class CustomSpinnerView : LinearLayout {
         this.mList = list
         mAdapter = CustomSpinnerAdapter(list = mList)
         mPopup.setAdapter(mAdapter)
+        mPopup.listView?.overScrollMode = View.OVER_SCROLL_NEVER
+
+        // list height
+        val count =
+                if (mMaxVisibleCount > 0 && list.size > mMaxVisibleCount) mMaxVisibleCount
+                else list.size
+
+        val height = CommonViewUtil.convertDpToPixel(context = context, dp = mItemHeight) * count
+        mPopup.height = height + (mPopup.listView?.dividerHeight ?: 0 * count)
     }
 
     fun setOnItemClickTask(task: (position: Int) -> Unit) {
         this.mOnItemClickTask = task
+    }
+
+    fun setPlaceHolder(placeHolder: String) {
+        this.mPlaceHolder = placeHolder
+        mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
     }
 
     private fun show() {
@@ -98,6 +121,7 @@ class CustomSpinnerView : LinearLayout {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_customspinner, parent, false)
             mBinding.textviewCustomspinnerList.text = list[position]
+            (mBinding.textviewCustomspinnerList.layoutParams as LinearLayout.LayoutParams).height = mItemHeight
             return mBinding.root
         }
 
