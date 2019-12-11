@@ -53,7 +53,7 @@ class MyPageReviewLayout constructor(
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if(CustomLog.flag)CustomLog.L("MyPageBookMarkLayout","itemCount",mViewModel.getAvailableAdapter().itemCount,"findLastVisibleItemPosition",recyclerLayoutManager1.findLastVisibleItemPosition())
-                if (mViewModel.getAvailableAdapter().itemCount - recyclerLayoutManager1.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading1) {
+                if (mViewModel.getAvailableAdapter().itemCount - recyclerLayoutManager1.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading1 && mViewModel.totalPageNum1 > mViewModel.pageNum1+1) {
                     mViewModel.isLoading1 = true
                     mViewModel.getMoreTab1List()
                 }
@@ -81,7 +81,7 @@ class MyPageReviewLayout constructor(
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if(CustomLog.flag)CustomLog.L("MyPageBookMarkLayout","itemCount",mViewModel.getReviewAdapter().itemCount,"findLastVisibleItemPosition",recyclerLayoutManager2.findLastVisibleItemPosition())
-                if (mViewModel.getReviewAdapter().itemCount - recyclerLayoutManager2.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading2) {
+                if (mViewModel.getReviewAdapter().itemCount - recyclerLayoutManager2.findLastVisibleItemPosition() <= 2 && !mViewModel.isLoading2 && mViewModel.totalPageNum2 > mViewModel.pageNum2+1) {
                     mViewModel.isLoading2 = true
                     mViewModel.getMoreTab2List()
                 }

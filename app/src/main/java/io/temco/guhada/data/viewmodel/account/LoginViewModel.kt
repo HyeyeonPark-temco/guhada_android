@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_OK
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import com.auth0.android.jwt.JWT
+import com.facebook.common.Common
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -17,10 +18,7 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.common.util.TrackingUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.event.LuckyDrawList
@@ -275,5 +273,46 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
             CommonUtil.debug("[FACEBOOK] EXCEPTION: " + e.message)
         }
 
+    }
+
+
+    /**
+     *
+     * 비밀번호 확인
+     * @author park jungho
+     * @since 2019.12.10
+     */
+    fun onClickPasswordCheck() {
+        val email = Preferences.getToken().let { token ->
+                JWT(token.accessToken ?: "").getClaim("user_name").asString()
+            }
+        if (CommonUtil.validateEmail(email)) {
+            ServerCallbackUtil.callWithToken(task = { accessToken ->
+                var body = JsonObject()
+                body.addProperty("email",email)
+                body.addProperty("password",pwd)
+                UserServer.passwordCheck(OnServerListener { success, o ->
+                    if (CustomLog.flag) CustomLog.L("LoginViewModel onClickPasswordCheck", "success", success)
+                    if (success) {
+                        val model = o as BaseModel<*>
+                        if (CustomLog.flag) CustomLog.L("LoginViewModel onClickPasswordCheck", "model", model)
+                        if (CustomLog.flag) CustomLog.L("LoginViewModel onClickPasswordCheck", "model.resultCode", model.resultCode)
+                        when (model.resultCode) {
+                            Flag.ResultCode.SUCCESS -> {
+                                loginListener.closeActivity(RESULT_OK)
+                                return@OnServerListener
+                            }
+                            else -> loginListener.showSnackBar(model.message)
+                            // Flag.ResultCode.USER_NOT_FOUND, Flag.ResultCode.SIGNIN_INVALID_PASSWORD -> loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.login_message_notequalpwd))
+                        }
+                    } else {
+                        loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.common_message_servererror))
+                        CommonUtil.debug(o as String)
+                    }
+                },accessToken = accessToken, userId = CommonUtil.checkUserId(), body = body)
+            },invalidTokenTask = {})
+        } else {
+            loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.login_message_wrongidformat))
+        }
     }
 }

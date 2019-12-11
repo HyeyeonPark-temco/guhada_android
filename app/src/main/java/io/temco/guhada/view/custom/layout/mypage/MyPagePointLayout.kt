@@ -88,16 +88,18 @@ class MyPagePointLayout constructor(
     override fun onClickMonth() = onClickCheck()
     override fun onClickThreeMonth() = onClickCheck()
     override fun onClickYear() = onClickCheck()
-    override fun onChangeDate(startDate: String, fromDate: String) {
+    override fun onChangeDate(startDate: String, endDate: String) {
         mViewModel.page = 1
     }
 
     // startDate, endDate timeStamp로 변경 후 사용 예정 (2019.08.06)
     override fun onClickCheck(startDate: String, endDate: String) {
-
+        onClickCheck()
     }
 
     private fun onClickCheck() {
+        (mBinding.recyclerviewMypagepoint.adapter as MyPagePointAdapter).clearList()
+
         val startDate = mBinding.calendarfilterMypagepoint.startDate.split(".")
         val endDate = mBinding.calendarfilterMypagepoint.endDate.split(".")
         mViewModel.fromDate = "${startDate[0]}-${startDate[1]}-${startDate[2]}"

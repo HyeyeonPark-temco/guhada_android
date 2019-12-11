@@ -110,7 +110,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             // Side Menu
             R.id.image_home ->  gotoMain(true)
             R.id.image_setting -> {
-                //CommonUtilKotlin.startActivityUserClaimGuhada(this@SideMenuActivity)
+                //CommonUtilKotlin.movePlanningDealDetail(this@SideMenuActivity,1,"https://qa-guhada.s3.amazonaws.com/images/event/new_detail_m.png")
             }
             R.id.image_close -> {
                 onBackPressed()

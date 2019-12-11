@@ -43,6 +43,8 @@ class RequestOrder {
 
     var consumptionPoint = 0    // 사용 포인트
 
+    var etcMessage = ""         // 기타 요청 사항
+
 
     // WEB 관련
     var userAgent: String = ""

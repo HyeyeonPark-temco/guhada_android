@@ -346,8 +346,8 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                                     3-> (customLayoutMap[currentPagerIndex] as KidsListLayout).listScrollTop()
                                     4-> (customLayoutMap[currentPagerIndex] as TimeDealListLayout).listScrollTop()
                                     5-> (customLayoutMap[currentPagerIndex] as LuckyDrawListLayout).listScrollTop()
-                                    //6-> (customLayoutMap[currentPagerIndex] as PlanningDealListLayout).listScrollTop()
-                                    6-> (customLayoutMap[currentPagerIndex] as EventListLayout).listScrollTop()
+                                    6-> (customLayoutMap[currentPagerIndex] as PlanningDealListLayout).listScrollTop()
+                                    7-> (customLayoutMap[currentPagerIndex] as EventListLayout).listScrollTop()
                                 }
 
                             }

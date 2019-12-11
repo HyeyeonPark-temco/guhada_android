@@ -62,7 +62,9 @@
                     android:orientation="vertical"
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:purchaseOrders="@{viewModel.purchaseOrderResponse.orderList}" />
+                    app:purchaseOrders="@{viewModel.purchaseOrderResponse.orderList}"
+                    app:isDetail="@{true}"
+                    />
 
                 <include
                     android:id="@+id/include_deliverydetail_productinfo"

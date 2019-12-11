@@ -50,6 +50,7 @@ class MyPageBookMarkViewModel (val context : Context, var mDisposable : Composit
     val listData : LiveData<ArrayList<Deal>> get() = _listData
 
     var currentPage : Int = 1
+    var totalPage : Int = -1
 
     var totalElement = ObservableField("0") // ObservableInt(View.GONE)
         @Bindable
@@ -151,19 +152,13 @@ class MyPageProductBookMarkRepository (val model : MyPageBookMarkViewModel) {
                         GatewayServer.getBookMarkProduct(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
-                                        /*if(!list.value.isNullOrEmpty() && list.value!!.get(list.value!!.size-1).dealId < 0){
-                                            list.value!!.removeAt(list.value!!.size-1)
-                                        }*/
                                         var startRange = model.getListAdapter().items.size
                                         var data = (o as BaseModel<*>).data as BookMarkProduct
-                                        if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData ", "init ----- list",data)
+                                        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "setInitData ", "init ----- list",data)
                                         model.totalElement.set(data.totalElements.toString())
                                         list.value!!.addAll(data.deals)
-                                        /*if(data.totalPage > page){
-                                            var moreDeal = Deal()
-                                            moreDeal.dealId = -999
-                                            list.value!!.add(moreDeal)
-                                        }*/
+                                        model.totalPage = data.totalPage
+                                        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "setInitData ", "init ----- model.totalPage",model.totalPage,"currentPage",model.currentPage)
                                         list!!.value = list!!.value
                                         if(startRange == 0){
                                             model.getListAdapter().notifyDataSetChanged()
