@@ -3,7 +3,6 @@ package io.temco.guhada.view.adapter.mypage
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtilKotlin
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.DeliveryButton
@@ -55,6 +55,9 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val item = list[position]
         holder.bind(item)
+
+        if (position > 0)
+            holder.setDivider(item.purchaseId, list[position - 1].purchaseId)
     }
 
     fun setItems(list: MutableList<PurchaseOrder>) {
@@ -92,6 +95,14 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             mBinding.textviewDeliveryOrdernumber.setOnClickListener(redirectDeliveryDetailListener)
 
             mBinding.executePendingBindings()
+        }
+
+        fun setDivider(purchaseId: Long, prevPurchaseId: Long) {
+            if (purchaseId == prevPurchaseId) {
+                mBinding.constraintlayoutDeliveryTop.visibility = View.GONE
+                mBinding.viewDeliveryTopline.setBackgroundResource(R.drawable.drawable_dash_line_eb)
+                mBinding.viewDeliveryTopline.layoutParams.height = CommonViewUtil.convertDpToPixel(10, mBinding.root.context)
+            }
         }
 
         private fun redirectDeliveryDetailActivity(purchaseId: Long, isDeliveryCer: Boolean, orderProdGroupId: Long, status: String, orderClaimGroupId: Long, refundVisible: Boolean = false) {
