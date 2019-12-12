@@ -1,43 +1,37 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ListPopupWindow
 import android.widget.Spinner
-import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
-import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionListAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
-import kotlinx.android.synthetic.main.layout_customspinner.view.*
 
 /**
  * 상품 상세-옵션 선택 view
  * @author Hyeyeon Park
  */
 class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>(), OnProductDetailMenuListener {
-    var mViewModel: ProductDetailMenuViewModel = ProductDetailMenuViewModel(this)
     private lateinit var mMenuSpinnerAdapter: ProductDetailOptionSpinnerAdapter
+    var mViewModel: ProductDetailMenuViewModel = ProductDetailMenuViewModel(this)
     var mIsBottomPopup = false
-    private var mSpinnerFirstInit = false
 
     override fun getBaseTag(): String = ProductDetailMenuFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_menu
@@ -53,78 +47,53 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     override fun init() {
         if (mIsBottomPopup) initMenuList()
         else initMenuSpinner()
-        setSpinnerHeight()
 
-        mBinding.spinnerProductdetailOptionlist.setAdapter(mMenuSpinnerAdapter)
-        mBinding.spinnerProductdetailOptionlist.setOnItemClickTask { position ->
-            val list = mViewModel.product.optionInfos ?: listOf()
-            val item = list[position]
-
-            mBinding.spinnerProductdetailOptionlist.setPlaceHolder("${item.getOptionText()} ${item.getExtraPriceText()}")
-            mBinding.spinnerProductdetailOptionlist.setRgb(item.rgb1)
-            setOption(item)
-        }
+//        setSpinnerHeight()
 
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
 
     /**
+     * 상단 옵션 선택 view
+     *
      * 옵션 드롭다운 스피너로 변경
      * @since 2019.09.05
+     *
+     * CustomSpinnerView로 변경
+     * @since 2019.12.12
+     *
      * @author Hyeyeon Park
      */
     private fun initMenuSpinner() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
         if (list.isNotEmpty())
             mBinding.spinnerProductdetailOptionlist.setPlaceHolder(list[0].getOptionNameText())
-        // mBinding.textviewProductdetailOption.text = list[0].getOptionNameText()
 
         mMenuSpinnerAdapter = ProductDetailOptionSpinnerAdapter(
                 context = mBinding.root.context,
                 layout = R.layout.item_productdetail_optionspinner,
                 list = list.toList())
 
-        mBinding.spinnerProductdetailOption.mListener = object : CustomSpinner.OnCustomSpinnerListener {
-            override fun onSpinnerOpened() {
-                mViewModel.mIsSpinnerOpen = ObservableBoolean(!mViewModel.mIsSpinnerOpen.get())
-                mViewModel.notifyPropertyChanged(BR.mIsSpinnerOpen)
-            }
-
-            override fun onSpinnerClosed() {
-                mViewModel.mIsSpinnerOpen = ObservableBoolean(!mViewModel.mIsSpinnerOpen.get())
-                mViewModel.notifyPropertyChanged(BR.mIsSpinnerOpen)
-            }
+        mBinding.spinnerProductdetailOptionlist.visibility = View.VISIBLE
+        mBinding.spinnerProductdetailOptionlist.setAdapter(mMenuSpinnerAdapter)
+        mBinding.spinnerProductdetailOptionlist.setOnItemClickTask { position ->
+            val item = list[position]
+            mBinding.spinnerProductdetailOptionlist.setPlaceHolder("${item.getOptionText()} ${item.getExtraPriceText()}")
+            mBinding.spinnerProductdetailOptionlist.setRgb(item.rgb1)
+            setOption(item)
         }
-        mBinding.spinnerProductdetailOption.adapter = mMenuSpinnerAdapter
-        mBinding.spinnerProductdetailOption.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val optionList = mViewModel.product.optionInfos ?: listOf()
-                if (mSpinnerFirstInit && position < optionList.size)
-                    setOption(optionList[position])
-                mSpinnerFirstInit = true
-            }
-        }
-
-        mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
-
-        // 스피너 드롭다운 Max Height 5개 높이로 설정
-        val popup = AppCompatSpinner::class.java.getDeclaredField("mPopup")
-        popup.isAccessible = true
-        val popupWindow = popup.get(mBinding.spinnerProductdetailOption) as androidx.appcompat.widget.ListPopupWindow
-        if (list.size > 4) popupWindow.height = CommonViewUtil.convertDpToPixel(230, mBinding.root.context)
     }
 
+    /**
+     * 하단 옵션 선택 view
+     */
     private fun initMenuList() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
         if (list.isNotEmpty()) {
             mBinding.spinnerProductdetailOptionlist.setPlaceHolder(list[0].getOptionNameText())
-//            val placeHolder = list[0].getOptionNameText()
-            // mBinding.textviewProductdetailOption.text = placeHolder
+            val placeHolder = list[0].getOptionNameText()
+             mBinding.textviewProductdetailOptionselected.text = placeHolder
         }
 
         mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
@@ -138,6 +107,8 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 setOption(option)
             }
         }
+
+        mBinding.spinnerProductdetailOptionlist.visibility = View.GONE
     }
 
     private fun collapseOptionList(isExpanded: Boolean) {
@@ -152,6 +123,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
         mViewModel.notifyPropertyChanged(BR.mIsBottomSpinnerOpen)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setOption(option: OptionInfo?) {
         if (option != null && option.stock > 0) {
             if (option.rgb1?.isNotEmpty() == true) {
@@ -159,8 +131,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
             } else mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
 
-//            mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-            mBinding.textviewProductdetailOptionselected.text = option.getOptionText().plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
+            mBinding.textviewProductdetailOptionselected.text =  "${option.getOptionText()} ${option.getExtraPriceText()}"
             mBinding.executePendingBindings()
 
             // INIT OPTION

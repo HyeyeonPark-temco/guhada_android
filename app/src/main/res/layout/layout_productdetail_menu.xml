@@ -100,6 +100,7 @@
                                 android:layout_height="@dimen/view_productdetail_option_rgb"
                                 android:layout_gravity="center_vertical"
                                 android:layout_margin="1dp"
+                                android:visibility="gone"
                                 android:src="@drawable/drawable_transparent_circle" />
 
                             <TextView
@@ -136,7 +137,7 @@
                 android:id="@+id/constraintlayout_productdetail_optionspinnerlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_all_whitefour_bottom"
+                android:background="@drawable/border_all_whitefour"
                 android:paddingBottom="1dp"
                 android:visibility="@{viewModel.mIsBottomSpinnerOpen ? View.VISIBLE: View.GONE, default = gone}">
 
