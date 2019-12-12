@@ -60,8 +60,9 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             val list = mViewModel.product.optionInfos ?: listOf()
             val item = list[position]
 
-            mBinding.spinnerProductdetailOptionlist.setPlaceHolder(item.getOptionText())
+            mBinding.spinnerProductdetailOptionlist.setPlaceHolder("${item.getOptionText()} ${item.getExtraPriceText()}")
             mBinding.spinnerProductdetailOptionlist.setRgb(item.rgb1)
+            setOption(item)
         }
 
         mBinding.viewModel = mViewModel

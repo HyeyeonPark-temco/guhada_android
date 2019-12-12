@@ -128,11 +128,10 @@ class CustomSpinnerView : LinearLayout {
     fun setRgb(rgb: String?) {
         if (rgb?.isNotEmpty() == true) {
             mSelectedRgb = rgb
+            mBinding.imageviewCustomspinnerRgb.setBackgroundColor(Color.parseColor(rgb))
 
-            if (mBinding.textviewCustomspinnerPlaceholder.paddingLeft == 0) {
+            if (mBinding.textviewCustomspinnerPlaceholder.paddingLeft == 0)
                 mBinding.textviewCustomspinnerPlaceholder.setPadding(CommonViewUtil.convertDpToPixel(32, context), 0, 0, 0)
-                mBinding.imageviewCustomspinnerRgb.setBackgroundColor(Color.parseColor(rgb))
-            }
         }
     }
 
