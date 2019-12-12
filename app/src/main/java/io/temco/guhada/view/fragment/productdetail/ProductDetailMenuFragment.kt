@@ -3,8 +3,6 @@ package io.temco.guhada.view.fragment.productdetail
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.View
-import android.widget.ListPopupWindow
-import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
@@ -12,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
@@ -48,8 +45,6 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
         if (mIsBottomPopup) initMenuList()
         else initMenuSpinner()
 
-//        setSpinnerHeight()
-
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
@@ -75,6 +70,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 layout = R.layout.item_productdetail_optionspinner,
                 list = list.toList())
 
+        mBinding.linearlayoutProductdetailOptionselected.visibility =  View.GONE
         mBinding.spinnerProductdetailOptionlist.visibility = View.VISIBLE
         mBinding.spinnerProductdetailOptionlist.setAdapter(mMenuSpinnerAdapter)
         mBinding.spinnerProductdetailOptionlist.setOnItemClickTask { position ->
@@ -96,7 +92,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
              mBinding.textviewProductdetailOptionselected.text = placeHolder
         }
 
-        mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
+        mBinding.linearlayoutProductdetailOptionselected.setOnClickListener {
             collapseOptionList(isExpanded = mViewModel.mIsBottomSpinnerOpen.get())
         }
 
@@ -112,14 +108,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     }
 
     private fun collapseOptionList(isExpanded: Boolean) {
-        if (isExpanded) {
-            mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(false)
-            mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour)
-        } else {
-            mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour_emptybottom)
-            mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(true)
-        }
-
+        mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(!isExpanded)
         mViewModel.notifyPropertyChanged(BR.mIsBottomSpinnerOpen)
     }
 
@@ -161,17 +150,6 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     fun getSelectedOptionCount(): Int = mViewModel.optionMap.keys.size
     fun getSelectedOptionAttrs() = mViewModel.optionMap
     fun getSelectedOptionDealId(): Long? = mViewModel.getDealOptionId()
-
-    // TODO list visible limit: 5; height: 230dp [2019.09.05]
-    private fun setSpinnerHeight() {
-        val spinner = mBinding.spinnerProductdetailOption
-        val popup = Spinner::class.java.getDeclaredField("mPopup")
-        popup.isAccessible = true
-
-        val window = popup.get(spinner) as ListPopupWindow
-        window.height = CommonViewUtil.convertDpToPixel(dp = 230, context = context
-                ?: mBinding.root.context)
-    }
 
     companion object {
         // 미사용
