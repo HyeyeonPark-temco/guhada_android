@@ -920,6 +920,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mOrderDialog = new ProductOrderDialog();
                 mOrderDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
             }
+
+            if(mOrderDialog.isAdded())
+                mOrderDialog.dismiss();
+
             mOrderDialog.show(getFragmentManager(), getBaseTag());
         }
     }

@@ -2,6 +2,7 @@ package io.temco.guhada.view.custom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,6 @@ import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.databinding.ItemCustomspinnerBinding
 import io.temco.guhada.databinding.LayoutCustomspinnerBinding
-import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 
 /**
  * @author Hyeyeon Park
@@ -23,8 +23,9 @@ class CustomSpinnerView : LinearLayout {
     private lateinit var mBinding: LayoutCustomspinnerBinding
     private lateinit var mPopup: ListPopupWindow
     private lateinit var mAdapter: CustomSpinnerAdapter
-    private var mList = mutableListOf<String>()
+    private var mList = mutableListOf<Any>()
     private var mOnItemClickTask: (position: Int) -> Unit = {}
+    private var mSelectedRgb = ""
 
     // attrs
     private var mPlaceHolder = "select"
@@ -57,7 +58,7 @@ class CustomSpinnerView : LinearLayout {
 
         mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
         mBinding.textviewCustomspinnerPlaceholder.layoutParams.height = CommonViewUtil.dipToPixel(context = context, dip = mItemHeight)
-        mPopup.anchorView = mBinding.textviewCustomspinnerPlaceholder
+        mPopup.anchorView = mBinding.motionlayoutCustomspinner
         mPopup.isModal = true
 
         mPopup.setBackgroundDrawable(context.getDrawable(R.drawable.background_spinner_listpopup))
@@ -68,33 +69,45 @@ class CustomSpinnerView : LinearLayout {
         }
 
         mPopup.setOnItemClickListener { parent, view, position, id ->
-            mBinding.textviewCustomspinnerPlaceholder.text = mList[position]
+            if (mList.size > position) {
+                val item: Any = mList[position]
+                if (item is String) mBinding.textviewCustomspinnerPlaceholder.text = item
+                mOnItemClickTask(position)
+            }
+
             dismiss()
-            mOnItemClickTask(position)
         }
 
         mPopup.setOnDismissListener {
             mBinding.motionlayoutCustomspinner.transitionToStart()
         }
 
+//        if (mSelectedRgb.isNotEmpty()) mBinding.imageviewCustomspinnerRgb.visibility = View.VISIBLE else mBinding.imageviewCustomspinnerRgb.visibility = View.GONE
+
         mBinding.executePendingBindings()
         typedArray.recycle()
     }
 
-    fun setItems(list: MutableList<String>) {
+    fun setItems(list: MutableList<Any>) {
         this.mList = list
-        mAdapter = CustomSpinnerAdapter(list = mList)
-        mPopup.setAdapter(mAdapter)
-        mPopup.listView?.overScrollMode = View.OVER_SCROLL_NEVER
-        setListHeight(list.size)
+        if (list.isNotEmpty() && list[0] is String) {
+            mAdapter = CustomSpinnerAdapter(list = list as MutableList<String>)
+            mPopup.setAdapter(mAdapter)
+            mPopup.listView?.overScrollMode = View.OVER_SCROLL_NEVER
+            setListHeight(list.size)
+        }
     }
 
-    fun setAdapter(adapter : BaseAdapter){
+    fun setAdapter(adapter: BaseAdapter) {
+        if (adapter.count > 0)
+            for (i in 0 until adapter.count)
+                mList.add(adapter.getItem(i))
+
         mPopup.setAdapter(adapter)
         setListHeight(adapter.count)
     }
 
-    private fun setListHeight(itemCount : Int){
+    private fun setListHeight(itemCount: Int) {
         val count =
                 if (mMaxVisibleCount > 0 && itemCount > mMaxVisibleCount) mMaxVisibleCount
                 else itemCount
@@ -110,6 +123,17 @@ class CustomSpinnerView : LinearLayout {
     fun setPlaceHolder(placeHolder: String) {
         this.mPlaceHolder = placeHolder
         mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
+    }
+
+    fun setRgb(rgb: String?) {
+        if (rgb?.isNotEmpty() == true) {
+            mSelectedRgb = rgb
+
+            if (mBinding.textviewCustomspinnerPlaceholder.paddingLeft == 0) {
+                mBinding.textviewCustomspinnerPlaceholder.setPadding(CommonViewUtil.convertDpToPixel(32, context), 0, 0, 0)
+                mBinding.imageviewCustomspinnerRgb.setBackgroundColor(Color.parseColor(rgb))
+            }
+        }
     }
 
     private fun show() {

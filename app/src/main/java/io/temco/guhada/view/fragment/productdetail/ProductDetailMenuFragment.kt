@@ -27,6 +27,7 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionListAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
+import kotlinx.android.synthetic.main.layout_customspinner.view.*
 
 /**
  * 상품 상세-옵션 선택 view
@@ -55,6 +56,13 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
         setSpinnerHeight()
 
         mBinding.spinnerProductdetailOptionlist.setAdapter(mMenuSpinnerAdapter)
+        mBinding.spinnerProductdetailOptionlist.setOnItemClickTask { position ->
+            val list = mViewModel.product.optionInfos ?: listOf()
+            val item = list[position]
+
+            mBinding.spinnerProductdetailOptionlist.setPlaceHolder(item.getOptionText())
+            mBinding.spinnerProductdetailOptionlist.setRgb(item.rgb1)
+        }
 
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
@@ -68,7 +76,8 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     private fun initMenuSpinner() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
         if (list.isNotEmpty())
-            mBinding.textviewProductdetailOption.text = list[0].getOptionNameText()
+            mBinding.spinnerProductdetailOptionlist.setPlaceHolder(list[0].getOptionNameText())
+        // mBinding.textviewProductdetailOption.text = list[0].getOptionNameText()
 
         mMenuSpinnerAdapter = ProductDetailOptionSpinnerAdapter(
                 context = mBinding.root.context,
@@ -112,8 +121,9 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     private fun initMenuList() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
         if (list.isNotEmpty()) {
-            val placeHolder = list[0].getOptionNameText()
-            mBinding.textviewProductdetailOption.text = placeHolder
+            mBinding.spinnerProductdetailOptionlist.setPlaceHolder(list[0].getOptionNameText())
+//            val placeHolder = list[0].getOptionNameText()
+            // mBinding.textviewProductdetailOption.text = placeHolder
         }
 
         mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
@@ -148,7 +158,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
             } else mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
 
-            mBinding.linearlayoutProductdetailOption.visibility = View.GONE
+//            mBinding.linearlayoutProductdetailOption.visibility = View.GONE
             mBinding.textviewProductdetailOptionselected.text = option.getOptionText().plus(" ${String.format(mBinding.root.context.getString(R.string.productdetail_option_extraprice_format), option.price)}")
             mBinding.executePendingBindings()
 
