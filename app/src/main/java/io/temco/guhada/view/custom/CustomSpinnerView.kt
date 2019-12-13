@@ -34,7 +34,6 @@ class CustomSpinnerView : LinearLayout {
     private var mIsLarge = false
     private var mIsRgb = false
 
-
     constructor(context: Context) : super(context) {
         initView(context, null)
     }
@@ -59,7 +58,9 @@ class CustomSpinnerView : LinearLayout {
         mMaxVisibleCount = typedArray.getInteger(R.styleable.CustomSpinnerView_maxVisibleCount, 0)
         mIsRgb = typedArray.getBoolean(R.styleable.CustomSpinnerView_isRgb, false)
 
-        mBinding.imageviewCustomspinnerRgb.visibility = if (mIsRgb) View.VISIBLE else View.GONE
+        val placeHolderPadding = if (mIsRgb) CommonViewUtil.convertDpToPixel(32, context) else 0
+        mBinding.textviewCustomspinnerPlaceholder.setPadding(placeHolderPadding, 0, 0, 0)
+
         mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
         mBinding.textviewCustomspinnerPlaceholder.layoutParams.height = CommonViewUtil.dipToPixel(context = context, dip = mItemHeight)
         mPopup.anchorView = mBinding.motionlayoutCustomspinner
@@ -132,7 +133,6 @@ class CustomSpinnerView : LinearLayout {
         if (rgb?.isNotEmpty() == true) {
             mSelectedRgb = rgb
             mBinding.imageviewCustomspinnerRgb.setBackgroundColor(Color.parseColor(rgb))
-
             if (mBinding.textviewCustomspinnerPlaceholder.paddingLeft == 0)
                 mBinding.textviewCustomspinnerPlaceholder.setPadding(CommonViewUtil.convertDpToPixel(32, context), 0, 0, 0)
         }
