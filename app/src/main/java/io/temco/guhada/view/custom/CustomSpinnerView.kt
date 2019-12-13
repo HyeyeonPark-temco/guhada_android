@@ -22,6 +22,7 @@ import io.temco.guhada.databinding.LayoutCustomspinnerBinding
  *
  * Attributes in xml
  * - placeHolder
+ * - isDisabled
  * - maxVisibleCount: dropdown item의 최대 노출 개수
  * - isLarge: placeHolder, dropdown item의 높이 default 45dp; large 50dp (setItems()로 셋팅 시에만 적용)
  *
@@ -40,6 +41,7 @@ class CustomSpinnerView : LinearLayout {
     private var mPlaceHolder = "select"
     private var mMaxVisibleCount = 0
     private var mIsLarge = false
+    private var mIsDiabled = false
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -61,6 +63,7 @@ class CustomSpinnerView : LinearLayout {
         mPlaceHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder) ?: "select"
         mIsLarge = typedArray.getBoolean(R.styleable.CustomSpinnerView_isLarge, false)
         mMaxVisibleCount = typedArray.getInteger(R.styleable.CustomSpinnerView_maxVisibleCount, 0)
+        mIsDiabled = typedArray.getBoolean(R.styleable.CustomSpinnerView_isDisabled, false)
 
         mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
         mItemHeight = CommonViewUtil.convertPixelToDp(context, if (mIsLarge) context.resources.getDimensionPixelSize(R.dimen.height_spinner_large) else context.resources.getDimensionPixelSize(R.dimen.height_spinner_default))
@@ -70,9 +73,17 @@ class CustomSpinnerView : LinearLayout {
         mPopup.setListSelector(ColorDrawable(Color.TRANSPARENT))
         mPopup.setBackgroundDrawable(context.getDrawable(R.drawable.background_spinner_listpopup))
 
+        if (mIsDiabled) {
+            mBinding.textviewCustomspinnerPlaceholder.setTextColor(context.resources.getColor(R.color.greyish))
+            mBinding.motionlayoutCustomspinner.background = context.resources.getDrawable(R.drawable.box_all_palegrey)
+        }
+
+        // Listener
         mBinding.textviewCustomspinnerPlaceholder.setOnClickListener {
-            if (mPopup.isShowing) dismiss()
-            else show()
+            if(!mIsDiabled){
+                if (mPopup.isShowing) dismiss()
+                else show()
+            }
         }
 
         mPopup.setOnItemClickListener { parent, view, position, id ->

@@ -24,6 +24,7 @@
         <attr name="placeHolder" format="string|reference"/>
         <attr name="maxVisibleCount" format="integer"/>
         <attr name="isLarge" format="boolean"/>
+        <attr name="isDisabled" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="HtmlTextView">
