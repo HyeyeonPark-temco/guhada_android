@@ -22,7 +22,6 @@
 
     <declare-styleable name="CustomSpinnerView">
         <attr name="placeHolder" format="string|reference"/>
-        <attr name="itemHeight" format="dimension"/>
         <attr name="maxVisibleCount" format="integer"/>
         <attr name="isLarge" format="boolean"/>
     </declare-styleable>

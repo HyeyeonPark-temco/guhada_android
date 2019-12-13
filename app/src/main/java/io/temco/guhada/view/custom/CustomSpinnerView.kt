@@ -3,6 +3,7 @@ package io.temco.guhada.view.custom
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,13 @@ import io.temco.guhada.databinding.ItemCustomspinnerBinding
 import io.temco.guhada.databinding.LayoutCustomspinnerBinding
 
 /**
+ * Dropdown Spinner View
+ *
+ * Attributes in xml
+ * - placeHolder
+ * - maxVisibleCount: dropdown item의 최대 노출 개수
+ * - isLarge: placeHolder, dropdown item의 높이 default 45dp; large 50dp (setItems()로 셋팅 시에만 적용)
+ *
  * @author Hyeyeon Park
  */
 class CustomSpinnerView : LinearLayout {
@@ -26,13 +34,12 @@ class CustomSpinnerView : LinearLayout {
     private var mList = mutableListOf<Any>()
     private var mOnItemClickTask: (position: Int) -> Unit = {}
     private var mSelectedRgb = ""
+    private var mItemHeight = 0
 
     // attrs
     private var mPlaceHolder = "select"
-    private var mItemHeight = 0
     private var mMaxVisibleCount = 0
     private var mIsLarge = false
-    private var mIsRgb = false
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -53,15 +60,14 @@ class CustomSpinnerView : LinearLayout {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSpinnerView)
         mPlaceHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder) ?: "select"
         mIsLarge = typedArray.getBoolean(R.styleable.CustomSpinnerView_isLarge, false)
-        val defaultItemHeight = if (mIsLarge) context.resources.getDimensionPixelSize(R.dimen.height_spinner_large) else context.resources.getDimensionPixelSize(R.dimen.height_spinner_default)
-        mItemHeight = typedArray.getDimensionPixelOffset(R.styleable.CustomSpinnerView_itemHeight, CommonViewUtil.convertPixelToDp(context = context, px = defaultItemHeight))
         mMaxVisibleCount = typedArray.getInteger(R.styleable.CustomSpinnerView_maxVisibleCount, 0)
 
         mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
+        mItemHeight = CommonViewUtil.convertPixelToDp(context, if (mIsLarge) context.resources.getDimensionPixelSize(R.dimen.height_spinner_large) else context.resources.getDimensionPixelSize(R.dimen.height_spinner_default))
         mBinding.textviewCustomspinnerPlaceholder.layoutParams.height = CommonViewUtil.dipToPixel(context = context, dip = mItemHeight)
         mPopup.anchorView = mBinding.motionlayoutCustomspinner
         mPopup.isModal = true
-
+        mPopup.setListSelector(ColorDrawable(Color.TRANSPARENT))
         mPopup.setBackgroundDrawable(context.getDrawable(R.drawable.background_spinner_listpopup))
 
         mBinding.textviewCustomspinnerPlaceholder.setOnClickListener {
@@ -75,14 +81,12 @@ class CustomSpinnerView : LinearLayout {
                 if (item is String) mBinding.textviewCustomspinnerPlaceholder.text = item
                 mOnItemClickTask(position)
             }
-
             dismiss()
         }
 
         mPopup.setOnDismissListener {
             mBinding.motionlayoutCustomspinner.transitionToStart()
         }
-
 
         mBinding.executePendingBindings()
         typedArray.recycle()

@@ -70,9 +70,6 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 items[mViewModel.shownMenuPos].cartOptionInfoList = cartOptionList
                 notifyItemChanged(mViewModel.shownMenuPos)
             }
-
-//            if (items[mViewModel.shownMenuPos].cartOptionList.isEmpty())
-//                items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
         }
     }
 
@@ -325,6 +322,10 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         /**
          * 옵션 드롭다운 스피너로 변경
          * @since 2019.09.05
+         *
+         * CustomSpinnerView로 변경
+         * @since 2019.12.13
+         *
          * @author Hyeyeon Park
          */
         private fun initMenuSpinner(cart: Cart) {
