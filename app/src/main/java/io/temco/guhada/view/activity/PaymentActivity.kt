@@ -79,7 +79,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         initPaymentWay()
 
         // 현금영수증
-        initRecipient()
+        initReceipt()
 
         // 적립 예정 포인트
         // initDueSavePoint()
@@ -212,16 +212,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     event.addCustom("originalPrice", item.originalPrice.toString())
                     event.addCustom("discountPrice", item.discountPrice.toString())
                     if (!TextUtils.isEmpty(item.season)) event.addCustom("season", item.season)
-
-
-//                    val brandId = intent.getIntExtra("brandId", -1)
-//                    if (brandId > 0) event.addCustom("brandId", brandId.toString())
-
-//                    val sellerId = intent.getLongExtra("sellerId", -1)
-//                    if (sellerId > 0) event.addCustom("sellerId", sellerId.toString())
-
-//                    if (item.productId > 0) event.addCustom("productId", item.productId.toString())
-
                     TrackingUtil.sendKochavaEvent(event)
                 }
 
@@ -374,7 +364,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
     }
 
-    private fun initRecipient() {
+    private fun initReceipt() {
         // 신청 체크박스
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptissue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -388,7 +378,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 }
             }
             mBinding.includePaymentPaymentway.checkboxPaymentReceiptunissue.isChecked = !isChecked
-            mBinding.includePaymentPaymentway.constraintlayoutPaymentRecipientform.visibility = if (isChecked) View.VISIBLE else View.GONE
+            mBinding.includePaymentPaymentway.constraintlayoutPaymentReceiptform.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
 
         // 신청 체크박스
@@ -400,7 +390,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 mViewModel.mRequestOrder.cashReceiptUsage = ""
             }
             mBinding.includePaymentPaymentway.checkboxPaymentReceiptissue.isChecked = !isChecked
-            mBinding.includePaymentPaymentway.constraintlayoutPaymentRecipientform.visibility = if (!isChecked) View.VISIBLE else View.GONE
+            mBinding.includePaymentPaymentway.constraintlayoutPaymentReceiptform.visibility = if (!isChecked) View.VISIBLE else View.GONE
         }
 
         // 개인소득공제용
@@ -495,9 +485,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         when (requestCode) {
             Flag.RequestCode.LOGIN -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    mViewModel.callWithToken { accessToken ->
-                        mViewModel.addCartItem(accessToken)
-                    }
+                    mViewModel.addCartItem()
                 } else {
                     setResult(Activity.RESULT_CANCELED)
                     finish()
@@ -561,8 +549,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     mViewModel.mEmailVerification = ObservableBoolean(emailVerification ?: false)
                     mViewModel.notifyPropertyChanged(BR.mEmailVerification)
 
-                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification
-                                    ?: false /* && emailVerification ?: false */) View.GONE else View.VISIBLE
+                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification == true /* && emailVerification ?: false */) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()
                 }
             }

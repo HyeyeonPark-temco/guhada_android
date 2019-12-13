@@ -72,12 +72,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var product: BaseProduct = BaseProduct()
         set(value) {
             field = value
+            addCartItem()
+
+//            // 스피너 교체 후 미사용
 //            field.optionMap["COLOR"].let { if (it != null) optionStr += "${it.name}, " }
 //            field.optionMap["SIZE"].let { if (it != null) optionStr += "${it.name}, " }
 //            optionStr += "${field.totalCount} ${BaseApplication.getInstance().getString(R.string.common_unit_product)}"
-            callWithToken { accessToken ->
-                addCartItem(accessToken)
-            }
         }
     var totalCount = ObservableInt(0)
         @Bindable
@@ -223,37 +223,39 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 하단 결제 금액 계산
     var mCalculatePaymentInfo = MutableLiveData<CalculatePaymentInfo>(CalculatePaymentInfo())
 
-    fun addCartItem(accessToken: String) {
-        OrderServer.addCartItem(OnServerListener { success, o ->
-            if (success) {
-                val resultCode = (o as BaseModel<*>).resultCode
-                if (resultCode == ResultCode.SUCCESS.flag) {
-                    this.cart = o.data as Cart
-                    if (this.cart.cartValidStatus.status) {
-                        getOrderForm(accessToken)
-                        BaseApplication.getInstance().plusCartCount()
+    fun addCartItem() {
+        ServerCallbackUtil.callWithToken(task = {accessToken->
+            OrderServer.addCartItem(OnServerListener { success, o ->
+                if (success) {
+                    val resultCode = (o as BaseModel<*>).resultCode
+                    if (resultCode == ResultCode.SUCCESS.flag) {
+                        this.cart = o.data as Cart
+                        if (this.cart.cartValidStatus.status) {
+                            getOrderForm(accessToken)
+                            BaseApplication.getInstance().plusCartCount()
+                        } else {
+                            listener.showMessage(this.cart.cartValidStatus.cartErrorMessage)
+                            listener.closeActivity()
+                        }
+
+                        // 상품상세-바로구매 시
+                        if (cartIdList.isEmpty())
+                            cartIdList.add(cart.cartItemId.toInt())
+                        getCalculatePaymentInfo()
+
                     } else {
-                        listener.showMessage(this.cart.cartValidStatus.cartErrorMessage)
+                        listener.showMessage(o.message ?: "주문서 조회 오류")
                         listener.closeActivity()
                     }
-
-                    // 상품상세-바로구매 시
-                    if (cartIdList.isEmpty())
-                        cartIdList.add(cart.cartItemId.toInt())
-                    getCalculatePaymentInfo()
-
                 } else {
-                    listener.showMessage(o.message ?: "주문서 조회 오류")
+                    val json = JsonParser().parse(o as String)
+                    val model = Gson().fromJson(json, BaseModel::class.java)
+                    listener.showMessage(model.message ?: "주문서 조회 오류")
                     listener.closeActivity()
                 }
-            } else {
-                val json = JsonParser().parse(o as String)
-                val model = Gson().fromJson(json, BaseModel::class.java)
-                listener.showMessage(model.message ?: "주문서 조회 오류")
-                listener.closeActivity()
-            }
-            listener.hideLoadingIndicator()
-        }, accessToken = accessToken, dealId = product.dealId, dealOptionId = product.dealOptionId, quantity = quantity)
+                listener.hideLoadingIndicator()
+            }, accessToken = accessToken, dealId = product.dealId, dealOptionId = product.dealOptionId, quantity = quantity)
+        })
     }
 
     fun getOrderForm(accessToken: String) {
@@ -278,7 +280,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     //  적립 예정 포인트 조회
                     getDueSavePoint()
                 } else {
-                    listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.closeActivity()
                 }
@@ -320,7 +321,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun setOrderApproval() {
-        callWithToken { accessToken ->
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
             OrderServer.setOrderApproval(OnServerListener { success, o ->
                 executeByResultCode(success, o,
                         successTask = {
@@ -333,11 +334,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         })
 
             }, accessToken, pgAuth)
-        }
+        })
     }
 
     private fun setOrderCompleted(purchaseId: Double) {
-        callWithToken { accessToken ->
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
             OrderServer.setOrderCompleted(OnServerListener { success, o ->
                 executeByResultCode(success, o,
                         successTask = {
@@ -348,7 +349,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         })
                 listener.hideLoadingIndicator()
             }, accessToken, purchaseId)
-        }
+        })
     }
 
     private fun saveShippingAddress() {
@@ -635,20 +636,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 본인인증
     fun onClickVerify() = mVerifyTask()
-
-//    private fun addShippingAddress(accessToken: String?) {
-//        if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
-//            // 배송지 추가
-//            if (accessToken != null) {
-//                val userId = JWT(accessToken).getClaim("userId").asInt()
-//                if (userId != null) saveShippingAddress(accessToken, userId)
-//            } else {
-//                // [임시] 토큰 없는 경우
-//                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
-//            }
-//        }
-//    }
-
 
     fun onClickChangeShippingAddress() {
         listener.redirectShippingAddressActivity()
