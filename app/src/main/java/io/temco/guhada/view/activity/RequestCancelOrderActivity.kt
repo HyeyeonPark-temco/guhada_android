@@ -7,6 +7,7 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
+import io.reactivex.Observable
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
@@ -44,7 +45,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
 
     private fun initViewModel() {
         mViewModel = CancelOrderViewModel()
-        if(!::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil = LoadingIndicatorUtil(this)
+        if (!::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil = LoadingIndicatorUtil(this)
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mOrderProdGroupId = it
@@ -131,16 +132,19 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
                 mViewModel.getExpectedRefundPriceForRequest(quantity - 1)
             }
         }
-        mBinding.includeRequestcancelorderCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
 
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                mViewModel.selectedCausePos = position
-                mBinding.includeRequestcancelorderCause.defaultMessage = mViewModel.purchaseOrder.value?.cancelReasonList?.get(position)?.label
-                mBinding.executePendingBindings()
-            }
+        /**
+         * Custom Spinner View 변경
+         * @since 2019.12.13
+         */
+        val list = mutableListOf<Any>()
+        Observable.fromIterable(purchaseOrder.cancelReasonList).subscribe {
+            list.add(it.label)
+        }.dispose()
+        mBinding.includeRequestcancelorderCause.spinnerRequestorderstatusCause1.setPlaceHolder(getString(R.string.requestorderstatus_cancel_cause))
+        mBinding.includeRequestcancelorderCause.spinnerRequestorderstatusCause1.setItems(list)
+        mBinding.includeRequestcancelorderCause.spinnerRequestorderstatusCause1.setOnItemClickTask { position ->
+            mViewModel.selectedCausePos = position
         }
     }
 
@@ -157,7 +161,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
 
     override fun onDestroy() {
         super.onDestroy()
-        if(!::loadingIndicatorUtil.isInitialized)loadingIndicatorUtil.dismiss()
+        if (!::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil.dismiss()
     }
 
     companion object {

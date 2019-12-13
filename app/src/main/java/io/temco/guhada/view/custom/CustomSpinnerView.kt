@@ -41,7 +41,7 @@ class CustomSpinnerView : LinearLayout {
     private var mPlaceHolder = "select"
     private var mMaxVisibleCount = 0
     private var mIsLarge = false
-    private var mIsDiabled = false
+    private var mIsDisabled = false
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -63,7 +63,7 @@ class CustomSpinnerView : LinearLayout {
         mPlaceHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder) ?: "select"
         mIsLarge = typedArray.getBoolean(R.styleable.CustomSpinnerView_isLarge, false)
         mMaxVisibleCount = typedArray.getInteger(R.styleable.CustomSpinnerView_maxVisibleCount, 0)
-        mIsDiabled = typedArray.getBoolean(R.styleable.CustomSpinnerView_isDisabled, false)
+        mIsDisabled = typedArray.getBoolean(R.styleable.CustomSpinnerView_isDisabled, false)
 
         mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
         mItemHeight = CommonViewUtil.convertPixelToDp(context, if (mIsLarge) context.resources.getDimensionPixelSize(R.dimen.height_spinner_large) else context.resources.getDimensionPixelSize(R.dimen.height_spinner_default))
@@ -73,14 +73,14 @@ class CustomSpinnerView : LinearLayout {
         mPopup.setListSelector(ColorDrawable(Color.TRANSPARENT))
         mPopup.setBackgroundDrawable(context.getDrawable(R.drawable.background_spinner_listpopup))
 
-        if (mIsDiabled) {
+        if (mIsDisabled) {
             mBinding.textviewCustomspinnerPlaceholder.setTextColor(context.resources.getColor(R.color.greyish))
             mBinding.motionlayoutCustomspinner.background = context.resources.getDrawable(R.drawable.box_all_palegrey)
         }
 
         // Listener
         mBinding.textviewCustomspinnerPlaceholder.setOnClickListener {
-            if(!mIsDiabled){
+            if(!mIsDisabled){
                 if (mPopup.isShowing) dismiss()
                 else show()
             }

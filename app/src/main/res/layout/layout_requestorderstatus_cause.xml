@@ -137,14 +137,22 @@
                 android:textSize="@dimen/text_14" />
         </LinearLayout>
 
+        <io.temco.guhada.view.custom.CustomSpinnerView
+            android:id="@+id/spinner_requestorderstatus_cause1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp" />
+
         <FrameLayout
             android:id="@+id/framelayout_requestorderstatus_cause"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="20dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp"
+            android:visibility="gone">
 
             <Spinner
                 android:id="@+id/spinner_requestorderstatus_cause"
@@ -157,8 +165,7 @@
                 android:popupBackground="@null"
                 android:spinnerMode="dropdown"
                 app:cause="@{causeList}"
-                app:requestType="@{requestType}"
-                 />
+                app:requestType="@{requestType}" />
 
             <FrameLayout
                 android:id="@+id/framelayout_requestorderstatus_causebutton"
@@ -178,8 +185,8 @@
                     android:popupBackground="@null">
 
                     <TextView
-                        style="@style/MypageDeliveryWarmGreyTextStyle"
                         android:id="@+id/textview_requestorderstatus_cause"
+                        style="@style/MypageDeliveryWarmGreyTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
