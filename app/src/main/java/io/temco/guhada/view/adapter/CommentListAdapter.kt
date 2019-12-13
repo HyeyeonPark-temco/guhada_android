@@ -91,6 +91,7 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
             binding.setClickClaimListener{null}
             binding.setClickDeleteListener{null}
             binding.setClickModifyListener{null}
+            binding.setClickCommentLikeListener{null}
         }else if(data.createUserInfo == null){
             binding.isDelete = true
             binding.isContent = true
@@ -103,6 +104,7 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
             binding.setClickClaimListener{null}
             binding.setClickDeleteListener{null}
             binding.setClickModifyListener{null}
+            binding.setClickCommentLikeListener{null}
         }else{
             binding.isDelete = false
             binding.userGrade = "99"
@@ -110,8 +112,8 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
             binding.createTime = DateUtil.getDateDiff(data.currentTimestamp,data.createdTimestamp)
             binding.userName = data.createUserInfo?.nickname ?: ""
             binding.isReply = data.originCommentId != null
-            binding.isLikeComment = false
-            binding.likeCount = 0
+            binding.isLikeComment = data.like
+            binding.likeCount = data.likeCount
             binding.isContent = !"".equals(data.contents)
             if(data.commentImageList.isNullOrEmpty()){
                 binding.isImage = false
@@ -125,22 +127,14 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
                     data.isModify = false
                     model.onClickReplyAndModify(data,null)
                 }else{
-                    CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
-                            cancelButtonVisible = true,
-                            confirmTask = {
-                                CommonUtil.startLoginPage(model.context as AppCompatActivity)
-                            }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
+                    showLoginDialog(model)
                 }
             }
             binding.setClickClaimListener{
                 if(CommonUtil.checkToken()){
                     CommonUtil.startReportActivity((model.context as AppCompatActivity), 3, data, model.communityDetail.value)
                 }else{
-                    CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
-                            cancelButtonVisible = true,
-                            confirmTask = {
-                                CommonUtil.startLoginPage(model.context as AppCompatActivity)
-                            }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
+                    showLoginDialog(model)
                 }
             }
 
@@ -168,11 +162,15 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
                     modi.isModify = true
                     model.onClickReplyAndModify(modi, position)
                 }else{
-                    CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
-                            cancelButtonVisible = true,
-                            confirmTask = {
-                                CommonUtil.startLoginPage(model.context as AppCompatActivity)
-                            }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
+                    showLoginDialog(model)
+                }
+            }
+
+            binding.setClickCommentLikeListener{
+                if(CommonUtil.checkToken()){
+                    model.onClickCommentLike(position, data.like, data.id)
+                }else{
+                    showLoginDialog(model)
                 }
             }
 
@@ -202,6 +200,13 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
         return user == cUser
     }
 
+    private fun showLoginDialog(model : CommunityDetailViewModel){
+        CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                cancelButtonVisible = true,
+                confirmTask = {
+                    CommonUtil.startLoginPage(model.context as AppCompatActivity)
+                }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
+    }
 }
 
 

@@ -41,6 +41,8 @@ data class PlanningHeaderData(
 
 class PlanningListData{
     var id = 0
+    var agent = ""
+    var kind = ""
     var eventTitle = ""
     var eventProgress = ""
     var eventStartDate = ""
@@ -54,6 +56,8 @@ class PlanningListData{
     var detailPageLink : String ? = ""
     var detailPageUrl : String ? = ""
     var bgColor = ""
+    var detailWidth : Any? = null
+    var detailHeight : Any? = null
     var mobileAppLink = ""
 }
 

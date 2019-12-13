@@ -1,5 +1,6 @@
 package io.temco.guhada.data.server
 
+import android.text.TextUtils
 import com.google.gson.Gson
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
@@ -19,7 +20,6 @@ import retrofit2.Response
 class CommunityServer {
 
     companion object {
-
 
         @JvmStatic
         fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
@@ -152,6 +152,15 @@ class CommunityServer {
                     )
         }
 
+        @JvmStatic
+        fun getBbsDetailToken(listener: OnServerListener, accessToken: String, bbsId : Long, userIp: String) {
+            if(TextUtils.isEmpty(accessToken)){
+                getBbsDetail(listener, bbsId, userIp)
+            }else{
+                getBbsDetail(listener, accessToken, bbsId, userIp)
+            }
+        }
+
         /**
          * 게시글 상세 정보 가져오기
          *
@@ -186,6 +195,42 @@ class CommunityServer {
                         }
                     }
             )
+        }
+
+        /**
+         * 게시글 상세 정보 가져오기
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun getBbsDetail(listener: OnServerListener, accessToken: String, bbsId : Long, userIp: String) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .getBbsDetail(accessToken, bbsId, userIp).enqueue(object : Callback<BaseModel<CommunityDetail>> {
+                        override fun onResponse(call: Call<BaseModel<CommunityDetail>>, response: Response<BaseModel<CommunityDetail>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<CommunityDetail>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
         }
 
 
@@ -224,6 +269,54 @@ class CommunityServer {
                     }
             )
         }
+
+
+        /**
+         * 게시글 상세의 댓글 리스트
+         *
+         * bbsId : 게시글 id
+         *
+         */
+        @JvmStatic
+        fun getCommentList(listener: OnServerListener, accessToken: String, bbsId : Long, page: Int, orderType : String, unitPerPage : Int) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .getCommentList(accessToken, bbsId, page, orderType, unitPerPage).enqueue(object : Callback<BaseModel<CommentContent>> {
+                        override fun onResponse(call: Call<BaseModel<CommentContent>>, response: Response<BaseModel<CommentContent>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<CommentContent>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+
+        @JvmStatic
+        fun getCommentListToken(listener: OnServerListener, accessToken: String, bbsId : Long, page: Int, orderType : String, unitPerPage : Int){
+            if(TextUtils.isEmpty(accessToken)){
+                getCommentList(listener, bbsId, page, orderType, unitPerPage)
+            }else{
+                getCommentList(listener,accessToken, bbsId, page, orderType, unitPerPage)
+            }
+        }
+
 
         /**
          * 댓글 가져오기
@@ -665,7 +758,7 @@ class CommunityServer {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
 

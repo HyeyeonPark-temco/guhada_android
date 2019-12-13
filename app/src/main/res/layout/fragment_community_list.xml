@@ -4,6 +4,9 @@
 
     <data>
         <variable
+            name="clickMoreListener"
+            type="android.view.View.OnClickListener" />
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel" />
     </data>
@@ -11,16 +14,42 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/pale_grey"
+        android:paddingTop="8dp"
+        android:paddingBottom="20dp"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_community_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/pale_grey"
+            android:background="@color/common_white"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+        <LinearLayout
+            android:id="@+id/linearlayout_communitylist_more"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="40dp"
+            android:onClick="@{clickMoreListener}"
+            android:orientation="horizontal"
+            android:background="@color/common_white"
+            android:visibility="invisible"
+            android:gravity="center">
+
+            <TextView
+                style="@style/CommonMoreTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/common_more" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/detail_btn_more_open" />
+        </LinearLayout>
     </LinearLayout>
 
 </layout>

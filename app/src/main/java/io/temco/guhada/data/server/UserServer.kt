@@ -789,7 +789,7 @@ class UserServer {
 
 
         /**
-         * 회원 좋아요 가져오기
+         * 커뮤니티 좋아요 가져오기
          * @author park jungho
          * @since 2019.12.02
          */
@@ -810,7 +810,7 @@ class UserServer {
 
 
         /**
-         * 회원 좋아요 저장하기
+         * 커뮤니티 좋아요 저장하기
          * @since 2019.12.02
          * @author park jungho
          */
@@ -830,14 +830,14 @@ class UserServer {
         }
 
         /**
-         * 회원 좋아요 저장하기
+         * 커뮤니티 좋아요 삭제
          * @since 2019.12.02
          * @author park jungho
          */
         @JvmStatic
         fun deleteLikes(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId: Long) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .deleteLikes(accessToken, target, targetId, userId).enqueue(object : Callback<BaseModel<Any>> {
+                    .deleteLikes(accessToken, userId, target, targetId).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }

@@ -15,6 +15,7 @@ open class PlanningDealBase (val index : Int, // recyclerview list index
 class PlanningDealTitle(index : Int, // recyclerview list index
                          type : PlanningDealType, // recyclerview view type
                          gridSpanCount : Int,
+                         val detail : PlanningDetailData,
                          val title : String,
                          val strDate : String) : PlanningDealBase(index, type, gridSpanCount)
 
@@ -33,3 +34,27 @@ class PlanningDealData(index : Int, // recyclerview list index
                        type : PlanningDealType, // recyclerview view type
                        gridSpanCount : Int,
                        val deal : Deal) : PlanningDealBase(index, type, gridSpanCount)
+
+
+
+class PlanningDetailData{
+    var id = 0
+    var agent = ""
+    var kind = ""
+    var eventTitle = ""
+    var eventProgress = ""
+    var eventStartDate = ""
+    var eventEndDate = ""
+    var imgUrl = ""
+    var imgUrlM = ""
+    var createDate = ""
+    var detailPage = false
+    var imgDetailUrl = ""
+    var imgDetailUrlM = ""
+    var detailPageLink : String ? = ""
+    var detailPageUrl : String ? = ""
+    var bgColor = ""
+    var detailWidth : Any? = null
+    var detailHeight : Any? = null
+    var mobileAppLink = ""
+}
