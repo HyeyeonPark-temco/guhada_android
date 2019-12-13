@@ -182,9 +182,6 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_way_message2))
         } else if (mSelectedShippingPayment == null || (mSelectedShippingPayment?.userFault == true && mExchangeRequest.claimShippingPriceType == ShippingPaymentType.NONE.type)) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_shipping))
-        } else if (mExchangeRequest.exchangeShippingAddress.shippingMessage.isEmpty() ||
-                mExchangeRequest.exchangeShippingAddress.shippingMessage.equals(BaseApplication.getInstance().getString(R.string.shippingmemo_default))) {
-            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingmemo_default))
         } else {
             if (!mIsExchangeCallFinished) {
                 mIsExchangeCallFinished = true

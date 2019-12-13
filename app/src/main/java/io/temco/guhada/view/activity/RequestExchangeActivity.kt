@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import io.reactivex.Observable
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
@@ -155,31 +156,37 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                     ?: 0
         }
         mBinding.includeRequestexchangeCause.causeList = purchaseOrder.exchangeReasonList
-        mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (purchaseOrder.exchangeReasonList != null) {
-                    if (!purchaseOrder.exchangeReasonList.isNullOrEmpty() && position > (purchaseOrder.exchangeReasonList!!.size - 2)) {
+        /**
+         * Custom Spinner View 변경
+         * @since 2019.12.13
+         */
+        val list = mutableListOf<Any>()
+        Observable.fromIterable(purchaseOrder.exchangeReasonList).subscribe {
+            list.add(it.label)
+        }.dispose()
+        mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setPlaceHolder(if (!purchaseOrder.exchangeReason.isNullOrEmpty()) getReason(purchaseOrder.exchangeReason) else getString(R.string.requestorderstatus_exchange_cause))
+        mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setItems(list)
+        mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setOnItemClickTask { position ->
+            if (purchaseOrder.exchangeReasonList != null) {
+                if (!purchaseOrder.exchangeReasonList.isNullOrEmpty() && position > (purchaseOrder.exchangeReasonList!!.size - 2)) {
 
-                    } else {
-                        val cause = mViewModel.mPurchaseOrder.value?.exchangeReasonList!![position]
-                        mViewModel.mSelectedShippingPayment = cause
-                        mViewModel.mExchangeRequest.exchangeReason = cause.code
-                        mBinding.includeRequestexchangeCause.defaultMessage = cause.label
+                } else {
+                    val cause = mViewModel.mPurchaseOrder.value?.exchangeReasonList!![position]
+                    mViewModel.mSelectedShippingPayment = cause
+                    mViewModel.mExchangeRequest.exchangeReason = cause.code
 
-                        if (purchaseOrder.exchangeShippingPrice > 0 || purchaseOrder.exchangeShipExpense > 0)
-                            mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
-                                    if (cause.userFault) View.VISIBLE
-                                    else View.GONE
+                    if (purchaseOrder.exchangeShippingPrice > 0 || purchaseOrder.exchangeShipExpense > 0)
+                        mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
+                                if (cause.userFault) View.VISIBLE
+                                else View.GONE
 
-                        if (!cause.userFault)
-                            mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
-                    }
+                    if (!cause.userFault)
+                        mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
                 }
             }
         }
+
         mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.addTextChangedListener {
             mViewModel.mExchangeRequest.exchangeReasonDetail = it.toString()
         }
@@ -251,7 +258,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = View.GONE
                 mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.exchangePickingInvoiceNo)
             }
-        }else {
+        } else {
             mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
         }
 
@@ -382,7 +389,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         }
 
         // 교환상품 배송지
-        if(purchaseOrder.exchangeBuyerAddress.isNullOrEmpty()){
+        if (purchaseOrder.exchangeBuyerAddress.isNullOrEmpty()) {
             mBinding.includeRequestexchangeExchangeshipping.name = purchaseOrder.receiverAddressName
             mBinding.includeRequestexchangeExchangeshipping.address = "[${purchaseOrder.receiverZipcode}] ${purchaseOrder.receiverRoadAddress} ${purchaseOrder.receiverAddressDetail}"
             mBinding.includeRequestexchangeExchangeshipping.defaultAddress = false
@@ -393,7 +400,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             mViewModel.mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.receiverAddressDetail
             mViewModel.mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName
             mViewModel.mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.receiverPhone
-        }else {
+        } else {
             mBinding.includeRequestexchangeExchangeshipping.name = purchaseOrder.exchangeBuyerAddressName
             mBinding.includeRequestexchangeExchangeshipping.address = "[${purchaseOrder.exchangeBuyerZip}] ${purchaseOrder.exchangeBuyerRoadAddress} ${purchaseOrder.exchangeBuyerDetailAddress}"
             mBinding.includeRequestexchangeExchangeshipping.defaultAddress = false
@@ -434,7 +441,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             if (it.isNotEmpty()) {
                 if (!purchaseOrder.exchangeBuyerShippingMessage.isNullOrEmpty()) {
                     for (i in 0 until it.size)
-                        if (it[i].message == purchaseOrder.exchangeBuyerShippingMessage){
+                        if (it[i].message == purchaseOrder.exchangeBuyerShippingMessage) {
                             mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setSelection(i)
                             break
                         }

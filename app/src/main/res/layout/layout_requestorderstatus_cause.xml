@@ -164,9 +164,10 @@
                 android:overlapAnchor="false"
                 android:popupBackground="@null"
                 android:spinnerMode="dropdown"
-                app:cause="@{causeList}"
-                app:requestType="@{requestType}" />
 
+                />
+            <!--app:cause="@{causeList}"-->
+            <!--app:requestType="@{requestType}"-->
             <FrameLayout
                 android:id="@+id/framelayout_requestorderstatus_causebutton"
                 android:layout_width="match_parent"
