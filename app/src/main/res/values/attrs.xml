@@ -25,6 +25,7 @@
         <attr name="itemHeight" format="dimension"/>
         <attr name="maxVisibleCount" format="integer"/>
         <attr name="isLarge" format="boolean"/>
+        <attr name="isRgb" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="HtmlTextView">

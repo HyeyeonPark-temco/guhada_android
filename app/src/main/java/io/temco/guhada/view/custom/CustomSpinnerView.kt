@@ -30,8 +30,10 @@ class CustomSpinnerView : LinearLayout {
     // attrs
     private var mPlaceHolder = "select"
     private var mItemHeight = 0
-    private var mIsLarge = false
     private var mMaxVisibleCount = 0
+    private var mIsLarge = false
+    private var mIsRgb = false
+
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -55,7 +57,9 @@ class CustomSpinnerView : LinearLayout {
         val defaultItemHeight = if (mIsLarge) context.resources.getDimensionPixelSize(R.dimen.height_spinner_large) else context.resources.getDimensionPixelSize(R.dimen.height_spinner_default)
         mItemHeight = typedArray.getDimensionPixelOffset(R.styleable.CustomSpinnerView_itemHeight, CommonViewUtil.convertPixelToDp(context = context, px = defaultItemHeight))
         mMaxVisibleCount = typedArray.getInteger(R.styleable.CustomSpinnerView_maxVisibleCount, 0)
+        mIsRgb = typedArray.getBoolean(R.styleable.CustomSpinnerView_isRgb, false)
 
+        mBinding.imageviewCustomspinnerRgb.visibility = if (mIsRgb) View.VISIBLE else View.GONE
         mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
         mBinding.textviewCustomspinnerPlaceholder.layoutParams.height = CommonViewUtil.dipToPixel(context = context, dip = mItemHeight)
         mPopup.anchorView = mBinding.motionlayoutCustomspinner
@@ -82,7 +86,6 @@ class CustomSpinnerView : LinearLayout {
             mBinding.motionlayoutCustomspinner.transitionToStart()
         }
 
-//        if (mSelectedRgb.isNotEmpty()) mBinding.imageviewCustomspinnerRgb.visibility = View.VISIBLE else mBinding.imageviewCustomspinnerRgb.visibility = View.GONE
 
         mBinding.executePendingBindings()
         typedArray.recycle()
