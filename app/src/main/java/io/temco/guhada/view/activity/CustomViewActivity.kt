@@ -4,6 +4,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.databinding.ActivityCustomviewBinding
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.custom.CustomSpinnerView
 
 class CustomViewActivity : BindActivity<ActivityCustomviewBinding>() {
     override fun getBaseTag(): String = CustomViewActivity::class.java.simpleName
@@ -13,6 +14,7 @@ class CustomViewActivity : BindActivity<ActivityCustomviewBinding>() {
 
     override fun init() {
         mBinding.list = mutableListOf("111111", "2222", "333")
+        mBinding.spinnerView.setItems(mutableListOf("1"))
         mBinding.executePendingBindings()
     }
 }

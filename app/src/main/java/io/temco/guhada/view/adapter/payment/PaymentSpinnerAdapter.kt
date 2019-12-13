@@ -12,7 +12,7 @@ import io.temco.guhada.databinding.ItemPaymentSpinnerBinding
 class PaymentSpinnerAdapter(context: Context, val layout: Int, var list: List<ShippingMessage> = ArrayList()) : ArrayAdapter<ShippingMessage>(context, layout, list) {
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
-    override fun getCount(): Int = list.size - 1
+    override fun getCount(): Int = list.size
 
     fun setItems(list: List<ShippingMessage>) {
         this.list = list

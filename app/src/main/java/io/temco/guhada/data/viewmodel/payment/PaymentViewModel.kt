@@ -7,7 +7,10 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -40,7 +43,6 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.CouponSelectDialogActivity
 import io.temco.guhada.view.activity.PaymentActivity
-import org.json.JSONObject
 import java.text.NumberFormat
 
 class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseObservableViewModel() {
@@ -62,8 +64,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         get() = field
 
     var selectedMethod: PaymentMethod = PaymentMethod()
-    var selectedShippingAddress: UserShipping? = UserShipping() // 선택된 배송메세지
-    var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo) }) // 배송메세지 스피너 표시 메세지
+    var selectedShippingAddress: UserShipping? = UserShipping() // 선택된 배송지
+    var selectedShippingMessage = ObservableField<ShippingMessage>() // ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo) }) // 배송메세지 스피너 표시 메세지
         @Bindable
         get() = field
 
@@ -254,9 +256,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }, accessToken = accessToken, dealId = product.dealId, dealOptionId = product.dealOptionId, quantity = quantity)
     }
 
-    /**
-     * TODO 주문서 진입 시 cartValidStatus 체크해서 처리 [2019.08.09]
-     */
     fun getOrderForm(accessToken: String) {
         if (cartIdList.isEmpty()) {
             cartIdList = mutableListOf(cart.cartItemId.toInt())
@@ -352,16 +351,25 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
     }
 
-    private fun saveShippingAddress(accessToken: String, userId: Int) {
-        if (selectedShippingAddress != null) {
-            UserServer.saveUserShippingAddress(OnServerListener { success, o ->
-                executeByResultCode(success, o,
-                        successTask = {
-                            if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 success")
-                            requestOrder(accessToken, mRequestOrder)
-                        }, failedTask = { if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 ${if (it is BaseModel<*>) it.message else "에러"}") })
-            }, userId, selectedShippingAddress!!)
-        }
+    private fun saveShippingAddress() {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
+                val userId = JWT(token.split("Bearer ")[1]).getClaim("userId").asInt()
+                if (userId != null) {
+                    if (selectedShippingAddress != null) {
+                        UserServer.saveUserShippingAddress(OnServerListener { success, o ->
+                            executeByResultCode(success, o,
+                                    successTask = {
+                                        if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 성공")
+                                        requestOrder(token, mRequestOrder)
+                                    }, failedTask = { if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 ${if (it is BaseModel<*>) it.message else "에러"}") })
+                        }, userId, selectedShippingAddress!!)
+                    }
+                }
+            } else {
+                requestOrder(token, mRequestOrder)
+            }
+        })
     }
 
     private fun getDueSavePoint() {
@@ -495,106 +503,86 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 결제하기 버튼 클릭
     fun onClickPay() {
-//        if (termsChecked.get()) {
-            for (i in 0 until paymentWays.size)
-                if (paymentWays[i])
-                    selectedMethod = order.paymentsMethod[i]
+        for (i in 0 until paymentWays.size)
+            if (paymentWays[i])
+                selectedMethod = order.paymentsMethod[i]
 
-            if (selectedMethod.methodCode.isNotEmpty()) {
-                mRequestOrder.parentMethodCd = selectedMethod.methodCode
-
-                if (selectedMethod.methodCode == PaymentWayType.TOKEN.code) {
-                    listener.showMessage(BaseApplication.getInstance().getString(R.string.common_message_ing))
-                } else {
-                    if (this.user.get() != null) {
-                        if (this.order.user.mobile.isNullOrEmpty()) {
-                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifymobile))
-                        } /*else if (!mEmailVerification.get()) {
-                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
-                        } */ /*else if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
-                            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
-                        } */ else if (this@PaymentViewModel.selectedShippingAddress == null) {
-                            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
-                        } else {
-                            // 현금영수증
-                            if ((selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) ||
-                                    (mRequestOrder.cashReceiptType.isEmpty() && mRequestOrder.cashReceiptUsage.isEmpty()) || !mIsRecipientIssued) {
-                                mRequestOrder.cashReceiptNo = ""
-                                mRequestOrder.cashReceiptType = ""
-                                mRequestOrder.cashReceiptUsage = ""
-                            } else {
-                                when (mRequestOrder.cashReceiptUsage) {
-                                    RequestOrder.CashReceiptUsage.PERSONAL.code ->
-                                        if (mRequestOrder.cashReceiptType == RequestOrder.CashReceiptType.MOBILE.code)
-                                            if (mRecipientPhone1.isEmpty() || mRecipientPhone2.isEmpty() || mRecipientPhone3.isEmpty()) {
-                                                listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_recipient1))
-                                                return
-                                            } else if (mRecipientPhone2.length < 4 || mRecipientPhone3.length < 4) {
-                                                listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_recipient2))
-                                                return
-                                            }
-                                    RequestOrder.CashReceiptUsage.BUSINESS.code ->
-                                        if (mRecipientCorporation1.isEmpty() || mRecipientCorporation2.isEmpty() || mRecipientCorporation3.isEmpty()) {
-                                            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_recipient3))
-                                            return
-                                        }
-                                }
-
-                                mRequestOrder.cashReceiptNo = when (mRequestOrder.cashReceiptType) {
-                                    RequestOrder.CashReceiptType.MOBILE.code -> "$mRecipientPhone1$mRecipientPhone2$mRecipientPhone3"
-                                    RequestOrder.CashReceiptType.BUSINESS.code -> "$mRecipientCorporation1$mRecipientCorporation2$mRecipientCorporation3"
-                                    else -> ""
-                                }
-                            }
-
-                            if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
-                                mRequestOrder.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
-
-                                for (item in cartIdList) {
-                                    RequestOrder.CartItemPayment().apply {
-                                        this.cartItemId = item.toLong()
-                                        this.couponNumber = getCouponNumberByCartItemId(item.toLong())
-                                    }.let {
-                                        mRequestOrder.cartItemPayments.add(it)
-                                    }
-                                }
-                            }
-
-                            // 배송 메세지
-                            val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo)
-                            if (mRequestOrder.shippingAddress.shippingMessage == defaultShippingMessage)
-                                mRequestOrder.shippingAddress.shippingMessage = ""
-
-                            if (selectedShippingMessage.get()?.message == shippingMessages[shippingMessages.size - 2].message) { // 배송메세지 직접 입력
-                                selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = shippingMessage })
-                            } else if (selectedShippingMessage.get()?.message ?: defaultShippingMessage == defaultShippingMessage) {
-                                selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = "" })
-                            }
-                            mRequestOrder.shippingAddress.shippingMessage = selectedShippingMessage.get()?.message
-                                    ?: ""
-
-                            // 사용 포인트
+        if (selectedMethod.methodCode.isNotEmpty())
+            if (selectedMethod.methodCode == PaymentWayType.TOKEN.code)
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_ing))
+            else {
+                if (this.user.get() != null)
+                    when {
+                        this.order.user.mobile.isNullOrEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifymobile))
+                        this@PaymentViewModel.selectedShippingAddress == null -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
+                        else -> {
+                            mRequestOrder.parentMethodCd = selectedMethod.methodCode
                             mRequestOrder.consumptionPoint = usedPointNumber.toInt()
 
-                            ServerCallbackUtil.callWithToken(task = { token ->
-                                if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
-                                    // 배송지 추가
-                                    val userId = JWT(token.split("Bearer ")[1]).getClaim("userId").asInt()
-                                    if (userId != null) saveShippingAddress(token, userId)
-                                } else {
-                                    requestOrder(token, mRequestOrder)
-                                }
+                            checkCashReceipt(nextTask = {
+                                setCoupon()
+                                checkShippingMessage()
+                                saveShippingAddress()
                             })
-
                         }
                     }
-                }
-            } else {
-                listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_selectpaymentway))
             }
-//        } else {
-//            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_confirmtemrs))
-//        }
+        else
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_selectpaymentway))
+    }
+
+    private fun checkCashReceipt(nextTask: () -> Unit) {
+        if ((selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) ||
+                (mRequestOrder.cashReceiptType.isEmpty() && mRequestOrder.cashReceiptUsage.isEmpty()) || !mIsRecipientIssued) {
+            mRequestOrder.cashReceiptNo = ""
+            mRequestOrder.cashReceiptType = ""
+            mRequestOrder.cashReceiptUsage = ""
+            nextTask()
+        } else {
+            when (mRequestOrder.cashReceiptUsage) {
+                RequestOrder.CashReceiptUsage.PERSONAL.code ->
+                    if (mRequestOrder.cashReceiptType == RequestOrder.CashReceiptType.MOBILE.code)
+                        if (mRecipientPhone1.isEmpty() || mRecipientPhone2.isEmpty() || mRecipientPhone3.isEmpty()) {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_recipient1))
+                            return
+                        }
+                RequestOrder.CashReceiptUsage.BUSINESS.code ->
+                    if (mRecipientCorporation1.isEmpty() || mRecipientCorporation2.isEmpty() || mRecipientCorporation3.isEmpty()) {
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_recipient3))
+                        return
+                    }
+            }
+
+            mRequestOrder.cashReceiptNo = when (mRequestOrder.cashReceiptType) {
+                RequestOrder.CashReceiptType.MOBILE.code -> "$mRecipientPhone1$mRecipientPhone2$mRecipientPhone3"
+                RequestOrder.CashReceiptType.BUSINESS.code -> "$mRecipientCorporation1$mRecipientCorporation2$mRecipientCorporation3"
+                else -> ""
+            }
+            nextTask()
+        }
+    }
+
+    private fun checkShippingMessage() {
+        val isManual = selectedShippingMessage.get()?.message == shippingMessages[shippingMessages.size - 1].message
+        val message = if (isManual) shippingMessage else selectedShippingMessage.get()?.message
+                ?: ""
+        selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = message })
+        mRequestOrder.shippingAddress.shippingMessage = message
+    }
+
+    private fun setCoupon() {
+        if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
+            mRequestOrder.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
+
+            for (item in cartIdList) {
+                RequestOrder.CartItemPayment().apply {
+                    this.cartItemId = item.toLong()
+                    this.couponNumber = getCouponNumberByCartItemId(item.toLong())
+                }.let {
+                    mRequestOrder.cartItemPayments.add(it)
+                }
+            }
+        }
     }
 
     /**
@@ -648,18 +636,18 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 본인인증
     fun onClickVerify() = mVerifyTask()
 
-    private fun addShippingAddress(accessToken: String?) {
-        if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
-            // 배송지 추가
-            if (accessToken != null) {
-                val userId = JWT(accessToken).getClaim("userId").asInt()
-                if (userId != null) saveShippingAddress(accessToken, userId)
-            } else {
-                // [임시] 토큰 없는 경우
-                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
-            }
-        }
-    }
+//    private fun addShippingAddress(accessToken: String?) {
+//        if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
+//            // 배송지 추가
+//            if (accessToken != null) {
+//                val userId = JWT(accessToken).getClaim("userId").asInt()
+//                if (userId != null) saveShippingAddress(accessToken, userId)
+//            } else {
+//                // [임시] 토큰 없는 경우
+//                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
+//            }
+//        }
+//    }
 
 
     fun onClickChangeShippingAddress() {
@@ -669,34 +657,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     fun onTermsChecked(checked: Boolean) {
         this.termsChecked = ObservableBoolean(checked)
         notifyPropertyChanged(BR.termsChecked)
-    }
-
-    fun onShippingMemoSelected(position: Int) {
-        if (shippingMessages.size > position) {
-            val DEFAULT_MESSAGE_POS = 5
-            val message = shippingMessages[position].message
-
-            selectedShippingMessage = ObservableField(ShippingMessage().apply {
-                this.message = message
-                this.type = shippingMessages[position].type
-            })
-
-            if (position == DEFAULT_MESSAGE_POS || message == BaseApplication.getInstance().getString(R.string.shippingmemo_self)) {
-                shippingMessage = ""
-                this.shippingMemoVisible = ObservableBoolean(true)
-            } else {
-                shippingMessage = message
-                this.shippingMemoVisible = ObservableBoolean(false)
-            }
-
-            notifyPropertyChanged(BR.shippingMessage)
-            notifyPropertyChanged(BR.selectedShippingMessage)
-            notifyPropertyChanged(BR.shippingMemoVisible)
-        }
-    }
-
-    fun onClickCloseShippingMemoSpinner() {
-        listener.onClickCloseShippingMemoSpinner()
     }
 
 }

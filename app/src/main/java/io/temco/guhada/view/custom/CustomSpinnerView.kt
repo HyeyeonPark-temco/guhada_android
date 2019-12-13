@@ -108,16 +108,14 @@ class CustomSpinnerView : LinearLayout {
                 mList.add(adapter.getItem(i))
 
         mPopup.setAdapter(adapter)
-        setListHeight(adapter.count)
+        setListHeight(mList.size)
     }
 
     private fun setListHeight(itemCount: Int) {
-        val count =
-                if (mMaxVisibleCount > 0 && itemCount > mMaxVisibleCount) mMaxVisibleCount
-                else itemCount
-
-        val height = CommonViewUtil.convertDpToPixel(context = context, dp = mItemHeight) * count
-        mPopup.height = height + (mPopup.listView?.dividerHeight ?: 0 * count)
+        if (mMaxVisibleCount > 0 && itemCount > mMaxVisibleCount) {
+            val height = CommonViewUtil.convertDpToPixel(context = context, dp = mItemHeight) * mMaxVisibleCount
+            mPopup.height = height + (mPopup.listView?.dividerHeight ?: 0 * mMaxVisibleCount)
+        }
     }
 
     fun setOnItemClickTask(task: (position: Int) -> Unit) {
