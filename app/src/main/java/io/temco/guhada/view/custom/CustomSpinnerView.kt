@@ -56,10 +56,6 @@ class CustomSpinnerView : LinearLayout {
         val defaultItemHeight = if (mIsLarge) context.resources.getDimensionPixelSize(R.dimen.height_spinner_large) else context.resources.getDimensionPixelSize(R.dimen.height_spinner_default)
         mItemHeight = typedArray.getDimensionPixelOffset(R.styleable.CustomSpinnerView_itemHeight, CommonViewUtil.convertPixelToDp(context = context, px = defaultItemHeight))
         mMaxVisibleCount = typedArray.getInteger(R.styleable.CustomSpinnerView_maxVisibleCount, 0)
-        mIsRgb = typedArray.getBoolean(R.styleable.CustomSpinnerView_isRgb, false)
-
-        val placeHolderPadding = if (mIsRgb) CommonViewUtil.convertDpToPixel(32, context) else 0
-        mBinding.textviewCustomspinnerPlaceholder.setPadding(placeHolderPadding, 0, 0, 0)
 
         mBinding.textviewCustomspinnerPlaceholder.text = mPlaceHolder
         mBinding.textviewCustomspinnerPlaceholder.layoutParams.height = CommonViewUtil.dipToPixel(context = context, dip = mItemHeight)
@@ -135,6 +131,8 @@ class CustomSpinnerView : LinearLayout {
             mBinding.imageviewCustomspinnerRgb.setBackgroundColor(Color.parseColor(rgb))
             if (mBinding.textviewCustomspinnerPlaceholder.paddingLeft == 0)
                 mBinding.textviewCustomspinnerPlaceholder.setPadding(CommonViewUtil.convertDpToPixel(32, context), 0, 0, 0)
+        } else {
+            mBinding.textviewCustomspinnerPlaceholder.setPadding(0, 0, 0, 0)
         }
     }
 
