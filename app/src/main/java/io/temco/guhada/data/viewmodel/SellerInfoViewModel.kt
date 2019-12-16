@@ -26,8 +26,14 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class SellerInfoViewModel : BaseObservableViewModel() {
+    val INITIAL_PAGE = 0
+    val UNIT_PER_PAGE = 44
+
     var mSellerId = 0L
+    var mPage = INITIAL_PAGE
+    var misLast: Boolean = false
     var mOrder = ProductOrderType.DATE.type
+
     var mSellerStore: MutableLiveData<SellerStore> = MutableLiveData()
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mBusinessSeller: MutableLiveData<BusinessSeller> = MutableLiveData()
@@ -39,9 +45,6 @@ class SellerInfoViewModel : BaseObservableViewModel() {
     var mSelectedTabPos = ObservableInt(0)
         @Bindable
         get() = field
-
-    var mPage = 1
-    var UNIT_PER_PAGE = 44
 
     enum class SellerInfoMore(val pos: Int) {
         SELLER_STORE(0),
@@ -68,26 +71,24 @@ class SellerInfoViewModel : BaseObservableViewModel() {
     }
 
     fun getSellerInfo() {
-        if (mSellerId > 0) {
+        if (mSellerId > 0)
             UserServer.getSellerById(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             mSeller.postValue(it.data as Seller)
                         })
             }, sellerId = mSellerId)
-        }
     }
 
     fun getBusinessSellerInfo() {
-        if (mSellerId > 0) {
+        if (mSellerId > 0)
             UserServer.getBusinessSeller(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            if(CustomLog.flag)CustomLog.L("getBusinessSellerInfo",(it.data as BusinessSeller).toString())
+                            if (CustomLog.flag) CustomLog.L("getBusinessSellerInfo", (it.data as BusinessSeller).toString())
                             mBusinessSeller.postValue(it.data as BusinessSeller)
                         })
             }, sellerId = mSellerId)
-        }
     }
 
     fun getSellerBookMark() {
@@ -129,7 +130,7 @@ class SellerInfoViewModel : BaseObservableViewModel() {
             ServerCallbackUtil.executeByResultCode(success, o, successTask = {
                 this.mSellerProductList.postValue(it.data as ProductList)
             })
-        }, sellerId = mSellerId, order = mOrder, page = mPage, unitPerPage = UNIT_PER_PAGE)
+        }, sellerId = mSellerId, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
     }
 
     fun getDetail(dealId: Long, redirectProductDetailActivity: () -> Unit) {
@@ -151,24 +152,19 @@ class SellerInfoViewModel : BaseObservableViewModel() {
                 val bookMarkResponse = BookMarkResponse(BookMarkTarget.SELLER.target, mSellerId)
                 UserServer.saveBookMark(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                getSellerBookMark()
-                                })
+                            successTask = { getSellerBookMark() })
                 }, accessToken = accessToken, response = bookMarkResponse.getProductBookMarkRespose())
             } else {
                 UserServer.deleteBookMark(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                getSellerBookMark()
-                            })
+                            successTask = { getSellerBookMark() })
                 }, accessToken = accessToken, target = BookMarkTarget.SELLER.target, targetId = mSellerId)
             }
         })
     }
 
     fun onClickMore() {
-        mPage++
-        getSellerProductList()
+        if (!misLast) getSellerProductList()
     }
 
     fun onClickTab(pos: Int) {
