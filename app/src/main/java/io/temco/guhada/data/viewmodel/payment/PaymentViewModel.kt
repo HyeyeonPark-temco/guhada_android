@@ -564,8 +564,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     private fun checkShippingMessage() {
-        val isManual = selectedShippingMessage.get()?.message == shippingMessages[shippingMessages.size - 1].message
-        val message = if (isManual) shippingMessage else selectedShippingMessage.get()?.message
+        val isDirect = selectedShippingMessage.get()?.message == shippingMessages[shippingMessages.size - 1].message
+        val message = if (isDirect) shippingMessage else selectedShippingMessage.get()?.message
                 ?: ""
         selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = message })
         mRequestOrder.shippingAddress.shippingMessage = message

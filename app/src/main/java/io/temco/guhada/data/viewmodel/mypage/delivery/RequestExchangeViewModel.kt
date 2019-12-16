@@ -53,9 +53,6 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                                 this@RequestExchangeViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
 
                                 val list = (it.data as PurchaseOrder).shippingMessageList
-                                list.add(ShippingMessage().apply {
-                                    message = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
-                                })
                                 mShippingMessageList.postValue(list)
                             }
                         })
