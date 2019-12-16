@@ -90,9 +90,6 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                                         ?: ""
 
                                 val list = purchaseOrder.shippingMessageList
-                                list.add(ShippingMessage().apply {
-                                    message = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
-                                })
                                 mShippingMessageList.postValue(list)
                             }
                         })
@@ -177,7 +174,7 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_way_message1))
         } else if (mExchangeRequest.alreadySend == true && mExchangeRequest.shippingCompanyCode.isNullOrEmpty()) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_way_message2))
-        } else if (mSelectedShippingPayment == null || (mSelectedShippingPayment?.userFault == true && mExchangeRequest.claimShippingPriceType == ShippingPaymentType.NONE.type)) {
+        } else if ((mPurchaseOrder.value?.exchangeShipExpense ?: 0 > 0 || mPurchaseOrder.value?.exchangeShippingPrice ?: 0 > 0) && mSelectedShippingPayment == null || (mSelectedShippingPayment?.userFault == true && mExchangeRequest.claimShippingPriceType == ShippingPaymentType.NONE.type)) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_shipping))
         } else {
             if (!mIsExchangeCallFinished) {

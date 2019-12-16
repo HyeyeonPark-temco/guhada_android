@@ -20,7 +20,6 @@ import io.temco.guhada.view.activity.base.BindActivity
 class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBinding>() {
     private lateinit var mPurchaseOrder: PurchaseOrder
     private var mOption = ""
-    private var exchangeShippingPrice = 0
 
     override fun getBaseTag(): String = SuccessRequestExchangeActivity::class.java.simpleName
 
@@ -52,14 +51,6 @@ class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBindi
                 else "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeSuccessexchangeProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeSuccessexchangeProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
-
-        exchangeShippingPrice = if (mPurchaseOrder.exchangeShippingPrice > 0) mPurchaseOrder.exchangeShippingPrice else mPurchaseOrder.exchangeShipExpense
-        val shippingPriceVisibility = if (purchaseOrder.exchangeShippingPrice > 0 || purchaseOrder.exchangeShipExpense > 0) View.VISIBLE else View.GONE
-        mBinding.textviewSuccessexchangeShippingprice.visibility = shippingPriceVisibility
-        mBinding.textviewSuccessexchangeShippingtitle.visibility = shippingPriceVisibility
-
-        val shippingPriceLineVisibility = if (purchaseOrder.paymentMethod == PaymentWayType.VBANK.code && shippingPriceVisibility == View.VISIBLE) View.VISIBLE else View.GONE
-        mBinding.viewSuccessexchangeShippingline.visibility = shippingPriceLineVisibility
     }
 
     private fun initExchangeInfo(exchangeRequest: ExchangeRequest) {
@@ -68,11 +59,13 @@ class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBindi
         mOption = mPurchaseOrder.getOptionStr()
         mBinding.includeSuccessexchangeProductinfo.optionStr = mOption
 
-        if (exchangeRequest.claimShippingPriceType != ShippingPaymentType.NONE.type) {
+        val exchangeShippingPrice = if (mPurchaseOrder.exchangeShippingPrice > 0) mPurchaseOrder.exchangeShippingPrice else mPurchaseOrder.exchangeShipExpense
+        if ((mPurchaseOrder.exchangeShippingPrice > 0 || mPurchaseOrder.exchangeShipExpense > 0) && exchangeRequest.userFault && exchangeRequest.claimShippingPriceType != ShippingPaymentType.NONE.type) {
             mBinding.textviewSuccessexchangeShippingprice.text = exchangeRequest.getShippingPaymentDescription(exchangeShippingPrice)
         } else {
             mBinding.textviewSuccessexchangeShippingprice.visibility = View.GONE
             mBinding.textviewSuccessexchangeShippingtitle.visibility = View.GONE
+            mBinding.viewSuccessexchangeShippingline.visibility = View.GONE
         }
     }
 }

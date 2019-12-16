@@ -219,7 +219,7 @@
                 style="@style/MypageDeliveryWarmGreyTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border_all_whitethree"
+                android:background="@drawable/border_all_whitefour"
                 android:gravity="left|top"
                 android:hint="@{hintMessage}"
                 android:padding="15dp" />

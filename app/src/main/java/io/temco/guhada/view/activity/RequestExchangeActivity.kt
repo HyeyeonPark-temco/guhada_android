@@ -175,6 +175,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                     val cause = mViewModel.mPurchaseOrder.value?.exchangeReasonList!![position]
                     mViewModel.mSelectedShippingPayment = cause
                     mViewModel.mExchangeRequest.exchangeReason = cause.code
+                    mViewModel.mExchangeRequest.userFault = cause.userFault
 
                     if (purchaseOrder.exchangeShippingPrice > 0 || purchaseOrder.exchangeShipExpense > 0)
                         mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
@@ -320,14 +321,6 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 }
             }
 
-            // [신청서 수정] 배송비 결제 방법
-            if (purchaseOrder.exchangeShippingPriceType != null && purchaseOrder.exchangeShippingPriceType != ShippingPaymentType.NONE.type) {
-                when (purchaseOrder.exchangeShippingPriceType) {
-                    ShippingPaymentType.BOX.type -> mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
-                    ShippingPaymentType.DIRECT_SEND.type -> mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = true
-                }
-            }
-
             mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     mViewModel.mShippingPayment = ShippingPaymentType.BOX.pos
@@ -341,6 +334,16 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                     mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.DIRECT_SEND.type
                     mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
                 }
+            }
+
+            // [신청서 수정] 배송비 결제 방법
+            if (!purchaseOrder.exchangeShippingPriceType.isNullOrEmpty() && purchaseOrder.exchangeShippingPriceType != ShippingPaymentType.NONE.type) {
+                when (purchaseOrder.exchangeShippingPriceType) {
+                    ShippingPaymentType.BOX.type -> mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
+                    ShippingPaymentType.DIRECT_SEND.type -> mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = true
+                }
+            } else {
+                mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
             }
         } else {
             mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
