@@ -47,7 +47,9 @@ class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBindi
         mPurchaseOrder = purchaseOrder
         mBinding.includeSuccessexchangeProductinfo.imageUrl = purchaseOrder.imageUrl
         mBinding.includeSuccessexchangeProductinfo.brandName = purchaseOrder.brandName
-        mBinding.includeSuccessexchangeProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.productName}"
+        mBinding.includeSuccessexchangeProductinfo.productName =
+                if (purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName
+                else "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeSuccessexchangeProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeSuccessexchangeProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
 
