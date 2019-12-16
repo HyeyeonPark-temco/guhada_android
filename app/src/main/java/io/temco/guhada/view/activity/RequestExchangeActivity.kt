@@ -181,8 +181,11 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                                 if (cause.userFault) View.VISIBLE
                                 else View.GONE
 
-                    if (!cause.userFault)
-                        mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
+                    if (!cause.userFault) mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
+                    else {
+                        mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.BOX.type
+                        mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
+                    }
                 }
             }
         }
@@ -399,7 +402,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         if (purchaseOrder.exchangeBuyerShippingMessage.isNotEmpty()) {
             var selectedShippingMessage = ""
             Observable.fromIterable(purchaseOrder.shippingMessageList).subscribe {
-                if (it.message == purchaseOrder.exchangeBuyerShippingMessage){
+                if (it.message == purchaseOrder.exchangeBuyerShippingMessage) {
                     selectedShippingMessage = it.message
                     return@subscribe
                 }

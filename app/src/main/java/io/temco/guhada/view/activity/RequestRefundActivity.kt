@@ -223,8 +223,11 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                         if (cause.userFault) View.VISIBLE
                         else View.GONE
 
-            if (!cause.userFault)
-                mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
+            if (!cause.userFault) mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
+            else {
+                mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.BOX.type
+                mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
+            }
         }
     }
 
