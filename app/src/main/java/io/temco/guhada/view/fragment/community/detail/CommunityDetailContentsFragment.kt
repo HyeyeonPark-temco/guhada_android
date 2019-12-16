@@ -14,12 +14,14 @@ import android.webkit.*
 import android.widget.ImageView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.RequestManager
+import io.fabric.sdk.android.services.common.CommonUtils
 import io.temco.guhada.R
 import io.temco.guhada.common.ActivityMoveToMain
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.DateUtil
@@ -33,7 +35,9 @@ import io.temco.guhada.data.model.main.MainEvent
 import io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel
 import io.temco.guhada.data.viewmodel.main.HomeListViewModel
 import io.temco.guhada.databinding.FragmentCommunityDetailContentBinding
+import io.temco.guhada.view.activity.base.BaseActivity
 import io.temco.guhada.view.adapter.CommunityMobileDetailAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
 import java.lang.ref.WeakReference
@@ -43,12 +47,6 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
 
     // -----------------------------
 
-    private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
-    lateinit var mHandler: Handler
-    private var currentAdIndex : Int = -1
-    private var eventListSize = 0
-    var isViewPagerIdle = false
-
     ////////////////////////////////////////////////
     // OVERRIDE
     ////////////////////////////////////////////////
@@ -56,32 +54,21 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
     override fun getBaseTag(): String = CommunityDetailContentsFragment::class.java!!.simpleName
     override fun getLayoutId(): Int = R.layout.fragment_community_detail_content
     override fun init() {
-        if (CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment", "init ---------------------")
         mBinding.viewModel = viewModel
-        viewModel.communityDetailClientPlatformWeb.set(!"MOBILE".equals(viewModel.communityDetail.value!!.guhadaClientPlatform,true))
 
         mBinding.setClickBookmarkListener {
-            viewModel.onClickBookMark()
+            if(CommonUtil.checkToken()) viewModel.onClickBookMark()
+            else showLoginDialog()
+        }
+        mBinding.setClickLikeListener {
+            if(CommonUtil.checkToken()) viewModel.onClickBbsLike()
+            else showLoginDialog()
         }
         setDetailView()
+        mBinding.executePendingBindings()
         viewModel.getBookMark()
     }
 
-    override fun onResume() {
-        super.onResume()
-        if(infiniteAdapter != null){
-            isViewPagerIdle = true
-            homeRolling()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if(infiniteAdapter != null){
-            isViewPagerIdle = false
-            mHandler.removeCallbacks(homeAdRolling)
-        }
-    }
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
@@ -91,7 +78,18 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
     // PRIVATE
     ////////////////////////////////////////////////
 
+
+    private fun showLoginDialog(){
+        CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                cancelButtonVisible = true,
+                confirmTask = {
+                    CommonUtil.startLoginPage(context as BaseActivity)
+                }).show(manager = (context as BaseActivity).supportFragmentManager, tag = "CommunityDetailActivity")
+    }
+
     fun setDetailView(){
+        viewModel.communityDetailClientPlatformWeb.set(!"MOBILE".equals(viewModel.communityDetail.value!!.guhadaClientPlatform,true))
+
         mBinding.item = viewModel.communityDetail.value!!
         if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","communityDetail",viewModel.communityDetail.value.toString())
         mBinding.recyclerviewCommunitydetailList.adapter = null
@@ -105,10 +103,11 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
                 }
             }
         }
+        if (mBinding.recyclerviewCommunitydetailList.adapter != null) {
+            (mBinding.recyclerviewCommunitydetailList.adapter as CommunityMobileDetailAdapter).mList.clear()
+            (mBinding.recyclerviewCommunitydetailList.adapter as CommunityMobileDetailAdapter).notifyDataSetChanged()
+        }
 
-        /*if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","getNowDateDiffMinute",DateUtil.getNowDateDiffMinute(viewModel.communityDetail.value?.createdTimestamp ?: 0))
-        if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","getNowDateDiffHour",DateUtil.getNowDateDiffHour(viewModel.communityDetail.value?.createdTimestamp ?: 0))
-        if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","getNowDateDiffDay",DateUtil.getNowDateDiffDay(viewModel.communityDetail.value?.createdTimestamp ?: 0))*/
         if(DateUtil.getNowDateDiffDay(viewModel.communityDetail.value?.createdTimestamp ?: 0) < 1){
             CommonViewUtil.setTextViewImageTextEnd(context!!, R.drawable.drawable_icon_new,
                     (header+viewModel.communityDetail.value!!.title!!+" "),mBinding.textviewCommunitydetailcontentsTitle)
@@ -124,7 +123,7 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
             }
             (context as Activity).startActivity(Intent.createChooser(sendIntent, "공유"))
         }
-
+        if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","communityDetailClientPlatformWeb",viewModel.communityDetailClientPlatformWeb.get())
 
         if(viewModel.communityDetailClientPlatformWeb.get()){
             val data = StringBuilder()
@@ -156,34 +155,6 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
                 }
             }
             mBinding.webviewCommunitydetailContent.loadData(data.toString(), "text/html", null)
-            /*mBinding.webviewCommunitydetailContent.settings.apply {
-                javaScriptEnabled = true
-                javaScriptCanOpenWindowsAutomatically = true
-                setSupportMultipleWindows(true)
-                loadWithOverviewMode = true
-                useWideViewPort = true
-                allowFileAccess = true
-                pluginState = WebSettings.PluginState.ON
-                pluginState = WebSettings.PluginState.ON_DEMAND
-                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-                setAppCacheEnabled(true)
-                layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
-                if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
-            }
-            mBinding.webviewCommunitydetailContent.webViewClient = object  : WebViewClient(){
-                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                    //return super.shouldOverrideUrlLoading(view, request)
-                    view?.webChromeClient = WebChromeClient()
-                    if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment",request?.url!!.toString())
-                    return true
-                }
-            }
-
-            val data = StringBuilder()
-            data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>")
-            data.append(viewModel.communityDetail.value!!.contents!!.replace("\"//www","\"https://www"))
-            data.append("</body></HTML>")
-            mBinding.webviewCommunitydetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(),"text/html; video/mpeg", "utf-8", null)*/
         }else{
             if (mBinding.recyclerviewCommunitydetailList.adapter == null) {
                 var mobileList = arrayListOf<CommunityMobileDetail>()
@@ -202,98 +173,13 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
                 viewModel.mobileContentsList = mobileList
                 mBinding.recyclerviewCommunitydetailList.adapter = CommunityMobileDetailAdapter().apply { mList = viewModel.mobileContentsList }
             } else {
+                (mBinding.recyclerviewCommunitydetailList.adapter as CommunityMobileDetailAdapter).mList.clear()
                 (mBinding.recyclerviewCommunitydetailList.adapter as CommunityMobileDetailAdapter).setItems(viewModel.mobileContentsList)
             }
         }
-        mHandler = Handler(context?.mainLooper)
-        setViewPager()
-        mBinding.executePendingBindings()
     }
 
 
-
-    private fun setViewPager(){
-        if(infiniteAdapter == null){
-            val tmpList = java.util.ArrayList<EventData>()
-            // 이벤트 더미 데이터 --------------------------------
-            tmpList.add(EventData(0, "#d6b5ad", R.drawable.community_banner_mobile, "main_banner_mobile", "", "", 0, ""))
-            tmpList.add(EventData(1, "", R.drawable.timedeal_com_m_360, "main_banner_mobile", "", "", 1, ""))
-
-            var metrics = DisplayMetrics()
-            isViewPagerIdle = true
-            (context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
-            mBinding.heightLayout.setmHeight((134 * metrics.density).toInt())
-            mBinding.heightLayout.setmWidth((360 * metrics.density).toInt())
-            infiniteAdapter = object : InfiniteGeneralFixedPagerAdapter<EventData>(tmpList, true, true){
-                override fun getPageView(paramViewGroup: ViewGroup, paramInt: Int, item: EventData): View {
-                    val imageView = ImageView(paramViewGroup.context)
-                    if(item.imgPath.isNullOrEmpty()){
-                        imageView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                        imageView.setBackgroundResource(tmpList[paramInt].imgRes)
-                        imageView.setOnClickListener {
-                            BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, 4,true,true)
-                            (context as Activity).setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
-                            (context as Activity).onBackPressed()
-                        }
-                    }else{
-                        imageView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-                        imageView.setBackgroundColor(Color.parseColor(item.imgPath))
-                        imageView.setImageResource(tmpList[paramInt].imgRes)
-                        imageView.setOnClickListener {
-                            BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true,true)
-                            (context as Activity).setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
-                            (context as Activity).onBackPressed()
-                        }
-                    }
-                    //ImageUtil.loadImage(Glide.with(containerView.context as Activity),imageView, data.eventList[paramInt].imgPath)
-                    return imageView
-                }
-                override fun getPageTitle(position: Int): CharSequence? = ""
-                override fun getPagerIcon(position: Int): Int = 0
-                override fun getPagerIconBackground(position: Int): Int = 0
-            }
-            mBinding.viewPager.adapter = infiniteAdapter
-
-            if(currentAdIndex == -1){
-                eventListSize = mBinding.viewPager.offsetAmount
-                currentAdIndex = mBinding.viewPager.currentItem
-            }
-            mBinding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-                override fun onPageScrollStateChanged(state: Int) {
-                    isViewPagerIdle = state == ViewPager.SCROLL_STATE_IDLE
-                }
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {  }
-                override fun onPageSelected(position: Int) {
-                    currentAdIndex = position
-                    viewModel.communityEventViewIndex.set(mBinding.viewPager.realCurrentItem)
-                }
-            })
-            homeRolling()
-        }
-    }
-
-    private var homeAdRolling =  Runnable {
-        try{
-            if(::mHandler.isInitialized && infiniteAdapter != null && isViewPagerIdle){
-                if(currentAdIndex > (eventListSize * 1000) -100) currentAdIndex = (eventListSize*1000) / 2
-                mBinding.viewPager.setCurrentItemSmooth(currentAdIndex+1)
-            }
-        }catch (e:Exception){
-            if(CustomLog.flag)CustomLog.E(e)
-        }
-        homeRolling()
-    }
-
-
-    private fun homeRolling(){
-        try{
-            mHandler.removeCallbacks(homeAdRolling)
-            mHandler.postDelayed(homeAdRolling,5000)
-        }catch (e:Exception){
-            mHandler.removeCallbacks(homeAdRolling)
-            if(CustomLog.flag)CustomLog.E(e)
-        }
-    }
 
     ////////////////////////////////////////////////
 

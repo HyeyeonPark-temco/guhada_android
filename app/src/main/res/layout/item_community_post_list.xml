@@ -12,13 +12,12 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.CommunitySubListViewModel" />
+            type="io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:onClick="@{()->viewModel.onClickItem(item)}"
         android:orientation="vertical">
 
@@ -27,6 +26,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
             android:paddingEnd="20dp"
+            android:paddingTop="20dp"
             android:paddingBottom="20dp">
 
             <ImageView
@@ -107,7 +107,6 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <TextView
                 android:id="@+id/textview_communitytext_like"
@@ -203,6 +202,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="@{item.userName}"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textSize="@dimen/text_13"
                 app:layout_constraintLeft_toRightOf="@+id/framelayout_communitytext_rank"
                 app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category" />

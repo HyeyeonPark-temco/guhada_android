@@ -59,7 +59,7 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
                     planningDealListTotalCount.set(mTotalCount.toString())
                     if(index == 0){
                         var list = arrayListOf<PlanningDealBase>()
-                        var title = PlanningDealTitle(0, PlanningDealType.Title,2,
+                        var title = PlanningDealTitle(0, PlanningDealType.Title,2, PlanningDetailData(),
                                 "9월의 마지막 혜택, 구하다 퍼플등급\n회원 15% 할인쿠폰 지급","2019. 05. 01 ~ 2019. 05. 31")
                         list.add(title)
                         var imageBanner = PlanningDealImageBanner(1, PlanningDealType.ImageBanner, 2, imageBannerUrl)

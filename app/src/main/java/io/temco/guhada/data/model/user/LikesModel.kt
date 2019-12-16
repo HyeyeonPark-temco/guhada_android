@@ -8,5 +8,5 @@ enum class LikesTargetType { BBS , COMMENT }
 
 class LikesModel{
     var target = ""
-    var targetId = 0
+    var targetId = 0L
 }

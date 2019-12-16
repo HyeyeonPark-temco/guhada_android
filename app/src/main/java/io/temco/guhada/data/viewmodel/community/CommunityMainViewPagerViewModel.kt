@@ -71,7 +71,6 @@ class CommunityMainViewPagerViewModel (val context : Context) : BaseObservableVi
                                 getCommunityCategoryFilter(categoryId, info.id)
                             }
                             totalCatergoyCount += data.size
-                            if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getCommunityCategory successTask ",communityCategoryMap.toString())
                         }
                     },
                     dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataNotFoundTask ") },
