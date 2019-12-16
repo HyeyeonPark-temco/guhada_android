@@ -103,6 +103,9 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                                 }
                             })
                 }, accessToken = token, cancelRequest = cancelRequest)
+            }, invalidTokenTask = {
+                mIsCancelCallFinished = false
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
             })
         }
     }
