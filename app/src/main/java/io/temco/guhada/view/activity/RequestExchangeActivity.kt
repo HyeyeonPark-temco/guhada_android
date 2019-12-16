@@ -126,9 +126,9 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         if (!purchaseOrder.exchangeReason.isNullOrEmpty()) {
             mViewModel.mExchangeRequest.exchangeReason = purchaseOrder.exchangeReason
             mBinding.includeRequestexchangeCause.defaultMessage = getReason(purchaseOrder.exchangeReason)
-            mBinding.includeRequestexchangeCause.textviewRequestorderstatusCause.text = getReason(purchaseOrder.exchangeReason)
+            mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setPlaceHolder(getReason(purchaseOrder.exchangeReason))
         } else {
-            mBinding.includeRequestexchangeCause.textviewRequestorderstatusCause.text = getString(R.string.requestorderstatus_exchange_cause)
+            mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setPlaceHolder(getString(R.string.requestorderstatus_exchange_cause))
             mBinding.includeRequestexchangeCause.defaultMessage = getString(R.string.requestorderstatus_exchange_cause)
         }
 
@@ -155,7 +155,6 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             mViewModel.mExchangeRequest.quantity = mBinding.includeRequestexchangeCause.quantity
                     ?: 0
         }
-        mBinding.includeRequestexchangeCause.causeList = purchaseOrder.exchangeReasonList
 
         /**
          * Custom Spinner View 변경
@@ -397,7 +396,26 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         }
 
         // 배송 메세지 리스트
-        mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setPlaceHolder(getString(R.string.shippingmemo_default))
+        if (purchaseOrder.exchangeBuyerShippingMessage.isNotEmpty()) {
+            var selectedShippingMessage = ""
+            Observable.fromIterable(purchaseOrder.shippingMessageList).subscribe {
+                if (it.message == purchaseOrder.exchangeBuyerShippingMessage){
+                    selectedShippingMessage = it.message
+                    return@subscribe
+                }
+            }.dispose()
+
+            if (selectedShippingMessage.isEmpty()) {
+                selectedShippingMessage = purchaseOrder.shippingMessageList[purchaseOrder.shippingMessageList.size - 1].message
+                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.VISIBLE
+                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.setText(purchaseOrder.exchangeBuyerShippingMessage)
+            }
+
+            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setPlaceHolder(selectedShippingMessage)
+        } else
+            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setPlaceHolder(getString(R.string.shippingmemo_default))
+
+
         mViewModel.mShippingMessageList.observe(this, Observer {
             val list = mutableListOf<Any>()
             Observable.fromIterable(it).subscribe { list.add(it.message) }.dispose()

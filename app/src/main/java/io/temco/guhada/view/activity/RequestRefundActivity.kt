@@ -174,9 +174,11 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     private fun initCause(purchaseOrder: PurchaseOrder) {
         if (!purchaseOrder.returnReason.isNullOrEmpty()) {
             mViewModel.mRefundRequest.refundReason = purchaseOrder.returnReason
-            mBinding.includeRequestrefundCause.defaultMessage = getReason(purchaseOrder.returnReason)
-            mBinding.includeRequestrefundCause.textviewRequestorderstatusCause.text = getReason(purchaseOrder.returnReason)
+            mBinding.includeRequestrefundCause.spinnerRequestorderstatusCause1.setPlaceHolder(getReason(purchaseOrder.returnReason))
+        } else {
+            mBinding.includeRequestrefundCause.spinnerRequestorderstatusCause1.setPlaceHolder(getString(R.string.requestorderstatus_refund_cause))
         }
+
         mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.setText(purchaseOrder.returnReasonDetail)
         mBinding.includeRequestrefundCause.hintMessage = resources.getString(R.string.requestorderstatus_refund_hint_cause)
         mBinding.includeRequestrefundCause.quantityTitle = resources.getString(R.string.requestorderstatus_refund_quantity)
@@ -200,34 +202,29 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mViewModel.getExpectedRefundPriceForRequest(quantity + 1)
             }
         }
-        mBinding.includeRequestrefundCause.causeList = purchaseOrder.returnReasonList
-        mBinding.includeRequestrefundCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (purchaseOrder.returnReasonList != null) {
-                    if (purchaseOrder.returnReason.isNotEmpty() && position > (purchaseOrder.returnReasonList!!.size - 2)) {
-
-                    } else {
-                        val cause = mViewModel.mPurchaseOrder.value?.returnReasonList!![position]
-                        mViewModel.mSelectedShippingPayment = cause
-                        mViewModel.mRefundRequest.refundReason = cause.code
-                        mBinding.includeRequestrefundCause.defaultMessage = cause.label
-
-                        if (purchaseOrder.returnShipExpense > 0 || purchaseOrder.returnShippingPrice > 0)
-                            mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
-                                    if (cause.userFault) View.VISIBLE
-                                    else View.GONE
-
-                        if (!cause.userFault)
-                            mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
-                    }
-                }
-            }
-        }
         mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.addTextChangedListener {
             mViewModel.mRefundRequest.refundReasonDetail = it.toString()
+        }
+
+        //
+        val list = mutableListOf<Any>()
+        Observable.fromIterable(purchaseOrder.returnReasonList).subscribe { list.add(it.label) }.dispose()
+
+        mBinding.includeRequestrefundCause.spinnerRequestorderstatusCause1.setItems(list)
+        mBinding.includeRequestrefundCause.spinnerRequestorderstatusCause1.setOnItemClickTask { position ->
+            val cause = mViewModel.mPurchaseOrder.value?.returnReasonList!![position]
+            mViewModel.mSelectedShippingPayment = cause
+            mViewModel.mRefundRequest.refundReason = cause.code
+            mBinding.includeRequestrefundCause.defaultMessage = cause.label
+
+            if (purchaseOrder.returnShipExpense > 0 || purchaseOrder.returnShippingPrice > 0)
+                mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
+                        if (cause.userFault) View.VISIBLE
+                        else View.GONE
+
+            if (!cause.userFault)
+                mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
         }
     }
 
@@ -358,7 +355,6 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             }
 
             // [신청서 수정] 배송비 결제 방법
-            setShippingPayment(purchaseOrder)
             mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.EXCLUDE_REFUND_PRICE.type
@@ -380,6 +376,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                     mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
                 }
             }
+            setShippingPayment(purchaseOrder)
         } else {
             mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
         }
@@ -406,7 +403,10 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 ShippingPaymentType.EXCLUDE_REFUND_PRICE.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = true
                 ShippingPaymentType.BOX.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
                 ShippingPaymentType.DIRECT_SEND.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = true
+
             }
+        } else {
+            mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
         }
     }
 

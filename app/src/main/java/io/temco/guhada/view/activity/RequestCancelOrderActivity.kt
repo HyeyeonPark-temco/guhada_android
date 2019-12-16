@@ -108,7 +108,6 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
     }
 
     private fun initCauseInfo(purchaseOrder: PurchaseOrder) {
-        mBinding.includeRequestcancelorderCause.causeList = purchaseOrder.cancelReasonList
         mBinding.includeRequestcancelorderCause.quantityTitle = getString(R.string.requestorderstatus_cancel_quantity)
         mBinding.includeRequestcancelorderCause.quantity = purchaseOrder.quantity
         mBinding.includeRequestcancelorderCause.defaultMessage = getString(R.string.requestorderstatus_cancel_cause)
