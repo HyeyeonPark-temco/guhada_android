@@ -38,10 +38,11 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
         setPadding(position = position)
         setOptionText(option = option)
 
-        mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.size - 1) View.VISIBLE else View.GONE
+//        mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.size - 1) View.VISIBLE else View.GONE
 
         if (option.rgb1?.isNotEmpty() == true) {
             mBinding.imageviewProductdetailOptionspinner.visibility = View.VISIBLE
+            mBinding.imageviewProductdetailOptionspinner.setBackgroundColor(Color.parseColor(option.rgb1))
             mBinding.imageviewProductdetailOptionspinner.setBackgroundColor(Color.parseColor(option.rgb1))
         } else
             mBinding.imageviewProductdetailOptionspinner.visibility = View.GONE

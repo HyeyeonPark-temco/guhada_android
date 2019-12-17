@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -44,8 +43,8 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentOrderItemAdapter
 import io.temco.guhada.view.adapter.payment.PaymentProductAdapter
-import io.temco.guhada.view.adapter.payment.PaymentSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
+import io.temco.guhada.view.custom.CustomSpinnerView
 
 /**
  * 주문 결제 화면
@@ -80,13 +79,16 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         initPaymentWay()
 
         // 현금영수증
-        initRecipient()
+        initReceipt()
 
         // 적립 예정 포인트
         // initDueSavePoint()
 
         // 하단 결제 금액
         initCalculatePaymentInfo()
+
+        // 배송메세지
+        initShippingMessage()
 
         // 상품 리스트
         mBinding.recyclerviewPaymentProduct.adapter = PaymentOrderItemAdapter()
@@ -97,6 +99,18 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentPaymentway.setPurchaseClickListener { CommonUtilKotlin.startTermsPurchase(this@PaymentActivity) }
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
+    }
+
+    private fun initShippingMessage() {
+        mBinding.spinnerPaymentShippingmemo.setOnItemClickTask { position ->
+            val selectedShippingMessage = mViewModel.shippingMessages[position]
+            mViewModel.selectedShippingMessage = ObservableField(ShippingMessage().apply {
+                this.message = selectedShippingMessage.message
+                this.type = selectedShippingMessage.type
+            })
+            mViewModel.shippingMemoVisible = ObservableBoolean(position == mViewModel.shippingMessages.size - 1)
+            mViewModel.notifyPropertyChanged(BR.shippingMemoVisible)
+        }
     }
 
     override fun onPause() {
@@ -198,16 +212,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     event.addCustom("originalPrice", item.originalPrice.toString())
                     event.addCustom("discountPrice", item.discountPrice.toString())
                     if (!TextUtils.isEmpty(item.season)) event.addCustom("season", item.season)
-
-
-//                    val brandId = intent.getIntExtra("brandId", -1)
-//                    if (brandId > 0) event.addCustom("brandId", brandId.toString())
-
-//                    val sellerId = intent.getLongExtra("sellerId", -1)
-//                    if (sellerId > 0) event.addCustom("sellerId", sellerId.toString())
-
-//                    if (item.productId > 0) event.addCustom("productId", item.productId.toString())
-
                     TrackingUtil.sendKochavaEvent(event)
                 }
 
@@ -360,7 +364,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
     }
 
-    private fun initRecipient() {
+    private fun initReceipt() {
         // 신청 체크박스
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptissue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -374,7 +378,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 }
             }
             mBinding.includePaymentPaymentway.checkboxPaymentReceiptunissue.isChecked = !isChecked
-            mBinding.includePaymentPaymentway.constraintlayoutPaymentRecipientform.visibility = if (isChecked) View.VISIBLE else View.GONE
+            mBinding.includePaymentPaymentway.constraintlayoutPaymentReceiptform.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
 
         // 신청 체크박스
@@ -386,7 +390,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 mViewModel.mRequestOrder.cashReceiptUsage = ""
             }
             mBinding.includePaymentPaymentway.checkboxPaymentReceiptissue.isChecked = !isChecked
-            mBinding.includePaymentPaymentway.constraintlayoutPaymentRecipientform.visibility = if (!isChecked) View.VISIBLE else View.GONE
+            mBinding.includePaymentPaymentway.constraintlayoutPaymentReceiptform.visibility = if (!isChecked) View.VISIBLE else View.GONE
         }
 
         // 개인소득공제용
@@ -481,9 +485,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         when (requestCode) {
             Flag.RequestCode.LOGIN -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    mViewModel.callWithToken { accessToken ->
-                        mViewModel.addCartItem(accessToken)
-                    }
+                    mViewModel.addCartItem()
                 } else {
                     setResult(Activity.RESULT_CANCELED)
                     finish()
@@ -547,7 +549,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     mViewModel.mEmailVerification = ObservableBoolean(emailVerification ?: false)
                     mViewModel.notifyPropertyChanged(BR.mEmailVerification)
 
-                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification ?: false /* && emailVerification ?: false */) View.GONE else View.VISIBLE
+                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification == true /* && emailVerification ?: false */) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()
                 }
             }
@@ -571,18 +573,15 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     companion object {
         @JvmStatic
-        @BindingAdapter("userShippingMemo")
-        fun Spinner.bindShippingAddress(list: MutableList<ShippingMessage>) {
-            if (list.isNotEmpty()) {
-                if (list[list.size - 1].message != resources.getString(R.string.payment_hint_shippingmemo))
-                    list.add(ShippingMessage().apply { this.message = resources.getString(R.string.payment_hint_shippingmemo) })
-
-                if (this.adapter == null) {
-                    this.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, list)
-                } else {
-                    (this.adapter as PaymentSpinnerAdapter).setItems(list)
+        @BindingAdapter("shippingMessage")
+        fun CustomSpinnerView.bindShippingMessages(list: MutableList<ShippingMessage>?) {
+            this.setPlaceHolder(resources.getString(R.string.payment_hint_shippingmemo))
+            if (!list.isNullOrEmpty()) {
+                val mList: MutableList<Any> = mutableListOf()
+                for (item in list) {
+                    mList.add(item.message)
                 }
-                this.setSelection(list.size - 1)
+                this.setItems(mList)
             }
         }
 

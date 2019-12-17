@@ -21,6 +21,8 @@
             android:id="@+id/view_delivery_topline"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:background="@color/white_four"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,11 +1,10 @@
 package io.temco.guhada.view.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Build
 import android.text.TextUtils
 import android.view.View
 import android.webkit.*
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
@@ -14,7 +13,6 @@ import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerStore
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
 import io.temco.guhada.databinding.ActivitySellerstoreBinding
@@ -30,7 +28,6 @@ import io.temco.guhada.view.fragment.ListBottomSheetFragment
 class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
     private lateinit var mViewModel: SellerInfoViewModel
     private lateinit var mFilterFragment: ListBottomSheetFragment
-
     private lateinit var mMenuFragment: ListBottomSheetFragment
 
     override fun getBaseTag(): String = SellerInfoActivity::class.java.simpleName
@@ -48,6 +45,7 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
     override fun init() {
         initViewModel()
         initHeader()
+
         mBinding.imagebuttonSellerstoreMore.setOnClickListener {
             if (!::mMenuFragment.isInitialized) {
                 mMenuFragment = ListBottomSheetFragment(this).apply {
@@ -115,7 +113,7 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
                                 }
                             }
 
-                            mViewModel.mPage = 1
+                            mViewModel.mPage = mViewModel.INITIAL_PAGE
                             mViewModel.getSellerProductList()
                         }
 
@@ -127,12 +125,15 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
             }
             mFilterFragment.show(supportFragmentManager, baseTag)
         }
+        mBinding.scrollviewSellerstore.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (v != null && scrollY == (v.getChildAt(0)?.measuredHeight!! - v.measuredHeight) && mBinding.scrollviewSellerstore.visibility == View.VISIBLE) {
+                mViewModel.onClickMore()
+            }
+        }
 
         mViewModel.getSellerInfo()
         mViewModel.getSellerStoreInfo()
         mViewModel.getSellerBookMark()
-//        mViewModel.getSellerSatisfaction()
-//        mViewModel.getSellerFollowCount()
         mViewModel.getSellerProductList()
 
         mBinding.viewModel = mViewModel
@@ -155,7 +156,7 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
 //            initHeader(it)
 //        })
         mViewModel.mSellerStore.observe(this@SellerInfoActivity, Observer {
-            if(CustomLog.flag)CustomLog.L("mBusinessSeller","it",it)
+            if (CustomLog.flag) CustomLog.L("mBusinessSeller", "it", it)
             mBinding.sellerStore = it
             mBinding.includeSellerstoreInfo.sellerStore = it
             setStoreIntroDetail(it)
@@ -169,23 +170,24 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
         mViewModel.mBusinessSeller.observe(this, Observer {
             mBinding.businessSeller = it
             mBinding.includeSellerstoreInfo.businessSeller = it
-            if(TextUtils.isEmpty(it.sellerUser.user.nickname))
+            if (TextUtils.isEmpty(it.sellerUser.user.nickname))
                 mBinding.includeSellerstoreHeader.title = it.sellerUser.user.nickname
-            if(CustomLog.flag)CustomLog.L("mBusinessSeller","it",it)
+            if (CustomLog.flag) CustomLog.L("mBusinessSeller", "it", it)
         })
         mViewModel.mSeller.observe(this, Observer {
-            if(CustomLog.flag)CustomLog.L("mSeller","it",it)
+            if (CustomLog.flag) CustomLog.L("mSeller", "it", it)
             mBinding.includeSellerstoreHeader.textviewSellerstoreTitle.text = it.user.nickname
             mBinding.seller = it
         })
 
         mViewModel.mSellerProductList.observe(this@SellerInfoActivity, Observer {
-            if (mViewModel.mPage == 1) // first
+            mViewModel.misLast = it.deals.isEmpty()
+            if (mViewModel.mPage == 1) {// first
                 mBinding.recyclerivewSellerstoreProductlist.adapter = SellerInfoProductAdapter().apply {
                     mList = it.deals
                     this@apply.mViewModel = this@SellerInfoActivity.mViewModel
                 }
-            else { // more
+            } else { // more
                 (mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).mList.addAll(it.deals)
                 (mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).notifyDataSetChanged()
 
@@ -203,14 +205,14 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
     }
 
 
-    private fun setStoreIntroDetail(sellerStroe : SellerStore){
-        if(!TextUtils.isEmpty(sellerStroe.storeIntroductionDetail)){
+    private fun setStoreIntroDetail(sellerStroe: SellerStore) {
+        if (!TextUtils.isEmpty(sellerStroe.storeIntroductionDetail)) {
             val data = StringBuilder()
             data.append("<style>img{display: inline;height: auto;max-width: 100%;}" +
                     "body{word-break: break-all; word-break: break-word}" +
                     "h1{font-size:large; word-break: break-all; word-break: break-word}" +
                     "h2{font-size:medium; word-break: break-all; word-break: break-word}</style>")
-            data.append(sellerStroe.storeIntroductionDetail!!.replace("\"//www","\"https://www"))
+            data.append(sellerStroe.storeIntroductionDetail!!.replace("\"//www", "\"https://www"))
             mBinding.includeSellerstoreInfo.webviewSellerstoreContent.settings.apply {
                 javaScriptEnabled = true
                 javaScriptCanOpenWindowsAutomatically = true
@@ -220,16 +222,17 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
                 pluginState = WebSettings.PluginState.ON_DEMAND
                 cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
                 loadsImagesAutomatically = true
-                defaultFontSize = baseContext?.resources?.getDimension(R.dimen.text_4)?.toInt() ?: 20
+                defaultFontSize = baseContext?.resources?.getDimension(R.dimen.text_4)?.toInt()
+                        ?: 20
                 setAppCacheEnabled(true)
                 layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
                 if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
             }
-            mBinding.includeSellerstoreInfo.webviewSellerstoreContent.webViewClient = object  : WebViewClient(){
+            mBinding.includeSellerstoreInfo.webviewSellerstoreContent.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                     //return super.shouldOverrideUrlLoading(view, request)
                     view?.webChromeClient = WebChromeClient()
-                    if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment",request?.url!!.toString())
+                    if (CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment", request?.url!!.toString())
                     return true
                 }
             }

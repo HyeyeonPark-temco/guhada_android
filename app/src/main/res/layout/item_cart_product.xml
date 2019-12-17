@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.text.TextUtils" />
 
         <import type="android.view.View" />
@@ -134,10 +135,10 @@
                     android:id="@+id/imageview_cart_product"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:minHeight="100dp"
                     android:minWidth="100dp"
+                    android:minHeight="100dp"
+                    app:imageRes="@{@drawable/background_color_pinkishgrey}"
                     app:imageUrl="@{cart.imageUrl}"
-                    app:imageRes = "@{@drawable/background_color_pinkishgrey}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/checkbox_cart" />
 
@@ -381,109 +382,18 @@
                 android:paddingRight="20dp"
                 android:paddingBottom="30dp">
 
-                <FrameLayout
-                    android:id="@+id/framelayout_productdetail_option"
+                <io.temco.guhada.view.custom.CustomSpinnerView
+                    android:id="@+id/spinner_cart_option"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:visibility="@{cart.cartOptionInfoList.isEmpty() ? View.GONE : View.VISIBLE, default = gone}"
+                    android:visibility="gone"
+                    app:isLarge="true"
                     app:layout_constraintBottom_toTopOf="@+id/linearlayout_cart_amount"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-
-                    <io.temco.guhada.view.CustomSpinner
-                        android:id="@+id/spinner_productdetail_option"
-                        style="@style/CustomDropdown"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@null"
-                        android:minHeight="50dp"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        android:overlapAnchor="false"
-                        android:popupElevation="0dp"
-                        android:spinnerMode="dropdown" />
-
-                    <FrameLayout
-                        android:id="@+id/framelayout_productdetail_optionbutton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/border_all_whitefour"
-                        android:padding="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:id="@+id/linearlayout_productdetail_optionselected"
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@color/common_white"
-                                android:orientation="horizontal"
-                                android:paddingStart="20dp"
-                                android:paddingEnd="12dp">
-
-                                <ImageView
-                                    android:id="@+id/imageview_productdetail_optionselected"
-                                    android:layout_width="@dimen/view_productdetail_option_rgb"
-                                    android:layout_height="@dimen/view_productdetail_option_rgb"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_margin="1dp"
-                                    android:src="@drawable/drawable_transparent_circle" />
-
-                                <TextView
-                                    android:id="@+id/textview_productdetail_optionselected"
-                                    style="@style/TextRegular"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginStart="7dp"
-                                    android:layout_weight="1"
-                                    android:textColor="@color/greyish_brown_two"
-                                    android:textSize="@dimen/text_14" />
-
-                                <ImageView
-                                    android:id="@+id/imageview_cart_optionarrow"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:src="@drawable/payment_icon_selectbox_open" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linearlayout_productdetail_option"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:background="@color/common_white"
-                            android:orientation="horizontal"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="15dp"
-                            android:popupBackground="@null">
-
-                            <TextView
-                                android:id="@+id/textview_productdetail_option"
-                                style="@style/MypageDeliveryWarmGreyTextStyle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
-                                android:text="@string/productdetail_message_selectoption"
-                                android:textSize="@dimen/text_13" />
-
-                            <ImageView
-                                android:id="@+id/imageview_productdetail_option"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open" />
-                        </LinearLayout>
-                    </FrameLayout>
-                </FrameLayout>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:maxVisibleCount="5" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_cart_option"
@@ -504,7 +414,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@id/button_cart_cancel"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/framelayout_productdetail_option">
+                    app:layout_constraintTop_toBottomOf="@id/spinner_cart_option">
 
                     <ImageButton
                         android:id="@+id/imagebutton_cart_minus"

@@ -308,71 +308,22 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textview_payment_shippingaddress" />
 
-                        <FrameLayout
-                            android:id="@+id/framelayout_payment_shippingmemo"
+                        <io.temco.guhada.view.custom.CustomSpinnerView
+                            android:id="@+id/spinner_payment_shippingmemo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
                             app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginTop="20dp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textview_payment_recipient">
-
-                            <io.temco.guhada.view.CustomSpinner
-                                android:id="@+id/spinner_payment_shippingmemo"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:background="@drawable/border_all_whitefour"
-                                android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"
-                                android:orientation="horizontal"
-                                android:overScrollMode="never"
-                                android:overlapAnchor="false"
-                                android:popupBackground="@null"
-                                android:spinnerMode="dropdown"
-                                app:userShippingMemo="@{viewModel.shippingMessages}" />
-
-                            <FrameLayout
-                                android:id="@+id/framelayout_payment_shippingmemobutton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/white_three"
-                                android:padding="1dp">
-
-                                <LinearLayout
-                                    android:id="@+id/linearlayout_payment_shippingmemo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="45dp"
-                                    android:background="@color/common_white"
-                                    android:orientation="horizontal"
-                                    android:paddingStart="15dp"
-                                    android:paddingEnd="15dp"
-                                    android:popupBackground="@null">
-                                    <!--android:onClick="@{()->viewModel.onClickCloseShippingMemoSpinner()}"-->
-
-                                    <TextView
-                                        style="@style/PaymentContentGreyTextStyle"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_weight="1"
-                                        android:text="@{viewModel.selectedShippingMessage.message}"
-                                        android:textSize="@dimen/text_13" />
-
-                                    <ImageView
-                                        android:id="@+id/imageview_payment_shippingmemo"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:src="@drawable/payment_icon_selectbox_open" />
-                                </LinearLayout>
-                            </FrameLayout>
-                        </FrameLayout>
+                            app:layout_constraintTop_toBottomOf="@+id/textview_payment_recipient"
+                            app:shippingMessage="@{viewModel.shippingMessages}" />
 
                         <EditText
                             style="@style/TextRegular"
                             android:layout_width="match_parent"
                             android:layout_height="90dp"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/border_all_whitethree"
+                            android:background="@drawable/border_all_whitefour"
                             android:gravity="start"
                             android:hint="@string/payment_hint_textshippingmemo"
                             android:padding="15dp"
@@ -385,7 +336,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_shippingmemo" />
+                            app:layout_constraintTop_toBottomOf="@+id/spinner_payment_shippingmemo" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

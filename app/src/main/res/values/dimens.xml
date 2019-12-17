@@ -74,5 +74,7 @@
     <dimen name="ms__popup_padding_top">10dp</dimen>
     <dimen name="time_deal_height">320dp</dimen>
 
-
+    <!-- Custom Spinner -->
+    <dimen name="height_spinner_default">45dp</dimen>
+    <dimen name="height_spinner_large">50dp</dimen>
 </resources>
