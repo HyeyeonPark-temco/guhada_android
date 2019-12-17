@@ -352,8 +352,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     private fun redirectCouponSelectDialogActivity() {
         val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
-        intent.putExtra("productList", mViewModel.productList)
-        intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
+//        intent.putExtra("productList", mViewModel.productList)
+//        intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
+        intent.putExtra("couponInfo", mViewModel.mCouponInfo.value)
         startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
     }
 

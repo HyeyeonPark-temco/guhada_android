@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.data.model.coupon.CouponInfo
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.databinding.ActivityCouponselectdialogBinding
@@ -29,7 +30,7 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
     override fun getViewType(): Type.View = Type.View.COUPON_SELECT
 
     override fun init() {
-        initViewModel()
+        initViewModel1()
         mBinding.imagebuttonCouponselectClose.setOnClickListener { finish() }
         mBinding.buttonCouponselect.setOnClickListener {
             if (mViewModel.mSelectedCouponMap.keys.isNotEmpty()) {
@@ -76,6 +77,19 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
             if (it != null) {
                 mViewModel.mCartIdList = it
                 mViewModel.getOrderForm()
+            }
+        }
+    }
+
+    private fun initViewModel1() {
+        mViewModel = CouponSelectDialogViewModel()
+        intent.getSerializableExtra("couponInfo").let {
+            if (it != null) {
+                mViewModel.mCouponInfo = it as CouponInfo
+                mBinding.recyclerviewCouponselectList.adapter = CouponSellerAdapter().apply {
+                    this.mViewModel = this@CouponSelectDialogActivity.mViewModel
+                    this.mCouponBenefitSellerResponseList = it.benefitSellerResponseList
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.coupon.AvailableCouponWallet
+import io.temco.guhada.data.model.coupon.CouponInfo
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.product.BaseProduct
@@ -20,9 +21,11 @@ class CouponSelectDialogViewModel : BaseObservable() {
     var mCouponWalletList = mutableListOf<AvailableCouponWallet>()
     var mProductList = mutableListOf<BaseProduct>()
     var mSelectedCouponMap = hashMapOf<Long, CouponWallet?>()  // dealId, couponNumber
+    var mSelectedCouponInfo = hashMapOf<String, Long>()
 
     // PRICE
-    var mSelectedProduct = BaseProduct()
+//    var mSelectedProduct = BaseProduct()
+    var mSelectedDealId = 0L
     var mTotalDiscountPrice = ObservableInt(0)
         @Bindable
         get() = field
@@ -30,6 +33,9 @@ class CouponSelectDialogViewModel : BaseObservable() {
     var mSelectedCoupon = ObservableField<CouponWallet>(CouponWallet().apply { this.couponId = -1 })
         @Bindable
         get() = field
+
+    // 쿠폰 [19.12.17]
+    var mCouponInfo = CouponInfo()
 
     fun getOrderForm() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->

@@ -3,10 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.text.TextUtils" />
+
+        <!--<variable-->
+            <!--name="product"-->
+            <!--type="io.temco.guhada.data.model.product.BaseProduct" />-->
 
         <variable
             name="product"
-            type="io.temco.guhada.data.model.product.BaseProduct" />
+            type="io.temco.guhada.data.model.coupon.CouponInfo.BenefitOrderProductResponse" />
 
         <variable
             name="viewModel"
@@ -34,8 +39,8 @@
                 android:layout_gravity="center_vertical"
                 android:background="@color/common_white"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{product.profileUrl}" />
-
+                app:imageUrl="@{product.imageUrl}" />
+            <!--app:imageUrl="@{product.profileUrl}"-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -57,8 +62,8 @@
                     android:layout_marginTop="6dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@{product.season != null &amp;&amp; !product.season.isEmpty() ? product.season + ` ` + product.name : product.name}" />
-
+                    android:text="@{TextUtils.isEmpty(product.season) ? product.dealName : product.season + ` ` + product.dealName}" />
+                <!--android:text="@{product.season != null &amp;&amp; !product.season.isEmpty() ? product.season + ` ` + product.name : product.name}"-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,10 +75,10 @@
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/common_price_format(product.totalPrice)}"
+                        android:text="@{@string/common_price_format(product.productPrice)}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_14" />
-
+                    <!--android:text="@{@string/common_price_format(product.totalPrice)}"-->
                     <TextView
                         style="@style/TextBold"
                         android:layout_width="wrap_content"

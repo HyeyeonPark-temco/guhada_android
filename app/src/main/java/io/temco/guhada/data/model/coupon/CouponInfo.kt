@@ -1,5 +1,10 @@
 package io.temco.guhada.data.model.coupon
 
+import androidx.databinding.Bindable
+import com.google.gson.annotations.SerializedName
+import io.temco.guhada.data.model.product.BaseProduct
+import java.io.Serializable
+
 /**
  * 주문서 쿠폰 정보
  * /benefits/order/coupon API response
@@ -11,7 +16,7 @@ package io.temco.guhada.data.model.coupon
  *
  * @author Hyeyeon Park
  */
-class CouponInfo {
+class CouponInfo : Serializable {
     var savedCouponCount = 0
     var availableCouponCount = 0
     var totalCouponDiscountPrice = 0
@@ -20,26 +25,24 @@ class CouponInfo {
     var benefitSellerResponseList = mutableListOf<BenefitSellerResponse>()
 
 
-    class BenefitSellerResponse {
+    class BenefitSellerResponse : Serializable {
         var sellerId = 0
         var sellerName = ""
         var benefitOrderProductResponseList = mutableListOf<BenefitOrderProductResponse>()
     }
 
-    class BenefitOrderProductResponse {
+    class BenefitOrderProductResponse : BaseProduct(), Serializable {
         var cartId = 0
-        var dealId = 0
         var imageUrl = ""
-        var brandName = ""
-        var season = ""
         var dealName = ""
-        var option = ""
+        var option: String? = ""
         var currentQuantity = 0
         var totalStock = 0
         var productPrice = 0
-        var discountPrice = 0
         var orderPrice = 0
-        var benefitProductCouponRespopnseList = mutableListOf<BenefitOrderProductCouponResponse>()
+        @SerializedName(value = "benefitProductCouponResponseList", alternate = ["benefitProductCouponRespopnseList"])
+        var benefitProductCouponResponseList = mutableListOf<BenefitOrderProductCouponResponse>()
+
     }
 
     /**
@@ -48,7 +51,7 @@ class CouponInfo {
      *
      * @author Hyeyeon Park
      */
-    class BenefitOrderProductCouponResponse : Coupon() {
+    class BenefitOrderProductCouponResponse : CouponWallet(), Serializable {
         var productPrice = 0
         var couponDiscountPrice = 0
         var orderPrice = 0
