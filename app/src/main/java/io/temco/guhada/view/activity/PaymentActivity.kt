@@ -90,6 +90,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         // 배송메세지
         initShippingMessage()
 
+        // 사용 가능 쿠폰 정보
+        initCouponInfo()
+
         // 상품 리스트
         mBinding.recyclerviewPaymentProduct.adapter = PaymentOrderItemAdapter()
         mBinding.includePaymentDiscount.viewModel = mViewModel
@@ -452,9 +455,13 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     }
 
     // 사용 가능 쿠폰, 포인트 조회 (미사용)
-    private fun initAvailableBenefitCount() {
-        mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), mViewModel.order.availableCouponCount, mViewModel.order.totalCouponCount))
-        mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint, mViewModel.order.totalPoint))
+    private fun initCouponInfo() {
+        mViewModel.mCouponInfo.observe(this, Observer {
+            mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), it.availableCouponCount, it.savedCouponCount))
+            mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.text = Html.fromHtml(String.format(getString(R.string.payment_coupon_format), it.totalCouponDiscountPrice, it.selectedCouponCount))
+        })
+
+//        mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint, mViewModel.order.totalPoint))
     }
 
     private fun initDueSavePoint() {

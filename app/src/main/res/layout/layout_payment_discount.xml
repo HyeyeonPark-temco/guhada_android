@@ -109,7 +109,7 @@
             <!--</FrameLayout>-->
             <!--</FrameLayout>-->
 
-            <EditText
+            <TextView
                 android:id="@+id/textview_payment_discountcoupon"
                 style="@style/TextRegular"
                 android:layout_margin="1dp"

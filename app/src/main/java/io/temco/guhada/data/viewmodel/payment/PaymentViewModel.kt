@@ -26,6 +26,7 @@ import io.temco.guhada.data.model.AvailableBenefitCount
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
+import io.temco.guhada.data.model.coupon.CouponInfo
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.CalculatePaymentInfo
@@ -38,6 +39,7 @@ import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.BenefitServer
+import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -65,7 +67,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     var selectedMethod: PaymentMethod = PaymentMethod()
     var selectedShippingAddress: UserShipping? = UserShipping() // 선택된 배송지
-    var selectedShippingMessage = ObservableField<ShippingMessage>() // ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo) }) // 배송메세지 스피너 표시 메세지
+    var selectedShippingMessage = ObservableField<ShippingMessage>()
         @Bindable
         get() = field
 
@@ -200,6 +202,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mRecipientCorporation3 = ""
 
     // 쿠폰, 포인트
+    var mCouponInfo = MutableLiveData<CouponInfo>() // 사용 가능 쿠폰 정보
     var mAvailableBenefitCount: MutableLiveData<AvailableBenefitCount> = MutableLiveData(AvailableBenefitCount())
     var mSelectedCouponMap: HashMap<Long, CouponWallet?> = hashMapOf() // dealId, couponWallet
     var mTotalDiscountPrice = ObservableInt(0)  // 상품 할인 금액 + 쿠폰 할인 금액 + 포인트 사용 금액
@@ -224,7 +227,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mCalculatePaymentInfo = MutableLiveData<CalculatePaymentInfo>(CalculatePaymentInfo())
 
     fun addCartItem() {
-        ServerCallbackUtil.callWithToken(task = {accessToken->
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
             OrderServer.addCartItem(OnServerListener { success, o ->
                 if (success) {
                     val resultCode = (o as BaseModel<*>).resultCode
@@ -241,8 +244,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         // 상품상세-바로구매 시
                         if (cartIdList.isEmpty())
                             cartIdList.add(cart.cartItemId.toInt())
-                        getCalculatePaymentInfo()
 
+                        getCalculatePaymentInfo()
+                        getInitialCouponInfo()
                     } else {
                         listener.showMessage(o.message ?: "주문서 조회 오류")
                         listener.closeActivity()
@@ -279,6 +283,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
                     //  적립 예정 포인트 조회
                     getDueSavePoint()
+
+                    // 사용 가능 쿠폰 정보
+                    getInitialCouponInfo()
                 } else {
                     listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.closeActivity()
@@ -452,6 +459,21 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
 
     /**
+     * 사용 가능 쿠폰 정보
+     * @author Hyeyeon Park
+     */
+    private fun getInitialCouponInfo() {
+        ServerCallbackUtil.callWithToken(task = {
+            GatewayServer.getCouponInfo(OnServerListener { success, o ->
+                if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag)
+                    mCouponInfo.postValue(o.data as CouponInfo)
+                else
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+            }, accessToken = it, cartItemIds = cartIdList.toIntArray())
+        })
+    }
+
+    /**
      * LISTENER
      */
     // 결제 수단 checkbox listener
@@ -475,9 +497,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         notifyPropertyChanged(BR.productVisible)
     }
 
-    fun onClickBuyerVerify() {
-
-    }
+    fun onClickBuyerVerify() {}
 
     fun onClickSavePointInfo() {
         savePointInfoVisible = ObservableBoolean(!savePointInfoVisible.get())

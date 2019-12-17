@@ -18,6 +18,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import com.kakao.auth.StringSet.file
+import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.coupon.CouponInfo
 import okhttp3.MultipartBody
 import java.net.URLEncoder
 
@@ -28,7 +30,7 @@ class GatewayServer {
 
 
         @JvmStatic
-        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+        fun <C, R> resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>) {
             if (response.code() in 200..400 && response.body() != null) {
                 listener.onResult(true, response.body())
             } else {
@@ -57,40 +59,41 @@ class GatewayServer {
          * userId : 유져 id
          */
         @JvmStatic
-        fun getBookMarkProduct(listener: OnServerListener, accessToken : String, page: Int) {
+        fun getBookMarkProduct(listener: OnServerListener, accessToken: String, page: Int) {
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
                     .getBookMarkProduct(accessToken, page).enqueue(object : Callback<BaseModel<BookMarkProduct>> {
                         override fun onResponse(call: Call<BaseModel<BookMarkProduct>>, response: Response<BaseModel<BookMarkProduct>>) {
-                            if(response.code() in 200..400 && response.body() != null){
+                            if (response.code() in 200..400 && response.body() != null) {
                                 listener.onResult(true, response.body())
-                            }else{
-                                try{
-                                    var msg  = Message()
-                                    var errorBody : String? = response.errorBody()?.string() ?: null
-                                    if(!errorBody.isNullOrEmpty()){
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
                                         var gson = Gson()
                                         msg = gson.fromJson<Message>(errorBody, Message::class.java)
                                     }
-                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag)CustomLog.L("getBookMarkProduct","onResponse body",error.toString())
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("getBookMarkProduct", "onResponse body", error.toString())
                                     listener.onResult(false, error)
-                                }catch (e : Exception){
-                                    if(CustomLog.flag)CustomLog.E(e)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
                                     listener.onResult(false, null)
                                 }
                             }
                         }
+
                         override fun onFailure(call: Call<BaseModel<BookMarkProduct>>, t: Throwable) {
-                            if(CustomLog.flag)CustomLog.L("getBookMarkProduct","onFailure",t.message.toString())
+                            if (CustomLog.flag) CustomLog.L("getBookMarkProduct", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
         @JvmStatic
-        fun uploadImage(listener: OnServerListener, cloudResourceList : String, fileNm: String) {
+        fun uploadImage(listener: OnServerListener, cloudResourceList: String, fileNm: String) {
             var file = File(fileNm)
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
             //val part = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
@@ -99,36 +102,37 @@ class GatewayServer {
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
                     .uploadImage(cloudResource, part).enqueue(object : Callback<BaseModel<ImageResponse>> {
                         override fun onResponse(call: Call<BaseModel<ImageResponse>>, response: Response<BaseModel<ImageResponse>>) {
-                            if(response.code() in 200..400 && response.body() != null){
+                            if (response.code() in 200..400 && response.body() != null) {
                                 listener.onResult(true, response.body())
-                            }else{
-                                try{
-                                    var msg  = Message()
-                                    var errorBody : String? = response.errorBody()?.string() ?: null
-                                    if(!errorBody.isNullOrEmpty()){
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
                                         var gson = Gson()
                                         msg = gson.fromJson<Message>(errorBody, Message::class.java)
                                     }
-                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag)CustomLog.L("uploadImage","onResponse body",error.toString())
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("uploadImage", "onResponse body", error.toString())
                                     listener.onResult(false, error)
-                                }catch (e : Exception){
-                                    if(CustomLog.flag)CustomLog.E(e)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
                                     listener.onResult(false, null)
                                 }
                             }
                         }
+
                         override fun onFailure(call: Call<BaseModel<ImageResponse>>, t: Throwable) {
-                            if(CustomLog.flag)CustomLog.L("uploadImage","onFailure",t.message.toString())
+                            if (CustomLog.flag) CustomLog.L("uploadImage", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
         @JvmStatic
-        fun uploadImagePath(listener: OnServerListener, uploadPath : String, fileNm: String) {
+        fun uploadImagePath(listener: OnServerListener, uploadPath: String, fileNm: String) {
             var file = File(fileNm)
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
             val part = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), fileReqBody)
@@ -136,63 +140,28 @@ class GatewayServer {
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
                     .uploadImagePath(path, part).enqueue(object : Callback<BaseModel<ImageResponse>> {
                         override fun onResponse(call: Call<BaseModel<ImageResponse>>, response: Response<BaseModel<ImageResponse>>) {
-                            if(response.code() in 200..400 && response.body() != null){
+                            if (response.code() in 200..400 && response.body() != null) {
                                 listener.onResult(true, response.body())
-                            }else{
-                                try{
-                                    var msg  = Message()
-                                    var errorBody : String? = response.errorBody()?.string() ?: null
-                                    if(!errorBody.isNullOrEmpty()){
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
                                         var gson = Gson()
                                         msg = gson.fromJson<Message>(errorBody, Message::class.java)
                                     }
-                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag)CustomLog.L("uploadImage","onResponse body",error.toString())
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("uploadImage", "onResponse body", error.toString())
                                     listener.onResult(false, error)
-                                }catch (e : Exception){
-                                    if(CustomLog.flag)CustomLog.E(e)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
                                     listener.onResult(false, null)
                                 }
                             }
                         }
-                        override fun onFailure(call: Call<BaseModel<ImageResponse>>, t: Throwable) {
-                            if(CustomLog.flag)CustomLog.L("uploadImage","onFailure",t.message.toString())
-                            listener.onResult(false, t.message)
-                        }
-                    }
-            )
-        }
 
-
-        @JvmStatic
-        fun uploadImagePathQuery(listener: OnServerListener, uploadPath  : String, fileNm: String) {
-            var file = File(fileNm)
-            val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
-            val part = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), fileReqBody)
-            RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
-                    .uploadImagePathQuery(uploadPath , part).enqueue(object : Callback<BaseModel<ImageResponse>> {
-                        override fun onResponse(call: Call<BaseModel<ImageResponse>>, response: Response<BaseModel<ImageResponse>>) {
-                            if(response.code() in 200..400 && response.body() != null){
-                                listener.onResult(true, response.body())
-                            }else{
-                                try{
-                                    var msg  = Message()
-                                    var errorBody : String? = response.errorBody()?.string() ?: null
-                                    if(!errorBody.isNullOrEmpty()){
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag)CustomLog.L("uploadImage","onResponse body",error.toString())
-                                    listener.onResult(false, error)
-                                }catch (e : Exception){
-                                    if(CustomLog.flag)CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
-                        }
                         override fun onFailure(call: Call<BaseModel<ImageResponse>>, t: Throwable) {
-                            if(CustomLog.flag)CustomLog.L("uploadImage","onFailure",t.message.toString())
+                            if (CustomLog.flag) CustomLog.L("uploadImage", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
@@ -200,42 +169,86 @@ class GatewayServer {
         }
 
 
+        @JvmStatic
+        fun uploadImagePathQuery(listener: OnServerListener, uploadPath: String, fileNm: String) {
+            var file = File(fileNm)
+            val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
+            val part = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), fileReqBody)
+            RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
+                    .uploadImagePathQuery(uploadPath, part).enqueue(object : Callback<BaseModel<ImageResponse>> {
+                        override fun onResponse(call: Call<BaseModel<ImageResponse>>, response: Response<BaseModel<ImageResponse>>) {
+                            if (response.code() in 200..400 && response.body() != null) {
+                                listener.onResult(true, response.body())
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("uploadImage", "onResponse body", error.toString())
+                                    listener.onResult(false, error)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+
+                        override fun onFailure(call: Call<BaseModel<ImageResponse>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("uploadImage", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
 
         @JvmStatic
-        fun uploadImagePath2(listener: OnServerListener, path : String, fileNm: String) {
+        fun uploadImagePath2(listener: OnServerListener, path: String, fileNm: String) {
             var file = File(fileNm)
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
             val part = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), fileReqBody)
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
                     .uploadImagePath2(path, part).enqueue(object : Callback<BaseModel<ImageResponse>> {
                         override fun onResponse(call: Call<BaseModel<ImageResponse>>, response: Response<BaseModel<ImageResponse>>) {
-                            if(response.code() in 200..400 && response.body() != null){
+                            if (response.code() in 200..400 && response.body() != null) {
                                 listener.onResult(true, response.body())
-                            }else{
-                                try{
-                                    var msg  = Message()
-                                    var errorBody : String? = response.errorBody()?.string() ?: null
-                                    if(!errorBody.isNullOrEmpty()){
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
                                         var gson = Gson()
                                         msg = gson.fromJson<Message>(errorBody, Message::class.java)
                                     }
-                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag)CustomLog.L("uploadImage","onResponse body",error.toString())
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("uploadImage", "onResponse body", error.toString())
                                     listener.onResult(false, error)
-                                }catch (e : Exception){
-                                    if(CustomLog.flag)CustomLog.E(e)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
                                     listener.onResult(false, null)
                                 }
                             }
                         }
+
                         override fun onFailure(call: Call<BaseModel<ImageResponse>>, t: Throwable) {
-                            if(CustomLog.flag)CustomLog.L("uploadImage","onFailure",t.message.toString())
+                            if (CustomLog.flag) CustomLog.L("uploadImage", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
                     )
         }
 
+        /**
+         * 주문서 쿠폰 정보
+         * @author Hyeyeon Park
+         */
+        fun getCouponInfo(listener: OnServerListener, accessToken: String, cartItemIds: IntArray) =
+                RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true).getCouponInfo(accessToken, cartItemIds).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
 
 
     }
