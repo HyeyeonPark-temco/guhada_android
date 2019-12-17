@@ -2,6 +2,7 @@ package io.temco.guhada.view.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -126,7 +127,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                 }
 
                 val param = LinearLayout.LayoutParams(width, width)
-                if (position % 2 == 0) {
+                if (position % 2 == 1) {
                     param.leftMargin = margin
                     param.rightMargin = margin/2
                 } else {
@@ -205,7 +206,12 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                 binding.title = item.title
                 binding.endDate = item.strDate
                 binding.setClickShareListener{
-
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, item.link)
+                        type = "text/plain"
+                    }
+                    (viewModel.context as Activity).startActivity(Intent.createChooser(sendIntent, "공유"))
                 }
             }
         }
@@ -226,7 +232,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                         override fun onItemClick(position: Int) {
                             viewModel.mFilterIndex = position
                             viewModel.planningDealSortType.set(viewModel.mSortFilterType[viewModel.mFilterIndex])
-                            viewModel.getDealListData(true, true)
+                            //viewModel.getDealListData(true, true)
                         }
                         override fun onClickClose() {
                             this@apply.dismiss()

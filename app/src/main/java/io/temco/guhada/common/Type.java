@@ -94,7 +94,7 @@ public class Type {
     /** 임시 서버 연결 여부 (true: TempServer name; false: dev) **/
     public static boolean isTempServer=true;
     public static String[] ServerTypeArray = { "http://dev.", "http://qa.", "https://stg.", "https://" };
-    public static String serverType = ServerTypeArray[1];
+    public static String serverType = ServerTypeArray[0];
     ////////////////////////////////////////////////
     // Server
     public enum Server {
@@ -116,6 +116,7 @@ public class Type {
         WEB,
         SETTLE,
         BLOCKCHAIN_TOKEN,
+        NOTIFICATION,
         SHIP;
 
         public static String getUrl(Server type) {
@@ -152,6 +153,8 @@ public class Type {
                     return getShipUrl();
                 case SETTLE:
                     return getSettleUrl();
+                case NOTIFICATION:
+                    return getNotificationUrl();
                 case BLOCKCHAIN_TOKEN:
                     return getBlockchainUrl();
                 default:
@@ -180,6 +183,22 @@ public class Type {
             default:
                 if(isTempServer)/*return "http://settle.guhada.com";*/ return serverType+"settle.guhada.com/";
                 else return "http://dev.settle.guhada.com/";
+
+        }
+    }
+
+
+    private static String getNotificationUrl(){
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.notification.guhada.com/";
+            case STAGE:
+                return "http://notification.guhada.com/";
+            case RELEASE:
+                return "http://notification.guhada.com/";
+            default:
+                if(isTempServer)/*return "http://notification.guhada.com";*/ return serverType+"notification.guhada.com/";
+                else return "http://dev.notification.guhada.com/";
 
         }
     }
@@ -833,6 +852,20 @@ public class Type {
         NEW,
         BEST,
         PLUS
+    }
+
+    // 해외 배송 상품 검색
+    public enum SerchShippingCondition implements Serializable {
+        INTERNATIONAL,
+        NATIONAL,
+        ANY
+    }
+
+    // 해외 배송 상품 검색
+    public enum SerchProductCondition implements Serializable {
+        NEW,
+        USED,
+        ANY
     }
 
     ////////////////////////////////////////////////

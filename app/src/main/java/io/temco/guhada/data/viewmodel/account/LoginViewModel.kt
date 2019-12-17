@@ -108,8 +108,12 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                     when (model.resultCode) {
                         Flag.ResultCode.SUCCESS -> {
                             val token = model.data as Token
-                            if (Preferences.getToken() != null) Preferences.clearToken(false)
+                            if (Preferences.getToken() != null) Preferences.clearToken(false, BaseApplication.getInstance())
                             Preferences.setToken(token)
+
+                            // 로그인 후 fcm 토큰 전송
+                            CommonUtilKotlin.saveDevice(token.accessToken, BaseApplication.getInstance().fcmToken)
+
                             // save id
                             if (mIsIdSaved.get())
                                 Preferences.setSavedId(email)

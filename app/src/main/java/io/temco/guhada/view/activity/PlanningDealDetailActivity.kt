@@ -2,18 +2,25 @@ package io.temco.guhada.view.activity
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewPropertyAnimatorListener
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.viewmodel.PlanningDealDetailViewModel
 import io.temco.guhada.databinding.ActivityPlanningdealdetailBinding
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 /**
  * 기획전 상세 화면
@@ -24,8 +31,8 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
 
     private lateinit var mViewModel : PlanningDealDetailViewModel
     private lateinit var recyclerLayoutManager : WrapGridLayoutManager
-    private var planningDealDetailId = 0
 
+    private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
 
     ////////////////////////////////////////////////////////////////////////////////
     override fun getBaseTag(): String = this::class.java.simpleName
@@ -33,42 +40,66 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
     override fun getViewType(): Type.View = Type.View.PLANNING_DEAL
 
     override fun init() {
-        planningDealDetailId = intent?.extras?.getInt("planningDealDetailId") ?: -1
-        if(planningDealDetailId < 0) finish()
 
         mViewModel = PlanningDealDetailViewModel(this)
-        mViewModel.imageBannerUrl = intent?.extras?.getString("url", "") ?: ""
-        mViewModel.recyclerView = mBinding.recyclerView
-        mBinding.recyclerView.setHasFixedSize(true)
-        recyclerLayoutManager = WrapGridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false).apply {
-            orientation = RecyclerView.VERTICAL
-            recycleChildrenOnDetach = true
-            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return mViewModel.adapter.items[position].gridSpanCount
+        mViewModel.planningDealDetailId = intent?.extras?.getInt("planningDealDetailId") ?: -1
+        if(mViewModel.planningDealDetailId < 0) finish()
+        else{
+            mViewModel.imageBannerUrl = intent?.extras?.getString("url", "") ?: ""
+
+            mViewModel.recyclerView = mBinding.recyclerView
+            mBinding.recyclerView.setHasFixedSize(true)
+            recyclerLayoutManager = WrapGridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false).apply {
+                orientation = RecyclerView.VERTICAL
+                recycleChildrenOnDetach = true
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return mViewModel.adapter.items[position].gridSpanCount
+                    }
                 }
             }
-        }
-        mBinding.recyclerView.layoutManager  = recyclerLayoutManager
-        mBinding.recyclerView.adapter = mViewModel.adapter
-        mBinding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                /*synchronized(this){
-                    if (mViewModel.adapter.itemCount - recyclerLayoutManager.findLastVisibleItemPosition() == 0 && !mViewModel.isLoading) {
-                        if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","itemCount",mViewModel.adapter.itemCount,"findLastVisibleItemPosition",recyclerLayoutManager.findLastVisibleItemPosition())
-                        mViewModel.isLoading = true
-                        mViewModel.getDealListData(false)
+
+            mBinding.floating.bringToFront()
+
+            mBinding.recyclerView.layoutManager  = recyclerLayoutManager
+            mBinding.recyclerView.adapter = mViewModel.adapter
+            mBinding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    // super.onScrollStateChanged(recyclerView, newState);
+                    if (!recyclerView.canScrollVertically(-1)) {
+                        // Top
+                        changeFloatingButtonLayout(false)
+                    } else if (!recyclerView.canScrollVertically(1)) {
+                        // Bottom
+                    } else {
+                        // Idle
+                        changeFloatingButtonLayout(true)
                     }
-                }*/
-            }
-        })
+                }
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    synchronized(this){
+                        if (mViewModel.adapter.itemCount - (recyclerLayoutManager.findLastVisibleItemPosition()+10) <= 0 && !mViewModel.isLoading && mViewModel.totalPage > mViewModel.currentPage) {
+                            if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","itemCount",mViewModel.adapter.itemCount,"findLastVisibleItemPosition",recyclerLayoutManager.findLastVisibleItemPosition())
+                            if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","mViewModel.totalPage",mViewModel.totalPage,"mViewModel.totalPage",mViewModel.currentPage)
+                            mViewModel.isLoading = true
+                            mViewModel.getPlanningDetail(false, null)
+                        }
+                    }
+                }
+            })
 
-        mViewModel.getDealListData(true, false)
-        mBinding.clickListener = this
-        mBinding.setOnClickBackButton { finish() }
 
-        setEvenBus()
+            mViewModel.getPlanningDetail(true, object : OnCallBackListener{
+                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    mBinding.textviewTitle.text = value.toString()
+                }
+            })
+            mBinding.clickListener = this
+            mBinding.setOnClickBackButton { finish() }
+
+            setEvenBus()
+        }
     }
 
 
@@ -110,6 +141,83 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
             }
         }
     }
+
+
+    private fun scrollToTop(isSmooth: Boolean) {
+        if (isSmooth) {
+            mBinding.recyclerView.smoothScrollToPosition(0)
+        } else {
+            mBinding.recyclerView.scrollToPosition(0)
+        }
+    }
+
+
+    // Floating Button
+    private fun changeFloatingButtonLayout(isShow: Boolean) {
+        changeTopFloatingButton(isShow)
+    }
+
+    private fun changeTopFloatingButton(isShow: Boolean) {
+        changeTopFloatingButton(isShow, false)
+    }
+
+    private fun changeTopFloatingButton(isShow: Boolean, animate: Boolean) {
+        changeScaleView(mBinding.buttonFloatingTop.root, isShow, animate)
+    }
+
+    /**
+     * @editor park jungho
+     * 19.08.01
+     * scrollToTop Value -> false 로 변경
+     */
+    private fun changeScaleView(v: View, isShow: Boolean, animate: Boolean) {
+        if (isShow) {
+            if (v.visibility != View.VISIBLE) {
+                v.setOnClickListener {
+                    scrollToTop(false)
+                }
+                v.visibility = View.VISIBLE
+                if (animate) {
+                    showScaleAnimation(v)
+                }
+            }
+        } else {
+            if (v.visibility == View.VISIBLE) {
+                v.setOnClickListener(null)
+                if (animate) {
+                    hideScaleAnimation(v)
+                } else {
+                    v.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+
+    private fun showScaleAnimation(v: View) {
+        ViewCompat.animate(v)
+                .scaleX(1.0f).scaleY(1.0f).alpha(1.0f)
+                .setInterpolator(INTERPOLATOR)
+                .withLayer()
+                .setListener(null)
+                .start()
+    }
+
+    private fun hideScaleAnimation(v: View) {
+        ViewCompat.animate(v)
+                .scaleX(0.0f).scaleY(0.0f).alpha(0.0f)
+                .setInterpolator(INTERPOLATOR)
+                .withLayer()
+                .setListener(object : ViewPropertyAnimatorListener {
+                    override fun onAnimationStart(view: View) {}
+                    override fun onAnimationCancel(view: View) {}
+                    override fun onAnimationEnd(view: View) {
+                        view.visibility = View.GONE
+                    }
+                })
+                .start()
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////
 }

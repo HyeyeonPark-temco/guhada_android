@@ -1,5 +1,6 @@
 package io.temco.guhada.common.util
 
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -43,7 +44,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                 if (retryCount++ < totalRetries) {
                     retry()
                 } else {
-                    Preferences.clearToken(true)
+                    Preferences.clearToken(true, BaseApplication.getInstance())
                     if (::recall.isInitialized) {
                         recall.clone().enqueue(this)
                     }
@@ -73,7 +74,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                     //Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
                     retry()
                 } else {
-                    Preferences.clearToken(true)
+                    Preferences.clearToken(true, BaseApplication.getInstance())
                     if (::recall.isInitialized) {
                         recall.clone().enqueue(this)
                     }

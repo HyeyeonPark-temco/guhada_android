@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter.main
+ package io.temco.guhada.view.adapter.main
 
 import android.app.Activity
 import android.content.Context
@@ -115,7 +115,7 @@ class PlanningDealListAdapter(private val model : PlanningDealListViewModel, lis
                         this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
                             override fun onItemClick(position: Int) {
                                 viewModel.mFilterIndex = position
-                                viewModel.getEventList()
+                                viewModel.getPlanningList()
                             }
                             override fun onClickClose() {
                                 this@apply.dismiss()
@@ -145,7 +145,7 @@ class PlanningDealListAdapter(private val model : PlanningDealListViewModel, lis
                 binding.textviewMaineventTitle.text = item.planningData.eventTitle
                 binding.textviewMaineventDate.text = (item.planningData.eventStartDate.split(" ")[0] + " ~ " +item.planningData.eventEndDate.split(" ")[0])
                 binding.layoutEventContent.setOnClickListener {
-                    CommonUtilKotlin.movePlanningDealDetail(viewModel.context as Activity,1,"https://qa-guhada.s3.amazonaws.com/images/event/new_detail_m.png")
+                    CommonUtilKotlin.movePlanningDealDetail(viewModel.context as Activity,item.planningData.id,"")
                 }
                 try{
                     if(!TextUtils.isEmpty(item.planningData.bgColor))

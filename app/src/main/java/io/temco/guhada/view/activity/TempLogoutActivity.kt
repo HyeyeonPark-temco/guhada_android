@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.view.View
 import android.widget.Toast
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
@@ -30,7 +31,7 @@ class TempLogoutActivity : BindActivity<ActivityTemplogoutBinding>() {
 
         mBinding.onClickClearAccessToken = View.OnClickListener {
             loadingDialog.execute {
-                Preferences.clearToken(true)
+                Preferences.clearToken(true, BaseApplication.getInstance())
                 loadingDialog.dismiss()
             }
         }
