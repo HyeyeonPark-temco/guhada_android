@@ -76,8 +76,8 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
                             planningDealListTotalCount.set(mTotalCount.toString())
 
                             var title = PlanningDealTitle(0, PlanningDealType.Title,2, planningDataInfo,
-                                    planningDataInfo.detailTitle, Type.getWebUrl()+"event/luckydraw",
-                                    (planningDataInfo.startDate.split(" ")[0] + " ~ " +planningDataInfo.endDate.split(" ")[0]))
+                                    planningDataInfo.detailTitle, Type.getWebUrl()+"event/special/"+planningDealDetailId,
+                                    (planningDataInfo.startDate.split(" ")[0].replace("-",".") + " ~ " +planningDataInfo.endDate.split(" ")[0].replace("-",".")))
                             list.add(title)
                             var imageBanner = PlanningDealImageBanner(1, PlanningDealType.ImageBanner, 2, planningDataInfo.mobileImageUrl?.toString() ?: "")
                             list.add(imageBanner)

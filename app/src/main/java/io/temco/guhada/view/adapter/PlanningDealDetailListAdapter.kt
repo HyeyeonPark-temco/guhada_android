@@ -135,6 +135,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                     param.rightMargin = margin
                 }
                 binding.relativeImageLayout.setLayoutParams(param)
+                binding.item = item.deal
 
                 itemView.setOnClickListener{
                     CommonUtil.startProductActivity(viewModel.context as Activity, item.deal.dealId.toLong())
