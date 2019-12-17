@@ -10,6 +10,7 @@ import com.kakao.util.exception.KakaoException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
 import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
@@ -288,7 +289,7 @@ object CommonUtilKotlin {
     @JvmStatic
     fun deleteDevice(accessToken: String, token: String?) {
         // 아직 실서버에 적용안함
-        if(!CustomLog.flag) return
+        if(BuildConfig.BuildType != Type.Build.DEV) return
         if(TextUtils.isEmpty(token)) {
             if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice","isEmpty(token)")
             return
@@ -320,7 +321,7 @@ object CommonUtilKotlin {
     @JvmStatic
     fun saveDevice(accessToken: String?, token: String?) {
         // 아직 실서버에 적용안함
-        if(!CustomLog.flag) return
+        if(BuildConfig.BuildType != Type.Build.DEV) return
         if(TextUtils.isEmpty(token)) {
             if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice","isEmpty(token)")
             return
