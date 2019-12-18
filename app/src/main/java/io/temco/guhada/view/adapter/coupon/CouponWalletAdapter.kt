@@ -78,7 +78,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                     }
 
             mBinding.dealId = mProduct.dealId
-            mBinding.couponWallet = item
+//            mBinding.couponWallet = item
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
