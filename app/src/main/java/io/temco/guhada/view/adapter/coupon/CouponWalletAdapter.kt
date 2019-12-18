@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter.coupon
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -162,12 +163,6 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
         @JvmStatic
         @BindingAdapter(value = ["selectedDealId", "selectedCouponNumber", "vmDealId", "vmCouponNumber", "selectedCouponMap"])
         fun ImageView.bindSelected(selectedDealId: Long, selectedCouponNumber: String?, vmDealId: Long, vmCouponNumber: String?, selectedCouponMap: MutableMap<String, Long>?) { // MutableMap<Long, CouponWallet>?
-            /*
-                selectedDealId: 현재 그려지는 position의 dealId
-                selectedCouponNumber: 현재 그려지는 position의 couponId
-                vmDealId: 선택된 dealId
-                vmCouponNumber: 선택된 couponId
-            */
 
             fun setButtonInactive() {
                 this.isClickable = false
@@ -192,58 +187,19 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
 
             val currentDealId = selectedDealId
             val currentCouponNumber = selectedCouponNumber
-            val clickedCouponNumber = vmCouponNumber
 
             if (selectedCouponNumber != null && selectedCouponMap != null)
-                if (currentCouponNumber == clickedCouponNumber && selectedCouponMap[currentCouponNumber] == currentDealId) setButtonChecked()
-                else if(currentCouponNumber == clickedCouponNumber) setButtonInactive()
-                else  setButtonActive()
+                if(selectedCouponMap[currentCouponNumber] == null) setButtonActive()
+                else if(selectedCouponMap[currentCouponNumber] == currentDealId)  setButtonChecked()
+                else  setButtonInactive()
 
-//            if (selectedCouponNumber != null && selectedCouponMap != null) {
-//                if (selectedDealId != vmDealId) {   // 다른 deal
-//                    if (vmCouponNumber != null && vmCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER) {
-//                        val prev = selectedCouponMap[selectedDealId]
-//                        if (prev?.couponNumber === selectedCouponNumber) {
-//                            setButtonChecked()
-//                        } else {
-//                            // 선택된 쿠폰과 일치하는지
-//                            if (selectedCouponNumber == vmCouponNumber) setButtonInactive()
-//                            else setButtonActive()
-//                        }
-//                    } else {
-//                        val prev = selectedCouponMap[selectedDealId]
-//                        if (prev == null) setButtonActive()
-//                        else this.isClickable = true
-//                    }
-//                } else { // 같은 deal
-//                    if (vmCouponNumber != null && selectedCouponNumber == vmCouponNumber) {
-//                        setButtonChecked()
-//                    } else {
-//                        // 다른 deal의 선택된 쿠폰 체크 (inactive)
-//                        for (key in selectedCouponMap.keys) {
-//                            val couponWallet = selectedCouponMap[key]
-//                            if (couponWallet?.couponNumber == selectedCouponNumber) {
-//                                if (selectedCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER)
-//                                    setButtonInactive()
-//                                break
-//                            } else {
-//                                setButtonActive()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            Log.e("쿠폰","currentDealId: $currentDealId   currentCouponNumber: $currentCouponNumber   selectedCouponMap: ${selectedCouponMap.toString()}")
         }
 
         @JvmStatic
         @BindingAdapter(value = ["selectedDealId", "selectedCouponNumber", "vmDealId", "vmCouponNumber", "selectedCouponMap"])
         fun TextView.bindInactivated(selectedDealId: Long, selectedCouponNumber: String?, vmDealId: Long, vmCouponNumber: String?, selectedCouponMap: MutableMap<String, Long>?) {
-            /*
-                selectedDealId: 현재 그려지는 position의 dealId
-                selectedCouponNumber: 현재 그려지는 position의 couponId
-                vmDealId: 선택된 dealId
-                vmCouponNumber: 선택된 couponId
-            */
+
             val inactiveTextColor = BaseApplication.getInstance().resources.getColor(R.color.pinkish_grey)
             val activeTextColor = BaseApplication.getInstance().resources.getColor(R.color.greyish_brown_two)
             fun setTextInactive() = this.setTextColor(inactiveTextColor)
@@ -256,38 +212,6 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
             else
                 setTextActive()
 
-//            if (selectedCouponNumber != null) {
-
-//                if (selectedDealId != vmDealId) {   // 다른 deal
-//                    if (vmCouponNumber != null && vmCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER) {
-//                        if (selectedCouponNumber == vmCouponNumber) setTextInactive()   // 선택된 쿠폰과 일치하는지
-//                        else setTextActive()
-//                    } else {
-//                        setTextActive()
-//                    }
-//                } else {
-//                    if (vmCouponNumber != null && selectedCouponNumber == vmCouponNumber) {
-//                        setTextActive()
-//                    } else {
-//                        // 다른 deal의 선택된 쿠폰 체크 (inactive)
-//                        if (selectedCouponMap != null)
-//                            for (key in selectedCouponMap.keys) {
-//                                val couponWallet = selectedCouponMap[key]
-//
-////                                if (couponWallet?.couponNumber == selectedCouponNumber) {
-////                                    if (selectedCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER)
-////                                        setTextInactive() // inactive
-////                                    break
-////                                } else {
-////                                    setTextActive()
-////                                }
-//
-//
-//                            }
-//                    }
-//                }
-
-//            }
         }
     }
 }
