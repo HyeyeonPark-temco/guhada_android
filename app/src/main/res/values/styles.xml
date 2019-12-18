@@ -515,9 +515,10 @@
 
     <style name="PaymentWayEditTextStyle" parent="TextRegular">
         <item name="android:textSize">@dimen/text_13</item>
-        <item name="android:textColor">@color/warm_grey</item>
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textColorHint">@color/warm_grey_two</item>
         <item name="android:padding">15dp</item>
-        <item name="android:background">@drawable/border_all_whitethree</item>
+        <item name="android:background">@drawable/border_all_whitefour</item>
         <item name="android:gravity">center</item>
         <item name="android:textCursorDrawable">@null</item>
     </style>

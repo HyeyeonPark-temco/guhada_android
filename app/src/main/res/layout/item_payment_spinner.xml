@@ -12,8 +12,7 @@
     <FrameLayout
         android:id="@+id/framelayout_payment_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white_three">
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:layout_width="match_parent"

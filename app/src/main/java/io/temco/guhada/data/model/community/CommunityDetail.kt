@@ -51,6 +51,11 @@ class CommunityDetail : Serializable {
         return data
     }
 
+    override fun toString(): String {
+        if(CustomLog.flag)return "CommunityDetail(id=$id, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, contents=$contents, use=$use, delete=$delete, deletedTimestamp=$deletedTimestamp, like=$like, bookmark=$bookmark, commentCount=$commentCount, hitCount=$hitCount, likeCount=$likeCount, brandId=$brandId, brandName=$brandName, dealId=$dealId, dealName=$dealName, dspCreatedAt=$dspCreatedAt, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId, createUserInfo=$createUserInfo, userDetail=$userDetail, bbsImageList=$bbsImageList, guhadaClientPlatform='$guhadaClientPlatform')"
+        else return ""
+    }
+
 }
 
 

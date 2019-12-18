@@ -2,6 +2,8 @@ package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.AppVersionCheck
 import io.temco.guhada.data.model.CardInterest
+import io.temco.guhada.data.model.MainPopup
+import io.temco.guhada.data.model.PlanningDetailData
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.event.EventListData
 import io.temco.guhada.data.model.main.MainBanner
@@ -39,7 +41,15 @@ interface SettleService {
     fun getMainBanner(): Call<BaseModel<MainBanner>>
 
 
-    @GET("event/list")
+    @GET("plan/list")
     fun getPlanningList(@Query("eventProgress") eventProgress : String): Call<BaseModel<PlanningListData>>
+
+
+    @GET("plan/list/detail")
+    fun getPlanningDetail(@Query("eventId") eventId : Int, @Query("page") startIndex : Int, @Query("unitPerPage") unitPerPage : Int = 20): Call<BaseModel<PlanningDetailData>>
+
+    @GET("event/main/popup")
+    fun getMainPopup(): Call<BaseModel<MainPopup>>
+
 
 }

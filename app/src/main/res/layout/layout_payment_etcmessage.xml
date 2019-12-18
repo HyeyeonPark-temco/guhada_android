@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.payment.PaymentViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@color/common_white"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="19dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="30dp">
+
+        <TextView
+            style="@style/PaymentTitleBlackTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/payment_title_etcmessage" />
+
+        <EditText
+            style="@style/PaymentWayEditTextStyle"
+            android:text="@={viewModel.mRequestOrder.etcMessage}"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:hint="@string/payment_hint_etcmessage"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:hint="@string/payment_hint_etcmessage" />
+    </LinearLayout>
+</layout>

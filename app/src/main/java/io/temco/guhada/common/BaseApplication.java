@@ -22,7 +22,9 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.sns.kakao.KakaoSDKAdapter;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CustomLog;
+import io.temco.guhada.common.util.ServerCallbackUtil;
 import io.temco.guhada.data.model.Category;
 
 /*
@@ -39,6 +41,7 @@ public class BaseApplication extends MultiDexApplication   {
     private static WeakReference<List<Category>> categoryList;
     private DisplayMetrics matrix = null;
     private static HashMap<String,String> activityState;
+    private static String fcmToken = null;
 
     /**
      * @author park jungho
@@ -96,6 +99,7 @@ public class BaseApplication extends MultiDexApplication   {
         categoryList = null;
         matrix = null;
         activityState = null;
+        fcmToken = null;
         if (CustomLog.getFlag())CustomLog.L("BaseApplication activityState onTerminate", "new WeakHashMap");
     }
 
@@ -108,10 +112,18 @@ public class BaseApplication extends MultiDexApplication   {
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
-                        CommonUtil.debug(FCM_TAG, task.getException() != null ? task.getException().getMessage() : "getInstanceId() failed");
+                        if(CustomLog.getFlag())CustomLog.L(FCM_TAG, task.getException() != null ? task.getException().getMessage() : "getInstanceId() failed");
                         return;
                     }
-                    CommonUtil.debug(FCM_TAG, task.getResult() != null ? task.getResult().getToken() : "Token result is null");
+                    if(CustomLog.getFlag())CustomLog.L(FCM_TAG, task.getResult() != null ? task.getResult().getToken() : "Token result is null");
+                    fcmToken = task.getResult() != null ? task.getResult().getToken() : null;
+                    if(CommonUtil.checkToken()){
+                        String token = Preferences.getToken().getAccessToken();
+                        if(token != null) CommonUtilKotlin.saveDevice(token, fcmToken);
+                        else CommonUtilKotlin.saveDevice(null, fcmToken);
+                    }else{
+                        CommonUtilKotlin.saveDevice(null, fcmToken);
+                    }
                 });
     }
 
@@ -198,5 +210,7 @@ public class BaseApplication extends MultiDexApplication   {
         activityState = null;
     }
 
-
+    public String getFcmToken() {
+        return fcmToken;
+    }
 }

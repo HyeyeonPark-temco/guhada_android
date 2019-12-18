@@ -92,6 +92,9 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
             } else {
                 intent.putExtra("info", mViewModel.mCommunityInfo)
             }
+            intent.putExtra("filterId", mViewModel.mFilterId)
+            intent.putExtra("order", mViewModel.mOrder)
+            intent.putExtra("categoryId", mViewModel.mCommunityInfo.communityCategoryId.toLong())
             (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
         }
         mBinding.viewModel = mViewModel

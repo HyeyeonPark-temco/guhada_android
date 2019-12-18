@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="item"
+            type="io.temco.guhada.data.model.Deal" />
+    </data>
+
     <LinearLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
@@ -44,6 +51,65 @@
             android:paddingTop="6dp"
             android:paddingRight="12dp"
             android:paddingBottom="5dp">
+
+            <!-- 중고, 해외배송 여부 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:visibility="@{item == null ? View.INVISIBLE : View.VISIBLE, default=invisible}"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/product_old"
+                    android:visibility="@{item.brandNew ? View.GONE : View.VISIBLE, default=gone}"
+                    android:textColor="@color/dark_tan"
+                    android:textSize="@dimen/text_11" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="@{!item.brandNew &amp;&amp; item.internationalShipping ? View.VISIBLE : View.GONE, default=gone}"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/white_three" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/airplane_icon"
+                    android:visibility="@{item.internationalShipping ? View.VISIBLE: View.GONE, default = gone}" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/product_international"
+                    android:textColor="@color/black_four"
+                    android:layout_marginEnd="10dp"
+                    android:textSize="@dimen/text_11"
+                    android:visibility="@{item.internationalShipping ? View.VISIBLE: View.INVISIBLE, default = invisible}" />
+
+                <!-- [19.12.06] 현재 "쿠폰" 미노출 -->
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"
+                    android:text="@string/product_coupon"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_11" />
+            </LinearLayout>
 
             <!-- SEASON -->
             <TextView

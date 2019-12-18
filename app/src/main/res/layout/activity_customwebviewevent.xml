@@ -27,6 +27,7 @@
             android:id="@+id/layout_header"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:background="@drawable/borderline_under_e6"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 

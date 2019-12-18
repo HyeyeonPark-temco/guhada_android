@@ -52,8 +52,11 @@ class MyPageReviewViewModel (val context : Context, val mLoadingIndicatorUtil: L
     fun getAvailableAdapter() = adapterAvailable
     fun getReviewAdapter() = adapterReview
 
-    var tab1CurrentPage = INIT_PAGE_NUMBER
-    var tab2CurrentPage = INIT_PAGE_NUMBER
+    var pageNum1 = INIT_PAGE_NUMBER
+    var totalPageNum1 = -1
+
+    var pageNum2 = INIT_PAGE_NUMBER
+    var totalPageNum2 = -1
 
     var mypageReviewTabVisibleSwitch = ObservableInt(0)
         @Bindable
@@ -99,31 +102,31 @@ class MyPageReviewViewModel (val context : Context, val mLoadingIndicatorUtil: L
     fun reloadRecyclerView(listener : OnSwipeRefreshResultListener){
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "reloadRecyclerView ", "init -----")
         if(mypageReviewTabVisibleSwitch.get() == 0){
-            tab1CurrentPage = INIT_PAGE_NUMBER
+            pageNum1 = INIT_PAGE_NUMBER
             adapterAvailable.items?.run{ clear() }
-            repository.setInitAvailableReviewOrderList(tab1CurrentPage,listener)
+            repository.setInitAvailableReviewOrderList(pageNum1,listener)
         }else{
-            tab2CurrentPage = INIT_PAGE_NUMBER
+            pageNum2 = INIT_PAGE_NUMBER
             adapterReview.items?.run{ clear() }
-            repository.setInitUserMyPageReviewList(tab2CurrentPage,listener)
+            repository.setInitUserMyPageReviewList(pageNum2,listener)
         }
     }
 
     fun reloadRecyclerViewAll(){
-        tab1CurrentPage = INIT_PAGE_NUMBER
+        pageNum1 = INIT_PAGE_NUMBER
         adapterAvailable.items?.run{ clear() }
-        repository.setInitAvailableReviewOrderList(tab1CurrentPage,null)
+        repository.setInitAvailableReviewOrderList(pageNum1,null)
 
-        tab2CurrentPage = INIT_PAGE_NUMBER
+        pageNum2 = INIT_PAGE_NUMBER
         adapterReview.items?.run{ clear() }
-        repository.setInitUserMyPageReviewList(tab2CurrentPage,null)
+        repository.setInitUserMyPageReviewList(pageNum2,null)
     }
 
 
     fun reloadRecyclerMyReviewList(){
-        tab2CurrentPage = INIT_PAGE_NUMBER
+        pageNum2 = INIT_PAGE_NUMBER
         adapterReview.items?.run{ clear() }
-        repository.setInitUserMyPageReviewList(tab2CurrentPage,null)
+        repository.setInitUserMyPageReviewList(pageNum2,null)
     }
 
     fun clickTab(tabIndex : Int){
@@ -131,13 +134,13 @@ class MyPageReviewViewModel (val context : Context, val mLoadingIndicatorUtil: L
     }
 
     fun getMoreTab1List() {
-        tab1CurrentPage += 1
-        repository.getAvailableReviewOrderMore(tab1CurrentPage,null)
+        pageNum1 += 1
+        repository.getAvailableReviewOrderMore(pageNum1,null)
     }
 
     fun getMoreTab2List() {
-        tab2CurrentPage += 1
-        repository.getUserMyPageReviewMore(tab2CurrentPage,null)
+        pageNum2 += 1
+        repository.getUserMyPageReviewMore(pageNum2,null)
     }
 
     fun deleteMyReview(productId : Long, reviewId : Long, listener : OnCallBackListener){
@@ -173,9 +176,6 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                         OrderServer.getMypageReviewAvailableList(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
-                                        /*if(!availableReviewOrderList.value.isNullOrEmpty() && availableReviewOrderList.value!!.get(availableReviewOrderList.value!!.size-1).isMoreList){
-                                            availableReviewOrderList.value!!.removeAt(availableReviewOrderList.value!!.size-1)
-                                        }*/
                                         var startRange = model.getAvailableAdapter().items.size
                                         var data = (o as BaseModel<*>).data as MyPageOrderReview
                                         if(!data.orderItemList.isNullOrEmpty()){
@@ -183,11 +183,12 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                                             if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getAvailableReviewOrderMore ", "init ----- list",data)
                                             model.mypageReviewtab1Title.set(data.count)
                                             availableReviewOrderList.value!!.addAll(data.orderItemList)
-                                            /*if(data.totalPage > data.page+1){
-                                                var more = ReviewAvailableOrder()
-                                                more.isMoreList = true
-                                                availableReviewOrderList.value!!.add(more)
-                                            }*/
+                                            if(CustomLog.flag)CustomLog.L("MyPageReviewRepository 2 getMoreClaimList1","data.totalPage ",data.totalPage ,"data.page",data.page)
+                                            if(data.totalPage > 0 && (data.totalPage >= data.page)){
+                                                model.totalPageNum1 = data.totalPage
+                                                model.pageNum1 = data.page
+                                            }
+                                            if(CustomLog.flag)CustomLog.L("MyPageReviewRepository 2 getMoreClaimList1","mViewModel.totalPageNum1",model.totalPageNum1,"mViewModel.pageNum1",model.pageNum1)
                                             model.tab1EmptyViewVisible.set(false)
                                             if(startRange == 0){
                                                 model.getAvailableAdapter().notifyDataSetChanged()
@@ -235,18 +236,16 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                         UserServer.getMypageReviewList(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
-                                        /*if(!userMyPageReviewList.value.isNullOrEmpty() && userMyPageReviewList.value!!.get(userMyPageReviewList.value!!.size-1).isMoreList){
-                                            userMyPageReviewList.value!!.removeAt(userMyPageReviewList.value!!.size-1)
-                                        }*/
                                         var startRange = model.getReviewAdapter().items.size
                                         var data = (o as BaseModel<*>).data as MyPageReview
                                         model.mypageReviewtab2Title.set(data.totalElements)
                                         userMyPageReviewList.value!!.addAll(data.content)
-                                        /*if(data.totalPages > data.pageable.pageNumber+1){
-                                            var more = MyPageReviewContent()
-                                            more.isMoreList = true
-                                            userMyPageReviewList.value!!.add(more)
-                                        }*/
+                                        if(CustomLog.flag)CustomLog.L("MyPageReviewRepository 2 getMoreClaimList2","data.totalPages",data.totalPages,"data.pageable.pageNumber",data.pageable.pageNumber)
+                                        if(data.totalPages > 0 && (data.totalPages > data.pageable.pageNumber)){
+                                            model.totalPageNum2 = data.totalPages
+                                            model.pageNum2 = data.pageable.pageNumber
+                                        }
+                                        if(CustomLog.flag)CustomLog.L("MyPageReviewRepository 2 getMoreClaimList2","mViewModel.totalPageNum2",model.totalPageNum2,"mViewModel.pageNum2",model.pageNum2)
                                         model.tab2EmptyViewVisible.set(false)
 
                                         if(startRange == 0){

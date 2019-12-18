@@ -454,11 +454,11 @@ public class CommonUtil {
                 if (exp.asInt() > current) {
                     return true;
                 } else {
-                    Preferences.clearToken(false);
+                    Preferences.clearToken(false, BaseApplication.getInstance());
                     return false;
                 }
             }catch (Exception e){
-                Preferences.clearToken(false);
+                Preferences.clearToken(false, BaseApplication.getInstance());
                 return false;
             }
         }
@@ -477,12 +477,12 @@ public class CommonUtil {
                     String id =  new JWT(token.getAccessToken()).getClaim("userId").asString();
                     return Long.parseLong(id);
                 } else {
-                    Preferences.clearToken(false);
+                    Preferences.clearToken(false, BaseApplication.getInstance());
                     return -1;
                 }
             }catch (Exception e){
                 if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
-                Preferences.clearToken(false);
+                Preferences.clearToken(false, BaseApplication.getInstance());
                 return -1;
             }
         }
@@ -500,12 +500,12 @@ public class CommonUtil {
                     String email =  new JWT(token.getAccessToken()).getClaim("user_name").asString();
                     return email;
                 } else {
-                    Preferences.clearToken(false);
+                    Preferences.clearToken(false, BaseApplication.getInstance());
                     return "";
                 }
             }catch (Exception e){
                 if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
-                Preferences.clearToken(false);
+                Preferences.clearToken(false, BaseApplication.getInstance());
                 return "";
             }
         }

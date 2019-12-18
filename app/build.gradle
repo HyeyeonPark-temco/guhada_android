@@ -10,8 +10,9 @@ android {
         applicationId "io.temco.guhada"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 44
-        versionName "1.0.12"
+        versionCode 46
+        versionName "1.0.14"
+        // 19.12.18 - 1.0.14 업데이트
         // x.x.x   - 정식 업데이트 버전
         // x.x.x.a - a : 테스트 업데이트 버전, 정식업데이트 되면 제거후 테스트 시작시 초기화 0 부터시작 ~
 
@@ -107,6 +108,7 @@ dependencies {
     implementation androidDependencies.supportCustomTabs
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
 
 //    implementation 'androidx.appcompat:appcompat:1.0.2'
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -132,6 +134,7 @@ dependencies {
     implementation libraryDependencies.googlePlayServiceAuth
     // KAKAO LOGIN
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+    implementation group: 'com.kakao.sdk', name: 'plusfriend', version: project.KAKAO_SDK_VERSION
     // FACEBOOK LOGIN
     implementation libraryDependencies.facebookLogin
     // NAVER
@@ -223,7 +226,8 @@ repositories {
     jcenter()
     mavenCentral()
     maven { url 'https://jitpack.io' }
-    maven {url "http://kochava.bintray.com/maven"}
+    maven { url "http://kochava.bintray.com/maven" }
+    maven { url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/' }
 }
 
 // @Author park jungho

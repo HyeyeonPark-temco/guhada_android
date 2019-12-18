@@ -201,8 +201,9 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
             mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.VISIBLE);
             mBinding.layoutExpandCategoryHeader.setToggleOnClick(true);
-            mDepthIndex = -1;
+            //mDepthIndex = -1;
             for (int i=0;i<mCategoryList.size();i++) {
+                mDepthIndex = 0;
                 Category c = mCategoryList.get(i);
                 Gson gson = new Gson();
                 Category tmp = gson.fromJson(gson.toJson(c), Category.class);

@@ -380,7 +380,12 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     // 바로 구매 클릭
     fun onClickPayment() {
-        listener?.redirectPaymentActivity(menuVisibility.get() == View.VISIBLE)
+        ServerCallbackUtil.callWithToken(
+                task = { listener?.redirectPaymentActivity(menuVisibility.get() == View.VISIBLE) },
+                invalidTokenTask = {
+                    listener?.redirectLoginActivity()
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                })
     }
 
     fun onClickCloseMenu() {

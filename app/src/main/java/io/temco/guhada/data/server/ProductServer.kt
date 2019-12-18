@@ -337,7 +337,7 @@ class ProductServer {
         /**
          * @author park jungho
          *
-         * 럭키드로우 응모하기
+         * 럭키드로우 당첨 정보 확인
          */
         @JvmStatic
         fun getRequestLuckyDrawWinner(listener: OnServerListener?,accessToken: String, dealId:Long) {

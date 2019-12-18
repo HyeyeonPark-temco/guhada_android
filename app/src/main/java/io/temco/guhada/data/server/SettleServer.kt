@@ -7,6 +7,8 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.AppVersionCheck
 import io.temco.guhada.data.model.CardInterest
+import io.temco.guhada.data.model.MainPopup
+import io.temco.guhada.data.model.PlanningDetailData
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
@@ -106,7 +108,7 @@ class SettleServer {
 
 
         /**
-         * 이벤트 리스트
+         * 기획전 리스트
          */
         @JvmStatic
         fun getPlanningList(eventProgress : PlanningProgressType, listener: OnServerListener) {
@@ -115,6 +117,39 @@ class SettleServer {
                     resultListener(listener, call, response)
                 }
                 override fun onFailure(call: Call<BaseModel<PlanningListData>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+
+        /**
+         * 기획전 상세정보
+         */
+        @JvmStatic
+        fun getPlanningDetail(eventId : Int, page : Int, listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getPlanningDetail(eventId, page).enqueue(object : Callback<BaseModel<PlanningDetailData>> {
+                override fun onResponse(call: Call<BaseModel<PlanningDetailData>>, response: Response<BaseModel<PlanningDetailData>>) {
+                    resultListener(listener, call, response)
+                }
+                override fun onFailure(call: Call<BaseModel<PlanningDetailData>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+
+
+        /**
+         * 이벤트 리스트
+         */
+        @JvmStatic
+        fun getMainPopup(listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getMainPopup().enqueue(object : Callback<BaseModel<MainPopup>> {
+                override fun onResponse(call: Call<BaseModel<MainPopup>>, response: Response<BaseModel<MainPopup>>) {
+                    resultListener(listener, call, response)
+                }
+                override fun onFailure(call: Call<BaseModel<MainPopup>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
             })

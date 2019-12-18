@@ -50,7 +50,9 @@ class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>(
         this.mPurchaseOrder = purchaseOrder
         mBinding.includeSuccessrefundProductinfo.imageUrl = purchaseOrder.imageUrl
         mBinding.includeSuccessrefundProductinfo.brandName = purchaseOrder.brandName
-        mBinding.includeSuccessrefundProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.productName}"
+        mBinding.includeSuccessrefundProductinfo.productName =
+                if (purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName
+                else "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeSuccessrefundProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeSuccessrefundProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
 

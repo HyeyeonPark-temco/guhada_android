@@ -24,11 +24,8 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  * @since 2019.08.13
  */
 class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.Holder>() {
-    private val RIGHT_MARGIN = 20
-
     lateinit var mViewModel: SellerInfoViewModel
     var mList: MutableList<Deal> = mutableListOf()
-    var mSpanCount = 2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_sellerinfo_product, parent, false))

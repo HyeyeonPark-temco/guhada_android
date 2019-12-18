@@ -6,6 +6,7 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.MainPopup
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
@@ -115,6 +116,27 @@ class MainDataRepository {
                     successTask = {
                         val type = object : TypeToken<ArrayList<MainBanner>>() {}.type
                         val list = Gson().fromJson<ArrayList<MainBanner>>((o as BaseModel<*>).message, type)
+                        listener.callBackListener(true, list)
+                    },
+                    dataNotFoundTask = {
+                        listener.callBackListener(false, "dataNotFoundTask")
+                    },
+                    failedTask = {
+                        listener.callBackListener(false, it.message)
+                    },dataIsNull = {
+                listener.callBackListener(false, "dataIsNull")
+            }
+            )
+        })
+    }
+
+
+
+    fun getMainPopup(listener : OnCallBackListener) {//getProductByPlusItem
+        SettleServer.getMainPopup(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var list =  (o as BaseModel<*>).list as List<MainPopup>
                         listener.callBackListener(true, list)
                     },
                     dataNotFoundTask = {

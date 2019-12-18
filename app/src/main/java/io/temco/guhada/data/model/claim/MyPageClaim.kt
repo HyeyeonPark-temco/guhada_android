@@ -1,6 +1,7 @@
 package io.temco.guhada.data.model.claim
 
 import com.google.gson.annotations.SerializedName
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.base.BasePageModel
 import java.io.Serializable
 import java.util.*
@@ -17,12 +18,6 @@ class MyPageClaim : BasePageModel(), Serializable {
 
         @SerializedName("item")
         var item : Item = Item()
-
-        var totalPages : Int = -1
-
-        var pageNumber : Int = -1
-
-
     }
 
     inner class Item{
@@ -136,6 +131,9 @@ class MyPageClaim : BasePageModel(), Serializable {
 
     }
 
+    override fun toString(): String {
+        return "MyPageClaim(content=$content)"
+    }
 
 
 }

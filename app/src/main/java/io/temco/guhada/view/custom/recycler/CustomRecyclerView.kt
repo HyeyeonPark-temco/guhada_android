@@ -11,7 +11,7 @@ class CustomRecyclerView : RecyclerView{
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
     override fun fling(velocityX: Int, velocityY: Int): Boolean {
-        var cy : Int = (velocityY * 0.55f).toInt()
+        var cy : Int = (velocityY * 0.65f).toInt()
         return super.fling(velocityX, cy)
     }
 }

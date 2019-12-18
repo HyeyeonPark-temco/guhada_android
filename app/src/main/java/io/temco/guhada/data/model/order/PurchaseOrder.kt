@@ -1,6 +1,5 @@
 package io.temco.guhada.data.model.order
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.OrderChangeCause

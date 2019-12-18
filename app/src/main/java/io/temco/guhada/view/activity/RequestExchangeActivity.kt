@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import io.reactivex.Observable
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
@@ -125,9 +126,9 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         if (!purchaseOrder.exchangeReason.isNullOrEmpty()) {
             mViewModel.mExchangeRequest.exchangeReason = purchaseOrder.exchangeReason
             mBinding.includeRequestexchangeCause.defaultMessage = getReason(purchaseOrder.exchangeReason)
-            mBinding.includeRequestexchangeCause.textviewRequestorderstatusCause.text = getReason(purchaseOrder.exchangeReason)
+            mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setPlaceHolder(getReason(purchaseOrder.exchangeReason))
         } else {
-            mBinding.includeRequestexchangeCause.textviewRequestorderstatusCause.text = getString(R.string.requestorderstatus_exchange_cause)
+            mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setPlaceHolder(getString(R.string.requestorderstatus_exchange_cause))
             mBinding.includeRequestexchangeCause.defaultMessage = getString(R.string.requestorderstatus_exchange_cause)
         }
 
@@ -154,32 +155,41 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             mViewModel.mExchangeRequest.quantity = mBinding.includeRequestexchangeCause.quantity
                     ?: 0
         }
-        mBinding.includeRequestexchangeCause.causeList = purchaseOrder.exchangeReasonList
-        mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (purchaseOrder.exchangeReasonList != null) {
-                    if (!purchaseOrder.exchangeReasonList.isNullOrEmpty() && position > (purchaseOrder.exchangeReasonList!!.size - 2)) {
+        /**
+         * Custom Spinner View 변경
+         * @since 2019.12.13
+         */
+        val list = mutableListOf<Any>()
+        Observable.fromIterable(purchaseOrder.exchangeReasonList).subscribe {
+            list.add(it.label)
+        }.dispose()
+        mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setPlaceHolder(if (!purchaseOrder.exchangeReason.isNullOrEmpty()) getReason(purchaseOrder.exchangeReason) else getString(R.string.requestorderstatus_exchange_cause))
+        mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setItems(list)
+        mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause1.setOnItemClickTask { position ->
+            if (purchaseOrder.exchangeReasonList != null) {
+                if (!purchaseOrder.exchangeReasonList.isNullOrEmpty() && position > (purchaseOrder.exchangeReasonList!!.size - 2)) {
 
-                    } else {
-                        val cause = mViewModel.mPurchaseOrder.value?.exchangeReasonList!![position]
-                        mViewModel.mSelectedShippingPayment = cause
-                        mViewModel.mExchangeRequest.exchangeReason = cause.code
-                        mBinding.includeRequestexchangeCause.defaultMessage = cause.label
+                } else {
+                    val cause = mViewModel.mPurchaseOrder.value?.exchangeReasonList!![position]
+                    mViewModel.mSelectedShippingPayment = cause
+                    mViewModel.mExchangeRequest.exchangeReason = cause.code
+                    mViewModel.mExchangeRequest.userFault = cause.userFault
 
-                        if (purchaseOrder.exchangeShippingPrice > 0 || purchaseOrder.exchangeShipExpense > 0)
-                            mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
-                                    if (cause.userFault) View.VISIBLE
-                                    else View.GONE
+                    if (purchaseOrder.exchangeShippingPrice > 0 || purchaseOrder.exchangeShipExpense > 0)
+                        mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
+                                if (cause.userFault) View.VISIBLE
+                                else View.GONE
 
-                        if (!cause.userFault)
-                            mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
+                    if (!cause.userFault) mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
+                    else {
+                        mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.BOX.type
+                        mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
                     }
                 }
             }
         }
+
         mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.addTextChangedListener {
             mViewModel.mExchangeRequest.exchangeReasonDetail = it.toString()
         }
@@ -251,7 +261,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = View.GONE
                 mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.exchangePickingInvoiceNo)
             }
-        }else {
+        } else {
             mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
         }
 
@@ -313,14 +323,6 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 }
             }
 
-            // [신청서 수정] 배송비 결제 방법
-            if (purchaseOrder.exchangeShippingPriceType != null && purchaseOrder.exchangeShippingPriceType != ShippingPaymentType.NONE.type) {
-                when (purchaseOrder.exchangeShippingPriceType) {
-                    ShippingPaymentType.BOX.type -> mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
-                    ShippingPaymentType.DIRECT_SEND.type -> mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = true
-                }
-            }
-
             mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     mViewModel.mShippingPayment = ShippingPaymentType.BOX.pos
@@ -334,6 +336,16 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                     mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.DIRECT_SEND.type
                     mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
                 }
+            }
+
+            // [신청서 수정] 배송비 결제 방법
+            if (!purchaseOrder.exchangeShippingPriceType.isNullOrEmpty() && purchaseOrder.exchangeShippingPriceType != ShippingPaymentType.NONE.type) {
+                when (purchaseOrder.exchangeShippingPriceType) {
+                    ShippingPaymentType.BOX.type -> mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
+                    ShippingPaymentType.DIRECT_SEND.type -> mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = true
+                }
+            } else {
+                mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
             }
         } else {
             mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
@@ -354,35 +366,9 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
 
     private fun initExchangeShipping(purchaseOrder: PurchaseOrder) {
         mBinding.includeRequestexchangeExchangeshipping.title = resources.getString(R.string.requestorderstatus_exchange_address)
-        mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (TextUtils.isEmpty(purchaseOrder.receiverMessage) && position > (purchaseOrder.shippingMessageList.size - 2)) {
-
-                } else {
-                    val shippingMessage = mViewModel.mShippingMessageList.value?.get(position)
-                    mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = shippingMessage?.message
-
-                    if (shippingMessage?.type == ShippingMessageCode.SELF.code) {
-                        mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.VISIBLE
-                        mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.addTextChangedListener {
-                            mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = it.toString()
-                        }
-                    } else {
-                        mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = shippingMessage?.message
-                                ?: ""
-                        mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.removeTextChangedListener(null)
-                        mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.GONE
-                    }
-                }
-            }
-        }
 
         // 교환상품 배송지
-        if(purchaseOrder.exchangeBuyerAddress.isNullOrEmpty()){
+        if (purchaseOrder.exchangeBuyerAddress.isNullOrEmpty()) {
             mBinding.includeRequestexchangeExchangeshipping.name = purchaseOrder.receiverAddressName
             mBinding.includeRequestexchangeExchangeshipping.address = "[${purchaseOrder.receiverZipcode}] ${purchaseOrder.receiverRoadAddress} ${purchaseOrder.receiverAddressDetail}"
             mBinding.includeRequestexchangeExchangeshipping.defaultAddress = false
@@ -393,7 +379,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             mViewModel.mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.receiverAddressDetail
             mViewModel.mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName
             mViewModel.mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.receiverPhone
-        }else {
+        } else {
             mBinding.includeRequestexchangeExchangeshipping.name = purchaseOrder.exchangeBuyerAddressName
             mBinding.includeRequestexchangeExchangeshipping.address = "[${purchaseOrder.exchangeBuyerZip}] ${purchaseOrder.exchangeBuyerRoadAddress} ${purchaseOrder.exchangeBuyerDetailAddress}"
             mBinding.includeRequestexchangeExchangeshipping.defaultAddress = false
@@ -412,38 +398,47 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             startActivityForResult(intent, RequestCode.SHIPPING_ADDRESS.flag)
         }
 
-        // 배송 메세지
-//        for (i in 0 until purchaseOrder.shippingMessageList.size) {
-//            val shippingMessage = purchaseOrder.shippingMessageList[i]
-//            if (shippingMessage.message == purchaseOrder.exchangeBuyerShippingMessage) {
-//                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = purchaseOrder.exchangeBuyerShippingMessage
-//                        ?: ""
-//                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.GONE
-//                break
-//            } else if (i == purchaseOrder.shippingMessageList.size - 1) {
-//                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
-//                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.setText(purchaseOrder.exchangeBuyerShippingMessage
-//                        ?: "")
-//                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.VISIBLE
-//            }
-//        }
-
         // 배송 메세지 리스트
+        if (purchaseOrder.exchangeBuyerShippingMessage.isNotEmpty()) {
+            var selectedShippingMessage = ""
+            Observable.fromIterable(purchaseOrder.shippingMessageList).subscribe {
+                if (it.message == purchaseOrder.exchangeBuyerShippingMessage) {
+                    selectedShippingMessage = it.message
+                    return@subscribe
+                }
+            }.dispose()
+
+            if (selectedShippingMessage.isEmpty()) {
+                selectedShippingMessage = purchaseOrder.shippingMessageList[purchaseOrder.shippingMessageList.size - 1].message
+                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.VISIBLE
+                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.setText(purchaseOrder.exchangeBuyerShippingMessage)
+            }
+
+            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setPlaceHolder(selectedShippingMessage)
+        } else
+            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setPlaceHolder(getString(R.string.shippingmemo_default))
+
+
         mViewModel.mShippingMessageList.observe(this, Observer {
-            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, it)
-            if (it.isNotEmpty()) {
-                if (!purchaseOrder.exchangeBuyerShippingMessage.isNullOrEmpty()) {
-                    for (i in 0 until it.size)
-                        if (it[i].message == purchaseOrder.exchangeBuyerShippingMessage){
-                            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setSelection(i)
-                            break
-                        }
+            val list = mutableListOf<Any>()
+            Observable.fromIterable(it).subscribe { list.add(it.message) }.dispose()
+
+            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setItems(list)
+            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setOnItemClickTask { position ->
+                val directMemoView = mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo
+                if (position == it.size - 1) {
+                    directMemoView.visibility = View.VISIBLE
+                    directMemoView.addTextChangedListener {
+                        mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = it.toString()
+                    }
+                    mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = directMemoView.text.toString()
                 } else {
-                    mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setSelection(it.size - 1)
+                    directMemoView.visibility = View.GONE
+                    directMemoView.removeTextChangedListener(null)
+                    mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = it[position].message
                 }
             }
         })
-        // mViewModel.getShippingMessageByOrderForm()
     }
 
     private fun initButton(isModify: Boolean) {

@@ -95,6 +95,8 @@ class UserServer {
         /**
          * 이메일로 인증번호 전송하기
          * User 중 email, name 필드만 입력
+         * response: {"result":"SUCCESS","data":600000,"resultCode":200,"message":"success"}
+         * @author Hyeyeon Park
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =
@@ -787,7 +789,7 @@ class UserServer {
 
 
         /**
-         * 회원 좋아요 가져오기
+         * 커뮤니티 좋아요 가져오기
          * @author park jungho
          * @since 2019.12.02
          */
@@ -808,7 +810,7 @@ class UserServer {
 
 
         /**
-         * 회원 좋아요 저장하기
+         * 커뮤니티 좋아요 저장하기
          * @since 2019.12.02
          * @author park jungho
          */
@@ -828,14 +830,14 @@ class UserServer {
         }
 
         /**
-         * 회원 좋아요 저장하기
+         * 커뮤니티 좋아요 삭제
          * @since 2019.12.02
          * @author park jungho
          */
         @JvmStatic
         fun deleteLikes(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId: Long) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .deleteLikes(accessToken, target, targetId, userId).enqueue(object : Callback<BaseModel<Any>> {
+                    .deleteLikes(accessToken, userId, target, targetId).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
@@ -974,5 +976,27 @@ class UserServer {
          */
         fun withdraw(listener: OnServerListener, accessToken: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false)
                 .withdraw(accessToken = accessToken).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
+
+
+        /**
+         * 비밀번호 확인 api
+         * @author park jungho
+         * @since 2019.12.10
+         */
+        @JvmStatic
+        fun passwordCheck(listener: OnServerListener, accessToken: String, userId: Long, body: JsonObject) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .passwordCheck(accessToken, userId, body).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            resultListener(listener, call, response)
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("passwordCheck", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    })
+        }
+
+
     }
 }

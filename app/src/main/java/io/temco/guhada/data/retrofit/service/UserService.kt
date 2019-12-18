@@ -536,7 +536,7 @@ interface UserService {
      * @since 2019.12.02
      */
     @POST("/users/{userId}/likes")
-    fun saveLikes(@Header("Authorization") accessToken: String, @Query("userId") userId: Long, @Body response: LikesModel): Call<BaseModel<Any>>
+    fun saveLikes(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body response: LikesModel): Call<BaseModel<Any>>
 
 
     /**
@@ -544,8 +544,8 @@ interface UserService {
      * @author park jungho
      * @since 2019.12.02
      */
-    @DELETE("/users/{userId}/likes/{id}")
-    fun deleteLikes(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long, @Query("userId") userId: Long): Call<BaseModel<Any>>
+    @DELETE("/users/{userId}/likes")
+    fun deleteLikes(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<Any>>
 
 
     /**
@@ -652,5 +652,15 @@ interface UserService {
      */
     @DELETE("/users/withdraw")
     fun withdraw(@Header("Authorization") accessToken: String) : Call<BaseModel<Any>>
+
+
+
+    /**
+     * 비밀번호 확인 api
+     * @author park jungho
+     * @since 2019.12.10
+     */
+    @POST("/users/{userId}/password")
+    fun passwordCheck(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body body: JsonObject) : Call<BaseModel<Any>>
 
 }

@@ -22,6 +22,7 @@ class ExchangeRequest : Serializable {
     var quantity = 1
     var orderClaimId = 0L
     var exchangeShippingAddress: UserShipping = UserShipping()
+    var userFault = false
 
     fun getShippingPaymentDescription(shippingPrice: Int): String {
         val context = BaseApplication.getInstance()

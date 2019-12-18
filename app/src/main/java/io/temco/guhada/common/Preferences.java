@@ -6,12 +6,15 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.auth0.android.jwt.Claim;
+import com.auth0.android.jwt.JWT;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.common.util.ToastUtil;
@@ -187,12 +190,21 @@ public class Preferences {
         }.getType());
     }
 
-    public static void clearToken(boolean isShowToast) {
+    public static void clearToken(boolean isShowToast, BaseApplication application) {
         Preferences.setPasswordConfirm(false);
         SharedPreferences pref = getPreferences();
         if (pref == null) {
             return;
         }
+
+        Token token = Preferences.getToken();
+        if(token != null && token.getAccessToken() != null && application.getFcmToken() != null){
+            String t = token.getAccessToken()+"";
+            if(CustomLog.getFlag())CustomLog.L("Preferences clearToken","t",t);
+            if(CustomLog.getFlag())CustomLog.L("Preferences clearToken","getFcmToken",application.getFcmToken());
+            CommonUtilKotlin.deleteDevice(t, application.getFcmToken());
+        }
+
         SharedPreferences.Editor editor = pref.edit();
         editor.remove(KEY_USER_TOKEN);
         editor.apply();
@@ -210,13 +222,22 @@ public class Preferences {
      * @param isShowToast
      * @param application
      */
-    public static void clearToken(boolean isShowToast, BaseApplication application) {
+    public static void clearTokenMain(boolean isShowToast, BaseApplication application) {
         application.setInitUserMaypage(true);
         Preferences.setPasswordConfirm(false);
         SharedPreferences pref = getPreferences();
         if (pref == null) {
             return;
         }
+
+        Token token = Preferences.getToken();
+        if(token != null && token.getAccessToken() != null && application.getFcmToken() != null){
+            String t = token.getAccessToken()+"";
+            if(CustomLog.getFlag())CustomLog.L("Preferences clearToken clearTokenMain","t",t);
+            if(CustomLog.getFlag())CustomLog.L("Preferences clearToken clearTokenMain","getFcmToken",application.getFcmToken());
+            CommonUtilKotlin.deleteDevice(t, application.getFcmToken());
+        }
+
         SharedPreferences.Editor editor = pref.edit();
         editor.remove(KEY_USER_TOKEN);
         editor.apply();

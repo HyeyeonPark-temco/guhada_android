@@ -118,6 +118,14 @@ public class ProductThreeViewHolder extends BaseProductViewHolder<ItemProductLis
             } else {
                 mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.intValue())));
             }*/
+
+            /**
+             *  중고상품, 해외배송 여부 > data binding으로 처리
+             *  @author Hyeyeon Park
+             *  @since 2019.12.06
+             */
+            mBinding.setItem(data);
+            mBinding.executePendingBindings();
         }
     }
 

@@ -67,7 +67,7 @@
             app:spanCount="2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintlayout_payment_recipientcontainer"
+            android:id="@+id/constraintlayout_payment_receiptcontainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -84,7 +84,7 @@
                 android:text="@string/payment_title_receipt"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_14"
-                app:layout_constraintBottom_toTopOf="@id/constraintlayout_payment_recipientform"
+                app:layout_constraintBottom_toTopOf="@id/constraintlayout_payment_receiptform"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -138,7 +138,7 @@
 
             <!-- 입력 폼 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintlayout_payment_recipientform"
+                android:id="@+id/constraintlayout_payment_receiptform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
