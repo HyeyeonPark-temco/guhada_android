@@ -110,7 +110,6 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             // Side Menu
             R.id.image_home ->  gotoMain(true)
             R.id.image_setting -> {
-                //CommonUtilKotlin.startActivityUserClaimGuhada(this@SideMenuActivity)
             }
             R.id.image_close -> {
                 onBackPressed()
@@ -154,7 +153,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             if (isLogin) {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out))
                 mBinding.layoutHeader.layoutLogin.setOnClickListener{
-                    Preferences.clearToken(true, (applicationContext as BaseApplication))
+                    Preferences.clearTokenMain(true, (applicationContext as BaseApplication))
                     changeLoginStatus(false)
                     gotoMain(true)
                     
@@ -177,7 +176,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         if (exp > current) {
             return true
         } else {
-            Preferences.clearToken(true)
+            Preferences.clearToken(true, BaseApplication.getInstance())
             return false
         }
     }

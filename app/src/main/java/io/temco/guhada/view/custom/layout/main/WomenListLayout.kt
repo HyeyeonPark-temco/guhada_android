@@ -260,7 +260,8 @@ class WomenListLayout constructor(
 
     private fun getCategory(){
         var db = GuhadaDB.getInstance(context = context)!!
-        (context as MainActivity).getmDisposable().add(Observable.fromCallable<List<CategoryEntity>> {
+        if((context as MainActivity).getmDisposable() == null) return
+        (context as MainActivity).getmDisposable()?.add(Observable.fromCallable<List<CategoryEntity>> {
             db.categoryDao().getDepthUnder(CategoryLabelType.Women.name,1)
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

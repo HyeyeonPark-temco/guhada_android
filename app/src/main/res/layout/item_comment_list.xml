@@ -17,6 +17,10 @@
         <variable
             name="clickDeleteListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="clickCommentLikeListener"
+            type="android.view.View.OnClickListener" />
+
 
         <variable name="userProfile" type="String" />
         <variable name="userName" type="String" />
@@ -167,8 +171,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="6dp"
-                android:paddingBottom="8dp"
+                android:minHeight="30dp"
+                android:paddingBottom="2dp"
                 android:visibility="@{isDelete ? View.GONE : View.VISIBLE, default = visible}"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -186,25 +190,24 @@
                     android:layout_height="2dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:visibility="gone"
                     android:background="@drawable/drawble_circle_dot2"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:text="@{@string/community_detail_likecount(likeCount)}"
                     android:textColor="@{isLikeComment ? @color/blue_purple :@color/warm_grey_two, default = @color/warm_grey_two}"
+                    android:onClick="@{clickCommentLikeListener}"
                     android:textSize="@dimen/text_12" />
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:visibility="gone"
+                    android:visibility="@{isLikeComment ? View.VISIBLE : View.GONE, default = gone}"
                     android:layout_marginLeft="2dp"
                     android:src="@drawable/detail_icon_thumbsup_on"/>
 
-               <!-- android:visibility="@{isLikeComment ? View.VISIBLE : View.GONE, default = gone}"-->
+               <!-- -->
 
                 <View
                     android:layout_width="2dp"

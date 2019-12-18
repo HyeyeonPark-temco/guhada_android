@@ -175,7 +175,7 @@ class LuckyEventDialogActivity : BindActivity<ActivityLuckyeventdialogBinding>()
         startActivityForResult(intent, Flag.RequestCode.LOGIN)
     }
 
-    // 유저의 사용자 정보 확인
+    // 당첨 정보 확인
     private fun getLuckyDrawWinner() {
         mViewModel.getRequestLuckyDrawWinner(eventData.dealId, object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {

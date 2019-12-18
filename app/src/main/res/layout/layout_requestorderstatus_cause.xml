@@ -37,10 +37,6 @@
             type="Integer" />
 
         <variable
-            name="causeList"
-            type="List&lt;OrderChangeCause>" />
-
-        <variable
             name="requestType"
             type="Integer" />
 
@@ -137,84 +133,27 @@
                 android:textSize="@dimen/text_14" />
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/framelayout_requestorderstatus_cause"
+        <io.temco.guhada.view.custom.CustomSpinnerView
+            android:id="@+id/spinner_requestorderstatus_cause1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="20dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="20dp" />
 
-            <Spinner
-                android:id="@+id/spinner_requestorderstatus_cause"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@drawable/border_all_whitethree"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:overlapAnchor="false"
-                android:popupBackground="@null"
-                android:spinnerMode="dropdown"
-                app:cause="@{causeList}"
-                app:requestType="@{requestType}"
-                 />
-
-            <FrameLayout
-                android:id="@+id/framelayout_requestorderstatus_causebutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white_three"
-                android:padding="1dp">
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_requestorderstatus_cause"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@color/common_white"
-                    android:orientation="horizontal"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:popupBackground="@null">
-
-                    <TextView
-                        style="@style/MypageDeliveryWarmGreyTextStyle"
-                        android:id="@+id/textview_requestorderstatus_cause"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="@{defaultMessage}"
-                        android:textSize="@dimen/text_13" />
-
-                    <ImageView
-                        android:id="@+id/imageview_requestorderstatus_cause"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/payment_icon_selectbox_open" />
-                </LinearLayout>
-            </FrameLayout>
-
-        </FrameLayout>
-
-        <FrameLayout
+        <EditText
+            android:id="@+id/edittext_requestorderstatus_cause"
+            style="@style/MypageDeliveryWarmGreyTextStyle"
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="40dp">
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/border_all_whitefour"
+            android:gravity="left|top"
+            android:hint="@{hintMessage}"
+            android:padding="15dp" />
 
-            <EditText
-                android:id="@+id/edittext_requestorderstatus_cause"
-                style="@style/MypageDeliveryWarmGreyTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/border_all_whitethree"
-                android:gravity="left|top"
-                android:hint="@{hintMessage}"
-                android:padding="15dp" />
-        </FrameLayout>
     </LinearLayout>
 </layout>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="item"
+            type="io.temco.guhada.data.model.community.CommunityBoard" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->viewModel.onClickItem(item)}"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <ImageView
+                android:id="@+id/imageview_communitytext_thumbnail"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="15dp"
+                android:scaleType="centerCrop"
+                android:visibility="@{item.imageUrl == null || item.imageUrl.isEmpty() ? View.GONE : View.VISIBLE}"
+                android:src="@color/white_three"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:roundCornerImageUrl="@{item.imageUrl}"
+                app:roundCornerRadius="@{5}" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_communitytext_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@id/textview_communitytext_like"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_communitytext_thumbnail"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textview_communitytext_category"
+                    style="@style/CommunityTitleCategoryTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    android:visibility="@{TextUtils.isEmpty(item.categoryFilterName) ? View.GONE : View.VISIBLE, default=gone}"
+                    android:text="@{TextUtils.isEmpty(item.categoryFilterName) ? @string/blank : item.categoryFilterName, default=@string/blank}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_communitytext_title"
+                    style="@style/CommunityTitleTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@{item.title}"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintRight_toLeftOf="@+id/textview_communitytext_commentcount"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_category"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_communitytext_commentcount"
+                    style="@style/CommunityTitleCategoryTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@{@string/community_format_commentcount(item.comments)}"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintRight_toLeftOf="@+id/imageview_communitytext_new"
+                    android:visibility="@{item.comments == 0 ? View.GONE : View.VISIBLE, default = visible}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_title"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageview_communitytext_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/com_icon_new"
+                    android:visibility="@{item.newlyCreated ? View.VISIBLE : View.GONE, default= visible}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_commentcount"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textview_communitytext_like"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="7dp"
+                android:text="@{@string/community_format_likecount(item.likes)}"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_communitytext_thumbnail"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_dot1"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/common_dot"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_like"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_view"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@{@string/community_format_viewcount(item.views)}"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_dot1"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_dot2"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/common_dot"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_view"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_date"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@{item.getDateStr()}"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_dot2"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_dot3"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/common_dot"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_date"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category" />
+
+            <FrameLayout
+                android:id="@+id/framelayout_communitytext_rank"
+                android:layout_width="19dp"
+                android:layout_height="12dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/border_all_whitethree_r11"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_dot3"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="1"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_6" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/textview_communitytext_name"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@{item.userName}"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/framelayout_communitytext_rank"
+                app:layout_constraintTop_toBottomOf="@id/constraintlayout_communitytext_category" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_6"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
+
+</layout>

@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.option
 
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import java.io.Serializable
 
 /**
@@ -51,5 +53,9 @@ class OptionInfo : Serializable {
             placeHolder += ", $label3"
 
         return placeHolder
+    }
+
+    fun getExtraPriceText(): String {
+        return if (price > 0) String.format(BaseApplication.getInstance().resources.getString(R.string.productdetail_option_extraprice_format), price) else ""
     }
 }

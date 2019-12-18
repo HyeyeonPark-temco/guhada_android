@@ -11,6 +11,7 @@
 
     <!-- API KEY -->
     <string name="kakao_app_key">b6e5b0618148f61889b9e77c8a9a0e90</string>
+    <string name="kakao_chat_scheme">_yxolxbT</string>
     <string name="facebook_app_id">2172540836200592</string>
     <string name="fb_login_protocol_scheme">fb2172540836200592</string>
     <string name="naver_oauth_client_id">xVqkhxmKT5JReAs5tXje</string>
@@ -56,6 +57,7 @@
     <string name="common_format_people">%,2d명</string>
     <string name="common_format_product">%,2d개</string>
     <string name="common_format_totalproduct">총 %,2d개</string>
+    <string name="common_format_brackets">[%s]</string>
     <string name="common_unit_person">명</string>
     <string name="common_unit_board">건</string>
     <string name="common_unit_price">원</string>
@@ -168,6 +170,10 @@
     <string name="product_price_sale_per">%d%%</string>
     <string name="product_ship_free">무료배송</string>
     <string name="product_ship_free_split">무료\n배송</string>
+    <string name="product_new">새제품</string>
+    <string name="product_old">빈티지</string>
+    <string name="product_international">해외배송</string>
+    <string name="product_coupon">쿠폰</string>
 
     <!-- BRAND -->
     <string name="brand_search_hint">브랜드명을 검색해주세요.</string>
@@ -517,6 +523,7 @@
     <string name="payment_title_point">포인트</string>
     <string name="payment_title_paymentway">결제 수단</string>
     <string name="payment_title_receipt">현금영수증</string>
+    <string name="payment_title_etcmessage">기타 요청 사항</string>
 
     <string name="payment_title_receipt_issue">신청</string>
     <string name="payment_title_receipt_unissue">미신청</string>
@@ -554,6 +561,7 @@
     <string name="payment_hint_shippingmemo">배송메모를 선택해 주세요</string>
     <string name="payment_hint_textshippingmemo">50자 이내로 입력해주세요.</string>
     <string name="payment_hint_coupon">적용 가능한 쿠폰을 선택해주세요</string>
+    <string name="payment_hint_etcmessage">옵션이 필요한 상품의 경우, 사이즈, 색상을 기재</string>
 
     <string name="payment_text_changedestination">배송지 변경</string>
     <string name="payment_button_submit">결제하기</string>
@@ -699,6 +707,7 @@
         <item>키즈</item>
         <item>타임딜</item>
         <item>럭키드로우</item>
+        <item>기획전</item>
         <item>이벤트</item>
     </string-array>
 

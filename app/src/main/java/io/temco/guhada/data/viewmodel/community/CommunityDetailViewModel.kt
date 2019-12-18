@@ -10,8 +10,10 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
+import com.google.gson.JsonObject
 import io.temco.guhada.BR
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.enum.ImageUploadTarget
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
@@ -22,8 +24,10 @@ import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.community.*
+import io.temco.guhada.data.model.user.LikesModel
 import io.temco.guhada.data.server.CommunityServer
 import io.temco.guhada.data.server.GatewayServer
+import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.CommunityDetailActivity
@@ -44,6 +48,14 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
 
     var userId = -1L
     var bbsId = 0L
+
+    val UNIT_PER_PAGE = 10
+    var mPage = 0
+    var mFilterId = -1
+    var mOrder = CommunityOrderType.DATE_DESC.type
+    var mCategoryId = -1L
+    var mCommunityResponse: MutableLiveData<CommunityBoard.CommunityResponse> = MutableLiveData()
+
     var communityDetail: MutableLiveData<CommunityDetail> = MutableLiveData()
     var commentList : MutableLiveData<ArrayList<Comments>> = MutableLiveData()
     var commentAdapter : CommentListAdapter? = null
@@ -89,6 +101,22 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
                 field = value
                 notifyPropertyChanged(BR.productBookMark)
             }
+        }
+
+    var bbsUserLike = ObservableBoolean(false)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.bbsUserLike)
+        }
+
+    var bbsUserLikeCount = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.bbsUserLikeCount)
         }
 
     var commentBtnVisible = ObservableBoolean(false)
@@ -143,9 +171,26 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
             notifyPropertyChanged(BR.communityEventViewIndex)
         }
 
+    var mRedirectDetailTask: (item: CommunityBoard) -> Unit = {}
 
-    fun onClickLike() {
 
+    fun onClickBbsLike() {
+        if(CustomLog.flag)CustomLog.L("onClickBbsLike","bbsBookMark.get()",bbsBookMark.get())
+        if(bbsId != 0L){
+            if (bbsUserLike.get())
+                repository.deleteLike(-1, target = Type.BookMarkTarget.BBS.name, targetId = bbsId)
+            else
+                repository.saveLike(-1, target = Type.BookMarkTarget.BBS.name, targetId = bbsId)
+        }
+    }
+
+
+    fun onClickCommentLike(index : Int, commentUserLike : Boolean, targetId : Long) {
+        if(CustomLog.flag)CustomLog.L("onClickCommentLike","commentUserLike",index,commentUserLike,targetId)
+        if (commentUserLike)
+            repository.deleteLike(commentIndex = index, target = Type.BookMarkTarget.COMMENT.name, targetId = targetId)
+        else
+            repository.saveLike(commentIndex = index, target = Type.BookMarkTarget.COMMENT.name, targetId = targetId)
     }
 
     fun onClickBookMark(){
@@ -203,7 +248,8 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
 
     fun getCommentInitList(listener: OnCallBackListener?){
         currentPage = 1
-        commentList.value!!.clear()
+        commentList.value?.clear()
+        commentAdapter?.mList?.clear()
         repository.getCommentList(currentPage,"DESC",listener)
     }
 
@@ -318,15 +364,26 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
         }
     }
 
+
+    fun onClickItem(item: CommunityBoard) = mRedirectDetailTask(item)
+
 }
 
 class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
 
+    /**
+     * 게시글 상세 가져오기
+     */
     fun getDetailData(){
-        CommunityServer.getBbsDetail(OnServerListener { success, o ->
+        var token = ""
+        ServerCallbackUtil.callWithToken(task = { token = it},invalidTokenTask = {})
+        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity getBbsDetailToken", "getDetailData token", token)
+        CommunityServer.getBbsDetailToken(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var data = (o as BaseModel<*>).data as CommunityDetail
+                        viewModel.bbsUserLike.set(data.like)
+                        viewModel.bbsUserLikeCount.set(data.likeCount)
                         viewModel.communityDetail.postValue(data)
                     },
                     dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getBbsDetail dataNotFoundTask ") },
@@ -335,16 +392,22 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                     serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getBbsDetail serverRuntimeErrorTask ") },
                     dataIsNull = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getBbsDetail dataIsNull ") }
             )
-        }, viewModel.bbsId, CommonUtil.getUserIp())
+        }, token, viewModel.bbsId, CommonUtil.getUserIp())
     }
 
 
+    /**
+     * 댓글 목록 가져오기
+     */
     fun getCommentList(page : Int, orderType : String, listener: OnCallBackListener?){
-        CommunityServer.getCommentList(OnServerListener { success, o ->
+        var token = ""
+        ServerCallbackUtil.callWithToken(task = { token = it},invalidTokenTask = {})
+        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity getCommentList", "getCommentList token", token)
+        CommunityServer.getCommentListToken(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var data = (o as BaseModel<*>).data as CommentContent
-                        if (CustomLog.flag) CustomLog.L("getCommentList", "totalElements", data.totalElements.toString())
+                        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity getCommentList", "totalElements", data.totalElements.toString())
                         var lastIndex = 0
                         if(!viewModel.commentList.value.isNullOrEmpty()){
                             lastIndex = viewModel.commentList.value!!.size-1
@@ -365,19 +428,24 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                                 }
                             }
                         }
-                        if (CustomLog.flag) CustomLog.L("getCommentList", "currentPage", viewModel.currentPage)
-                        if (CustomLog.flag) CustomLog.L("getCommentList", "totalPages", data.totalPages)
+                        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity getCommentList", "currentPage", viewModel.currentPage)
+                        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity getCommentList", "totalPages", data.totalPages)
+                        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity getCommentList", "lastIndex", lastIndex)
                         if(data.totalPages > viewModel.currentPage){
                             var more = Comments()
                             more.id = -1
                             listTmp.add(more)
                         }
+                        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity getCommentList 1", "viewModel.commentList.value!!.size", viewModel.commentList.value?.size ?:0)
                         if(viewModel.commentList.value.isNullOrEmpty()){
                             viewModel.commentList.value = listTmp
                         }else{
                             viewModel.commentList.value!!.addAll(listTmp)
-                            viewModel.commentAdapter?.notifyItemChanged(lastIndex)
+                            //viewModel.commentAdapter?.notifyItemRangeChanged(lastIndex,viewModel.commentList.value!!.size)
                         }
+                        viewModel.commentAdapter?.setItems(viewModel.commentList.value!!)
+                        viewModel.commentAdapter?.notifyDataSetChanged()
+                        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity getCommentList 2", "viewModel.commentList.value!!.size", viewModel.commentList.value!!.size)
                         listener?.callBackListener(true,"")
                     },
                     dataNotFoundTask = { nullCommentData(false, "dataNotFoundTask",listener) },
@@ -386,9 +454,12 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                     serverRuntimeErrorTask = {nullCommentData(false, "serverRuntimeErrorTask",listener) },
                     dataIsNull = { nullCommentData(false, "dataIsNull",listener) }
             )
-        }, viewModel.bbsId, page = page,orderType = orderType, unitPerPage = 10)
+        }, token, viewModel.bbsId, page = page,orderType = orderType, unitPerPage = 10)
     }
 
+    /**
+     * 댓글 목록이 없는 경우
+     */
     private fun nullCommentData(flag : Boolean, msg : String, listener: OnCallBackListener?){
         if(viewModel.commentList.value.isNullOrEmpty()){
             var listTmp : ArrayList<Comments> = arrayListOf()
@@ -398,6 +469,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
+    /**
+     * 댓글 작성하기
+     */
     fun postCommentData(body : CommentResponse, listener: OnCallBackListener){
         ServerCallbackUtil.callWithToken(
                 task = {
@@ -443,7 +517,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
-
+    /**
+     * 댓글 수정하기
+     */
     fun modifyCommentData(id : Long, body : CommentResponse, listener: OnCallBackListener){
         ServerCallbackUtil.callWithToken(
                 task = {
@@ -488,6 +564,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                 }, invalidTokenTask = { viewModel.bbsBookMark.set(false) })
     }
 
+    /**
+     * 댓글의 id로 댓글 데이터 가져오기
+     */
     private fun getCommentGetIdData(id : Long, addIndex : Int, listener: OnCallBackListener?){
         CommunityServer.getCommentIdData(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -522,6 +601,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
+    /**
+     * 댓글 삭제하기
+     */
     fun deleteComment(id : Long, index : Int, listener: OnCallBackListener?){
         ServerCallbackUtil.callWithToken(
                 task = {
@@ -544,8 +626,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
-
-
+    /**
+     * 작성글 삭제 하기
+     */
     fun deleteDetail(id : Long, listener: OnCallBackListener?){
         ServerCallbackUtil.callWithToken(
                 task = {
@@ -567,6 +650,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                 }, invalidTokenTask = { listener?.callBackListener(false,"invalidTokenTask") })
     }
 
+    /**
+     * 이미지 등록
+     */
     fun uploadImage(fileNm : String, cloudResourceList : String, index : Int, listener : OnCallBackListener){
         GatewayServer.uploadImagePath2(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -586,7 +672,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
-
+    /**
+     * 북마크 가져오기
+     */
     fun getBookMark(target: String, targetId: Long) {
         ServerCallbackUtil.callWithToken(
                 task = {
@@ -615,6 +703,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
+    /**
+     * 북마크 설정
+     */
     fun saveBookMark(target: String, targetId: Long) {
         ServerCallbackUtil.callWithToken(
                 task = {
@@ -635,6 +726,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
+    /**
+     * 북마크 삭제
+     */
     fun deleteBookMark(target: String, targetId: Long) {
         ServerCallbackUtil.callWithToken(
                 task = {
@@ -650,6 +744,75 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                                 serverRuntimeErrorTask = { }
                         )
                     }, accessToken = it, target = target, targetId = targetId)
+                }, invalidTokenTask = { })
+    }
+
+    /**
+     * 게시글, 댓글 좋아요 설정하기
+     */
+    fun saveLike(commentIndex : Int, target: String, targetId: Long) {
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    var response = LikesModel()
+                    response.target = target
+                    response.targetId = targetId
+                    UserServer.saveLikes(OnServerListener { success, o ->
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = {
+                                    if (CustomLog.flag) CustomLog.L("saveLikes", "successTask")
+                                    when(target){
+                                        Type.BookMarkTarget.COMMENT.name->{
+                                            viewModel.commentAdapter!!.mList[commentIndex].like = true
+                                            viewModel.commentAdapter!!.mList[commentIndex].likeCount = viewModel.commentAdapter!!.mList[commentIndex].likeCount+1
+                                            viewModel.commentAdapter!!.notifyItemChanged(commentIndex)
+                                        }
+                                        Type.BookMarkTarget.BBS.name->{
+                                            viewModel.bbsUserLike.set(true)
+                                            viewModel.bbsUserLikeCount.set(viewModel.bbsUserLikeCount.get()+1)
+                                        }
+                                    }
+                                },
+                                dataNotFoundTask = { },
+                                failedTask = { },
+                                userLikeNotFoundTask = { },
+                                serverRuntimeErrorTask = { }
+                        )
+                    }, accessToken = it, userId = CommonUtil.checkUserId(), response = response)
+                }, invalidTokenTask = { })
+    }
+
+
+    /**
+     * 게시글, 댓글 좋아요 삭제하기
+     */
+    fun deleteLike(commentIndex : Int, target: String, targetId: Long) {
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    var response = LikesModel()
+                    response.target = target
+                    response.targetId = targetId
+                    UserServer.deleteLikes(OnServerListener { success, o ->
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = {
+                                    if (CustomLog.flag) CustomLog.L("deleteLikes", "successTask")
+                                    when(target){
+                                        Type.BookMarkTarget.COMMENT.name->{
+                                            viewModel.commentAdapter!!.mList[commentIndex].like = false
+                                            viewModel.commentAdapter!!.mList[commentIndex].likeCount = viewModel.commentAdapter!!.mList[commentIndex].likeCount-1
+                                            viewModel.commentAdapter!!.notifyItemChanged(commentIndex)
+                                        }
+                                        Type.BookMarkTarget.BBS.name->{
+                                            viewModel.bbsUserLike.set(false)
+                                            viewModel.bbsUserLikeCount.set(viewModel.bbsUserLikeCount.get()-1)
+                                        }
+                                    }
+                                },
+                                dataNotFoundTask = { },
+                                failedTask = { },
+                                userLikeNotFoundTask = { },
+                                serverRuntimeErrorTask = { }
+                        )
+                    }, accessToken = it, target = target, targetId=targetId, userId = CommonUtil.checkUserId())
                 }, invalidTokenTask = { })
     }
 
@@ -747,6 +910,55 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                     dataIsNull = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataIsNull ") }
             )
         },categoryId)
+    }
+
+    /**
+     * 게시글 목록 가져오기
+     */
+    fun getCommunityList() {
+        // init filter id
+        if (viewModel.mCategoryId > 0) {
+            CommunityCriteria().apply {
+                this.categoryId = viewModel.info.communityCategoryId.toLong()
+                this.filterId = viewModel.mFilterId
+                this.deleted = false
+                this.inUse = true
+                this.query = ""
+                this.searchType = CommunityCriteria.SearchType.TITLE_CONTENTS.type
+            }.let { criteria ->
+                SearchServer.getCommunityBoardList(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                if (viewModel.mPage > 1) {
+                                    val newList = (it.data as CommunityBoard.CommunityResponse).bbs
+                                    viewModel.mCommunityResponse.value?.bbs?.addAll(newList)
+                                    viewModel.mCommunityResponse.postValue(viewModel.mCommunityResponse.value)
+                                } else {
+                                    viewModel.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
+                                }
+                            })
+                }, criteria = criteria, order = viewModel.mOrder, page = ++viewModel.mPage, unitPerPage = viewModel.UNIT_PER_PAGE)
+            }
+        } else {
+            // 전체글 조회
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("deleted", false)
+            jsonObject.addProperty("inUse", true)
+            jsonObject.addProperty("searchType", "CONTENTS")
+            SearchServer.getCommunityBoardList(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            if (viewModel.mPage > 1) {
+                                val newList = (it.data as CommunityBoard.CommunityResponse).bbs
+                                viewModel.mCommunityResponse.value?.bbs?.addAll(newList)
+                                viewModel.mCommunityResponse.postValue(viewModel.mCommunityResponse.value)
+                            } else {
+                                viewModel.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
+                            }
+                        })
+            }, criteria = jsonObject, order = viewModel.mOrder, page = ++viewModel.mPage, unitPerPage = viewModel.UNIT_PER_PAGE)
+        }
+
     }
 
 }

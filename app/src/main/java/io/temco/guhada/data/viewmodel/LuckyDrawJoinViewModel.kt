@@ -381,8 +381,11 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     private fun onSuccessLogin(success: Boolean, o: Any, successTask: () -> Unit) {
         if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) {
             val accessToken = o.data as Token
-            if (Preferences.getToken() != null) Preferences.clearToken(false)
+            if (Preferences.getToken() != null) Preferences.clearToken(false, BaseApplication.getInstance())
             Preferences.setToken(accessToken)
+
+            // 로그인 후 fcm 토큰 전송
+            CommonUtilKotlin.saveDevice(accessToken.accessToken, BaseApplication.getInstance().fcmToken)
 
             successTask()
         }

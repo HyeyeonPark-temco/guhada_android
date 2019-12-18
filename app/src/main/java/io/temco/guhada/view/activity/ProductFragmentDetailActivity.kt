@@ -31,7 +31,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
     //private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private var mProductDetailFragment: ProductDetailFragment? = null
 
-    private var dealId: Long = 0
+    private var dealId: Long = 1916
     private var initView = false
 
     override fun getBaseTag(): String = this@ProductFragmentDetailActivity::class.java.simpleName
@@ -199,7 +199,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         if (exp > current) {
             return true
         } else {
-            Preferences.clearToken(false)
+            Preferences.clearToken(false, BaseApplication.getInstance())
             return false
         }
     }

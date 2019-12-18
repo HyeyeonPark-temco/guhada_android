@@ -15,4 +15,6 @@ class ProductSearchFilterValue {
     var filters : ArrayList<FilterBodyAttribute> = arrayListOf()
     var searchQueries : ArrayList<String> = arrayListOf()
     var searchResultOrder = ""
+    var shippingCondition = ""
+    var productCondition = ""
 }

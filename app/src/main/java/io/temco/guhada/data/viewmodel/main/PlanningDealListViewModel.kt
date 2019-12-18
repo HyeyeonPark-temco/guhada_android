@@ -39,7 +39,7 @@ class PlanningDealListViewModel(val context : Context) : BaseObservableViewModel
     /**
      *  Event List
      */
-    fun getEventList() {
+    fun getPlanningList() {
         listData.clear()
         SettleServer.getPlanningList(mSortFilterType[mFilterIndex], OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -71,7 +71,7 @@ class PlanningDealListViewModel(val context : Context) : BaseObservableViewModel
 
 
 enum class PlanningProgressType(val code : String, var label:String) {
-    ALL("ALL", "전체 이벤트"),
-    PROGRESS("PROGRESS", "진행중 이벤트"),
-    END("END", "종료 이벤트")
+    ALL("ALL", "전체 기획전"),
+    PROGRESS("PROGRESS", "진행중 기획전"),
+    END("END", "종료 기획전")
 }

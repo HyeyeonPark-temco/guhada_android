@@ -135,7 +135,7 @@
                     <TextView
                         android:id="@+id/textview_deliverydetail_shippingname_title"
                         style="@style/MypageDeliveryBlackTextStyle"
-                        android:layout_width="60dp"
+                        android:layout_width="90dp"
                         android:layout_height="wrap_content"
                         android:text="@string/mypage_deliverydetail_shippinginfo_shippingname" />
 
@@ -157,7 +157,7 @@
                     <TextView
                         android:id="@+id/textview_deliverydetail_shippingaddress_title"
                         style="@style/MypageDeliveryBlackTextStyle"
-                        android:layout_width="60dp"
+                        android:layout_width="90dp"
                         android:layout_height="wrap_content"
                         android:text="@string/mypage_deliverydetail_shippinginfo_address" />
 
@@ -179,7 +179,7 @@
                     <TextView
                         android:id="@+id/textview_deliverydetail_shippingrecipientname_title"
                         style="@style/MypageDeliveryBlackTextStyle"
-                        android:layout_width="60dp"
+                        android:layout_width="90dp"
                         android:layout_height="wrap_content"
                         android:text="@string/mypage_deliverydetail_shippinginfo_recipientname" />
 
@@ -201,7 +201,7 @@
                     <TextView
                         android:id="@+id/textview_deliverydetail_shippingrecipientphone_title"
                         style="@style/MypageDeliveryBlackTextStyle"
-                        android:layout_width="60dp"
+                        android:layout_width="90dp"
                         android:layout_height="wrap_content"
                         android:text="@string/mypage_deliverydetail_shippinginfo_recipientphone" />
 
@@ -223,7 +223,7 @@
                     <TextView
                         android:id="@+id/textview_deliverydetail_shippingmemo_title"
                         style="@style/MypageDeliveryBlackTextStyle"
-                        android:layout_width="60dp"
+                        android:layout_width="90dp"
                         android:layout_height="wrap_content"
                         android:text="@string/mypage_deliverydetail_shippinginfo_memo" />
 
@@ -237,6 +237,28 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textview_deliverydetail_etcmessage_title"
+                        style="@style/MypageDeliveryBlackTextStyle"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_title_etcmessage" />
+
+                    <TextView
+                        android:id="@+id/textview_deliverydetail_etcmessage_content"
+                        style="@style/MypageDeliveryWarmGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="27dp"
+                        android:text="@{viewModel.purchaseOrderResponse.etcMessage}" />
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

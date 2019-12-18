@@ -7,6 +7,9 @@
             type="android.view.View.OnClickListener" />
         <variable name="headerTitle" type="String" />-->
         <variable
+            name="clickLikeListener"
+            type="android.view.View.OnClickListener" />
+        <variable
             name="clickBookmarkListener"
             type="android.view.View.OnClickListener" />
         <variable
@@ -21,14 +24,17 @@
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel" />
     </data>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/common_white">
+
             <TextView
                 android:id="@+id/textview_communitydetailcontents_title"
                 style="@style/TextRegular"
@@ -40,13 +46,16 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_18" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
+                android:minHeight="30dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/MainHomeListProductItemSellerRateTextStyle"
                     android:layout_marginRight="6dp"
@@ -54,6 +63,7 @@
                     android:textSize="@dimen/text_8"
                     android:visibility="gone"
                     android:text="1" />
+
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
@@ -62,6 +72,7 @@
                     android:textColor="@color/warm_grey_two"
                     android:text="@{item.createUserInfo.nickname}"
                     android:textSize="@dimen/text_13" />
+
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
@@ -69,7 +80,9 @@
                     android:textColor="@color/warm_grey_two"
                     android:text="@{item.dspCreatedAt}"
                     android:textSize="@dimen/text_13" />
+
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -77,6 +90,7 @@
                 android:layout_marginLeft="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
@@ -85,15 +99,16 @@
                     android:textColor="@color/pinkish_grey"
                     android:text="@{@string/community_detail_hitcount(item.hitCount)}"
                     android:textSize="@dimen/text_13" />
+
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:textColor="@color/pinkish_grey"
-                    android:visibility="gone"
-                    android:text="@{@string/community_detail_likecount(item.likeCount)}"
+                    android:text="@{@string/community_detail_likecount(viewModel.bbsUserLikeCount)}"
                     android:textSize="@dimen/text_13" />
+
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
@@ -101,7 +116,9 @@
                     android:textColor="@color/pinkish_grey"
                     android:text="@{@string/community_detail_commentcount(item.commentCount)}"
                     android:textSize="@dimen/text_13" />
+
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -109,12 +126,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="10dp"
                 android:background="@color/white_four"/>
+
             <WebView
                 android:id="@+id/webview_communitydetail_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="@{viewModel.communityDetailClientPlatformWeb ? View.VISIBLE : View.GONE , default = gone}"
                 android:layout_margin="20dp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_communitydetail_list"
                 android:layout_width="match_parent"
@@ -123,6 +142,7 @@
                 android:visibility="@{viewModel.communityDetailClientPlatformWeb ? View.GONE : View.VISIBLE , default = gone}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_marginBottom="20dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -131,27 +151,32 @@
                 android:layout_marginBottom="50dp"
                 android:gravity="center"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="120dp"
                     android:layout_height="45dp"
                     android:layout_marginRight="8dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:visibility="gone"
-                    android:background="@{item.like ?  @drawable/border_line_r23_selected : @drawable/border_line_r23}">
+                    android:onClick="@{clickLikeListener}"
+                    android:background="@{viewModel.bbsUserLike ?  @drawable/border_line_r23_selected : @drawable/border_line_r23}">
+
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginRight="15dp"
-                        android:src="@{item.like ?  @drawable/com_btn_like : @drawable/com_btn_like_none}"/>
+                        android:src="@{viewModel.bbsUserLike ?  @drawable/com_btn_like : @drawable/com_btn_like_none}"/>
+
                     <TextView
                         style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/pinkish_grey"
-                        android:text="@{@string/intToStringText(item.likeCount)}"
+                        android:textColor="@{viewModel.bbsUserLike ?  @color/common_blue_purple : @color/pinkish_grey}"
+                        android:text="@{@string/intToStringText(viewModel.bbsUserLikeCount)}"
                         android:textSize="@dimen/text_13" />
+
                 </LinearLayout>
+
                 <ImageButton
                     android:layout_width="45dp"
                     android:layout_height="45dp"
@@ -159,84 +184,18 @@
                     android:onClick="@{clickShareListener}"
                     android:src="@drawable/com_btn_share"
                     android:background="@drawable/round_108"/>
+
                 <ImageButton
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:src="@{viewModel.bbsBookMark ?  @drawable/com_btn_bookmark : @drawable/com_btn_bookmark_none}"
                     android:onClick="@{clickBookmarkListener}"
                     android:background="@{viewModel.bbsBookMark ?  @drawable/round_108_select : @drawable/round_108}"/>
+
             </LinearLayout>
-            <!--<ImageView
-                android:layout_width="match_parent"
-                android:layout_height="134dp"
-                android:src="@drawable/community_banner_mobile"
-                android:background="#d6b5ad"/>-->
 
-            <io.temco.guhada.view.custom.layout.HeightRelativeLayout
-                android:id="@+id/heightLayout"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="134dp">
-
-                <io.temco.guhada.view.viewpager.InfiniteViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#ffffffff"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:weightSum="1"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="14dp"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/activity_view_pager_indicator_underline"
-                        android:layout_width="0dp"
-                        android:layout_height="2dp"
-                        android:layout_marginRight="18dp"
-                        android:layout_weight="1"
-                        android:weightSum="2"
-                        android:visibility="invisible"
-                        android:orientation="horizontal"
-                        android:background="@color/white_overlay3"  >
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@{viewModel.communityEventViewIndex==0 ? @color/common_white : @color/transparent}"
-                            android:layout_weight="1"/>
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@{viewModel.communityEventViewIndex==1 ? @color/common_white : @color/transparent}"
-                            android:layout_weight="1"/>
-                    </LinearLayout>
-
-                    <TextView
-                        style="@style/TextRegularSingleLine"
-                        android:id="@+id/textview_index"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/common_white"
-                        android:textSize="@dimen/text_12"
-                        android:visibility="invisible"
-                        android:letterSpacing="0.05"
-                        android:text="@{(viewModel.communityEventViewIndex+1) + `/2`}"/>
-
-                </LinearLayout>
-
-            </io.temco.guhada.view.custom.layout.HeightRelativeLayout>
-            <!--<ImageView
-                android:layout_width="match_parent"
-                android:layout_height="134dp"
-                android:background="@drawable/timedeal_com_m_360"/>-->
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
 </layout>

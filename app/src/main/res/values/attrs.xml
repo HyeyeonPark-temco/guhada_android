@@ -21,14 +21,16 @@
     </declare-styleable>
 
     <declare-styleable name="CustomSpinnerView">
-        <attr name="list" format="reference" />
+        <attr name="placeHolder" format="string|reference"/>
+        <attr name="maxVisibleCount" format="integer"/>
+        <attr name="isLarge" format="boolean"/>
+        <attr name="isDisabled" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="HtmlTextView">
         <attr name="isHtml" format="boolean" />
         <attr name="android:text" />
     </declare-styleable>
-
 
     <declare-styleable name="MaterialSpinner" tools:ignore="ResourceName">
         <attr name="ms_arrow_tint" format="color" />

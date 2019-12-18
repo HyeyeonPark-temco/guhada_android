@@ -31,7 +31,7 @@ class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragme
         mBinding.viewModel = viewModel
 
         if (mBinding.recyclerviewCommentList.adapter == null) {
-            viewModel.commentAdapter = CommentListAdapter(viewModel).apply { mList = viewModel.commentList.value!! }
+            viewModel.commentAdapter = CommentListAdapter(viewModel).apply { mList = viewModel.commentList.value ?: arrayListOf() }
             mBinding.recyclerviewCommentList.adapter = viewModel.commentAdapter
             mBinding.executePendingBindings()
         }
@@ -108,6 +108,13 @@ class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragme
     // PUBLIC
     ////////////////////////////////////////////////
 
+    fun setCommentListView(){
+        viewModel.commentAdapter!!.mList.clear()
+        if(viewModel.commentList.value!!.isNotEmpty())
+             viewModel.commentAdapter!!.mList.addAll(viewModel.commentList.value!!)
+        viewModel.commentAdapter!!.notifyDataSetChanged()
+        mBinding.executePendingBindings()
+    }
     ////////////////////////////////////////////////
 
 

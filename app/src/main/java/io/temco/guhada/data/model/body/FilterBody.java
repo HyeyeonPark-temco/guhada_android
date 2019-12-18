@@ -33,6 +33,8 @@ public class FilterBody {
         else searchQueries = new ArrayList<>(value.getSearchQueries());
 
         searchResultOrder = value.getSearchResultOrder();
+        shippingCondition = value.getShippingCondition();
+        productCondition = value.getProductCondition();
     }
 
     @SerializedName("brandIds")
@@ -53,6 +55,12 @@ public class FilterBody {
     @SerializedName("searchCondition")
     public String searchCondition;
 
+    @SerializedName("shippingCondition")
+    public String shippingCondition;
+
+    @SerializedName("productCondition")
+    public String productCondition;
+
     @Override
     public String toString() {
         if(CustomLog.getFlag())return "FilterBody{" +
@@ -62,6 +70,8 @@ public class FilterBody {
                 ", searchQueries=" + searchQueries +
                 ", searchResultOrder='" + searchResultOrder + '\'' +
                 ", searchCondition='" + searchCondition + '\'' +
+                ", shippingCondition='" + shippingCondition + '\'' +
+                ", productCondition='" + productCondition + '\'' +
                 '}';
         else return "";
     }

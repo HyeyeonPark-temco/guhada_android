@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
@@ -919,6 +920,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mOrderDialog = new ProductOrderDialog();
                 mOrderDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
             }
+
+            if(mOrderDialog.isAdded())
+                mOrderDialog.dismiss();
+
             mOrderDialog.show(getFragmentManager(), getBaseTag());
         }
     }

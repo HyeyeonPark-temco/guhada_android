@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
@@ -34,6 +35,7 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.common.util.ToastUtil;
@@ -360,6 +362,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     case Flag.ResultCode.SUCCESS:
                         Token token = (Token) model.data;
                         Preferences.setToken(token);
+                        // 로그인 후 fcm 토큰 전송
+                        CommonUtilKotlin.saveDevice(token.getAccessToken(), BaseApplication.getInstance().getFcmToken());
 
                         if (mViewModel.getEventData() != null && TextUtils.isEmpty(token.getAccessToken())) {
                             UserServer.getEventUser((success12, object) -> {
@@ -394,6 +398,10 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                                     t.setExpiresIn(m.data.getExpiresIn());
 
                                     Preferences.setToken(t);
+
+                                    // 로그인 후 fcm 토큰 전송
+                                    CommonUtilKotlin.saveDevice(t.getAccessToken(), BaseApplication.getInstance().getFcmToken());
+
                                     setResult(RESULT_OK);
                                     finish();
                                 } else {

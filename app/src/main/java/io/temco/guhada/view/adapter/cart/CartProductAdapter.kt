@@ -70,9 +70,6 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 items[mViewModel.shownMenuPos].cartOptionInfoList = cartOptionList
                 notifyItemChanged(mViewModel.shownMenuPos)
             }
-
-//            if (items[mViewModel.shownMenuPos].cartOptionList.isEmpty())
-//                items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
         }
     }
 
@@ -325,65 +322,29 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         /**
          * 옵션 드롭다운 스피너로 변경
          * @since 2019.09.05
+         *
+         * CustomSpinnerView로 변경
+         * @since 2019.12.13
+         *
          * @author Hyeyeon Park
          */
         private fun initMenuSpinner(cart: Cart) {
-//            cart.cartOptionInfoList.add(OptionInfo()) // dummy
-
             val mMenuSpinnerAdapter = ProductDetailOptionSpinnerAdapter(
                     context = mBinding.root.context,
                     layout = R.layout.item_productdetail_optionspinner,
                     list = cart.cartOptionInfoList)
-            mBinding.spinnerProductdetailOption.adapter = mMenuSpinnerAdapter
-            mBinding.spinnerProductdetailOption.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
 
-                }
-
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val optionList = cart.cartOptionInfoList
-                    if (optionList.size > position && optionList[position].stock > 0) {
-                        val option = optionList[position]
-                        //  mSelectedOption = option
-                        cart.selectedCartOption = option
-                        mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-
-                        if (option.rgb1 != null && option.rgb1?.isNotEmpty() == true) {
-                            mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
-                            mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
-                        } else {
-                            mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
-                        }
-
-                        mBinding.textviewProductdetailOptionselected.text = option.getOptionText()
-                        mBinding.executePendingBindings()
-                    }
-                }
-            }
-
-            val selectedOption = cart.selectedCartOption ?: OptionInfo()
-            val optionInfoList = cart.cartOptionInfoList
-            for (i in 0 until optionInfoList.size) {
-                val option = optionInfoList[i]
-                if (selectedOption.attribute1 == option.attribute1 && selectedOption.attribute2 == option.attribute2 && selectedOption.attribute3 == option.attribute3) {
-                    mBinding.spinnerProductdetailOption.setSelection(i)
-                }
-            }
-
-            // 스피너 드롭다운 Max Height 5개 높이로 설정
-            val popup = AppCompatSpinner::class.java.getDeclaredField("mPopup")
-            popup.isAccessible = true
-            val popupWindow = popup.get(mBinding.spinnerProductdetailOption) as androidx.appcompat.widget.ListPopupWindow
-            if (cart.cartOptionInfoList.size > 4) popupWindow.height = CommonViewUtil.convertDpToPixel(230, mBinding.root.context)
-
-            // spinner arrow 리스너
-            mBinding.spinnerProductdetailOption.mListener = object : CustomSpinner.OnCustomSpinnerListener {
-                override fun onSpinnerOpened() {
-                    mBinding.imageviewCartOptionarrow.setImageResource(R.drawable.payment_icon_selectbox_close)
-                }
-
-                override fun onSpinnerClosed() {
-                    mBinding.imageviewCartOptionarrow.setImageResource(R.drawable.payment_icon_selectbox_open)
+            mBinding.spinnerCartOption.setAdapter(mMenuSpinnerAdapter)
+            if (cart.cartOptionInfoList.isNotEmpty()) {
+                mBinding.spinnerCartOption.visibility = View.VISIBLE
+                mBinding.spinnerCartOption.setRgb(cart.selectedCartOption?.rgb1 ?: "")
+                mBinding.spinnerCartOption.setPlaceHolder(cart.selectedCartOption?.getOptionText()
+                        ?: "option")
+                mBinding.spinnerCartOption.setOnItemClickTask { position ->
+                    val option = cart.cartOptionInfoList[position]
+                    cart.selectedCartOption = option
+                    mBinding.spinnerCartOption.setPlaceHolder("${option.getOptionText()} ${option.getExtraPriceText()}")
+                    mBinding.spinnerCartOption.setRgb(option.rgb1)
                 }
             }
 
@@ -395,7 +356,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             if (token != null && !token.accessToken.isNullOrEmpty()) {
                 val model = OrderServer.getCartItemOptionListForSpinnerAsync(accessToken = "Bearer ${token.accessToken}", cartItemId = cart.cartItemId).await()
                 cart.cartOptionInfoList = model.data
-                mBinding.framelayoutProductdetailOption.visibility = if (model.data.isEmpty()) View.GONE else View.VISIBLE
+//                mBinding.framelayoutProductdetailOption.visibility = if (model.data.isEmpty()) View.GONE else View.VISIBLE
                 initMenuSpinner(cart)
             }
         }

@@ -55,6 +55,8 @@ class PGResponse : Serializable {
     var timeout = ""
     var timestamp = ""
     var version = ""
+
+    var etcMessage = ""     // 기타 요청 사항
 }
 
 
