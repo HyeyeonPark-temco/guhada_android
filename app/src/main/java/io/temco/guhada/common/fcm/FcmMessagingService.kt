@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -33,10 +34,16 @@ class FcmMessagingService : FirebaseMessagingService() {
                 if(CustomLog.flag)CustomLog.L("showNotification","it",it.toString())
                 if(it?:false){
                     if(CustomLog.flag)CustomLog.L("showNotification","it",remoteMessage!!.data!!.toString())
-                    var json = remoteMessage!!.data!!.toString()
+                    var message = GuhadaNotiMessage()
+                    if(remoteMessage?.data!!.containsKey("scheme")) message.scheme = remoteMessage?.data?.get("scheme") ?: ""
+                    if(remoteMessage?.data!!.containsKey("image")) message.image = remoteMessage?.data?.get("image") ?: ""
+                    if(remoteMessage?.data!!.containsKey("message")) message.message = remoteMessage?.data?.get("message") ?: ""
+                    if(remoteMessage?.data!!.containsKey("title")) message.title = remoteMessage?.data?.get("title") ?: ""
+                    /*var json = remoteMessage!!.data!!.toString()
                     var message = Gson().fromJson<GuhadaNotiMessage>(json, GuhadaNotiMessage::class.java)
+                    if(CustomLog.flag)CustomLog.L("showNotification","message",message.toString())*/
                     if(CustomLog.flag)CustomLog.L("showNotification","message",message.toString())
-                    showNotification(message.title ?: TITLE_IS_EMPTY, message.message ?: CONTENT_IS_EMPTY)
+                    showNotification(if(TextUtils.isEmpty(message.title)) TITLE_IS_EMPTY else message.title ?: "", message.message ?: CONTENT_IS_EMPTY)
                 }
             }
 
