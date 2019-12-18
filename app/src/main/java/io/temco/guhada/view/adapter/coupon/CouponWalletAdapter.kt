@@ -31,7 +31,6 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
     lateinit var mViewModel: CouponSelectDialogViewModel
     var mList = mutableListOf<CouponInfo.BenefitOrderProductCouponResponse>()// mutableListOf<CouponWallet>()
-    //    var mProduct = BaseProduct()
     var mDealId = 0L
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
@@ -43,18 +42,39 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
         holder.bind(mList[position])
     }
 
+    /*
+    *  - 쿠폰 선택: map[couponNumber, dealId]
+    *  - 적용 안함 선택: map[dealId, "NOT_SELECT"]
+    */
     inner class Holder(binding: ItemCouponselectCouponBinding) : BaseViewHolder<ItemCouponselectCouponBinding>(binding.root) {
         fun bind(item: CouponInfo.BenefitOrderProductCouponResponse) {
-            if (item.selected)
-                mViewModel.mSelectedCouponInfo[item.couponNumber] = mDealId
+            if (item.selected) {
+                mViewModel.mSelectedCouponInfo.get()?.set(item.couponNumber, mDealId)
+                mViewModel.notifyPropertyChanged(BR.mSelectedCouponInfo)
+            }
 
             mBinding.imageviewCouponselectCoupon.setOnClickListener {
+                for (couponNumber in mViewModel.mSelectedCouponInfo.get()?.keys ?: mutableSetOf()) {
+                    if (mViewModel.mSelectedCouponInfo.get()?.get(couponNumber) == mDealId) {
+//                        mViewModel.mSelectedCouponInfo.get()?.set(couponNumber, null)
+                        mViewModel.mSelectedCouponInfo.get()?.remove(mDealId.toString())
+                        mViewModel.mSelectedCouponInfo.get()?.remove(couponNumber?:"")
+                        break
+                    }
+                }
+
                 mViewModel.mSelectedDealId = mDealId
                 mViewModel.mSelectedCoupon = ObservableField(item)
                 mViewModel.mSelectedCouponMap[mDealId] = item
 
-                mViewModel.mSelectedCouponInfo[item.couponNumber] = mDealId
-                mViewModel.notifyPropertyChanged(BR.mSelectedCoupon)
+                if (item.couponNumber == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER)
+                    mViewModel.mSelectedCouponInfo.get()?.set(mDealId.toString(), CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER)
+                else {
+                    mViewModel.mSelectedCouponInfo.get()?.set(item.couponNumber, mDealId)
+                    mViewModel.mSelectedCouponInfo.get()?.remove(mDealId.toString())
+                }
+
+                mViewModel.notifyPropertyChanged(BR.mSelectedCouponInfo)
 
                 mViewModel.mTotalDiscountPrice = ObservableInt(getTotalDiscountPrice())
                 mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
@@ -82,51 +102,6 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
             mBinding.dealId = mDealId
             mBinding.couponWallet = item
             mBinding.viewModel = mViewModel
-
-            mBinding.executePendingBindings()
-        }
-
-        fun bind1(item: CouponWallet) {
-            mBinding.imageviewCouponselectCoupon.setOnClickListener {
-                //                mViewModel.mSelectedProduct = mProduct
-                mViewModel.mSelectedCoupon = ObservableField(item)
-//                mViewModel.mSelectedCouponMap[mProduct.dealId] = item
-                mViewModel.notifyPropertyChanged(BR.mSelectedCoupon)
-
-                mViewModel.mTotalDiscountPrice = ObservableInt(getTotalDiscountPrice())
-                mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
-
-                mBinding.viewModel = mViewModel
-                mBinding.executePendingBindings()
-            }
-
-            mBinding.textviewCouponselectCouponname.text =
-                    if (item.maximumDiscountPrice == null || item.maximumDiscountPrice == 0) {
-                        // maximumDiscountPrice 없는 경우, 정률 쿠폰 할인 금액 미표시
-                        when {
-                            item.discountType == Coupon.DiscountType.RATE.type -> String.format(BaseApplication.getInstance().getString(R.string.couponselect_titlerate_format_withoutprice), "${(item.discountRate * 100).toInt()}%", item.couponTitle)
-                            item.discountType == Coupon.DiscountType.PRICE.type -> String.format(BaseApplication.getInstance().getString(R.string.couponselect_titleprice_format), item.discountPrice, item.couponTitle)
-                            else -> item.couponTitle ?: ""
-                        }
-                    } else {
-                        val discountPrice = 0
-//                        = if (item.discountType == Coupon.DiscountType.RATE.type) {
-//                            val price = (Math.round(mProduct.sellPrice * item.discountRate)).toInt()
-//                            if (price > item.maximumDiscountPrice ?: 0) item.maximumDiscountPrice
-//                            else price
-//                        } else item.discountPrice
-
-                        when {
-                            item.discountType == Coupon.DiscountType.RATE.type -> String.format(BaseApplication.getInstance().getString(R.string.couponselect_titlerate_format), "${(item.discountRate * 100).toInt()}%", item.couponTitle, discountPrice
-                                    ?: 0)
-                            item.discountType == Coupon.DiscountType.PRICE.type -> String.format(BaseApplication.getInstance().getString(R.string.couponselect_titleprice_format), item.discountPrice, item.couponTitle)
-                            else -> item.couponTitle ?: ""
-                        }
-                    }
-
-//            mBinding.dealId = mProduct.dealId
-//            mBinding.couponWallet = item
-            mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
     }
@@ -145,7 +120,6 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                         couponWallet.discountType == Coupon.DiscountType.RATE.type -> {
                             val price = Math.round(productPrice * couponWallet.discountRate).toInt()
                             if (price > couponWallet.maximumDiscountPrice ?: 0) {
-                                //  ToastUtil.showMessage(String.format(BaseApplication.getInstance().getString(R.string.couponselect_overmaxdiscountprice), couponWallet.maximumDiscountPrice))
                                 couponWallet.maximumDiscountPrice ?: 0
                             } else {
                                 price
@@ -161,8 +135,8 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
 
     companion object {
         @JvmStatic
-        @BindingAdapter(value = ["selectedDealId", "selectedCouponNumber", "vmDealId", "vmCouponNumber", "selectedCouponMap"])
-        fun ImageView.bindSelected(selectedDealId: Long, selectedCouponNumber: String?, vmDealId: Long, vmCouponNumber: String?, selectedCouponMap: MutableMap<String, Long>?) { // MutableMap<Long, CouponWallet>?
+        @BindingAdapter(value = ["currentDealId", "currentCouponNumber", "selectedCouponMap"])
+        fun ImageView.bindSelected(currentDealId: Long, currentCouponNumber: String?, selectedCouponMap: MutableMap<String, Any?>?) {
 
             fun setButtonInactive() {
                 this.isClickable = false
@@ -179,34 +153,32 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 this.setImageResource(R.drawable.radio_checked)
             }
 
+            if (currentCouponNumber != null && selectedCouponMap != null)
+                when {
+                    currentCouponNumber != "NOT_SELECT" -> when {
+                        selectedCouponMap[currentCouponNumber] == null -> setButtonActive()
+                        selectedCouponMap[currentCouponNumber] == currentDealId -> setButtonChecked()
+                        selectedCouponMap[currentCouponNumber] != currentDealId -> setButtonInactive()
+                    }
+                    selectedCouponMap[currentDealId.toString()] == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER -> setButtonChecked()
+                    else -> setButtonActive()
+                }
 
-            /*
-                - vmCouponNumber: selected coupon number
-                - selectedCouponNumber: current coupon number
-             */
 
-            val currentDealId = selectedDealId
-            val currentCouponNumber = selectedCouponNumber
-
-            if (selectedCouponNumber != null && selectedCouponMap != null)
-                if(selectedCouponMap[currentCouponNumber] == null) setButtonActive()
-                else if(selectedCouponMap[currentCouponNumber] == currentDealId)  setButtonChecked()
-                else  setButtonInactive()
-
-            Log.e("쿠폰","currentDealId: $currentDealId   currentCouponNumber: $currentCouponNumber   selectedCouponMap: ${selectedCouponMap.toString()}")
+            Log.e("쿠폰", "currentDealId: $currentDealId      currentCouponNumber: $currentCouponNumber   selectedCouponMap:${selectedCouponMap.toString()}")
         }
 
         @JvmStatic
-        @BindingAdapter(value = ["selectedDealId", "selectedCouponNumber", "vmDealId", "vmCouponNumber", "selectedCouponMap"])
-        fun TextView.bindInactivated(selectedDealId: Long, selectedCouponNumber: String?, vmDealId: Long, vmCouponNumber: String?, selectedCouponMap: MutableMap<String, Long>?) {
+        @BindingAdapter(value = ["currentDealId", "currentCouponNumber", "selectedCouponMap"])
+        fun TextView.bindInactivated(currentDealId: Long, currentCouponNumber: String?, selectedCouponMap: MutableMap<String, Any?>?) {
 
             val inactiveTextColor = BaseApplication.getInstance().resources.getColor(R.color.pinkish_grey)
             val activeTextColor = BaseApplication.getInstance().resources.getColor(R.color.greyish_brown_two)
             fun setTextInactive() = this.setTextColor(inactiveTextColor)
             fun setTextActive() = this.setTextColor(activeTextColor)
 
-            if (selectedCouponNumber != null && selectedCouponMap != null && selectedCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER)
-                if (selectedCouponMap[selectedCouponNumber] != selectedDealId)
+            if (currentCouponNumber != null && selectedCouponMap != null && currentCouponNumber != CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER)
+                if (selectedCouponMap[currentCouponNumber] != null && selectedCouponMap[currentCouponNumber] != currentDealId)
                     setTextInactive()
                 else setTextActive()
             else

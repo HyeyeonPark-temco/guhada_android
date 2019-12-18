@@ -18,8 +18,6 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class CouponSellerAdapter : RecyclerView.Adapter<CouponSellerAdapter.Holder>() {
     lateinit var mViewModel: CouponSelectDialogViewModel
-    var mCouponWalletMap = mutableMapOf<String, MutableList<AvailableCouponWallet>>()
-
     var mCouponBenefitSellerResponseList = mutableListOf<CouponInfo.BenefitSellerResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
@@ -28,9 +26,6 @@ class CouponSellerAdapter : RecyclerView.Adapter<CouponSellerAdapter.Holder>() {
     override fun getItemCount(): Int = mCouponBenefitSellerResponseList.size// mCouponWalletMap.keys.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-//        val key = mCouponWalletMap.keys.elementAt(position)
-//        holder.bind1(key, mCouponWalletMap[key] ?: mutableListOf())
-
         holder.bind(mCouponBenefitSellerResponseList[position])
     }
 
@@ -44,13 +39,5 @@ class CouponSellerAdapter : RecyclerView.Adapter<CouponSellerAdapter.Holder>() {
             }
         }
 
-        fun bind1(key: String, list: MutableList<AvailableCouponWallet>) {
-            mBinding.sellerName = key
-            mBinding.recyclerviewCouponselectDeal.adapter = CouponDealAdapter().apply {
-                this.mViewModel = this@CouponSellerAdapter.mViewModel
-                this.mCouponWalletList = list
-                this.mOrderItemList = mViewModel.mProductList
-            }
-        }
     }
 }

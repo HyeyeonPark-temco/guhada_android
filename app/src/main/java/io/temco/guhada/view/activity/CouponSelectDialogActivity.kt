@@ -17,12 +17,6 @@ import io.temco.guhada.view.adapter.coupon.CouponSellerAdapter
  * @since 2019.09.13
  */
 class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBinding>() {
-
-    class CouponFlag {
-        val NOT_SELECT_COUPON_ID: Long = -1
-        val NOT_SELECT_COUPON_NUMBER = "NOT_SELECT"
-    }
-
     private lateinit var mViewModel: CouponSelectDialogViewModel
 
     override fun getBaseTag(): String = CouponSelectDialogActivity::class.java.simpleName
@@ -30,7 +24,7 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
     override fun getViewType(): Type.View = Type.View.COUPON_SELECT
 
     override fun init() {
-        initViewModel1()
+        initViewModel()
         mBinding.imagebuttonCouponselectClose.setOnClickListener { finish() }
         mBinding.buttonCouponselect.setOnClickListener {
             if (mViewModel.mSelectedCouponMap.keys.isNotEmpty()) {
@@ -46,42 +40,6 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
     }
 
     private fun initViewModel() {
-        mViewModel = CouponSelectDialogViewModel()
-        mViewModel.mOrder.observe(this@CouponSelectDialogActivity, Observer { order ->
-            mViewModel.mCouponWalletList = order.availableCouponWalletResponses
-
-            for (product in order.orderItemList) {
-                for (couponWallet in order.availableCouponWalletResponses) {
-                    if (product.dealId == couponWallet.dealId) {
-                        if (mViewModel.mCouponWalletMap[product.sellerName ?: ""] == null)
-                            mViewModel.mCouponWalletMap[product.sellerName ?: ""] = mutableListOf()
-                        couponWallet.orderItem = product
-                        mViewModel.mCouponWalletMap[product.sellerName ?: ""]?.add(couponWallet)
-                    }
-                }
-            }
-
-            mBinding.recyclerviewCouponselectList.adapter = CouponSellerAdapter().apply {
-                this.mViewModel = this@CouponSelectDialogActivity.mViewModel
-                this.mCouponWalletMap = mViewModel.mCouponWalletMap
-            }
-
-            mBinding.totalProductPrice = order.totalPaymentPrice //order.totalProdPrice
-        })
-
-        intent.getSerializableExtra("productList").let {
-            if (it != null) mViewModel.mProductList = (it as ArrayList<BaseProduct>).toMutableList()
-        }
-
-        intent.getIntArrayExtra("cartIdList").let {
-            if (it != null) {
-                mViewModel.mCartIdList = it
-                mViewModel.getOrderForm()
-            }
-        }
-    }
-
-    private fun initViewModel1() {
         mViewModel = CouponSelectDialogViewModel()
         intent.getSerializableExtra("couponInfo").let {
             if (it != null) {

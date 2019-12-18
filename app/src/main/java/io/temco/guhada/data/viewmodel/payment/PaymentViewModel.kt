@@ -42,8 +42,8 @@ import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
+import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.view.activity.CouponSelectDialogActivity
 import io.temco.guhada.view.activity.PaymentActivity
 import java.text.NumberFormat
 
@@ -647,7 +647,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         for (item in order.orderItemList)
             if (item.cartItemId == cartItemId) {
                 var couponNumber = mSelectedCouponMap[item.dealId]?.couponNumber ?: ""
-                couponNumber = if (couponNumber == CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER) "" else couponNumber
+                couponNumber = if (couponNumber == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER) "" else couponNumber
                 return couponNumber
             }
 
