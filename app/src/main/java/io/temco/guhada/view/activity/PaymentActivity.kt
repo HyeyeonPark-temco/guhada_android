@@ -28,7 +28,6 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.common.util.TrackingUtil
 import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.RequestOrder
@@ -42,7 +41,6 @@ import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentOrderItemAdapter
-import io.temco.guhada.view.adapter.payment.PaymentProductAdapter
 import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 import io.temco.guhada.view.custom.CustomSpinnerView
 
@@ -352,8 +350,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     private fun redirectCouponSelectDialogActivity() {
         val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
-//        intent.putExtra("productList", mViewModel.productList)
-//        intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
         intent.putExtra("couponInfo", mViewModel.mCouponInfo.value)
         startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
     }
@@ -460,6 +456,15 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mViewModel.mCouponInfo.observe(this, Observer {
             mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), it.availableCouponCount, it.savedCouponCount))
             mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.text = Html.fromHtml(String.format(getString(R.string.payment_coupon_format), it.totalCouponDiscountPrice, it.selectedCouponCount))
+
+            if (it.availableCouponCount > 0) {
+                mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.isClickable = true
+                mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setTextColor(resources.getColor(R.color.black_four))
+            } else {
+                mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.isClickable = false
+                mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setTextColor(resources.getColor(R.color.pinkish_grey))
+            }
+
         })
 
 //        mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint, mViewModel.order.totalPoint))
@@ -563,13 +568,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
             RequestCode.COUPON_SELECT.flag -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    // 쿠폰 선택
-                    data?.getSerializableExtra("selectedCouponMap").let { selectedCouponMap ->
-                        if (selectedCouponMap != null) {
-                            mViewModel.mSelectedCouponMap = selectedCouponMap as HashMap<Long, CouponWallet?>
-                            mViewModel.getCalculatePaymentInfo()
-                        }
-                    }
+                    val couponCount = data?.getIntExtra("couponCount", 0)
+                    val discountPrice = data?.getIntExtra("discountPrice", 0)
+                    mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.text = Html.fromHtml(String.format(getString(R.string.payment_coupon_format), discountPrice, couponCount))
                 }
             }
             RequestCode.PAYMENT_RESULT.flag -> {

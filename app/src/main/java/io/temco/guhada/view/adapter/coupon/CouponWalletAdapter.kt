@@ -53,9 +53,10 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 for (couponNumber in mViewModel.mSelectedCouponInfo.get()?.keys ?: mutableSetOf()) {
                     if (mViewModel.mSelectedCouponInfo.get()?.get(couponNumber) == mDealId) {
 
-                        if (mViewModel.mSelectedCouponMap[mDealId] != null)
+                        if (mViewModel.mSelectedCouponMap[mDealId] != null) {
                             mViewModel.mTotalDiscountPrice = ObservableInt(mViewModel.mTotalDiscountPrice.get() - mViewModel.mSelectedCouponMap[mDealId]!!.couponDiscountPrice)
-
+                            mViewModel.mSelectedCouponMap.remove(mDealId)
+                        }
                         mViewModel.mSelectedCouponInfo.get()?.remove(mDealId.toString())
                         mViewModel.mSelectedCouponInfo.get()?.remove(couponNumber ?: "")
                         break
@@ -64,21 +65,22 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
 
                 mViewModel.mSelectedDealId = mDealId
                 mViewModel.mSelectedCoupon = ObservableField(item)
-                mViewModel.mSelectedCouponMap[mDealId] = item
 
-                if (item.couponNumber == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER)
+                if (item.couponNumber == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER) {
                     mViewModel.mSelectedCouponInfo.get()?.set(mDealId.toString(), CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER)
-                else {
+                } else {
                     mViewModel.mSelectedCouponInfo.get()?.set(item.couponNumber, mDealId)
                     mViewModel.mSelectedCouponInfo.get()?.remove(mDealId.toString())
+                    mViewModel.mSelectedCouponMap[mDealId] = item
+                    mViewModel.mTotalDiscountPrice = ObservableInt(mViewModel.mTotalDiscountPrice.get() + mViewModel.mSelectedCouponMap[mDealId]?.couponDiscountPrice!!)
                 }
-                mViewModel.notifyPropertyChanged(BR.mSelectedCouponInfo)
-
-                mViewModel.mTotalDiscountPrice = ObservableInt(mViewModel.mTotalDiscountPrice.get() + mViewModel.mSelectedCouponMap[mDealId]?.couponDiscountPrice!!)
                 mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
+                mViewModel.notifyPropertyChanged(BR.mSelectedCouponInfo)
 
                 mBinding.viewModel = mViewModel
                 mBinding.executePendingBindings()
+
+//                Log.e("선택 쿠폰", mViewModel.mSelectedCouponMap.toString())
             }
             mBinding.textviewCouponselectCouponname.text =
                     if (item.maximumDiscountPrice == null || item.maximumDiscountPrice == 0) {

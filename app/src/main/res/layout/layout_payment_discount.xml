@@ -55,60 +55,6 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <!--<FrameLayout-->
-            <!--android:id="@+id/framelayout_payment_discountcoupon"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent">-->
-
-            <!--<Spinner-->
-            <!--android:id="@+id/spinner_payment_shippingmemo"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:background="@drawable/border_all_whitethree"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:overlapAnchor="false"-->
-            <!--android:popupBackground="@null"-->
-            <!--android:spinnerMode="dropdown" />-->
-
-            <!--<FrameLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:padding="1dp"-->
-            <!--android:background="@color/white_three">-->
-
-            <!--<LinearLayout-->
-            <!--android:id="@+id/linearlayout_payment_discountcoupon"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:background="@color/common_white"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:paddingStart="15dp"-->
-            <!--android:paddingEnd="15dp"-->
-            <!--android:popupBackground="@null">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/textview_payment_discountcoupon"-->
-            <!--style="@style/PaymentContentGreyTextStyle"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_weight="1"-->
-            <!--android:text="@{viewModel.selectedDiscountCoupon}"-->
-            <!--android:textSize="@dimen/text_13" />-->
-
-
-            <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:src="@drawable/payment_icon_selectbox_open" />-->
-            <!--</LinearLayout>-->
-            <!--</FrameLayout>-->
-            <!--</FrameLayout>-->
-
             <TextView
                 android:id="@+id/textview_payment_discountcoupon"
                 style="@style/TextRegular"
@@ -132,9 +78,7 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="7dp"
                 android:background="@drawable/border_all_whitethree"
-                android:clickable="@{viewModel.order.availableCouponCount == 0 ? false : true, default = true}"
                 android:text="@string/payment_button_autocoupon"
-                android:textColor="@{viewModel.order.availableCouponCount == 0 ? @color/pinkish_grey : @color/black_four, default = @color/black_four}"
                 android:textSize="@dimen/text_13" />
         </LinearLayout>
 
