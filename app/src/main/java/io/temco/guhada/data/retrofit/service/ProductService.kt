@@ -111,7 +111,10 @@ interface ProductService {
     fun getRequestLuckyDraw(@Header("Authorization") accessToken: String, @Path("dealId") id: String): Call<BaseModel<LuckyDrawList>>
 
 
-
+    /**
+     * @author park jungho
+     * 럭키드로우 당첨 정보 확인
+     */
     @GET("/lucky-draws/winner/{dealId}")
     fun getRequestLuckyDrawWinner(@Header("Authorization") accessToken: String, @Path("dealId") dealId : Long): Call<BaseModel<JsonObject>>
 }

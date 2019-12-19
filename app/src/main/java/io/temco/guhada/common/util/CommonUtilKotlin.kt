@@ -10,11 +10,15 @@ import com.kakao.util.exception.KakaoException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
 import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.data.db.GuhadaDB
+import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.server.NotificationServer
 import io.temco.guhada.view.activity.*
 
 object CommonUtilKotlin {
@@ -276,6 +280,74 @@ object CommonUtilKotlin {
         intent.putExtra("url",url)
         act.startActivityForResult(intent,Flag.RequestCode.PLANNING_DEAL_DETAIL)
     }
+
+
+
+    /**
+     *  Notification deleteDevice
+     */
+    @JvmStatic
+    fun deleteDevice(accessToken: String, token: String?) {
+        // 아직 실서버에 적용안함
+        if(BuildConfig.BuildType != Type.Build.DEV) return
+        if(TextUtils.isEmpty(token)) {
+            if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice","isEmpty(token)")
+            return
+        }
+        NotificationServer.deleteDevice(accessToken, token!!, OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice successTask","o",o.toString())
+                    },
+                    dataNotFoundTask = {
+                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice dataNotFoundTask","o",o.toString())
+                        ///listener.callBackListener(false, "dataNotFoundTask")
+                    },
+                    failedTask = {
+                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice failedTask","message",it.message)
+                        //listener.callBackListener(false, it.message)
+                    },dataIsNull = {
+                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice failedTask","dataIsNull")
+                        //listener.callBackListener(false, "dataIsNull")
+                    }
+            )
+        })
+    }
+
+
+    /**
+     *  Notification saveDevice
+     */
+    @JvmStatic
+    fun saveDevice(accessToken: String?, token: String?) {
+        // 아직 실서버에 적용안함
+        if(BuildConfig.BuildType != Type.Build.DEV) return
+        if(TextUtils.isEmpty(token)) {
+            if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice","isEmpty(token)")
+            return
+        }
+        if (CustomLog.flag) CustomLog.L("NotificationServer saveDevice", "accessToken",accessToken?:"", "token",token?:"")
+        NotificationServer.saveDeviceToken(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice successTask","o",o.toString())
+                    },
+                    dataNotFoundTask = {
+                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice dataNotFoundTask","o",o.toString())
+                        ///listener.callBackListener(false, "dataNotFoundTask")
+                    },
+                    failedTask = {
+                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice failedTask","message",it.message)
+                        //listener.callBackListener(false, it.message)
+                    },dataIsNull = {
+                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice failedTask","dataIsNull")
+                        //listener.callBackListener(false, "dataIsNull")
+                    }
+            )
+        },accessToken, token!!)
+    }
+
+
 
 
 }

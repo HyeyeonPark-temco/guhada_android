@@ -552,7 +552,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     cancelButtonVisible = true,
                     confirmTask = {
                         mViewModel.withdraw(successTask = {
-                            Preferences.clearToken(true)
+                            Preferences.clearToken(true, BaseApplication.getInstance())
 
                             BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true, true)
                             this@UserInfoActivity.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)

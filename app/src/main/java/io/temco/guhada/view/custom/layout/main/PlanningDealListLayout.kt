@@ -95,14 +95,7 @@ class PlanningDealListLayout constructor(
 
         mViewModel.adapter = PlanningDealListAdapter(mViewModel, mViewModel.listData)
         mBinding.recyclerView.adapter = mViewModel.adapter
-        mViewModel.getEventList()
-        /*mViewModel.listData.observe(this,
-                androidx.lifecycle.Observer<ArrayList<MainBaseModel>> {
-                    if (CustomLog.flag) CustomLog.L("EventListLayout LIFECYCLE", "onViewCreated listData.size 1----------------",it.size)
-                    mViewModel.getListAdapter().notifyDataSetChanged()
-                    if (CustomLog.flag) CustomLog.L("EventListLayout LIFECYCLE", "onViewCreated listData.size 2----------------",mViewModel.getListAdapter().items.size)
-                }
-        )*/
+        mViewModel.getPlanningList()
 
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4

@@ -78,10 +78,10 @@ public class Deal implements Serializable {
     public int totalStock;
 
     @SerializedName("internationalShipping")
-    public boolean internationalShipping;       // 해외배송 여부
+    public boolean internationalShipping = false;       // 해외배송 여부
 
     @SerializedName("brandNew")
-    public boolean brandNew;                    // 중고상품 여부
+    public boolean brandNew = true;                    // 중고상품 여부
 
     public boolean isFreeShipping() {
         if (shipExpenseType != null && !"".equals(shipExpenseType))

@@ -19,6 +19,7 @@ import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
@@ -132,8 +133,12 @@ public class LoginViewModelTemp extends BaseObservableViewModel {
                     switch (model.resultCode) {
                         case Flag.ResultCode.SUCCESS:
                             Token token = (Token) model.data;
-                            if (Preferences.getToken() != null) Preferences.clearToken(false);
+                            if (Preferences.getToken() != null) Preferences.clearToken(false, BaseApplication.getInstance());
+
                             Preferences.setToken(token);
+                            if(CustomLog.getFlag())CustomLog.L("NotificationServer saveDevice onClickSignIn","onClickSignIn");
+                            // 로그인 후 fcm 토큰 전송
+                            CommonUtilKotlin.saveDevice(token.getAccessToken(), BaseApplication.getInstance().getFcmToken());
                             // save id
                             if (isIdSaved) {
                                 String savedId = Preferences.getSavedId();

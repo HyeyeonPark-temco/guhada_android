@@ -39,7 +39,7 @@ class PlanningDealListViewModel(val context : Context) : BaseObservableViewModel
     /**
      *  Event List
      */
-    fun getEventList() {
+    fun getPlanningList() {
         listData.clear()
         SettleServer.getPlanningList(mSortFilterType[mFilterIndex], OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,

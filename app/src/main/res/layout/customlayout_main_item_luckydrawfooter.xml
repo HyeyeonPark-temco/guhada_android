@@ -10,7 +10,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/invalid_name"
+            android:src="@drawable/lucky_notice_360"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"

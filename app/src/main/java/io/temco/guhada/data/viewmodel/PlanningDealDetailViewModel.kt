@@ -4,10 +4,17 @@ import android.content.Context
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import io.temco.guhada.BR
+import io.temco.guhada.common.Type
+import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
+import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.server.SearchServer
+import io.temco.guhada.data.server.SettleServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.adapter.PlanningDealDetailListAdapter
 import io.temco.guhada.view.custom.recycler.CustomRecyclerView
@@ -23,6 +30,11 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
     var isLoading = true
     var imageBannerUrl = ""
 
+    var planningDealDetailId = 0
+    var currentPage = 0
+    var totalPage = -1
+
+    lateinit var planningDataInfo : PlanningDetailData
     var mPageNumber = 0
     var mTotalCount = 0
     var planningDealListTotalCount = ObservableField<String>("0")
@@ -41,55 +53,76 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
         }
 
 
-
-    fun getDealListData(isInit : Boolean, isSortChange : Boolean){
-        if(isInit){
-            adapter.items.clear()
-            mPageNumber = 1
+    /**
+     *  Event List
+     */
+    fun getPlanningDetail(init : Boolean, listener : OnCallBackListener?) {
+        if(init){
+            listData.clear()
+            currentPage = 0
         }
-        mPageNumber++
-        var body = FilterBody()
-        body.categoryIds.add(1)
-        body.searchResultOrder = planningDealSortType.get()!!.code
-        SearchServer.getProductListByCategoryFilter(body, mPageNumber, OnServerListener{ success, o ->
-            if (adapter != null) {
-                if (success) {
-                    var index = adapter.itemCount
-                    mTotalCount = (o as ProductList).countOfDeals
-                    planningDealListTotalCount.set(mTotalCount.toString())
-                    if(index == 0){
+        currentPage++
+        SettleServer.getPlanningDetail(planningDealDetailId, currentPage, OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
                         var list = arrayListOf<PlanningDealBase>()
-                        var title = PlanningDealTitle(0, PlanningDealType.Title,2, PlanningDetailData(),
-                                "9월의 마지막 혜택, 구하다 퍼플등급\n회원 15% 할인쿠폰 지급","2019. 05. 01 ~ 2019. 05. 31")
-                        list.add(title)
-                        var imageBanner = PlanningDealImageBanner(1, PlanningDealType.ImageBanner, 2, imageBannerUrl)
-                        list.add(imageBanner)
-                        var subTitle = PlanningDealSubTitle(2, PlanningDealType.SubTitle, 2, mTotalCount)
-                        list.add(subTitle)
-                        for ((i,d) in (o as ProductList).deals.withIndex()){
-                            var deal = PlanningDealData(list.size+i, PlanningDealType.Deal,1,d)
-                            list.add(deal)
-                        }
-                        adapter.setItems(list)
-                        adapter.notifyDataSetChanged()
-                        if(isSortChange) recyclerView.scrollToPosition(2)
-                    }else{
-                        var list = arrayListOf<PlanningDealBase>()
-                        for ((i,d) in (o as ProductList).deals.withIndex()){
-                            var deal = PlanningDealData(index+i, PlanningDealType.Deal,1,d)
-                            list.add(deal)
-                        }
-                        adapter.setItems(list)
-                        adapter.notifyItemRangeChanged(index, adapter.itemCount)
-                    }
 
-                    if(index == 0)
-                    else
-                    isLoading = false
-                }
-            }
+                        if(!::planningDataInfo.isInitialized){
+                            planningDataInfo =  (o as BaseModel<*>).data as PlanningDetailData
+                            if(CustomLog.flag)CustomLog.L("getPlanningDetail","planningDataInfo",planningDataInfo)
+                            if(CustomLog.flag)CustomLog.L("getPlanningDetail","planningDataInfo planListDetails",planningDataInfo.planListDetails)
+                            var index = adapter.itemCount
+                            mTotalCount = planningDataInfo.totalItemCount
+                            planningDealListTotalCount.set(mTotalCount.toString())
+
+                            var title = PlanningDealTitle(0, PlanningDealType.Title,2, planningDataInfo,
+                                    planningDataInfo.detailTitle, Type.getWebUrl()+"event/special/"+planningDealDetailId,
+                                    (planningDataInfo.startDate.split(" ")[0].replace("-",".") + " ~ " +planningDataInfo.endDate.split(" ")[0].replace("-",".")))
+                            list.add(title)
+                            var imageBanner = PlanningDealImageBanner(1, PlanningDealType.ImageBanner, 2, planningDataInfo.mobileImageUrl?.toString() ?: "")
+                            list.add(imageBanner)
+                            var subTitle = PlanningDealSubTitle(2, PlanningDealType.SubTitle, 2, mTotalCount)
+                            list.add(subTitle)
+                            if(totalPage == -1){
+                                totalPage = mTotalCount/20 + (if(mTotalCount%20 > 0) 1 else 0)
+                            }
+                            listener?.callBackListener(true, planningDataInfo.title)
+                            if(CustomLog.flag)CustomLog.L("getPlanningDetail","totalPage",totalPage)
+                        }
+                        //getDealListData(true, false)
+                        var index = adapter.itemCount
+
+                        var detailList = ((o as BaseModel<*>).data as PlanningDetailData).planListDetails
+
+                        if(index == 0){
+                            for ((i,d) in detailList.withIndex()){
+                                var deal = PlanningDealData(list.size+i, PlanningDealType.Deal,1,d)
+                                list.add(deal)
+                            }
+                            adapter.setItems(list)
+                            adapter.notifyDataSetChanged()
+                            /*if(isSortChange) recyclerView.scrollToPosition(2)*/
+                        }else{
+                            for ((i,d) in detailList.withIndex()){
+                                var deal = PlanningDealData(index+i, PlanningDealType.Deal,1,d)
+                                list.add(deal)
+                            }
+                            adapter.setItems(list)
+                            adapter.notifyItemRangeChanged(index, adapter.itemCount)
+                        }
+                        isLoading = false
+                    },
+                    dataNotFoundTask = {
+
+                    },
+                    failedTask = {
+
+                    }
+            )
         })
     }
+
+
 }
 
 enum class ProductOrderType(val code :String, val label: String){
