@@ -602,14 +602,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
 
         @JvmStatic
-        @BindingAdapter("paymentProduct")
-        fun RecyclerView.bindPaymentProduct(list: ArrayList<BaseProduct>?) {
-            if (this.adapter != null && list != null) {
-                (this.adapter as PaymentProductAdapter).setItems(list)
-            }
-        }
-
-        @JvmStatic
         @BindingAdapter("orderItem")
         fun RecyclerView.bindPaymentOrderItem(list: List<OrderItemResponse>?) {
             if (this.adapter != null && list != null) {
