@@ -1,11 +1,10 @@
 package io.temco.guhada.view.activity
 
 import android.app.Activity
-import androidx.lifecycle.Observer
+import androidx.databinding.ObservableInt
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.data.model.coupon.CouponInfo
-import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.databinding.ActivityCouponselectdialogBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -45,7 +44,10 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
             if (it != null) {
                 mViewModel.mCouponInfo = it as CouponInfo
                 mBinding.recyclerviewCouponselectList.adapter = CouponSellerAdapter().apply {
-                    this.mViewModel = this@CouponSelectDialogActivity.mViewModel
+                    this.mViewModel = this@CouponSelectDialogActivity.mViewModel.apply {
+                        this.mTotalDiscountPrice = ObservableInt(it.totalCouponDiscountPrice)
+                        this.mTotalProductPrice = ObservableInt(it.totalProductPrice)
+                    }
                     this.mCouponBenefitSellerResponseList = it.benefitSellerResponseList
                 }
             }

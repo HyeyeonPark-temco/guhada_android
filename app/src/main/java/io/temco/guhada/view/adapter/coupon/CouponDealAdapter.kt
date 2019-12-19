@@ -5,15 +5,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.data.model.coupon.AvailableCouponWallet
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.coupon.CouponInfo
-import io.temco.guhada.data.model.coupon.CouponWallet
-import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.databinding.ItemCouponselectDealBinding
-import io.temco.guhada.view.activity.CouponSelectDialogActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -28,13 +24,16 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_couponselect_deal, parent, false))
 
-    override fun getItemCount(): Int = mCouponBenefitOrderProductList.size// mCouponWalletList.size
+    override fun getItemCount(): Int = mCouponBenefitOrderProductList.size
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(mCouponBenefitOrderProductList[position])
     }
 
     inner class Holder(binding: ItemCouponselectDealBinding) : BaseViewHolder<ItemCouponselectDealBinding>(binding.root) {
         fun bind(benefitOrderProductResponse: CouponInfo.BenefitOrderProductResponse) {
+            if(adapterPosition == 0)
+                (mBinding.linearlayoutCouponselectContainer.layoutParams as ViewGroup.MarginLayoutParams).topMargin = CommonViewUtil.convertDpToPixel(20, mBinding.root.context)
+
             mBinding.recyclerviewCouponselectCoupon.adapter = CouponWalletAdapter().apply {
                 this.mViewModel = this@CouponDealAdapter.mViewModel
 
@@ -47,7 +46,6 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
 
                 this.mList = benefitOrderProductResponse.benefitProductCouponResponseList
                 this.mDealId = benefitOrderProductResponse.dealId
-
             }
 
             benefitOrderProductResponse.optionStr =

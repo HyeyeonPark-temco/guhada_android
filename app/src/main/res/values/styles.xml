@@ -281,7 +281,7 @@
 
     <style name="PaymentContentGreyTextStyle" parent="@style/TextRegular">
         <item name="android:textSize">@dimen/text_13</item>
-        <item name="android:textColor">@color/warm_grey</item>
+        <item name="android:textColor">@color/warm_grey_two</item>
     </style>
 
     <style name="PaymentContentDarkGreyTextStyle" parent="@style/TextMedium">

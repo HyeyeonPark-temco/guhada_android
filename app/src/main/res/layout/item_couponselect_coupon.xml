@@ -31,7 +31,7 @@
             android:src="@drawable/radio_select"
             android:clickable="true"
             android:focusable="true"
-            app:selectedCouponMap="@{viewModel.mSelectedCouponInfo}"
+            app:selectedCouponInfo="@{viewModel.mSelectedCouponInfo}"
             app:currentCouponNumber="@{couponWallet.couponNumber}"
             app:currentDealId="@{dealId}" />
 
@@ -44,7 +44,7 @@
             android:layout_marginStart="15dp"
             android:ellipsize="middle"
             android:textSize="@dimen/text_13"
-            app:selectedCouponMap="@{viewModel.mSelectedCouponInfo}"
+            app:selectedCouponInfo="@{viewModel.mSelectedCouponInfo}"
             app:currentCouponNumber="@{couponWallet.couponNumber}"
             app:currentDealId="@{dealId}" />
 
