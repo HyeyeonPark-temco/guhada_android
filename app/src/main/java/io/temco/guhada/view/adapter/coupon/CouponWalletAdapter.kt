@@ -38,8 +38,8 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
     }
 
     /*
-    *  - 쿠폰 선택: map[couponNumber, dealId]
-    *  - 적용 안함 선택: map[dealId, "NOT_SELECT"]
+    *  - 쿠폰 선택: mSelectedCouponInfo[couponNumber, dealId]
+    *  - 적용 안함 선택: mSelectedCouponInfo[dealId, "NOT_SELECT"]
     */
     inner class Holder(binding: ItemCouponselectCouponBinding) : BaseViewHolder<ItemCouponselectCouponBinding>(binding.root) {
         fun bind(item: CouponInfo.BenefitOrderProductCouponResponse) {

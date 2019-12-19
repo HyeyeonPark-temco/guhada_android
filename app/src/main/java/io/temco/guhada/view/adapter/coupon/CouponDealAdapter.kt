@@ -34,6 +34,8 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
             if(adapterPosition == 0)
                 (mBinding.linearlayoutCouponselectContainer.layoutParams as ViewGroup.MarginLayoutParams).topMargin = CommonViewUtil.convertDpToPixel(20, mBinding.root.context)
 
+            mViewModel.mCartIdMap[benefitOrderProductResponse.dealId] = benefitOrderProductResponse.cartId
+
             mBinding.recyclerviewCouponselectCoupon.adapter = CouponWalletAdapter().apply {
                 this.mViewModel = this@CouponDealAdapter.mViewModel
 

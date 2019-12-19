@@ -32,7 +32,7 @@ class CouponInfo : Serializable {
     }
 
     class BenefitOrderProductResponse : BaseProduct(), Serializable {
-        var cartId = 0
+        var cartId:Long = 0L
         var imageUrl = ""
         var dealName = ""
         var option: String? = ""

@@ -202,6 +202,7 @@
                         android:background="@color/common_blue_purple"
                         android:text="@string/couponselect_button"
                         android:textColor="@color/common_white"
+                        android:onClick="@{()->viewModel.calculatePaymentInfo()}"
                         android:textSize="@dimen/text_18" />
                 </LinearLayout>
 
