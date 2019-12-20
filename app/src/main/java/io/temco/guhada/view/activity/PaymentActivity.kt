@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.databinding.BindingAdapter
@@ -14,6 +15,9 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.reflect.TypeToken
 import com.kochava.base.Tracker
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -43,6 +47,7 @@ import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentOrderItemAdapter
 import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 import io.temco.guhada.view.custom.CustomSpinnerView
+import org.json.JSONArray
 
 /**
  * 주문 결제 화면
@@ -465,9 +470,25 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setTextColor(resources.getColor(R.color.pinkish_grey))
             }
 
+            val list = mutableListOf<RequestOrder.CartItemPayment>()
+            for (seller in it.benefitSellerResponseList) {
+                for (deal in seller.benefitOrderProductResponseList) {
+                    val item =
+                            RequestOrder.CartItemPayment().apply {
+                                this.cartItemId = deal.cartId
+                            }
+
+                    for (coupon in deal.benefitProductCouponResponseList)
+                        if (coupon.selected) {
+                            item.couponNumber = coupon.couponNumber
+                            break
+                        }
+                    list.add(item)
+                }
+            }
+            mViewModel.mRequestOrder.cartItemPayments = list
         })
 
-//        mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint, mViewModel.order.totalPoint))
     }
 
     private fun initDueSavePoint() {
@@ -570,6 +591,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 if (resultCode == Activity.RESULT_OK) {
                     val couponCount = data?.getIntExtra("couponCount", 0)
                     val discountPrice = data?.getIntExtra("discountPrice", 0)
+                    data?.getStringExtra("selectedCouponArray").let { array ->
+                        if (!array.isNullOrEmpty())
+                            mViewModel.mSelectedCouponArray = Gson().fromJson(array, Array<RequestOrder.CartItemPayment>::class.java).toMutableList()
+                    }
                     mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.text = Html.fromHtml(String.format(getString(R.string.payment_coupon_format), discountPrice, couponCount))
                 }
             }

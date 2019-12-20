@@ -29,8 +29,16 @@ class CouponSelectDialogViewModel : BaseObservable() {
         val NOT_SELECT_COUPON_NUMBER = "NOT_SELECT"
     }
 
-    var mCartIdMap = hashMapOf<Long, Long>()    // key: dealId  value: cartId
+    // key: dealId      value: cartId
+    var mCartIdMap = hashMapOf<Long, Long>()
+
+    // key: dealId      value: BenefitOrderProductCouponResponse
     var mSelectedCouponMap = hashMapOf<Long, CouponInfo.BenefitOrderProductCouponResponse?>()
+
+    /*
+      - 쿠폰 선택      : mSelectedCouponInfo<couponNumber, dealId>
+      - 적용 안함 선택 : mSelectedCouponInfo<dealId, "NOT_SELECT">
+    */
     var mSelectedCouponInfo = ObservableField(hashMapOf<String?, Any?>())
         @Bindable
         get() = field

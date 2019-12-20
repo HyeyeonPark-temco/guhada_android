@@ -45,6 +45,9 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.PaymentActivity
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 import java.text.NumberFormat
 
 class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseObservableViewModel() {
@@ -203,8 +206,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 쿠폰, 포인트
     var mCouponInfo = MutableLiveData<CouponInfo>() // 사용 가능 쿠폰 정보
-    var mAvailableBenefitCount: MutableLiveData<AvailableBenefitCount> = MutableLiveData(AvailableBenefitCount())
-    var mSelectedCouponMap: HashMap<Long, CouponWallet?> = hashMapOf() // dealId, couponWallet
+    var mSelectedCouponArray = mutableListOf<RequestOrder.CartItemPayment>() // dealId, couponNumber
     var mTotalDiscountPrice = ObservableInt(0)  // 상품 할인 금액 + 쿠폰 할인 금액 + 포인트 사용 금액
         @Bindable
         get() = field
@@ -245,7 +247,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         if (cartIdList.isEmpty())
                             cartIdList.add(cart.cartItemId.toInt())
 
-                        getCalculatePaymentInfo()
+                        //  getCalculatePaymentInfo()
                         getInitialCouponInfo()
                     } else {
                         listener.showMessage(o.message ?: "주문서 조회 오류")
@@ -431,19 +433,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun getCalculatePaymentInfo() {
-        val jsonArray = JsonArray()
-        for (item in cartIdList) {
-            RequestOrder.CartItemPayment().apply {
-                this.cartItemId = item.toLong()
-                this.couponNumber = getCouponNumberByCartItemId(item.toLong())
-            }.let {
-                val element = JsonParser().parse(Gson().toJson(it))
-                jsonArray.add(element)
-            }
-        }
-
         val jsonObject = JsonObject()
-        jsonObject.add("cartItemPayments", jsonArray)
+        jsonObject.add("cartItemPayments", JsonParser().parse(Gson().toJson(mSelectedCouponArray)))
         jsonObject.addProperty("consumptionPoint", usedPointNumber)
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             OrderServer.getCalculatePaymentInfo(OnServerListener { success, o ->
@@ -476,7 +467,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     /**
      * LISTENER
      */
-    // 결제 수단 checkbox listener
+// 결제 수단 checkbox listener
     fun onPaymentWayChecked(view: View, checked: Boolean) {
         val pos = view.tag?.toString()?.toInt()
         if (pos != null) {
@@ -591,18 +582,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         mRequestOrder.shippingAddress.shippingMessage = message
     }
 
+    // 결제하기 클릭 시, 선택된 쿠폰 체크
     private fun setCoupon() {
         if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
             mRequestOrder.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
-
-            for (item in cartIdList) {
-                RequestOrder.CartItemPayment().apply {
-                    this.cartItemId = item.toLong()
-                    this.couponNumber = getCouponNumberByCartItemId(item.toLong())
-                }.let {
-                    mRequestOrder.cartItemPayments.add(it)
-                }
-            }
+            mRequestOrder.cartItemPayments = mSelectedCouponArray
         }
     }
 
@@ -646,9 +630,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     private fun getCouponNumberByCartItemId(cartItemId: Long): String {
         for (item in order.orderItemList)
             if (item.cartItemId == cartItemId) {
-                var couponNumber = mSelectedCouponMap[item.dealId]?.couponNumber ?: ""
-                couponNumber = if (couponNumber == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER) "" else couponNumber
-                return couponNumber
+                // var couponNumber = mSelectedCouponMap[item.dealId]?.couponNumber ?: ""
+                // couponNumber = if (couponNumber == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER) "" else couponNumber
+                //  return couponNumber
             }
 
         return ""
