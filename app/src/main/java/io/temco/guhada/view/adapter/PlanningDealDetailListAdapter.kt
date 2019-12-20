@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
@@ -219,7 +220,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
     }
 
     /**
-     * 메인 리스트에 빈 화면 view holder
+     * 기획전 상단 타이틀
      */
     class PlanningDealDetailTitleViewHolder(private val containerView: View, val binding: CustomlayoutPlanningdealDetailTitleBinding) : ListViewHolder(containerView, binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
@@ -240,7 +241,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
     }
 
     /**
-     * 메인 리스트에 빈 화면 view holder
+     * 기획전 서브 타이틀
      */
     class PlanningDealDetailSubTitleViewHolder(private val containerView: View, val binding: CustomlayoutPlanningdealDetailSubtitleBinding) : ListViewHolder(containerView, binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
@@ -254,7 +255,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                         override fun onItemClick(position: Int) {
                             viewModel.mFilterIndex = position
                             viewModel.planningDealSortType.set(viewModel.mSortFilterType[viewModel.mFilterIndex])
-                            //viewModel.getDealListData(true, true)
+                            viewModel.getPlanningDetail(true, viewModel.planningDealSortType.get()!!.code, true,null)
                         }
                         override fun onClickClose() {
                             this@apply.dismiss()
@@ -267,14 +268,23 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
         }
     }
     /**
-     * 메인 리스트에 빈 화면 view holder
+     * 기획전 배너 이미지
      */
     class PlanningDealDetailImageBannerViewHolder(private val containerView: View, val binding: CustomlayoutPlanningdealDetailImgbannerBinding) : ListViewHolder(containerView, binding){
         internal var width = 0
         internal var height = 0
+        internal lateinit var request : RequestOptions
+
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: PlanningDealDetailViewModel, position: Int, item: PlanningDealBase) {
             if(item is PlanningDealImageBanner){
+                if(!::request.isInitialized){
+                    request = RequestOptions()
+                            .fitCenter()
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                            .override(width,width)
+                            .downsample(DownsampleStrategy.AT_MOST)
+                }
                 Glide.with(viewModel.context).load(item.imgPath)
                         .apply(RequestOptions().format(DecodeFormat.PREFER_ARGB_8888).downsample(DownsampleStrategy.AT_MOST))
                         .into(object : SimpleTarget<Drawable>(){
@@ -287,11 +297,16 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                                     height  = (ra * resource.minimumHeight.toFloat()).toInt()
                                     binding.imageBanner.layoutParams = RelativeLayout.LayoutParams(width,height)
                                 }
-                                binding.imageBanner.setImageDrawable(resource)
+
+                                //binding.imageBanner.setImageDrawable(resource)
+                                setImage(binding.imageBanner, item.imgPath)
                             }
                         }
                 )
             }
+        }
+        private fun setImage(imageView : ImageView, imgUrl : String){
+            ImageUtil.loadImage(Glide.with(containerView.context as Activity), imageView, imgUrl ,request)
         }
     }
 

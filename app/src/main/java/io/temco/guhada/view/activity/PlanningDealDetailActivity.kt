@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
@@ -21,7 +20,6 @@ import io.temco.guhada.data.viewmodel.PlanningDealDetailViewModel
 import io.temco.guhada.databinding.ActivityPlanningdealdetailBinding
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 /**
  * 기획전 상세 화면
@@ -41,7 +39,6 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
     override fun getViewType(): Type.View = Type.View.PLANNING_DEAL
 
     override fun init() {
-
         mViewModel = PlanningDealDetailViewModel(this)
         mViewModel.planningDealDetailId = intent?.extras?.getInt("planningDealDetailId") ?: -1
         if(mViewModel.planningDealDetailId < 0) finish()
@@ -88,7 +85,7 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
                             if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","mViewModel.totalPage",mViewModel.totalPage,"mViewModel.totalPage",mViewModel.currentPage)
                             mViewModel.isLoading = true
                             mBinding.loadingView.visibility = View.VISIBLE
-                            mViewModel.getPlanningDetail(false, object : OnCallBackListener{
+                            mViewModel.getPlanningDetail(false, mViewModel.planningDealSortType.get()!!.code, false, object : OnCallBackListener{
                                 override fun callBackListener(resultFlag: Boolean, value: Any) {
                                     if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","getPlanningDetail callBackListener mViewModel.totalPage",mViewModel.totalPage,"mViewModel.totalPage",mViewModel.currentPage)
                                     mBinding.loadingView.visibility = View.GONE
@@ -100,7 +97,7 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
             })
 
 
-            mViewModel.getPlanningDetail(true, object : OnCallBackListener{
+            mViewModel.getPlanningDetail(true, mViewModel.planningDealSortType.get()!!.code, false, object : OnCallBackListener{
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
                     if(resultFlag) mBinding.textviewTitle.text = value.toString()
                     else if(!TextUtils.isEmpty(value.toString()) && value.toString() == "finish"){

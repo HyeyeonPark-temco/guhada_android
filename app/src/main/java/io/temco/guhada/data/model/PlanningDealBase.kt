@@ -44,7 +44,7 @@ class PlanningLoadingData(index : Int, // recyclerview list index
 
 
 class PlanningDetailData{
-    var id = 0
+    var id = -1
     var mainUse = false
     var title = ""
     var largeImageUrl : Any? = null
