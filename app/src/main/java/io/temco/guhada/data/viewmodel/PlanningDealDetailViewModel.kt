@@ -62,16 +62,20 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
             currentPage = 0
         }
         currentPage++
-        SettleServer.getPlanningDetail(planningDealDetailId, currentPage, OnServerListener { success, o ->
+        SettleServer.getPlanningDetail(planningDealDetailId, currentPage, null, OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
+                        if(((o as BaseModel<*>).data as PlanningDetailData).id == 0) {
+                            listener?.callBackListener(false, "finish")
+                            return@executeByResultCode
+                        }
                         var list = arrayListOf<PlanningDealBase>()
+                        var index = adapter.itemCount
 
                         if(!::planningDataInfo.isInitialized){
                             planningDataInfo =  (o as BaseModel<*>).data as PlanningDetailData
                             if(CustomLog.flag)CustomLog.L("getPlanningDetail","planningDataInfo",planningDataInfo)
                             if(CustomLog.flag)CustomLog.L("getPlanningDetail","planningDataInfo planListDetails",planningDataInfo.planListDetails)
-                            var index = adapter.itemCount
                             mTotalCount = planningDataInfo.totalItemCount
                             planningDealListTotalCount.set(mTotalCount.toString())
 
@@ -86,11 +90,15 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
                             if(totalPage == -1){
                                 totalPage = mTotalCount/20 + (if(mTotalCount%20 > 0) 1 else 0)
                             }
-                            listener?.callBackListener(true, planningDataInfo.title)
                             if(CustomLog.flag)CustomLog.L("getPlanningDetail","totalPage",totalPage)
+                            listener?.callBackListener(false, planningDataInfo.title)
                         }
                         //getDealListData(true, false)
-                        var index = adapter.itemCount
+                        /*if(index > 0 && adapter.items[index-1].type == PlanningDealType.Loading) {
+                            if(CustomLog.flag)CustomLog.L("getPlanningDetail",(index-1),"- removeAt totalPage",totalPage, "currentPage",currentPage)
+                            adapter.items.removeAt(index-1)
+                            index -= 1
+                        }*/
 
                         var detailList = ((o as BaseModel<*>).data as PlanningDetailData).planListDetails
 
@@ -99,25 +107,30 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
                                 var deal = PlanningDealData(list.size+i, PlanningDealType.Deal,1,d)
                                 list.add(deal)
                             }
+                            /*if(totalPage > currentPage){
+                                var loading = PlanningLoadingData(list.size, PlanningDealType.Loading,2)
+                                list.add(loading)
+                            }*/
                             adapter.setItems(list)
                             adapter.notifyDataSetChanged()
-                            /*if(isSortChange) recyclerView.scrollToPosition(2)*/
                         }else{
                             for ((i,d) in detailList.withIndex()){
                                 var deal = PlanningDealData(index+i, PlanningDealType.Deal,1,d)
                                 list.add(deal)
                             }
+                            /*if(totalPage > currentPage){
+                                var loading = PlanningLoadingData(list.size, PlanningDealType.Loading,2)
+                                list.add(loading)
+                            }*/
                             adapter.setItems(list)
-                            adapter.notifyItemRangeChanged(index, adapter.itemCount)
+                            adapter.notifyDataSetChanged()
+                            //adapter.notifyItemRangeChanged(index-1, adapter.itemCount)
                         }
+                        listener?.callBackListener(false, "")
                         isLoading = false
                     },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
+                    dataNotFoundTask = { listener?.callBackListener(false, "") },
+                    failedTask = { listener?.callBackListener(false, "") }
             )
         })
     }

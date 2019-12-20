@@ -2,7 +2,7 @@ package io.temco.guhada.data.model
 
 import io.temco.guhada.common.util.CustomLog
 
-enum class PlanningDealType { Title, ImageBanner, SubTitle,Deal}
+enum class PlanningDealType { Title, ImageBanner, SubTitle, Deal, Loading}
 
 /**
  * @author park jungho
@@ -38,6 +38,9 @@ class PlanningDealData(index : Int, // recyclerview list index
                        gridSpanCount : Int,
                        val deal : Deal) : PlanningDealBase(index, type, gridSpanCount)
 
+class PlanningLoadingData(index : Int, // recyclerview list index
+                       type : PlanningDealType, // recyclerview view type
+                       gridSpanCount : Int) : PlanningDealBase(index, type, gridSpanCount)
 
 
 class PlanningDetailData{

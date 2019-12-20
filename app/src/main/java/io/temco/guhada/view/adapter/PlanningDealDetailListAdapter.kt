@@ -54,6 +54,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
             PlanningDealType.ImageBanner->return R.layout.customlayout_planningdeal_detail_imgbanner
             PlanningDealType.SubTitle->return R.layout.customlayout_planningdeal_detail_subtitle
             PlanningDealType.Deal->return R.layout.customlayout_main_item_dealone
+            PlanningDealType.Loading->return R.layout.customlayout_main_item_loading
             else ->return R.layout.customlayout_main_item_padding
         }
     }
@@ -81,6 +82,10 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                 val binding : CustomlayoutMainItemDealoneBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return DealOneViewHolder(binding.root, binding)
             }
+            PlanningDealType.Loading->{
+                val binding : CustomlayoutMainItemLoadingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return ViewLoadingViewHolder(binding.root, binding)
+            }
             else ->{
                 val binding : CustomlayoutMainItemPaddingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return PaddingViewHolder(binding.root, binding)
@@ -107,6 +112,19 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
     open abstract class ListViewHolder(containerView: View, binding: ViewDataBinding) : BaseProductViewHolder<ViewDataBinding>(containerView){
         abstract fun bind(viewModel : PlanningDealDetailViewModel, position : Int, item : PlanningDealBase)
     }
+
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class ViewLoadingViewHolder(private val containerView: View, val binding: CustomlayoutMainItemLoadingBinding) : ListViewHolder(containerView, binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+        override fun bind(viewModel: PlanningDealDetailViewModel, position: Int, item: PlanningDealBase) {
+            binding.progressbarLoadingdialog.isIndeterminate = true
+            binding.progressbarLoadingdialog.indeterminateDrawable.setColorFilter(viewModel.context.resources.getColor(R.color.common_white), android.graphics.PorterDuff.Mode.MULTIPLY)
+        }
+    }
+
 
     /**
      * 메인 리스트에 더미 화면 view holder
@@ -158,8 +176,11 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                             .override(width,width)
                             .downsample(DownsampleStrategy.AT_MOST)
                 }
-                // Thumbnail
-                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url ,request)
+                if(binding.imageThumb.contentDescription == null || binding.imageThumb.contentDescription.toString() != item.deal.productImage.url){
+                    // Thumbnail
+                    ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url ,request)
+                    binding.imageThumb.contentDescription = item.deal.productImage.url
+                }
 
                 // Option
                 if (binding.layoutColor.childCount > 0) {

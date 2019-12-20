@@ -1,6 +1,7 @@
 package io.temco.guhada.view.activity
 
 import android.annotation.SuppressLint
+import android.text.TextUtils
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
@@ -61,6 +62,9 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
 
             mBinding.floating.bringToFront()
 
+            mBinding.progressbarLoadingdialog.isIndeterminate = true
+            mBinding.progressbarLoadingdialog.indeterminateDrawable.setColorFilter(resources.getColor(R.color.common_blue_purple), android.graphics.PorterDuff.Mode.MULTIPLY)
+
             mBinding.recyclerView.layoutManager  = recyclerLayoutManager
             mBinding.recyclerView.adapter = mViewModel.adapter
             mBinding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -79,11 +83,17 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     synchronized(this){
-                        if (mViewModel.adapter.itemCount - (recyclerLayoutManager.findLastVisibleItemPosition()+10) <= 0 && !mViewModel.isLoading && mViewModel.totalPage > mViewModel.currentPage) {
+                        if (mViewModel.adapter.itemCount - (recyclerLayoutManager.findLastVisibleItemPosition()+6) <= 0 && !mViewModel.isLoading && mViewModel.totalPage > mViewModel.currentPage) {
                             if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","itemCount",mViewModel.adapter.itemCount,"findLastVisibleItemPosition",recyclerLayoutManager.findLastVisibleItemPosition())
                             if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","mViewModel.totalPage",mViewModel.totalPage,"mViewModel.totalPage",mViewModel.currentPage)
                             mViewModel.isLoading = true
-                            mViewModel.getPlanningDetail(false, null)
+                            mBinding.loadingView.visibility = View.VISIBLE
+                            mViewModel.getPlanningDetail(false, object : OnCallBackListener{
+                                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                                    if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","getPlanningDetail callBackListener mViewModel.totalPage",mViewModel.totalPage,"mViewModel.totalPage",mViewModel.currentPage)
+                                    mBinding.loadingView.visibility = View.GONE
+                                }
+                            })
                         }
                     }
                 }
@@ -92,7 +102,10 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
 
             mViewModel.getPlanningDetail(true, object : OnCallBackListener{
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    mBinding.textviewTitle.text = value.toString()
+                    if(resultFlag) mBinding.textviewTitle.text = value.toString()
+                    else if(!TextUtils.isEmpty(value.toString()) && value.toString() == "finish"){
+                        finish()
+                    }
                 }
             })
             mBinding.clickListener = this
