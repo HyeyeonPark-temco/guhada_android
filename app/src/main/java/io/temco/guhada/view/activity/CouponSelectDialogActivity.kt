@@ -40,7 +40,6 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
         mViewModel = CouponSelectDialogViewModel().apply {
             this.mCalculatePaymentInfo.observe(this@CouponSelectDialogActivity, Observer {
                 val jsonArray = JsonArray()
-//                for (dealId in mViewModel.mSelectedCouponMap.keys) {
                 for (dealId in mViewModel.mCartIdMap.keys) {
                     val cartId = mViewModel.mCartIdMap[dealId]
                     val couponNumber = mViewModel.mSelectedCouponMap[dealId]?.couponNumber?:""

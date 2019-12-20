@@ -528,11 +528,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         this.order.user.mobile.isNullOrEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifymobile))
                         this@PaymentViewModel.selectedShippingAddress == null -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         else -> {
-                            mRequestOrder.parentMethodCd = selectedMethod.methodCode
-                            mRequestOrder.consumptionPoint = usedPointNumber.toInt()
-
                             checkCashReceipt(nextTask = {
-                                setCoupon()
+                                mRequestOrder.parentMethodCd = selectedMethod.methodCode
+                                mRequestOrder.consumptionPoint = usedPointNumber.toInt()
+                                mRequestOrder.shippingAddress = selectedShippingAddress!!
+                                mRequestOrder.cartItemPayments = mSelectedCouponArray
+
                                 checkShippingMessage()
                                 saveShippingAddress()
                             })
@@ -580,14 +581,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 ?: ""
         selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = message })
         mRequestOrder.shippingAddress.shippingMessage = message
-    }
-
-    // 결제하기 클릭 시, 선택된 쿠폰 체크
-    private fun setCoupon() {
-        if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
-            mRequestOrder.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
-            mRequestOrder.cartItemPayments = mSelectedCouponArray
-        }
     }
 
     /**

@@ -456,7 +456,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     }
 
-    // 사용 가능 쿠폰, 포인트 조회 (미사용)
+    // 사용 가능 쿠폰 조회
     private fun initCouponInfo() {
         mViewModel.mCouponInfo.observe(this, Observer {
             mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), it.availableCouponCount, it.savedCouponCount))
@@ -486,7 +486,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     list.add(item)
                 }
             }
-            mViewModel.mRequestOrder.cartItemPayments = list
+            mViewModel.mSelectedCouponArray = list
         })
 
     }
