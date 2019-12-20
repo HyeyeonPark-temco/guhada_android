@@ -118,7 +118,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             getDueSavePoint()
 
             // 결제 금액 조회
-            getCalculatePaymentInfo()
+            if(mSelectedCouponArray.isNotEmpty() && prev != value.toInt())
+                getCalculatePaymentInfo()
         }
     var usedPoint: ObservableField<String> = ObservableField("")
         @Bindable
@@ -226,7 +227,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         get() = field
 
     // 하단 결제 금액 계산
-    var mCalculatePaymentInfo = MutableLiveData<CalculatePaymentInfo>(CalculatePaymentInfo())
+    var mCalculatePaymentInfo = MutableLiveData<CalculatePaymentInfo>()
 
     fun addCartItem() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->

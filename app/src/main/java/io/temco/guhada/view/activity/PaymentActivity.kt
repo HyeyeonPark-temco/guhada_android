@@ -487,6 +487,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 }
             }
             mViewModel.mSelectedCouponArray = list
+            mViewModel.getCalculatePaymentInfo()
         })
 
     }
@@ -592,8 +593,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     val couponCount = data?.getIntExtra("couponCount", 0)
                     val discountPrice = data?.getIntExtra("discountPrice", 0)
                     data?.getStringExtra("selectedCouponArray").let { array ->
-                        if (!array.isNullOrEmpty())
+                        if (!array.isNullOrEmpty()){
                             mViewModel.mSelectedCouponArray = Gson().fromJson(array, Array<RequestOrder.CartItemPayment>::class.java).toMutableList()
+                            mViewModel.getCalculatePaymentInfo()
+                        }
                     }
                     mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.text = Html.fromHtml(String.format(getString(R.string.payment_coupon_format), discountPrice, couponCount))
                 }
