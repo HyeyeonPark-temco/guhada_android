@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
@@ -37,19 +38,10 @@ class PaymentOrderItemAdapter : RecyclerView.Adapter<PaymentOrderItemAdapter.Hol
 
     inner class Holder(val binding: ItemPaymentOrderitemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(orderItem: OrderItemResponse) {
-            setSpacing()
+            binding.viewPaymentproductDivider.visibility = if (adapterPosition == itemCount - 1) View.GONE else View.VISIBLE
+            (binding.linearlayoutPaymentproductContainer.layoutParams as ViewGroup.MarginLayoutParams).topMargin = if (adapterPosition == 0) 0 else CommonViewUtil.convertDpToPixel(20, binding.root.context)
             binding.orderItem = orderItem
             binding.executePendingBindings()
-        }
-
-        private fun setSpacing() {
-            if (adapterPosition < items.size - 1) {
-                (binding.linearlayoutPaymentproductContainer.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                    bottomMargin = 40
-                }.let {
-                    binding.linearlayoutPaymentproductContainer.layoutParams = it
-                }
-            }
         }
     }
 

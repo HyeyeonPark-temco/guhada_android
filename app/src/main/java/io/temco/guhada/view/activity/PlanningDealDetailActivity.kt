@@ -1,6 +1,7 @@
 package io.temco.guhada.view.activity
 
 import android.annotation.SuppressLint
+import android.text.TextUtils
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
@@ -9,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
@@ -20,7 +20,6 @@ import io.temco.guhada.data.viewmodel.PlanningDealDetailViewModel
 import io.temco.guhada.databinding.ActivityPlanningdealdetailBinding
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 /**
  * 기획전 상세 화면
@@ -40,7 +39,6 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
     override fun getViewType(): Type.View = Type.View.PLANNING_DEAL
 
     override fun init() {
-
         mViewModel = PlanningDealDetailViewModel(this)
         mViewModel.planningDealDetailId = intent?.extras?.getInt("planningDealDetailId") ?: -1
         if(mViewModel.planningDealDetailId < 0) finish()
@@ -61,6 +59,9 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
 
             mBinding.floating.bringToFront()
 
+            mBinding.progressbarLoadingdialog.isIndeterminate = true
+            mBinding.progressbarLoadingdialog.indeterminateDrawable.setColorFilter(resources.getColor(R.color.common_blue_purple), android.graphics.PorterDuff.Mode.MULTIPLY)
+
             mBinding.recyclerView.layoutManager  = recyclerLayoutManager
             mBinding.recyclerView.adapter = mViewModel.adapter
             mBinding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
@@ -79,20 +80,29 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     synchronized(this){
-                        if (mViewModel.adapter.itemCount - (recyclerLayoutManager.findLastVisibleItemPosition()+10) <= 0 && !mViewModel.isLoading && mViewModel.totalPage > mViewModel.currentPage) {
+                        if (mViewModel.adapter.itemCount - (recyclerLayoutManager.findLastVisibleItemPosition()+6) <= 0 && !mViewModel.isLoading && mViewModel.totalPage > mViewModel.currentPage) {
                             if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","itemCount",mViewModel.adapter.itemCount,"findLastVisibleItemPosition",recyclerLayoutManager.findLastVisibleItemPosition())
                             if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","mViewModel.totalPage",mViewModel.totalPage,"mViewModel.totalPage",mViewModel.currentPage)
                             mViewModel.isLoading = true
-                            mViewModel.getPlanningDetail(false, null)
+                            mBinding.loadingView.visibility = View.VISIBLE
+                            mViewModel.getPlanningDetail(false, mViewModel.planningDealSortType.get()!!.code, false, object : OnCallBackListener{
+                                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                                    if(CustomLog.flag)CustomLog.L("PlanningDealDetailActivity","getPlanningDetail callBackListener mViewModel.totalPage",mViewModel.totalPage,"mViewModel.totalPage",mViewModel.currentPage)
+                                    mBinding.loadingView.visibility = View.GONE
+                                }
+                            })
                         }
                     }
                 }
             })
 
 
-            mViewModel.getPlanningDetail(true, object : OnCallBackListener{
+            mViewModel.getPlanningDetail(true, mViewModel.planningDealSortType.get()!!.code, false, object : OnCallBackListener{
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    mBinding.textviewTitle.text = value.toString()
+                    if(resultFlag) mBinding.textviewTitle.text = value.toString()
+                    else if(!TextUtils.isEmpty(value.toString()) && value.toString() == "finish"){
+                        finish()
+                    }
                 }
             })
             mBinding.clickListener = this

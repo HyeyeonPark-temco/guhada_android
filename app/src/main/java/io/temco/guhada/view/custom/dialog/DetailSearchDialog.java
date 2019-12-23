@@ -24,6 +24,7 @@ import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
+import io.temco.guhada.data.viewmodel.DetailSearchDialogViewModel;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
 import io.temco.guhada.view.adapter.DetailSearchCategoryListAdapter;
 import io.temco.guhada.view.adapter.brand.DetailSearchBrandListAdapter;
@@ -36,6 +37,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     private OnDetailSearchListener mDetailSearchListener;
     private DetailSearchBrandListAdapter mBrandListAdapter;
     private boolean mIsChangeData = false;
+    private DetailSearchDialogViewModel mViewModel;
     // Category
     private int mParentCategoryId;
     private int[] mParentCategoryHierarchy;
@@ -68,6 +70,8 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     protected void init() {
         mBinding.setClickListener(this);
         mDepthIndexMap = null;
+        mViewModel = new DetailSearchDialogViewModel(this.getContext());
+        mBinding.setViewModel(mViewModel);
         // Data
         initData();
     }
@@ -271,6 +275,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         }
     }
 
+
     private boolean setDepthList(int depth, Category category,int index){
         boolean isAllSelect = false;
         if(mDepthTitle!=null && mDepthTitle.containsKey(depth) && mDepthTitle.get(depth).containsKey(category.id)){
@@ -295,12 +300,6 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         adapter.setItems(data);
         mBinding.listCategory.setAdapter(adapter);
         refreshCategoryTitle();
-        /*mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
-        DetailSearchCategoryFirstListAdapter adapter = new DetailSearchCategoryFirstListAdapter(getContext());
-        adapter.setOnCategoryListener(this::checkSelectedCategoryList);
-        adapter.setmCategoryHeaderListListener(this::checkSelectedCategoryHeaderList);
-        adapter.setItems(data);
-        mBinding.listCategory.setAdapter(adapter);*/
     }
 
     private boolean checkSelectedCategoryHirarchy(int[] hirarchy) {

@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
@@ -54,6 +55,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
             PlanningDealType.ImageBanner->return R.layout.customlayout_planningdeal_detail_imgbanner
             PlanningDealType.SubTitle->return R.layout.customlayout_planningdeal_detail_subtitle
             PlanningDealType.Deal->return R.layout.customlayout_main_item_dealone
+            PlanningDealType.Loading->return R.layout.customlayout_main_item_loading
             else ->return R.layout.customlayout_main_item_padding
         }
     }
@@ -81,6 +83,10 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                 val binding : CustomlayoutMainItemDealoneBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return DealOneViewHolder(binding.root, binding)
             }
+            PlanningDealType.Loading->{
+                val binding : CustomlayoutMainItemLoadingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return ViewLoadingViewHolder(binding.root, binding)
+            }
             else ->{
                 val binding : CustomlayoutMainItemPaddingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return PaddingViewHolder(binding.root, binding)
@@ -107,6 +113,19 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
     open abstract class ListViewHolder(containerView: View, binding: ViewDataBinding) : BaseProductViewHolder<ViewDataBinding>(containerView){
         abstract fun bind(viewModel : PlanningDealDetailViewModel, position : Int, item : PlanningDealBase)
     }
+
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class ViewLoadingViewHolder(private val containerView: View, val binding: CustomlayoutMainItemLoadingBinding) : ListViewHolder(containerView, binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+        override fun bind(viewModel: PlanningDealDetailViewModel, position: Int, item: PlanningDealBase) {
+            binding.progressbarLoadingdialog.isIndeterminate = true
+            binding.progressbarLoadingdialog.indeterminateDrawable.setColorFilter(viewModel.context.resources.getColor(R.color.common_white), android.graphics.PorterDuff.Mode.MULTIPLY)
+        }
+    }
+
 
     /**
      * 메인 리스트에 더미 화면 view holder
@@ -158,8 +177,11 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                             .override(width,width)
                             .downsample(DownsampleStrategy.AT_MOST)
                 }
-                // Thumbnail
-                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url ,request)
+                if(binding.imageThumb.contentDescription == null || binding.imageThumb.contentDescription.toString() != item.deal.productImage.url){
+                    // Thumbnail
+                    ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url ,request)
+                    binding.imageThumb.contentDescription = item.deal.productImage.url
+                }
 
                 // Option
                 if (binding.layoutColor.childCount > 0) {
@@ -198,7 +220,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
     }
 
     /**
-     * 메인 리스트에 빈 화면 view holder
+     * 기획전 상단 타이틀
      */
     class PlanningDealDetailTitleViewHolder(private val containerView: View, val binding: CustomlayoutPlanningdealDetailTitleBinding) : ListViewHolder(containerView, binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
@@ -219,7 +241,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
     }
 
     /**
-     * 메인 리스트에 빈 화면 view holder
+     * 기획전 서브 타이틀
      */
     class PlanningDealDetailSubTitleViewHolder(private val containerView: View, val binding: CustomlayoutPlanningdealDetailSubtitleBinding) : ListViewHolder(containerView, binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
@@ -233,7 +255,7 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                         override fun onItemClick(position: Int) {
                             viewModel.mFilterIndex = position
                             viewModel.planningDealSortType.set(viewModel.mSortFilterType[viewModel.mFilterIndex])
-                            //viewModel.getDealListData(true, true)
+                            viewModel.getPlanningDetail(true, viewModel.planningDealSortType.get()!!.code, true,null)
                         }
                         override fun onClickClose() {
                             this@apply.dismiss()
@@ -246,14 +268,23 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
         }
     }
     /**
-     * 메인 리스트에 빈 화면 view holder
+     * 기획전 배너 이미지
      */
     class PlanningDealDetailImageBannerViewHolder(private val containerView: View, val binding: CustomlayoutPlanningdealDetailImgbannerBinding) : ListViewHolder(containerView, binding){
         internal var width = 0
         internal var height = 0
+        internal lateinit var request : RequestOptions
+
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: PlanningDealDetailViewModel, position: Int, item: PlanningDealBase) {
             if(item is PlanningDealImageBanner){
+                if(!::request.isInitialized){
+                    request = RequestOptions()
+                            .fitCenter()
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                            .override(width,width)
+                            .downsample(DownsampleStrategy.AT_MOST)
+                }
                 Glide.with(viewModel.context).load(item.imgPath)
                         .apply(RequestOptions().format(DecodeFormat.PREFER_ARGB_8888).downsample(DownsampleStrategy.AT_MOST))
                         .into(object : SimpleTarget<Drawable>(){
@@ -266,11 +297,16 @@ class PlanningDealDetailListAdapter(private val model : PlanningDealDetailViewMo
                                     height  = (ra * resource.minimumHeight.toFloat()).toInt()
                                     binding.imageBanner.layoutParams = RelativeLayout.LayoutParams(width,height)
                                 }
-                                binding.imageBanner.setImageDrawable(resource)
+
+                                //binding.imageBanner.setImageDrawable(resource)
+                                setImage(binding.imageBanner, item.imgPath)
                             }
                         }
                 )
             }
+        }
+        private fun setImage(imageView : ImageView, imgUrl : String){
+            ImageUtil.loadImage(Glide.with(containerView.context as Activity), imageView, imgUrl ,request)
         }
     }
 

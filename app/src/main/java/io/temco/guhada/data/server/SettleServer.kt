@@ -127,8 +127,8 @@ class SettleServer {
          * 기획전 상세정보
          */
         @JvmStatic
-        fun getPlanningDetail(eventId : Int, page : Int, listener: OnServerListener) {
-            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getPlanningDetail(eventId, page).enqueue(object : Callback<BaseModel<PlanningDetailData>> {
+        fun getPlanningDetail(eventId : Int, page : Int, searchProgress : String?, listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getPlanningDetail(eventId, page,searchProgress).enqueue(object : Callback<BaseModel<PlanningDetailData>> {
                 override fun onResponse(call: Call<BaseModel<PlanningDetailData>>, response: Response<BaseModel<PlanningDetailData>>) {
                     resultListener(listener, call, response)
                 }
