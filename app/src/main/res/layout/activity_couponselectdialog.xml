@@ -56,8 +56,8 @@
                 android:layout_height="2dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
-                android:background="@color/black_four"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:background="@color/black_four" />
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -200,9 +200,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@color/common_blue_purple"
+                        android:onClick="@{() -> viewModel.calculatePaymentInfo()}"
                         android:text="@string/couponselect_button"
                         android:textColor="@color/common_white"
-                        android:onClick="@{()->viewModel.calculatePaymentInfo()}"
                         android:textSize="@dimen/text_18" />
                 </LinearLayout>
 

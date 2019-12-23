@@ -20,7 +20,6 @@ import io.temco.guhada.data.model.coupon.CouponInfo
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.CalculatePaymentInfo
-import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.server.OrderServer
 
 class CouponSelectDialogViewModel : BaseObservable() {
@@ -58,34 +57,31 @@ class CouponSelectDialogViewModel : BaseObservable() {
         @Bindable
         get() = field
 
+    var mPointConsumption = 0
+
     var mCouponInfo = CouponInfo()
     var mCalculatePaymentInfo = MutableLiveData<CalculatePaymentInfo>()
 
 
     fun calculatePaymentInfo() {
         val jsonArray = JsonArray()
-        if (mSelectedCouponInfo.get() != null) {
-            for (couponNumber in mSelectedCouponInfo.get()!!.keys) {
-                if (couponNumber != null) {
-                    val dealId = mSelectedCouponInfo.get()?.get(couponNumber)
-                    if (dealId != null) {
-                        val cartId = mCartIdMap[dealId]
-                        if (cartId != null) {
-                            RequestOrder.CartItemPayment().apply {
-                                this.cartItemId = cartId.toLong()
-                                this.couponNumber = couponNumber
-                            }.let {
-                                val element = JsonParser().parse(Gson().toJson(it))
-                                jsonArray.add(element)
-                            }
-                        }
-                    }
+        for (dealId in mCartIdMap.keys) {
+            if (mCartIdMap[dealId] != null) {
+                val couponNumber = mSelectedCouponMap[dealId]
+                RequestOrder.CartItemPayment().apply {
+                    this.cartItemId = mCartIdMap[dealId]!!
+                    this.couponNumber = couponNumber?.couponNumber ?: ""
+                }.let {
+                    val element = JsonParser().parse(Gson().toJson(it))
+                    jsonArray.add(element)
                 }
             }
         }
 
+
         val jsonObject = JsonObject()
         jsonObject.add("cartItemPayments", jsonArray)
+        jsonObject.addProperty("consumptionPoint", mPointConsumption)
 
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             OrderServer.getCalculatePaymentInfo(OnServerListener { success, o ->

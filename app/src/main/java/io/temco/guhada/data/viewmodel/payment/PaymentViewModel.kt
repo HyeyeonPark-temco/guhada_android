@@ -118,7 +118,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             getDueSavePoint()
 
             // 결제 금액 조회
-            if(mSelectedCouponArray.isNotEmpty() && prev != value.toInt())
+            if (mSelectedCouponArray.isNotEmpty() && prev != value.toInt())
                 getCalculatePaymentInfo()
         }
     var usedPoint: ObservableField<String> = ObservableField("")

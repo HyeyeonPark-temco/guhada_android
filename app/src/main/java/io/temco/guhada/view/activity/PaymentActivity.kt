@@ -356,6 +356,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private fun redirectCouponSelectDialogActivity() {
         val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
         intent.putExtra("couponInfo", mViewModel.mCouponInfo.value)
+        intent.putExtra("consumptionPoint", mViewModel.usedPointNumber.toInt())
         startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
     }
 
@@ -592,13 +593,16 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 if (resultCode == Activity.RESULT_OK) {
                     val couponCount = data?.getIntExtra("couponCount", 0)
                     val discountPrice = data?.getIntExtra("discountPrice", 0)
-                    data?.getStringExtra("selectedCouponArray").let { array ->
-                        if (!array.isNullOrEmpty()){
-                            mViewModel.mSelectedCouponArray = Gson().fromJson(array, Array<RequestOrder.CartItemPayment>::class.java).toMutableList()
-                            mViewModel.getCalculatePaymentInfo()
-                        }
-                    }
                     mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.text = Html.fromHtml(String.format(getString(R.string.payment_coupon_format), discountPrice, couponCount))
+
+                    data?.getStringExtra("selectedCouponArray").let { array ->
+                        if (!array.isNullOrEmpty())
+                            mViewModel.mSelectedCouponArray = Gson().fromJson(array, Array<RequestOrder.CartItemPayment>::class.java).toMutableList()
+                    }
+                    data?.getSerializableExtra("calculatePaymentInfo").let {
+                        if (it != null)
+                            mViewModel.mCalculatePaymentInfo.postValue(it as CalculatePaymentInfo)
+                    }
                 }
             }
             RequestCode.PAYMENT_RESULT.flag -> {
