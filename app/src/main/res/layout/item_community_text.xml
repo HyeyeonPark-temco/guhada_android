@@ -41,7 +41,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:roundCornerImageUrl="@{item.imageUrl}"
-                app:roundCornerRadius="@{5}" />
+                app:roundCornerRadius="@{10}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintlayout_communitytext_category"
@@ -211,7 +211,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_6"
+            android:background="@color/white_four"
             app:layout_constraintBottom_toBottomOf="parent" />
     </LinearLayout>
 

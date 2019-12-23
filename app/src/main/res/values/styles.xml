@@ -471,7 +471,7 @@
     </style>
 
     <style name="CommunityDescriptionTextStyle" parent="TextRegularSingleLine">
-        <item name="android:textColor">@color/warm_grey_two</item>
+        <item name="android:textColor">@color/warm_grey_six</item>
         <item name="android:textSize">@dimen/text_12</item>
     </style>
 
