@@ -3,10 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="clickShipInfoListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="clickPdtCdtInfoListener"
+            type="android.view.View.OnClickListener" />
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.DetailSearchDialogViewModel" />
     </data>
 
     <LinearLayout
@@ -114,6 +122,195 @@
                                 android:paddingRight="20dp" />
                         </LinearLayout>
                     </com.github.florent37.expansionpanel.ExpansionLayout>
+
+
+                    <!-- //////////////////////////////////////////////// -->
+                    <!-- Shipping info -->
+                    <!-- //////////////////////////////////////////////// -->
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center_vertical"
+                            android:text="배송정보"
+                            android:textColor="@color/text_3"
+                            android:textSize="@dimen/text_14"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:layout_marginLeft="10dp"
+                            android:weightSum="2"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/list_shipinfo1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:onClick="@{clickShipInfoListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="20dp">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogShipInfo1 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="해외배송"
+                                    android:textColor="@{viewModel.detailSearchDialogShipInfo1 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/list_shipinfo2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:onClick="@{clickShipInfoListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogShipInfo2 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="국내배송"
+                                    android:textColor="@{viewModel.detailSearchDialogShipInfo2 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- DOT LINE -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layerType="software"
+                            android:src="@drawable/line_dot" />
+
+                    </LinearLayout>
+
+                    <!-- //////////////////////////////////////////////// -->
+
+
+                    <!-- //////////////////////////////////////////////// -->
+                    <!-- Product Condition info -->
+                    <!-- //////////////////////////////////////////////// -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center_vertical"
+                            android:text="제품상태"
+                            android:textColor="@color/text_3"
+                            android:textSize="@dimen/text_14"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:layout_marginLeft="10dp"
+                            android:weightSum="2"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/list_pdtCdtinfo1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:onClick="@{clickPdtCdtInfoListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="20dp">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogPdtCdt1 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="새제품"
+                                    android:textColor="@{viewModel.detailSearchDialogPdtCdt1 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/list_pdtCdtinfo2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:onClick="@{clickPdtCdtInfoListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogPdtCdt2 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="빈티지"
+                                    android:textColor="@{viewModel.detailSearchDialogPdtCdt2 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- DOT LINE -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layerType="software"
+                            android:src="@drawable/line_dot" />
+
+                    </LinearLayout>
+
+                    <!-- //////////////////////////////////////////////// -->
 
                     <!-- //////////////////////////////////////////////// -->
                     <!-- FILTER -->
