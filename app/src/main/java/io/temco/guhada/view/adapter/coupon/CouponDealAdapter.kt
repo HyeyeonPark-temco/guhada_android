@@ -34,8 +34,7 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
             if(adapterPosition == 0)
                 (mBinding.linearlayoutCouponselectContainer.layoutParams as ViewGroup.MarginLayoutParams).topMargin = CommonViewUtil.convertDpToPixel(20, mBinding.root.context)
 
-            mViewModel.mCartIdMap[benefitOrderProductResponse.dealId] = benefitOrderProductResponse.cartId
-
+            mViewModel.mCartIdList.add(benefitOrderProductResponse.cartId)
             mBinding.recyclerviewCouponselectCoupon.adapter = CouponWalletAdapter().apply {
                 this.mViewModel = this@CouponDealAdapter.mViewModel
 
@@ -47,7 +46,7 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
                 }.let { benefitOrderProductResponse.benefitProductCouponResponseList.add(it) }
 
                 this.mList = benefitOrderProductResponse.benefitProductCouponResponseList
-                this.mDealId = benefitOrderProductResponse.dealId
+                this.mCartId = benefitOrderProductResponse.cartId
             }
 
             benefitOrderProductResponse.optionStr =
@@ -58,7 +57,6 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
-
     }
 
 }

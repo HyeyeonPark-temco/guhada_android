@@ -16,6 +16,10 @@
             name="dealId"
             type="Long" />
 
+        <variable
+            name="cartId"
+            type="Long" />
+
     </data>
 
     <LinearLayout
@@ -33,7 +37,7 @@
             android:focusable="true"
             app:selectedCouponInfo="@{viewModel.mSelectedCouponInfo}"
             app:currentCouponNumber="@{couponWallet.couponNumber}"
-            app:currentDealId="@{dealId}" />
+            app:currentCartId="@{cartId}" />
 
         <TextView
             android:id="@+id/textview_couponselect_couponname"
@@ -46,7 +50,7 @@
             android:textSize="@dimen/text_13"
             app:selectedCouponInfo="@{viewModel.mSelectedCouponInfo}"
             app:currentCouponNumber="@{couponWallet.couponNumber}"
-            app:currentDealId="@{dealId}" />
+            app:currentCartId="@{cartId}" />
 
     </LinearLayout>
 </layout>

@@ -40,18 +40,16 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
         mViewModel = CouponSelectDialogViewModel().apply {
             this.mCalculatePaymentInfo.observe(this@CouponSelectDialogActivity, Observer {
                 val jsonArray = JsonArray()
-                for (dealId in mViewModel.mCartIdMap.keys) {
-                    val cartId = mViewModel.mCartIdMap[dealId]
-                    val couponNumber = mViewModel.mSelectedCouponMap[dealId]?.couponNumber ?: ""
+                for (cartId in mViewModel.mCartIdList) {
+                    val couponNumber = mViewModel.mSelectedCouponMap[cartId]?.couponNumber ?: ""
 
-                    if (cartId != null)
-                        RequestOrder.CartItemPayment().apply {
-                            this.cartItemId = cartId
-                            this.couponNumber = couponNumber
-                        }.let {
-                            val element = JsonParser().parse(Gson().toJson(it))
-                            jsonArray.add(element)
-                        }
+                    RequestOrder.CartItemPayment().apply {
+                        this.cartItemId = cartId
+                        this.couponNumber = couponNumber
+                    }.let {
+                        val element = JsonParser().parse(Gson().toJson(it))
+                        jsonArray.add(element)
+                    }
                 }
 
                 var discountPrice = 0
@@ -70,6 +68,7 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
                 finish()
             })
         }
+
         intent.getSerializableExtra("couponInfo").let {
             if (it != null) {
                 mViewModel.mCouponInfo = it as CouponInfo
@@ -84,5 +83,7 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
         }
 
         mViewModel.mPointConsumption = intent.getIntExtra("consumptionPoint", 0)
+
+
     }
 }

@@ -454,7 +454,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
      * 사용 가능 쿠폰 정보
      * @author Hyeyeon Park
      */
-    private fun getInitialCouponInfo() {
+     fun getInitialCouponInfo() {
         ServerCallbackUtil.callWithToken(task = {
             GatewayServer.getCouponInfo(OnServerListener { success, o ->
                 if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag)

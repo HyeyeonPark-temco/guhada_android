@@ -26,7 +26,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
     lateinit var mViewModel: CouponSelectDialogViewModel
     var mList = mutableListOf<CouponInfo.BenefitOrderProductCouponResponse>()
-    var mDealId = 0L
+    var mCartId = 0L
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_couponselect_coupon, parent, false))
@@ -38,41 +38,41 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
     }
 
     /*
-    *  - 쿠폰 선택: mSelectedCouponInfo[couponNumber, dealId]
-    *  - 적용 안함 선택: mSelectedCouponInfo[dealId, "NOT_SELECT"]
+    *  - 쿠폰 선택: mSelectedCouponInfo[couponNumber, cartId]
+    *  - 적용 안함 선택: mSelectedCouponInfo[cartId, "NOT_SELECT"]
     */
     inner class Holder(binding: ItemCouponselectCouponBinding) : BaseViewHolder<ItemCouponselectCouponBinding>(binding.root) {
         fun bind(item: CouponInfo.BenefitOrderProductCouponResponse) {
             if (item.selected) {
-                mViewModel.mSelectedCouponMap[mDealId] = item
-                mViewModel.mSelectedCouponInfo.get()?.set(item.couponNumber, mDealId)
+                mViewModel.mSelectedCouponMap[mCartId] = item
+                mViewModel.mSelectedCouponInfo.get()?.set(item.couponNumber, mCartId)
                 mViewModel.notifyPropertyChanged(BR.mSelectedCouponInfo)
             }
 
             mBinding.imageviewCouponselectCoupon.setOnClickListener {
                 for (couponNumber in mViewModel.mSelectedCouponInfo.get()?.keys ?: mutableSetOf()) {
-                    if (mViewModel.mSelectedCouponInfo.get()?.get(couponNumber) == mDealId) {
+                    if (mViewModel.mSelectedCouponInfo.get()?.get(couponNumber) == mCartId) {
 
-                        if (mViewModel.mSelectedCouponMap[mDealId] != null) {
-                            mViewModel.mTotalDiscountPrice = ObservableInt(mViewModel.mTotalDiscountPrice.get() - mViewModel.mSelectedCouponMap[mDealId]!!.couponDiscountPrice)
-                            mViewModel.mSelectedCouponMap.remove(mDealId)
+                        if (mViewModel.mSelectedCouponMap[mCartId] != null) {
+                            mViewModel.mTotalDiscountPrice = ObservableInt(mViewModel.mTotalDiscountPrice.get() - mViewModel.mSelectedCouponMap[mCartId]!!.couponDiscountPrice)
+                            mViewModel.mSelectedCouponMap.remove(mCartId)
                         }
-                        mViewModel.mSelectedCouponInfo.get()?.remove(mDealId.toString())
+                        mViewModel.mSelectedCouponInfo.get()?.remove(mCartId.toString())
                         mViewModel.mSelectedCouponInfo.get()?.remove(couponNumber ?: "")
                         break
                     }
                 }
 
-                mViewModel.mSelectedDealId = mDealId
+                mViewModel.mSelectedCartId = mCartId
                 mViewModel.mSelectedCoupon = ObservableField(item)
 
                 if (item.couponNumber == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER) {
-                    mViewModel.mSelectedCouponInfo.get()?.set(mDealId.toString(), CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER)
+                    mViewModel.mSelectedCouponInfo.get()?.set(mCartId.toString(), CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER)
                 } else {
-                    mViewModel.mSelectedCouponInfo.get()?.set(item.couponNumber, mDealId)
-                    mViewModel.mSelectedCouponInfo.get()?.remove(mDealId.toString())
-                    mViewModel.mSelectedCouponMap[mDealId] = item
-                    mViewModel.mTotalDiscountPrice = ObservableInt(mViewModel.mTotalDiscountPrice.get() + mViewModel.mSelectedCouponMap[mDealId]?.couponDiscountPrice!!)
+                    mViewModel.mSelectedCouponInfo.get()?.set(item.couponNumber, mCartId)
+                    mViewModel.mSelectedCouponInfo.get()?.remove(mCartId.toString())
+                    mViewModel.mSelectedCouponMap[mCartId] = item
+                    mViewModel.mTotalDiscountPrice = ObservableInt(mViewModel.mTotalDiscountPrice.get() + mViewModel.mSelectedCouponMap[mCartId]?.couponDiscountPrice!!)
                 }
                 mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
                 mViewModel.notifyPropertyChanged(BR.mSelectedCouponInfo)
@@ -98,7 +98,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                         }
                     }
 
-            mBinding.dealId = mDealId
+            mBinding.cartId = mCartId
             mBinding.couponWallet = item
 
             mBinding.viewModel = mViewModel
@@ -108,8 +108,8 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
 
     companion object {
         @JvmStatic
-        @BindingAdapter(value = ["currentDealId", "currentCouponNumber", "selectedCouponInfo"])
-        fun ImageView.bindSelected(currentDealId: Long, currentCouponNumber: String?, selectedCouponInfo: MutableMap<String, Any?>?) {
+        @BindingAdapter(value = ["currentCartId", "currentCouponNumber", "selectedCouponInfo"])
+        fun ImageView.bindSelected(currentCartId: Long, currentCouponNumber: String?, selectedCouponInfo: MutableMap<String, Any?>?) {
 
             fun setButtonInactive() {
                 this.isClickable = false
@@ -130,19 +130,19 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 when {
                     currentCouponNumber != "NOT_SELECT" -> when {
                         selectedCouponInfo[currentCouponNumber] == null -> setButtonActive()
-                        selectedCouponInfo[currentCouponNumber] == currentDealId -> setButtonChecked()
-                        selectedCouponInfo[currentCouponNumber] != currentDealId -> setButtonInactive()
+                        selectedCouponInfo[currentCouponNumber] == currentCartId -> setButtonChecked()
+                        selectedCouponInfo[currentCouponNumber] != currentCartId -> setButtonInactive()
                     }
-                    selectedCouponInfo[currentDealId.toString()] == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER -> setButtonChecked()
+                    selectedCouponInfo[currentCartId.toString()] == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER -> setButtonChecked()
                     else -> setButtonActive()
                 }
 
-//            Log.e("쿠폰", "currentDealId: $currentDealId      currentCouponNumber: $currentCouponNumber   selectedCouponMap:${selectedCouponInfo.toString()}")
+//            Log.e("쿠폰", "currentCartId: $currentCartId      currentCouponNumber: $currentCouponNumber   selectedCouponMap:${selectedCouponInfo.toString()}")
         }
 
         @JvmStatic
-        @BindingAdapter(value = ["currentDealId", "currentCouponNumber", "selectedCouponInfo"])
-        fun TextView.bindInactivated(currentDealId: Long, currentCouponNumber: String?, selectedCouponInfo: MutableMap<String, Any?>?) {
+        @BindingAdapter(value = ["currentCartId", "currentCouponNumber", "selectedCouponInfo"])
+        fun TextView.bindInactivated(currentCartId: Long, currentCouponNumber: String?, selectedCouponInfo: MutableMap<String, Any?>?) {
 
             val inactiveTextColor = BaseApplication.getInstance().resources.getColor(R.color.pinkish_grey)
             val activeTextColor = BaseApplication.getInstance().resources.getColor(R.color.greyish_brown_two)
@@ -150,7 +150,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
             fun setTextActive() = this.setTextColor(activeTextColor)
 
             if (currentCouponNumber != null && selectedCouponInfo != null && currentCouponNumber != CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER)
-                if (selectedCouponInfo[currentCouponNumber] != null && selectedCouponInfo[currentCouponNumber] != currentDealId)
+                if (selectedCouponInfo[currentCouponNumber] != null && selectedCouponInfo[currentCouponNumber] != currentCartId)
                     setTextInactive()
                 else setTextActive()
             else

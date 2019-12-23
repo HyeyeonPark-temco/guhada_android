@@ -603,6 +603,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                         if (it != null)
                             mViewModel.mCalculatePaymentInfo.postValue(it as CalculatePaymentInfo)
                     }
+                    mViewModel.getInitialCouponInfo()
                 }
             }
             RequestCode.PAYMENT_RESULT.flag -> {

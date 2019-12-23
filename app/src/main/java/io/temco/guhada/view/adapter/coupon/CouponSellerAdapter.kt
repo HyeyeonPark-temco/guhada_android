@@ -28,7 +28,7 @@ class CouponSellerAdapter : RecyclerView.Adapter<CouponSellerAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_couponselect_seller, parent, false))
 
-    override fun getItemCount(): Int = mCouponBenefitSellerResponseList.size// mCouponWalletMap.keys.size
+    override fun getItemCount(): Int = mCouponBenefitSellerResponseList.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(mCouponBenefitSellerResponseList[position])

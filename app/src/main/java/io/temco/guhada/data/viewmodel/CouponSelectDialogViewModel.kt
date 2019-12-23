@@ -28,21 +28,20 @@ class CouponSelectDialogViewModel : BaseObservable() {
         val NOT_SELECT_COUPON_NUMBER = "NOT_SELECT"
     }
 
-    // key: dealId      value: cartId
-    var mCartIdMap = hashMapOf<Long, Long>()
+    var mCartIdList = mutableListOf<Long>()
 
-    // key: dealId      value: BenefitOrderProductCouponResponse
+    // key: cartId      value: BenefitOrderProductCouponResponse
     var mSelectedCouponMap = hashMapOf<Long, CouponInfo.BenefitOrderProductCouponResponse?>()
 
     /*
       - 쿠폰 선택      : mSelectedCouponInfo<couponNumber, dealId>
-      - 적용 안함 선택 : mSelectedCouponInfo<dealId, "NOT_SELECT">
+      - 적용 안함 선택 : mSelectedCouponInfo<cartId, "NOT_SELECT">
     */
     var mSelectedCouponInfo = ObservableField(hashMapOf<String?, Any?>())
         @Bindable
         get() = field
 
-    var mSelectedDealId = 0L
+    var mSelectedCartId = 0L
     var mTotalDiscountPrice = ObservableInt(0)
         @Bindable
         get() = field
@@ -65,19 +64,16 @@ class CouponSelectDialogViewModel : BaseObservable() {
 
     fun calculatePaymentInfo() {
         val jsonArray = JsonArray()
-        for (dealId in mCartIdMap.keys) {
-            if (mCartIdMap[dealId] != null) {
-                val couponNumber = mSelectedCouponMap[dealId]
-                RequestOrder.CartItemPayment().apply {
-                    this.cartItemId = mCartIdMap[dealId]!!
-                    this.couponNumber = couponNumber?.couponNumber ?: ""
-                }.let {
-                    val element = JsonParser().parse(Gson().toJson(it))
-                    jsonArray.add(element)
-                }
+        for (cartId in mCartIdList) {
+            val couponNumber = mSelectedCouponMap[cartId]
+            RequestOrder.CartItemPayment().apply {
+                this.cartItemId = cartId
+                this.couponNumber = couponNumber?.couponNumber ?: ""
+            }.let {
+                val element = JsonParser().parse(Gson().toJson(it))
+                jsonArray.add(element)
             }
         }
-
 
         val jsonObject = JsonObject()
         jsonObject.add("cartItemPayments", jsonArray)
