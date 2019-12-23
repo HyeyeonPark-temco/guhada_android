@@ -26,17 +26,17 @@ class EventUser {
     var email = ""
     var emailVerified = false                 // 이메일 수정 가능 여부 판단 (true: 수정 불가)
     var validEmail = false                  // 유효한 이메일 format 여부 (false: 이메일 필드 지우고 새로 입력받아야 함; sns의 경우 KAKAO:12345 로 email이 저장되는 경우가 있음)
-                                            // 나머지 조건이 모두 충족하다는 가정하에, validEmail이 true면 회원정보 수정으로 넘기지 않음
+    // 나머지 조건이 모두 충족하다는 가정하에, validEmail이 true면 회원정보 수정으로 넘기지 않음
     var verifiedIdentityUpdated = false
 
 
     open class UserSignUp : AcceptTerms(), Serializable {
 
-        var email = ""
+        var email: String? = ""
         var password = ""
 
         override fun toString(): String {
-            if(CustomLog.flag)return "UserSignUp(email='$email', password='$password')"
+            if (CustomLog.flag) return "UserSignUp(email='$email', password='$password')"
             else return ""
         }
     }
@@ -48,7 +48,7 @@ class EventUser {
         var agreeSaleTos = false
         var agreeSmsReception = false
         override fun toString(): String {
-            if(CustomLog.flag)return "AcceptTerms(agreeCollectPersonalInfoTos=$agreeCollectPersonalInfoTos, agreeEmailReception=$agreeEmailReception, agreePurchaseTos=$agreePurchaseTos, agreeSaleTos=$agreeSaleTos, agreeSmsReception=$agreeSmsReception)"
+            if (CustomLog.flag) return "AcceptTerms(agreeCollectPersonalInfoTos=$agreeCollectPersonalInfoTos, agreeEmailReception=$agreeEmailReception, agreePurchaseTos=$agreePurchaseTos, agreeSaleTos=$agreeSaleTos, agreeSmsReception=$agreeSmsReception)"
             else return ""
         }
     }
@@ -65,7 +65,7 @@ class EventUser {
         var mobile = ""
         var name = ""
         override fun toString(): String {
-            if(CustomLog.flag)return "IdentityVerify(birth='$birth', diCode='$diCode', gender='$gender', identityVerifyMethod='$identityVerifyMethod', mobile='$mobile', name='$name')"
+            if (CustomLog.flag) return "IdentityVerify(birth='$birth', diCode='$diCode', gender='$gender', identityVerifyMethod='$identityVerifyMethod', mobile='$mobile', name='$name')"
             else return ""
         }
     }
@@ -78,7 +78,7 @@ class EventUser {
         var verificationTarget = ""
         var verificationTargetType = ""
         override fun toString(): String {
-            if(CustomLog.flag)return "Verification(verificationNumber=$verificationNumber, verificationTarget='$verificationTarget', verificationTargetType='$verificationTargetType')"
+            if (CustomLog.flag) return "Verification(verificationNumber=$verificationNumber, verificationTarget='$verificationTarget', verificationTargetType='$verificationTargetType')"
             else return ""
         }
     }
@@ -92,21 +92,21 @@ class EventUser {
         var snsType = ""
         var profileJson = UserProfile()
         override fun toString(): String {
-            if(CustomLog.flag)return "SnsSignUp(snsId='$snsId', snsType='$snsType', profileJson=$profileJson)"
+            if (CustomLog.flag) return "SnsSignUp(snsId='$snsId', snsType='$snsType', profileJson=$profileJson)"
             else return ""
         }
     }
 
     override fun toString(): String {
-        if(CustomLog.flag)return "EventUser(identityVerify=$identityVerify, userSignUp=$userSignUp, snsSignUp=$snsSignUp, acceptTerms=$acceptTerms, email='$email', emailVerified=$emailVerified, validEmail=$validEmail, verifiedIdentityUpdated=$verifiedIdentityUpdated)"
+        if (CustomLog.flag) return "EventUser(identityVerify=$identityVerify, userSignUp=$userSignUp, snsSignUp=$snsSignUp, acceptTerms=$acceptTerms, email='$email', emailVerified=$emailVerified, validEmail=$validEmail, verifiedIdentityUpdated=$verifiedIdentityUpdated)"
         else return ""
     }
 
 
-    fun isUserLuckyEventCheck() : Boolean{
+    fun isUserLuckyEventCheck(): Boolean {
         var isFlag = false
-        if(this.acceptTerms.agreeEmailReception && this.acceptTerms.agreeSmsReception && this.acceptTerms.agreeSaleTos &&
-                (this.emailVerified || this.validEmail) && (!TextUtils.isEmpty(this.identityVerify.identityVerifyMethod) && !"NONE".equals(this.identityVerify.identityVerifyMethod, true))){
+        if (this.acceptTerms.agreeEmailReception && this.acceptTerms.agreeSmsReception && this.acceptTerms.agreeSaleTos &&
+                (this.emailVerified || this.validEmail) && (!TextUtils.isEmpty(this.identityVerify.identityVerifyMethod) && !"NONE".equals(this.identityVerify.identityVerifyMethod, true))) {
             isFlag = true
         }
 

@@ -40,7 +40,7 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
             intent.getSerializableExtra("snsUser").let {
                 if (it != null) {
                     this.mSnsSignUp = it as EventUser.SnsSignUp
-                    this.mEmail = if (CommonUtil.validateEmail(it.email)) it.email else ""
+                    this.mEmail = if (CommonUtil.validateEmail(it.email)) it.email ?: "" else ""
                     this.mIsSns = true
                 }
             }
