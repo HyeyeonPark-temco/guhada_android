@@ -15,18 +15,21 @@ import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class CancelOrderViewModel : BaseObservableViewModel() {
-    var purchaseOrder: MutableLiveData<PurchaseOrder> = MutableLiveData(PurchaseOrder())
     var mOrderProdGroupId = 0L
-    var quantity = 1
-    var selectedCausePos = -1
-    var cause = ""
-    var successCancelOrderTask: (result: PurchaseOrder) -> Unit = {}
-    var failCancelOrderTask: (msg : String) -> Unit = {}
+    var mQuantity = 1
+    var mSelectedCausePos = -1
+    var mCause = ""
+
+    var mPurchaseOrder: MutableLiveData<PurchaseOrder> = MutableLiveData(PurchaseOrder())
     var mExpectedRefundPrice = MutableLiveData<ExpectedRefundPrice>()
     var mExpectedRefundInfo = MutableLiveData<ExpectedRefundPrice.ExpectedRefundInfo>()
 
-    // 취소 신청 call 여부
-    var mIsCancelCallFinished = false
+    var mShowIndicatorTask: () -> Unit = {}
+    var mSuccessCancelOrderTask: (result: PurchaseOrder) -> Unit = {}
+    var mFailCancelOrderTask: () -> Unit = {}
+
+    // 취소 신청 api call 여부
+    private var mIsCancelCallFinished = false
 
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
@@ -34,7 +37,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             if (it.data != null)
-                                this@CancelOrderViewModel.purchaseOrder.postValue(it.data as PurchaseOrder)
+                                this@CancelOrderViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
                         },
                         dataIsNull = {
                             if (it is BaseModel<*>) {
@@ -60,24 +63,25 @@ class CancelOrderViewModel : BaseObservableViewModel() {
 
     fun cancelOrder() {
         if (!mIsCancelCallFinished) {
+            mShowIndicatorTask()
             mIsCancelCallFinished = true
 
             val cancelRequest = CancelRequest().apply {
                 when {
-                    selectedCausePos < 0 -> {
-                        failCancelOrderTask(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_cause))
+                    mSelectedCausePos < 0 -> {
+                        mFailCancelOrderTask()
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_cause))
                         return
                     }
-                    cause.isEmpty() -> {
-                        failCancelOrderTask(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_hint_cause))
+                    mCause.isEmpty() -> {
+                        mFailCancelOrderTask()
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_hint_cause))
                         return
                     }
                     else -> {
-                        this.cancelReason = this@CancelOrderViewModel.purchaseOrder.value?.cancelReasonList?.get(selectedCausePos)?.code.toString()
-                        this.cancelReasonDetail = this@CancelOrderViewModel.cause
-                        this.quantity = this@CancelOrderViewModel.quantity
+                        this.cancelReason = this@CancelOrderViewModel.mPurchaseOrder.value?.cancelReasonList?.get(mSelectedCausePos)?.code.toString()
+                        this.cancelReasonDetail = this@CancelOrderViewModel.mCause
+                        this.quantity = this@CancelOrderViewModel.mQuantity
                         this.orderProdGroupId = this@CancelOrderViewModel.mOrderProdGroupId
                     }
                 }
@@ -89,7 +93,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                     ServerCallbackUtil.executeByResultCode(success, o,
                             successTask = {
                                 val result = it.data as PurchaseOrder
-                                successCancelOrderTask(result)
+                                mSuccessCancelOrderTask(result)
                             },
                             failedTask = {
                                 ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
