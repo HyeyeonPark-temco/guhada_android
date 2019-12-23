@@ -409,6 +409,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void setTabLayout() {
         if (mBinding != null) {
             if (mIsCategory == Type.ProductListViewType.CATEGORY) {
+                if(CustomLog.getFlag())CustomLog.L("ProductListFragment","layoutTabParent--- 1 VISIBLE");
                 mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
                 setCategoryTabLayout();
             } else {
@@ -420,7 +421,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void setCategoryTabLayout() {
         synchronized (this){
             if (mCategoryData != null && mCategoryData.children != null && mCategoryData.children.size() > 0) {
-                mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
+                // mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
                 // Remove
                 if (mBinding.layoutHeader.recyclerTab.getAdapter() != null && mBinding.layoutHeader.recyclerTab.getAdapter().getItemCount() > 0) {
                     ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setItems(new ArrayList<>());
@@ -1275,6 +1276,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void resetTagLayout() {
         if (mProductListData != null) {
             if(mIsCategory == Type.ProductListViewType.CATEGORY){
+                if(CustomLog.getFlag())CustomLog.L("ProductListFragment","layoutTabParent--- 2 VISIBLE");
                 mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
             }else{
                 mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
@@ -1349,7 +1351,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mListAdapter.setItems(((ProductList) o).deals);
                     mProductListData = (ProductList) o;
                     if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.deals.size());
-                    setTabLayout();
+                    if(mTagAdapter == null || mTagAdapter.getItemCount() == 0) setTabLayout();
                 }
                 emptyView("");
             }
@@ -1391,6 +1393,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mBinding != null) {
                         if (mIsCategory == Type.ProductListViewType.CATEGORY) {
+                            if(CustomLog.getFlag())CustomLog.L("ProductListFragment","layoutTabParent--- 3 VISIBLE");
                             mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
                         } else {
                             mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);

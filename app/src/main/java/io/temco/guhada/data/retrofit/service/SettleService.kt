@@ -46,7 +46,7 @@ interface SettleService {
 
 
     @GET("plan/list/detail")
-    fun getPlanningDetail(@Query("eventId") eventId : Int, @Query("page") startIndex : Int, @Query("unitPerPage") unitPerPage : Int = 20): Call<BaseModel<PlanningDetailData>>
+    fun getPlanningDetail(@Query("eventId") eventId : Int, @Query("page") startIndex : Int, @Query("searchProgress") searchProgress : String?/*, @Query("unitPerPage") unitPerPage : Int = 20*/): Call<BaseModel<PlanningDetailData>>
 
     @GET("event/main/popup")
     fun getMainPopup(): Call<BaseModel<MainPopup>>

@@ -115,7 +115,6 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
-
         <LinearLayout
             android:id="@+id/floating"
             android:layout_width="wrap_content"
@@ -135,6 +134,21 @@
                 android:layout_marginTop="7dp"
                 android:visibility="gone" />
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" >
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/progressbar_loadingdialog"
+                style="@android:style/Widget.Material.Light.ProgressBar.Large.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
 
     </RelativeLayout>
 </layout>

@@ -22,8 +22,8 @@ import io.temco.guhada.view.custom.recycler.CustomRecyclerView
 class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewModel(){
     lateinit var recyclerView :CustomRecyclerView
 
-    var mSortFilterLabel = arrayListOf<String>(ProductOrderType.NEW_PRODUCT.label, ProductOrderType.MARKS.label, ProductOrderType.LOW_PRICE.label, ProductOrderType.HIGH_PRICE.label)
-    var mSortFilterType = arrayListOf<ProductOrderType>(ProductOrderType.NEW_PRODUCT, ProductOrderType.MARKS, ProductOrderType.LOW_PRICE, ProductOrderType.HIGH_PRICE)
+    var mSortFilterLabel = arrayListOf<String>(ProductOrderType.NEW_PRODUCT.label/*, ProductOrderType.MARKS.label*/, ProductOrderType.LOW_PRICE.label, ProductOrderType.HIGH_PRICE.label)
+    var mSortFilterType = arrayListOf<ProductOrderType>(ProductOrderType.NEW_PRODUCT/*, ProductOrderType.MARKS*/, ProductOrderType.LOW_PRICE, ProductOrderType.HIGH_PRICE)
     var mFilterIndex = 0
     var listData = arrayListOf<PlanningDealBase>()
     var adapter = PlanningDealDetailListAdapter(this, listData)
@@ -34,7 +34,7 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
     var currentPage = 0
     var totalPage = -1
 
-    lateinit var planningDataInfo : PlanningDetailData
+    var planningDataInfo = PlanningDetailData()
     var mPageNumber = 0
     var mTotalCount = 0
     var planningDealListTotalCount = ObservableField<String>("0")
@@ -56,22 +56,27 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
     /**
      *  Event List
      */
-    fun getPlanningDetail(init : Boolean, listener : OnCallBackListener?) {
+    fun getPlanningDetail(init : Boolean, searchProgress : String?, isSortChange : Boolean, listener : OnCallBackListener?) {
         if(init){
             listData.clear()
             currentPage = 0
+            planningDataInfo = PlanningDetailData()
         }
         currentPage++
-        SettleServer.getPlanningDetail(planningDealDetailId, currentPage, OnServerListener { success, o ->
+        SettleServer.getPlanningDetail(planningDealDetailId, currentPage, searchProgress, OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
+                        if(((o as BaseModel<*>).data as PlanningDetailData).id == 0) {
+                            listener?.callBackListener(false, "finish")
+                            return@executeByResultCode
+                        }
                         var list = arrayListOf<PlanningDealBase>()
+                        var index = adapter.itemCount
 
-                        if(!::planningDataInfo.isInitialized){
+                        if(planningDataInfo.id == -1){
                             planningDataInfo =  (o as BaseModel<*>).data as PlanningDetailData
                             if(CustomLog.flag)CustomLog.L("getPlanningDetail","planningDataInfo",planningDataInfo)
                             if(CustomLog.flag)CustomLog.L("getPlanningDetail","planningDataInfo planListDetails",planningDataInfo.planListDetails)
-                            var index = adapter.itemCount
                             mTotalCount = planningDataInfo.totalItemCount
                             planningDealListTotalCount.set(mTotalCount.toString())
 
@@ -86,11 +91,15 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
                             if(totalPage == -1){
                                 totalPage = mTotalCount/20 + (if(mTotalCount%20 > 0) 1 else 0)
                             }
-                            listener?.callBackListener(true, planningDataInfo.title)
                             if(CustomLog.flag)CustomLog.L("getPlanningDetail","totalPage",totalPage)
+                            listener?.callBackListener(false, planningDataInfo.title)
                         }
                         //getDealListData(true, false)
-                        var index = adapter.itemCount
+                        /*if(index > 0 && adapter.items[index-1].type == PlanningDealType.Loading) {
+                            if(CustomLog.flag)CustomLog.L("getPlanningDetail",(index-1),"- removeAt totalPage",totalPage, "currentPage",currentPage)
+                            adapter.items.removeAt(index-1)
+                            index -= 1
+                        }*/
 
                         var detailList = ((o as BaseModel<*>).data as PlanningDetailData).planListDetails
 
@@ -99,25 +108,31 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
                                 var deal = PlanningDealData(list.size+i, PlanningDealType.Deal,1,d)
                                 list.add(deal)
                             }
+                            /*if(totalPage > currentPage){
+                                var loading = PlanningLoadingData(list.size, PlanningDealType.Loading,2)
+                                list.add(loading)
+                            }*/
                             adapter.setItems(list)
                             adapter.notifyDataSetChanged()
-                            /*if(isSortChange) recyclerView.scrollToPosition(2)*/
+                            if(isSortChange) recyclerView.scrollToPosition(2)
                         }else{
                             for ((i,d) in detailList.withIndex()){
                                 var deal = PlanningDealData(index+i, PlanningDealType.Deal,1,d)
                                 list.add(deal)
                             }
+                            /*if(totalPage > currentPage){
+                                var loading = PlanningLoadingData(list.size, PlanningDealType.Loading,2)
+                                list.add(loading)
+                            }*/
                             adapter.setItems(list)
-                            adapter.notifyItemRangeChanged(index, adapter.itemCount)
+                            adapter.notifyDataSetChanged()
+                            //adapter.notifyItemRangeChanged(index-1, adapter.itemCount)
                         }
+                        listener?.callBackListener(false, "")
                         isLoading = false
                     },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
+                    dataNotFoundTask = { listener?.callBackListener(false, "") },
+                    failedTask = { listener?.callBackListener(false, "") }
             )
         })
     }
@@ -127,7 +142,7 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
 
 enum class ProductOrderType(val code :String, val label: String){
     NEW_PRODUCT("DATE", "신상품 순"),
-    MARKS("SCORE", "평점 순"),
+    /*MARKS("SCORE", "평점 순"),*/
     LOW_PRICE("PRICE_ASC", "낮은가격 순"),
     HIGH_PRICE("PRICE_DESC", "높은가격 순")
 }
