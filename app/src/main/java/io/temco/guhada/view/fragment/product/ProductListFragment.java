@@ -721,6 +721,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if (mListAdapter.getItemCount() - mGridManager.findLastVisibleItemPosition() <= Info.LIST_PAGE_THRESHOLD) {
                     if (mIsCategory==Type.ProductListViewType.CATEGORY) {
                         getProductListByCategoryLoad(false);
+                        if(CustomLog.getFlag())CustomLog.L("ProductListFragment","layoutTabParent--- 4 VISIBLE");
                     } else if (mIsCategory==Type.ProductListViewType.BRAND) {
                         getProductListByBrand(false);
                     } else if (mIsCategory==Type.ProductListViewType.SEARCH) {
@@ -1085,13 +1086,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             addFilterTag(mProductListData.filters);
         }
 
-        if (etcBody != null) {
+        /*if (etcBody != null) {
             if(!isInit){
                 isInit = true;
                 initTagList();
             }
             addEtcFilterTag(etcBody);
-        }
+        }*/
 
         if (mDepthTitle != null && mDepthTitle.size() > 0) {
             if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle",mDepthTitle.toString());
@@ -1537,12 +1538,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mBinding != null) {
-                        if (mIsCategory == Type.ProductListViewType.CATEGORY) {
+                        /*if (mIsCategory == Type.ProductListViewType.CATEGORY) {
                             if(CustomLog.getFlag())CustomLog.L("ProductListFragment","layoutTabParent--- 3 VISIBLE");
                             mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
                         } else {
                             mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
-                        }
+                        }*/
                     }
                 }
                 emptyView("");
