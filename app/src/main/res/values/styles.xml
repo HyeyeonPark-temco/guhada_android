@@ -566,5 +566,9 @@
         <!--<item name="android:windowEnterAnimation">@anim/ease_in</item>-->
         <!--<item name="android:windowExitAnimation">@anim/ease_out</item>-->
     </style>
+
+    <style name="MyApp_PopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/background_spinner_listpopup</item>
+    </style>
 </resources>
 

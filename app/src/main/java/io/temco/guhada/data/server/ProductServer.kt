@@ -354,7 +354,26 @@ class ProductServer {
                         })
             }
         }
-
+        /**
+         * @author park jungho
+         *
+         * 럭키드로우 당첨 정보 확인
+         */
+        @JvmStatic
+        fun getOkNull(listener: OnServerListener?) {
+            if (listener != null) {
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true, true)
+                        .getOkNull()
+                        .enqueue(object : Callback<BaseModel<Any>> {
+                            override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                                listener.onResult(response.isSuccessful, response.body())
+                            }
+                            override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
+            }
+        }
 
 
 

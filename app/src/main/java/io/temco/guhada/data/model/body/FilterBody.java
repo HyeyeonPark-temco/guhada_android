@@ -33,6 +33,7 @@ public class FilterBody {
         else searchQueries = new ArrayList<>(value.getSearchQueries());
 
         searchResultOrder = value.getSearchResultOrder();
+
         shippingCondition = value.getShippingCondition();
         productCondition = value.getProductCondition();
     }
@@ -60,6 +61,12 @@ public class FilterBody {
 
     @SerializedName("productCondition")
     public String productCondition;
+
+    @SerializedName("maxPrice")
+    public int maxPrice;
+
+    @SerializedName("minPrice")
+    public int minPrice;
 
     @Override
     public String toString() {

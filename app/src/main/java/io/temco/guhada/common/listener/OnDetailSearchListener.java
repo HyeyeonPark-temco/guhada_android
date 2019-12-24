@@ -6,6 +6,7 @@ import java.util.Map;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
+import io.temco.guhada.data.model.body.FilterEtcBody;
 
 public interface OnDetailSearchListener {
 
@@ -18,4 +19,8 @@ public interface OnDetailSearchListener {
     void onBrand(List<Brand> brands);
 
     void onFilter(List<Filter> filters);
+
+    void onReset(boolean change);
+
+    void onSearchEtc(FilterEtcBody etcBody);
 }
