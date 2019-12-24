@@ -13,6 +13,7 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
 import io.temco.guhada.data.model.main.*
+import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.server.SettleServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -52,6 +53,21 @@ class PlanningDealDetailViewModel(val context : Context) : BaseObservableViewMod
             notifyPropertyChanged(BR.planningDealSortType)
         }
 
+    /*fun getTestOkNull(){
+        ProductServer.getOkNull(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        if(CustomLog.flag)CustomLog.L("getTestOkNull","getTestOkNull")
+                    },
+                    failedTask = {
+                        if(CustomLog.flag)CustomLog.L("getTestOkNull","failedTask")},
+                    dataIsNull = {
+                        if(CustomLog.flag)CustomLog.L("getTestOkNull","dataIsNull")},
+                    dataNotFoundTask = {
+                        if(CustomLog.flag)CustomLog.L("getTestOkNull","dataNotFoundTask")}
+            )
+        })
+    }*/
 
     /**
      *  Event List

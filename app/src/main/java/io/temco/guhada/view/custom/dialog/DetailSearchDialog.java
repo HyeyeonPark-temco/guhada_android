@@ -24,6 +24,7 @@ import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
+import io.temco.guhada.data.model.body.FilterEtcBody;
 import io.temco.guhada.data.viewmodel.DetailSearchDialogViewModel;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
 import io.temco.guhada.view.adapter.DetailSearchCategoryListAdapter;
@@ -55,6 +56,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     private List<Brand> mBrandSelectedList;
     // Filter
     private List<Filter> mFilterList;
+    private FilterEtcBody mEtcBody;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -96,12 +98,93 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
             // Bottom
             case R.id.layout_reset:
-                reset();
+                //reset();
+                mDetailSearchListener.onReset(true);
+                dismiss();
                 break;
 
             case R.id.text_result:
                 changeDataEvent();
                 dismiss();
+                break;
+
+            case R.id.list_shipinfo1:
+                mViewModel.getDetailSearchDialogShipInfo1().set(!mViewModel.getDetailSearchDialogShipInfo1().get());
+                if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                mEtcBody.setShippingConditionFlag1(!mEtcBody.getShippingConditionFlag1());
+                mIsChangeData = true;
+                break;
+
+            case R.id.list_shipinfo2:
+                mViewModel.getDetailSearchDialogShipInfo2().set(!mViewModel.getDetailSearchDialogShipInfo2().get());
+                if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                mEtcBody.setShippingConditionFlag2(!mEtcBody.getShippingConditionFlag2());
+                mIsChangeData = true;
+                break;
+
+            case R.id.list_pdtCdtinfo1:
+                mViewModel.getDetailSearchDialogPdtCdt1().set(!mViewModel.getDetailSearchDialogPdtCdt1().get());
+                if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                mEtcBody.setProductConditionFlag1(!mEtcBody.getProductConditionFlag1());
+                mIsChangeData = true;
+                break;
+
+            case R.id.list_pdtCdtinfo2:
+                mViewModel.getDetailSearchDialogPdtCdt2().set(!mViewModel.getDetailSearchDialogPdtCdt2().get());
+                if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                mEtcBody.setProductConditionFlag2(!mEtcBody.getProductConditionFlag2());
+                mIsChangeData = true;
+                break;
+
+            case R.id.list_price0:
+                if(mViewModel.getDetailSearchDialogPriceInfo().get() != 0){
+                    mViewModel.getDetailSearchDialogPriceInfo().set(0);
+                    if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                    mEtcBody.setPriceConditionIndex(0);
+                    mEtcBody.setPriceConditionMin(0);
+                    mEtcBody.setPriceConditionMax(0);
+                    mIsChangeData = true;
+                }
+                break;
+            case R.id.list_price1:
+                if(mViewModel.getDetailSearchDialogPriceInfo().get() != 1){
+                    mViewModel.getDetailSearchDialogPriceInfo().set(1);
+                    if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                    mEtcBody.setPriceConditionIndex(1);
+                    mEtcBody.setPriceConditionMin(0);
+                    mEtcBody.setPriceConditionMax(100000);
+                    mIsChangeData = true;
+                }
+                break;
+            case R.id.list_price2:
+                if(mViewModel.getDetailSearchDialogPriceInfo().get() != 2){
+                    mViewModel.getDetailSearchDialogPriceInfo().set(2);
+                    if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                    mEtcBody.setPriceConditionIndex(2);
+                    mEtcBody.setPriceConditionMin(0);
+                    mEtcBody.setPriceConditionMax(300000);
+                    mIsChangeData = true;
+                }
+                break;
+            case R.id.list_price3:
+                if(mViewModel.getDetailSearchDialogPriceInfo().get() != 3){
+                    mViewModel.getDetailSearchDialogPriceInfo().set(3);
+                    if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                    mEtcBody.setPriceConditionIndex(3);
+                    mEtcBody.setPriceConditionMin(0);
+                    mEtcBody.setPriceConditionMax(500000);
+                    mIsChangeData = true;
+                }
+                break;
+            case R.id.list_price4:
+                if(mViewModel.getDetailSearchDialogPriceInfo().get() != 4){
+                    mViewModel.getDetailSearchDialogPriceInfo().set(4);
+                    if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                    mEtcBody.setPriceConditionIndex(4);
+                    mEtcBody.setPriceConditionMin(0);
+                    mEtcBody.setPriceConditionMax(1000000);
+                    mIsChangeData = true;
+                }
                 break;
 
             ////////////////////////////////////////////////
@@ -135,6 +218,10 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         mFilterList = filters;
     }
 
+    public void setEtcFilterBody(FilterEtcBody mEtcBody) {
+        this.mEtcBody = mEtcBody;
+    }
+
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
@@ -152,6 +239,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             setCategoryData();
             setBrandData();
             initFilter(mFilterList);
+            setEtcFilterData();
             mBinding.layoutProgress.setVisibility(View.GONE);
             mBinding.viewScrollContents.scrollTo(0, 0);
         });
@@ -187,6 +275,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             if (mDepthTitle != null) mDetailSearchListener.onCategoryResult(mDepthTitle);
             if (mBrandList != null) mDetailSearchListener.onBrand(mBrandList);
             if (mFilterList != null) mDetailSearchListener.onFilter(mFilterList);
+            if (mEtcBody != null) mDetailSearchListener.onSearchEtc(mEtcBody);
             mDetailSearchListener.onChange(true);
         }
     }
@@ -382,6 +471,21 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
             mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
         }
+    }
+
+
+    private void setEtcFilterData(){
+        if(mEtcBody != null){
+            mViewModel.getDetailSearchDialogPdtCdt1().set(mEtcBody.getProductConditionFlag1());
+            mViewModel.getDetailSearchDialogPdtCdt2().set(mEtcBody.getProductConditionFlag2());
+
+            mViewModel.getDetailSearchDialogShipInfo1().set(mEtcBody.getShippingConditionFlag1());
+            mViewModel.getDetailSearchDialogShipInfo2().set(mEtcBody.getShippingConditionFlag2());
+
+            mViewModel.getDetailSearchDialogPriceInfo().set(mEtcBody.getPriceConditionIndex());
+        }
+        mBinding.layoutHeaderPrice.imageExpand.setVisibility(View.VISIBLE);
+        mBinding.layoutExpandPriceHeader.setToggleOnClick(true);
     }
 
     private void initBrandList(List<Brand> data) {

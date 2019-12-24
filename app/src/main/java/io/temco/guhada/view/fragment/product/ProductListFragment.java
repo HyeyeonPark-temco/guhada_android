@@ -58,6 +58,9 @@ import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.model.Tag;
 import io.temco.guhada.data.model.body.FilterBody;
 import io.temco.guhada.data.model.body.FilterBodyAttribute;
+import io.temco.guhada.data.model.body.FilterEtcBody;
+import io.temco.guhada.data.model.body.FilterEtcModel;
+import io.temco.guhada.data.model.body.FilterEtcType;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
@@ -107,6 +110,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private boolean scrollviewOnTop = true;
 
     private FilterBody filterBody = null;
+    private FilterEtcBody etcBody = null;
 
     private CompositeDisposable disposable;
     private GuhadaDB db;
@@ -159,6 +163,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         // List
         initProductList();
         filterBody = null;
+        etcBody = null;
 
         initFilterBody();
         setLoadData(true);
@@ -197,6 +202,39 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 filterBody.searchCondition = mText;
             }
         }
+        setEtcFilterBodyData();
+    }
+
+
+    private void setEtcFilterBodyData(){
+        /*if(etcBody != null){
+            if(etcBody.getProductConditionFlag1() || etcBody.getProductConditionFlag2()){
+                if(etcBody.getProductConditionFlag1() && etcBody.getProductConditionFlag2()){
+                    filterBody.productCondition = Type.SerchProductCondition.ANY.name();
+                }else{
+                    if(etcBody.getProductConditionFlag1()) filterBody.productCondition = Type.SerchProductCondition.NEW.name();
+                    if(etcBody.getProductConditionFlag2()) filterBody.productCondition = Type.SerchProductCondition.USED.name();
+                }
+            }else{
+                filterBody.productCondition = Type.SerchProductCondition.ANY.name();
+            }
+
+            if(etcBody.getShippingConditionFlag1() || etcBody.getShippingConditionFlag2()){
+                if(etcBody.getShippingConditionFlag1() && etcBody.getShippingConditionFlag2()){
+                    filterBody.shippingCondition = Type.SerchShippingCondition.ANY.name();
+                }else{
+                    if(etcBody.getShippingConditionFlag1()) filterBody.shippingCondition = Type.SerchShippingCondition.INTERNATIONAL.name();
+                    if(etcBody.getShippingConditionFlag2()) filterBody.shippingCondition = Type.SerchShippingCondition.NATIONAL.name();
+                }
+            }else{
+                filterBody.shippingCondition = Type.SerchShippingCondition.ANY.name();
+            }
+            if(etcBody.getPriceConditionMin() >= 0 && etcBody.getPriceConditionMax() >= 0){
+                filterBody.minPrice = etcBody.getPriceConditionMin();
+                filterBody.maxPrice = etcBody.getPriceConditionMax();
+            }
+        }*/
+
     }
 
     private void setLoadData(boolean isInit){
@@ -964,10 +1002,22 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             d.setBrandData(mProductListData.brands);
             d.setmDepthTitle(mDepthTitle);
             d.setFilterData(mProductListData.filters);
+            d.setEtcFilterBody(etcBody);
             d.setOnDetailSearchListener(new OnDetailSearchListener() {
                 @Override
                 public void onChange(boolean change) {
                     if (change) changeLayout();
+                }
+
+                @Override
+                public void onReset(boolean change) {
+                    ProductListFragment.this.resetTagLayout();
+                }
+
+                @Override
+                public void onSearchEtc(FilterEtcBody etcBody) {
+                    ProductListFragment.this.etcBody = etcBody;
+                    if(CustomLog.getFlag())CustomLog.L("onCategoryResult","brandIds etcBody",etcBody);
                 }
 
                 @Override
@@ -1033,6 +1083,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             }
             addBrandTag(mProductListData.brands);
             addFilterTag(mProductListData.filters);
+        }
+
+        if (etcBody != null) {
+            if(!isInit){
+                isInit = true;
+                initTagList();
+            }
+            addEtcFilterTag(etcBody);
         }
 
         if (mDepthTitle != null && mDepthTitle.size() > 0) {
@@ -1157,6 +1215,40 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                         // refresh list
                         setLoadData(true);
 
+                    } else if(tagData instanceof FilterEtcModel){
+                        FilterEtcModel model = (FilterEtcModel) tagData;
+                        if(model.getType() == FilterEtcType.INTERNATIONAL){
+                            etcBody.setShippingConditionFlag1(false);
+                        }
+
+                        if(model.getType() == FilterEtcType.NATIONAL){
+                            etcBody.setShippingConditionFlag2(false);
+                        }
+
+                        if(model.getType() == FilterEtcType.NEW){
+                            etcBody.setProductConditionFlag1(false);
+                        }
+
+                        if(model.getType() == FilterEtcType.USED){
+                            etcBody.setProductConditionFlag2(false);
+                        }
+                        if(model.getType() == FilterEtcType.PRICE_ALL || model.getType() == FilterEtcType.PRICE_10 || model.getType() == FilterEtcType.PRICE_30 ||
+                                model.getType() == FilterEtcType.PRICE_50 || model.getType() == FilterEtcType.PRICE_100 || model.getType() == FilterEtcType.PRICE_CUSTOM){
+                            etcBody.setPriceConditionIndex(-1);
+                            etcBody.setPriceConditionMax(-1);
+                            etcBody.setPriceConditionMin(-1);
+                        }
+
+                        mTagAdapter.remove(index);
+                        if(mTagAdapter.getItemCount() == 0){
+                            resetTagLayout();
+                        }else{
+                            mTagAdapter.notifyDataSetChanged();
+                        }
+                        setEtcFilterBodyData();
+                        // refresh list
+                        setLoadData(true);
+
                     }
                 }
             });
@@ -1190,6 +1282,58 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     filterBody.brandIds.add(b.id);
                 }
             }
+        }
+    }
+
+    private void addEtcFilterTag(FilterEtcBody etcBody) {
+        if(etcBody.getShippingConditionFlag1()){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.INTERNATIONAL, etcBody.getShippingConditionFlag1(), FilterEtcType.INTERNATIONAL.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        if(etcBody.getShippingConditionFlag2()){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.NATIONAL, etcBody.getShippingConditionFlag2(), FilterEtcType.NATIONAL.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        if(etcBody.getProductConditionFlag1()){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.NEW, etcBody.getShippingConditionFlag2(), FilterEtcType.NEW.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        if(etcBody.getProductConditionFlag2()){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.USED, etcBody.getShippingConditionFlag2(), FilterEtcType.USED.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        /*if(etcBody.getPriceConditionIndex() == 0){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.PRICE_ALL, etcBody.getPriceConditionIndex(), FilterEtcType.PRICE_ALL.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }*/
+
+        if(etcBody.getPriceConditionIndex() == 1){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.PRICE_10, etcBody.getPriceConditionIndex(), FilterEtcType.PRICE_10.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        if(etcBody.getPriceConditionIndex() == 2){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.PRICE_30, etcBody.getPriceConditionIndex(), FilterEtcType.PRICE_30.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        if(etcBody.getPriceConditionIndex() == 3){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.PRICE_50, etcBody.getPriceConditionIndex(), FilterEtcType.PRICE_50.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        if(etcBody.getPriceConditionIndex() == 4){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.PRICE_100, etcBody.getPriceConditionIndex(), FilterEtcType.PRICE_100.getLabel());
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        if(etcBody.getPriceConditionIndex() == 5){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.PRICE_CUSTOM, etcBody.getPriceConditionIndex(), (etcBody.getPriceConditionMin() +"~" +etcBody.getPriceConditionMax()));
+            addTagTypeNormal(model.getTitle(), model);
         }
     }
 
@@ -1285,6 +1429,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             mBinding.layoutHeaderSub.layoutReset.setOnClickListener(null);
             //
             filterBody = null;
+            etcBody = null;
             mTagAdapter.removeAll();
             resetCategoryData(mProductListData.categories);
             resetBrandData(mProductListData.brands);

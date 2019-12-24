@@ -4,12 +4,6 @@
 
     <data>
         <variable
-            name="clickShipInfoListener"
-            type="android.view.View.OnClickListener" />
-        <variable
-            name="clickPdtCdtInfoListener"
-            type="android.view.View.OnClickListener" />
-        <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
         <variable
@@ -82,6 +76,16 @@
                             android:overScrollMode="never" />
                     </com.github.florent37.expansionpanel.ExpansionLayout>
 
+                    <!-- DOT LINE -->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="18dp"
+                        android:layerType="software"
+                        android:src="@drawable/line_dot" />
+
                     <!-- //////////////////////////////////////////////// -->
                     <!-- BRAND -->
                     <!-- //////////////////////////////////////////////// -->
@@ -123,11 +127,19 @@
                         </LinearLayout>
                     </com.github.florent37.expansionpanel.ExpansionLayout>
 
+                    <!-- DOT LINE -->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="18dp"
+                        android:layerType="software"
+                        android:src="@drawable/line_dot" />
 
                     <!-- //////////////////////////////////////////////// -->
                     <!-- Shipping info -->
                     <!-- //////////////////////////////////////////////// -->
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -148,7 +160,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="38dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="15dp"
                             android:weightSum="2"
                             android:orientation="horizontal">
 
@@ -157,7 +169,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:onClick="@{clickShipInfoListener}"
+                                android:onClick="@{clickListener}"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:paddingLeft="20dp">
@@ -184,7 +196,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:onClick="@{clickShipInfoListener}"
+                                android:onClick="@{clickListener}"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -211,6 +223,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="18dp"
                             android:layerType="software"
                             android:src="@drawable/line_dot" />
 
@@ -242,7 +256,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="38dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="15dp"
                             android:weightSum="2"
                             android:orientation="horizontal">
 
@@ -251,7 +265,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:onClick="@{clickPdtCdtInfoListener}"
+                                android:onClick="@{clickListener}"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:paddingLeft="20dp">
@@ -278,7 +292,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:onClick="@{clickPdtCdtInfoListener}"
+                                android:onClick="@{clickListener}"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
@@ -305,6 +319,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="18dp"
                             android:layerType="software"
                             android:src="@drawable/line_dot" />
 
@@ -323,6 +339,183 @@
                         android:overScrollMode="never" />
 
                     <!-- //////////////////////////////////////////////// -->
+
+
+
+                    <!-- //////////////////////////////////////////////// -->
+                    <!-- CATEGORY -->
+                    <!-- //////////////////////////////////////////////// -->
+
+                    <com.github.florent37.expansionpanel.ExpansionHeader
+                        android:id="@+id/layout_expand_price_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:expansion_layout="@id/layout_expand_price_contents"
+                        app:expansion_toggleOnClick="true">
+
+                        <include
+                            android:id="@+id/layout_header_price"
+                            layout="@layout/layout_detail_search_title"
+                            app:title="@{@string/price_title}" />
+                    </com.github.florent37.expansionpanel.ExpansionHeader>
+
+                    <com.github.florent37.expansionpanel.ExpansionLayout
+                        android:id="@+id/layout_expand_price_contents"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:expansion_expanded="false">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/list_price0"
+                                android:layout_width="match_parent"
+                                android:layout_height="37dp"
+                                android:onClick="@{clickListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="20dp">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogPriceInfo == 0 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="모두보기"
+                                    android:textColor="@{viewModel.detailSearchDialogPriceInfo == 0 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/list_price1"
+                                android:layout_width="match_parent"
+                                android:layout_height="37dp"
+                                android:onClick="@{clickListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="20dp">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogPriceInfo == 1 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="10만원 이하"
+                                    android:textColor="@{viewModel.detailSearchDialogPriceInfo == 1 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/list_price2"
+                                android:layout_width="match_parent"
+                                android:layout_height="37dp"
+                                android:onClick="@{clickListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="20dp">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogPriceInfo == 2 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="30만원 이하"
+                                    android:textColor="@{viewModel.detailSearchDialogPriceInfo == 2 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/list_price3"
+                                android:layout_width="match_parent"
+                                android:layout_height="37dp"
+                                android:onClick="@{clickListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="20dp">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogPriceInfo == 3 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="50만원 이하"
+                                    android:textColor="@{viewModel.detailSearchDialogPriceInfo == 3 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/list_price4"
+                                android:layout_width="match_parent"
+                                android:layout_height="37dp"
+                                android:onClick="@{clickListener}"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingLeft="20dp">
+
+                                <!-- FAVORITE -->
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:background="@{viewModel.detailSearchDialogPriceInfo == 4 ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default=@drawable/filter_checkbox_inactive}" />
+
+                                <!-- TITLE -->
+                                <TextView
+                                    style="@style/TextMediumSingleLine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="13dp"
+                                    android:text="100만원 이하"
+                                    android:textColor="@{viewModel.detailSearchDialogPriceInfo == 4 ? @color/common_blue_purple : @color/text_3 , default=@color/text_3}"
+                                    android:textSize="@dimen/text_14" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </com.github.florent37.expansionpanel.ExpansionLayout>
+
+                    <!-- DOT LINE -->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="18dp"
+                        android:layerType="software"
+                        android:src="@drawable/line_dot" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
