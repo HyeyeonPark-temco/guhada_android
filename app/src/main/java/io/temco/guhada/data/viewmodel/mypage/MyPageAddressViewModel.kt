@@ -31,30 +31,4 @@ class MyPageAddressViewModel(val context: Context, val listener: OnShippingAddre
             ToastUtil.showMessage(context.getString(R.string.login_message_requiredlogin))
     }
 
-    fun onClickDefault() {
-        val token = Preferences.getToken()
-        if (token != null) {
-            val accessToken = token.accessToken
-            if (accessToken != null) {
-                val pos = listener.getSelectedPos()
-                if (pos > 0) {
-                    val shippingAddress = shippingAddresses.value?.get(pos)
-                    if (shippingAddress != null) {
-                        val userId = JWT(accessToken).getClaim("userId").asInt()
-                        if (userId != null) {
-                            shippingAddress.defaultAddress = true
-                            UserServer.updateUserShippingAddress(OnServerListener { success, o ->
-                                ServerCallbackUtil.executeByResultCode(success, o,
-                                        successTask = { getUserShippingAddress() })
-                            }, userId = userId, shippingAddressId = shippingAddress.id, shippingAddress = shippingAddress)
-                        }
-                    }
-                } else {
-                    ToastUtil.showMessage("배송지를 선택해주세요.")
-                }
-            }
-
-        } else
-            ToastUtil.showMessage(context.getString(R.string.login_message_requiredlogin))
-    }
 }

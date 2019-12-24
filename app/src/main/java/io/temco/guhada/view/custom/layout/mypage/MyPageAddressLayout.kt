@@ -58,7 +58,7 @@ class MyPageAddressLayout constructor(
     }
 
     override fun onRefresh() {
-        mShippingAddressListFragment.mListAdapter.initPoses()
+        mShippingAddressListFragment.initAdapter()
         mViewModel.getUserShippingAddress()
         mBinding.swipeRefreshLayout.isRefreshing = false
     }
@@ -80,18 +80,13 @@ class MyPageAddressLayout constructor(
     }
 
     override fun notifyDeleteItem() {
-        mShippingAddressListFragment.mListAdapter.deleteItem()
-        mShippingAddressListFragment.mListAdapter.currentPos = -1
+        mShippingAddressListFragment.deleteItem()
 
-        if (mShippingAddressListFragment.mListAdapter.itemCount == 0) {
+        if (mShippingAddressListFragment.getItemCount() == 0) {
             mViewModel.emptyVisibility = ObservableInt(View.VISIBLE)
             mViewModel.notifyPropertyChanged(BR.emptyVisibility)
         }
     }
-
-    override fun getSelectedPos(): Int = mShippingAddressListFragment.mListAdapter.currentPos
-
-    fun getSelectedItem(): UserShipping? = mViewModel.shippingAddresses.value?.get(getSelectedPos())
 
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {
         Intent(context, EditShippingAddressActivity::class.java).let {
