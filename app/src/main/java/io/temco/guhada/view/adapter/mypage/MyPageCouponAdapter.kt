@@ -45,7 +45,7 @@ class MyPageCouponAdapter : RecyclerView.Adapter<MyPageCouponAdapter.Holder>() {
     fun addItems(list: MutableList<Coupon>) {
         val prevSize = this.list.size
         this.list.addAll(list)
-        notifyItemRangeInserted(prevSize, list.size - 1)
+        notifyItemRangeInserted(prevSize, itemCount - 1)
     }
 
     inner class Holder(binding: ItemCouponBinding) : BaseViewHolder<ItemCouponBinding>(binding.root) {
