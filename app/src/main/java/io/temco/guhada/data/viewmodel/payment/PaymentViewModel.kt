@@ -8,7 +8,6 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.temco.guhada.BR
@@ -22,12 +21,10 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.AvailableBenefitCount
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.coupon.CouponInfo
-import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
@@ -42,12 +39,8 @@ import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
-import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.PaymentActivity
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 import java.text.NumberFormat
 
 class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseObservableViewModel() {
@@ -215,7 +208,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
     var mCouponDiscountPrice = 0
-    var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
+    var mExpectedPoint: ExpectedPointResponse = ExpectedPointResponse()
         @Bindable
         get() = field
 
@@ -422,7 +415,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     ServerCallbackUtil.executeByResultCode(success, o,
                             successTask = {
                                 val expectedPointResponse = it.data as ExpectedPointResponse
-                                this.mExpectedPoint.postValue(expectedPointResponse)
+                                this.mExpectedPoint = expectedPointResponse
                             },
                             dataIsNull = {
                                 if (it is BaseModel<*>) ToastUtil.showMessage(it.message)
@@ -449,12 +442,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         })
     }
 
-
     /**
      * 사용 가능 쿠폰 정보
      * @author Hyeyeon Park
      */
-     fun getInitialCouponInfo() {
+    private fun getInitialCouponInfo() {
         ServerCallbackUtil.callWithToken(task = {
             GatewayServer.getCouponInfo(OnServerListener { success, o ->
                 if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag)
@@ -468,7 +460,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     /**
      * LISTENER
      */
-// 결제 수단 checkbox listener
     fun onPaymentWayChecked(view: View, checked: Boolean) {
         val pos = view.tag?.toString()?.toInt()
         if (pos != null) {
@@ -621,23 +612,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         notifyPropertyChanged(BR.mEmailVerification)
     }
 
-    private fun getCouponNumberByCartItemId(cartItemId: Long): String {
-        for (item in order.orderItemList)
-            if (item.cartItemId == cartItemId) {
-                // var couponNumber = mSelectedCouponMap[item.dealId]?.couponNumber ?: ""
-                // couponNumber = if (couponNumber == CouponSelectDialogViewModel.CouponFlag().NOT_SELECT_COUPON_NUMBER) "" else couponNumber
-                //  return couponNumber
-            }
-
-        return ""
-    }
-
     // 본인인증
     fun onClickVerify() = mVerifyTask()
 
-    fun onClickChangeShippingAddress() {
-        listener.redirectShippingAddressActivity()
-    }
+    fun onClickChangeShippingAddress() = listener.redirectShippingAddressActivity()
 
     fun onTermsChecked(checked: Boolean) {
         this.termsChecked = ObservableBoolean(checked)

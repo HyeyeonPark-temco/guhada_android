@@ -8,7 +8,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
-import io.temco.guhada.data.model.coupon.CouponInfo
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
@@ -33,7 +32,6 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
         mBinding.imagebuttonCouponselectClose.setOnClickListener { finish() }
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
-
     }
 
     private fun initViewModel() {
@@ -69,21 +67,20 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
             })
         }
 
-        intent.getSerializableExtra("couponInfo").let {
-            if (it != null) {
-                mViewModel.mCouponInfo = it as CouponInfo
-                mBinding.recyclerviewCouponselectList.adapter = CouponSellerAdapter().apply {
-                    this.mViewModel = this@CouponSelectDialogActivity.mViewModel.apply {
-                        this.mTotalDiscountPrice = ObservableInt(it.totalCouponDiscountPrice)
-                        this.mTotalProductPrice = ObservableInt(it.totalProductPrice)
-                    }
-                    this.mCouponBenefitSellerResponseList = it.benefitSellerResponseList
-                }
-            }
-        }
-
         mViewModel.mPointConsumption = intent.getIntExtra("consumptionPoint", 0)
+        mViewModel.mCouponInfo.observe(this@CouponSelectDialogActivity, Observer {
+            mViewModel.mTotalDiscountPrice.set(it.totalCouponDiscountPrice)
+            mViewModel.mTotalProductPrice.set(it.totalProductPrice)
 
+            mBinding.recyclerviewCouponselectList.adapter = CouponSellerAdapter().apply {
+                this.mViewModel = this@CouponSelectDialogActivity.mViewModel
+                this.mCouponBenefitSellerResponseList = it.benefitSellerResponseList
+            }
+        })
 
+        intent.getIntArrayExtra("cartIdList").let {
+            if (it != null)
+                mViewModel.getCouponInfo(it)
+        }
     }
 }

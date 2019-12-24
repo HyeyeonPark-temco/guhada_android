@@ -234,7 +234,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 intent.putExtra("usedPoint", mViewModel.usedPointNumber.toInt())
 
                 // 적립 예정 포인트
-                intent.putExtra("expectedPoint", mViewModel.mExpectedPoint.value)
+                intent.putExtra("expectedPoint", mViewModel.mExpectedPoint)
                 intent.putExtra("calculatePaymentInfo", mViewModel.mCalculatePaymentInfo.value)
 
                 this@PaymentActivity.startActivityForResult(intent, RequestCode.PAYMENT_RESULT.flag)
@@ -355,7 +355,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     private fun redirectCouponSelectDialogActivity() {
         val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
-        intent.putExtra("couponInfo", mViewModel.mCouponInfo.value)
+        intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
         intent.putExtra("consumptionPoint", mViewModel.usedPointNumber.toInt())
         startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
     }
@@ -493,21 +493,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     }
 
-    private fun initDueSavePoint() {
-        mViewModel.mExpectedPoint.observe(this, Observer {
-            var dusSaveTotalPoint = 0
-            for (item in it.dueSavePointList) {
-                dusSaveTotalPoint += item.freePoint
-                when (item.pointType) {
-                    PointProcessParam.PointSave.BUY.type -> mBinding.includePaymentDiscountresult.textviewPaymentBuypoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
-                    PointProcessParam.PointSave.TEXT_REVIEW.type -> mBinding.includePaymentDiscountresult.textviewPaymentTextreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
-                    PointProcessParam.PointSave.IMG_REVIEW.type -> mBinding.includePaymentDiscountresult.textviewPaymentPhotoreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
-                }
-            }
-            mBinding.includePaymentDiscountresult.textviewPaymentExpectedtotalpoint.text = String.format(getString(R.string.common_price_format), dusSaveTotalPoint)
-        })
-    }
-
     private fun redirectVerifyActivity() {
         val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
         intent.putExtra("user", mViewModel.order.user)
@@ -603,7 +588,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                         if (it != null)
                             mViewModel.mCalculatePaymentInfo.postValue(it as CalculatePaymentInfo)
                     }
-                    mViewModel.getInitialCouponInfo()
                 }
             }
             RequestCode.PAYMENT_RESULT.flag -> {

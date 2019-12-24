@@ -20,6 +20,7 @@ import io.temco.guhada.data.model.coupon.CouponInfo
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.CalculatePaymentInfo
+import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.server.OrderServer
 
 class CouponSelectDialogViewModel : BaseObservable() {
@@ -58,7 +59,7 @@ class CouponSelectDialogViewModel : BaseObservable() {
 
     var mPointConsumption = 0
 
-    var mCouponInfo = CouponInfo()
+    var mCouponInfo = MutableLiveData<CouponInfo>()
     var mCalculatePaymentInfo = MutableLiveData<CalculatePaymentInfo>()
 
 
@@ -90,6 +91,18 @@ class CouponSelectDialogViewModel : BaseObservable() {
                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
             }, accessToken = accessToken, jsonObject = jsonObject)
         })
-
     }
+
+
+    fun getCouponInfo(cartIdList : IntArray) {
+        ServerCallbackUtil.callWithToken(task = {
+            GatewayServer.getCouponInfo(OnServerListener { success, o ->
+                if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag)
+                    mCouponInfo.postValue(o.data as CouponInfo)
+                else
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+            }, accessToken = it, cartItemIds = cartIdList)
+        })
+    }
+
 }
