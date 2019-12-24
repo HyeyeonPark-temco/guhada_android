@@ -17,8 +17,8 @@ class FilterEtcBody {
     var productConditionFlag2 = false // 중고
 
     var priceConditionIndex = -1
-    var priceConditionMin = -1
-    var priceConditionMax = -1
+    var priceConditionMin = 0
+    var priceConditionMax = 0
 
     var searchWord = ""
 

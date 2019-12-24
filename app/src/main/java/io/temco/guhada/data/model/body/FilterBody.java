@@ -34,8 +34,8 @@ public class FilterBody {
 
         searchResultOrder = value.getSearchResultOrder();
 
-       /* shippingCondition = value.getShippingCondition();
-        productCondition = value.getProductCondition();*/
+        shippingCondition = value.getShippingCondition();
+        productCondition = value.getProductCondition();
     }
 
     @SerializedName("brandIds")
@@ -56,7 +56,7 @@ public class FilterBody {
     @SerializedName("searchCondition")
     public String searchCondition;
 
-    /*@SerializedName("shippingCondition")
+    @SerializedName("shippingCondition")
     public String shippingCondition;
 
     @SerializedName("productCondition")
@@ -66,7 +66,7 @@ public class FilterBody {
     public int maxPrice;
 
     @SerializedName("minPrice")
-    public int minPrice;*/
+    public int minPrice;
 
     @Override
     public String toString() {
@@ -77,8 +77,8 @@ public class FilterBody {
                 ", searchQueries=" + searchQueries +
                 ", searchResultOrder='" + searchResultOrder + '\'' +
                 ", searchCondition='" + searchCondition + '\'' +
-                /*", shippingCondition='" + shippingCondition + '\'' +
-                ", productCondition='" + productCondition + '\'' +*/
+                ", shippingCondition='" + shippingCondition + '\'' +
+                ", productCondition='" + productCondition + '\'' +
                 '}';
         else return "";
     }

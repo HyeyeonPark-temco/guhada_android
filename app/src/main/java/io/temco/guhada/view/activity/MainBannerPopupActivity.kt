@@ -49,6 +49,12 @@ class MainBannerPopupActivity : BindActivity<ActivityMainbannerpopupBinding>()  
                     ImageUtil.loadImage(GlideApp.with(this), mBinding.imageviewMainbannerView, imgPath)
                 }else finish()
             }
+            PopupViewType.POPUP_VIEW_RES -> {
+                mBinding.layoutMainbannerView.visibility = View.VISIBLE
+                if(!TextUtils.isEmpty(imgPath)){
+                    mBinding.imageviewMainbannerView.setImageResource(imgPath.toInt())
+                }else finish()
+            }
         }
     }
 
@@ -65,4 +71,4 @@ class MainBannerPopupActivity : BindActivity<ActivityMainbannerpopupBinding>()  
 }
 
 
-enum class PopupViewType{ POPUP_VIEW_STOP, POPUP_VIEW }
+enum class PopupViewType{ POPUP_VIEW_STOP, POPUP_VIEW, POPUP_VIEW_RES }

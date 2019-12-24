@@ -207,7 +207,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
 
     private void setEtcFilterBodyData(){
-        /*if(etcBody != null){
+        if(etcBody != null){
             if(etcBody.getProductConditionFlag1() || etcBody.getProductConditionFlag2()){
                 if(etcBody.getProductConditionFlag1() && etcBody.getProductConditionFlag2()){
                     filterBody.productCondition = Type.SerchProductCondition.ANY.name();
@@ -229,11 +229,16 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             }else{
                 filterBody.shippingCondition = Type.SerchShippingCondition.ANY.name();
             }
+
             if(etcBody.getPriceConditionMin() >= 0 && etcBody.getPriceConditionMax() >= 0){
                 filterBody.minPrice = etcBody.getPriceConditionMin();
                 filterBody.maxPrice = etcBody.getPriceConditionMax();
             }
-        }*/
+
+            if(!TextUtils.isEmpty(etcBody.getSearchWord())){
+                filterBody.searchQueries.add(etcBody.getSearchWord());
+            }
+        }
 
     }
 
@@ -721,7 +726,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if (mListAdapter.getItemCount() - mGridManager.findLastVisibleItemPosition() <= Info.LIST_PAGE_THRESHOLD) {
                     if (mIsCategory==Type.ProductListViewType.CATEGORY) {
                         getProductListByCategoryLoad(false);
-                        if(CustomLog.getFlag())CustomLog.L("ProductListFragment","layoutTabParent--- 4 VISIBLE");
                     } else if (mIsCategory==Type.ProductListViewType.BRAND) {
                         getProductListByBrand(false);
                     } else if (mIsCategory==Type.ProductListViewType.SEARCH) {
@@ -1086,13 +1090,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             addFilterTag(mProductListData.filters);
         }
 
-        /*if (etcBody != null) {
+        if (etcBody != null) {
             if(!isInit){
                 isInit = true;
                 initTagList();
             }
             addEtcFilterTag(etcBody);
-        }*/
+        }
 
         if (mDepthTitle != null && mDepthTitle.size() > 0) {
             if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle",mDepthTitle.toString());
@@ -1235,9 +1239,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                         }
                         if(model.getType() == FilterEtcType.PRICE_ALL || model.getType() == FilterEtcType.PRICE_10 || model.getType() == FilterEtcType.PRICE_30 ||
                                 model.getType() == FilterEtcType.PRICE_50 || model.getType() == FilterEtcType.PRICE_100 || model.getType() == FilterEtcType.PRICE_CUSTOM){
-                            etcBody.setPriceConditionIndex(-1);
-                            etcBody.setPriceConditionMax(-1);
-                            etcBody.setPriceConditionMin(-1);
+                            etcBody.setPriceConditionIndex(0);
+                            etcBody.setPriceConditionMax(0);
+                            etcBody.setPriceConditionMin(0);
+                        }
+                        if(model.getType() == FilterEtcType.SEARCHWORD){
+                            etcBody.setSearchWord("");
                         }
 
                         mTagAdapter.remove(index);
@@ -1333,7 +1340,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
 
         if(etcBody.getPriceConditionIndex() == 5){
-            FilterEtcModel model = new FilterEtcModel(FilterEtcType.PRICE_CUSTOM, etcBody.getPriceConditionIndex(), (etcBody.getPriceConditionMin() +"~" +etcBody.getPriceConditionMax()));
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.PRICE_CUSTOM, etcBody.getPriceConditionIndex(),
+                    ("가격: "+String.format("%,2d ~ %,2d",etcBody.getPriceConditionMin(),etcBody.getPriceConditionMax())));
+            addTagTypeNormal(model.getTitle(), model);
+        }
+
+        if(!TextUtils.isEmpty(etcBody.getSearchWord())){
+            FilterEtcModel model = new FilterEtcModel(FilterEtcType.SEARCHWORD, etcBody.getSearchWord(),etcBody.getSearchWord() );
             addTagTypeNormal(model.getTitle(), model);
         }
     }
@@ -1537,13 +1550,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if (success) {
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
-                    if (mBinding != null) {
-                        /*if (mIsCategory == Type.ProductListViewType.CATEGORY) {
+                    if (reset && mBinding != null) {
+                        if (mIsCategory == Type.ProductListViewType.CATEGORY) {
                             if(CustomLog.getFlag())CustomLog.L("ProductListFragment","layoutTabParent--- 3 VISIBLE");
                             mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
                         } else {
                             mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
-                        }*/
+                        }
                     }
                 }
                 emptyView("");
