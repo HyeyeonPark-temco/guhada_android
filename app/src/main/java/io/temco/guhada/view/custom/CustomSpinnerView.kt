@@ -57,7 +57,7 @@ class CustomSpinnerView : LinearLayout {
 
     private fun initView(context: Context, attrs: AttributeSet?) {
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.layout_customspinner, this, true)
-        mPopup = ListPopupWindow(context)
+        mPopup = ListPopupWindow(context, null, 0, R.style.MyApp_PopupMenu)
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomSpinnerView)
         mPlaceHolder = typedArray.getString(R.styleable.CustomSpinnerView_placeHolder) ?: "select"
@@ -71,7 +71,7 @@ class CustomSpinnerView : LinearLayout {
         mPopup.anchorView = mBinding.motionlayoutCustomspinner
         mPopup.isModal = true
         mPopup.setListSelector(ColorDrawable(Color.TRANSPARENT))
-        mPopup.setBackgroundDrawable(context.getDrawable(R.drawable.background_spinner_listpopup))
+
 
         if (mIsDisabled) {
             mBinding.textviewCustomspinnerPlaceholder.setTextColor(context.resources.getColor(R.color.greyish))
@@ -80,7 +80,7 @@ class CustomSpinnerView : LinearLayout {
 
         // Listener
         mBinding.textviewCustomspinnerPlaceholder.setOnClickListener {
-            if(!mIsDisabled){
+            if (!mIsDisabled) {
                 if (mPopup.isShowing) dismiss()
                 else show()
             }
