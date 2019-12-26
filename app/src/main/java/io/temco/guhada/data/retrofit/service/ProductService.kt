@@ -117,4 +117,16 @@ interface ProductService {
      */
     @GET("/lucky-draws/winner/{dealId}")
     fun getRequestLuckyDrawWinner(@Header("Authorization") accessToken: String, @Path("dealId") dealId : Long): Call<BaseModel<JsonObject>>
+
+
+
+
+    /**
+     * @author park jungho
+     * 19.12.23
+     * 리스펀스가 null 일 경우 확인
+     */
+    @GET("test/ok-null")
+    fun getOkNull(): Call<BaseModel<Any>>
+
 }
