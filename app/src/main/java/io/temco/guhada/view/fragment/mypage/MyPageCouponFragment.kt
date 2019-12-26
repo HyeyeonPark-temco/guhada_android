@@ -2,6 +2,7 @@ package io.temco.guhada.view.fragment.mypage
 
 import android.view.View
 import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.util.ToastUtil
@@ -18,6 +19,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCouponEnabledBinding>(), SwipeRefreshLayout.OnRefreshListener {
     lateinit var mViewModel: MyPageCouponViewModel
     var mIsAvailable = false
+    var mSetTabTitleTask: (text: String) -> Unit = {}
 
     override fun getBaseTag(): String = MyPageCouponFragment::class.java.simpleName
 
@@ -25,79 +27,64 @@ class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCo
 
     override fun init() {
         if (::mViewModel.isInitialized) {
-            mBinding.swipeRefreshLayout.setOnRefreshListener(this)
-            setScrollView()
-
-            // TODO 쿠폰 등록
-            mBinding.buttonMypagecouponAdd.setOnClickListener { ToastUtil.showMessage("유효하지 않은 쿠폰입니다.") }
-
             mBinding.recyclerviewMypagecouponEnabledlist.adapter = MyPageCouponAdapter().apply {
                 this.mViewModel = this@MyPageCouponFragment.mViewModel
                 this.mIsAvailable = this@MyPageCouponFragment.mIsAvailable
             }
-            mBinding.viewModel = mViewModel
-            mBinding.isAvailable = mIsAvailable
+            mViewModel.enabledCouponResponse.observe(this, Observer {
+                updateCouponList(it.content)
+                mSetTabTitleTask(resources.getString(R.string.mypagecoupon_tab_enabled, it.totalElements))
+            })
+            mViewModel.disabledCouponResponse.observe(this, Observer { updateCouponList(it.content) })
             mViewModel.getCoupons(mIsAvailable)
-            mBinding.executePendingBindings()
+            mBinding.viewModel = mViewModel
+            setScrollView()
         }
+
+        // TODO 쿠폰 등록
+        mBinding.buttonMypagecouponAdd.setOnClickListener { ToastUtil.showMessage("유효하지 않은 쿠폰입니다.") }
+        mBinding.swipeRefreshLayout.setOnRefreshListener(this)
+        mBinding.isAvailable = mIsAvailable
+
+        mBinding.executePendingBindings()
     }
 
     private fun setScrollView() {
         mBinding.scrollviewMypagecoupon.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             if (v != null && scrollY == (v.getChildAt(0)?.measuredHeight!! - v.measuredHeight)) {
-                if (mIsAvailable) {
-                    if (mViewModel.enabledCouponResponse.value?.empty == false)
-                        mViewModel.getCoupons(mIsAvailable)
-                } else {
-                    if (mViewModel.disabledCouponResponse.value?.empty == false)
-                        mViewModel.getCoupons(mIsAvailable)
-                }
+                val isLast = if (mIsAvailable) mViewModel.enabledCouponResponse.value?.last else mViewModel.disabledCouponResponse.value?.last
+                if (isLast == false) mViewModel.getCoupons(mIsAvailable)
             }
         }
     }
 
-    fun setCoupons(list: MutableList<Coupon>) {
+    private fun setCoupons(list: MutableList<Coupon>) {
         if (mBinding.recyclerviewMypagecouponEnabledlist.adapter == null) mBinding.recyclerviewMypagecouponEnabledlist.adapter = MyPageCouponAdapter()
         (mBinding.recyclerviewMypagecouponEnabledlist.adapter as MyPageCouponAdapter).setItems(list)
     }
 
-    fun addCoupons(list: MutableList<Coupon>) {
-        (mBinding.recyclerviewMypagecouponEnabledlist.adapter as MyPageCouponAdapter).addItems(list)
-    }
+    private fun addCoupons(list: MutableList<Coupon>) = (mBinding.recyclerviewMypagecouponEnabledlist.adapter as MyPageCouponAdapter).addItems(list)
 
-    fun checkEmptyVisible() {
-        val isEmpty =
+    private fun checkEmptyVisible() {
+        val isNotEmpty =
                 if (mIsAvailable) mViewModel.enabledCouponResponse.value?.totalElements ?: 0 > 0
                 else mViewModel.disabledCouponResponse.value?.totalElements ?: 0 > 0
 
-        if (isEmpty) {
-            mBinding.imageviewMypagecouponEnabledlistEmpty.visibility = View.GONE
-            mBinding.textviewMypagecouponEnabledlistEmpty.visibility = View.GONE
-        } else {
-            mBinding.imageviewMypagecouponEnabledlistEmpty.visibility = View.VISIBLE
-            mBinding.textviewMypagecouponEnabledlistEmpty.visibility = View.VISIBLE
-        }
+        mBinding.imageviewMypagecouponEnabledlistEmpty.visibility = if (isNotEmpty) View.GONE else View.VISIBLE
+        mBinding.textviewMypagecouponEnabledlistEmpty.visibility = if (isNotEmpty) View.GONE else View.VISIBLE
     }
 
-    fun checkMoreVisible() {
-        val isLast =
-                if (mIsAvailable) mViewModel.enabledCouponResponse.value?.last == true
-                else mViewModel.disabledCouponResponse.value?.last == true
-
-        if (isLast) {
-            mBinding.viewMypagecouponMore.visibility = View.GONE
-            mBinding.textviewMypagecouponMore.visibility = View.GONE
-            mBinding.imageviewMypagecouponMore.visibility = View.GONE
-        } else {
-            mBinding.viewMypagecouponMore.visibility = View.VISIBLE
-            mBinding.textviewMypagecouponMore.visibility = View.VISIBLE
-            mBinding.imageviewMypagecouponMore.visibility = View.VISIBLE
-        }
+    private fun updateCouponList(list: MutableList<Coupon>) {
+        if (::mViewModel.isInitialized && mViewModel.page > 1) addCoupons(list)
+        else setCoupons(list)
+        checkEmptyVisible()
     }
 
     override fun onRefresh() {
-        mViewModel.page = 1
-        mViewModel.getCoupons(mIsAvailable)
+        if(::mViewModel.isInitialized){
+            mViewModel.page = 0
+            mViewModel.getCoupons(mIsAvailable)
+        }
         mBinding.swipeRefreshLayout.isRefreshing = false
     }
 }

@@ -43,8 +43,8 @@ class LuckyDrawEditActivity : BindActivity<ActivityLuckydrawEditBinding>() {
             intent.getSerializableExtra("snsUser").let {
                 if (it != null) {
                     this.mSnsSignUp = it as EventUser.SnsSignUp
-                    this.mEmail = it.email
-                    this.mOriginEmail = it.email
+                    this.mEmail = it.email ?: ""
+                    this.mOriginEmail = it.email ?: ""
                     this.mIsSns = true
                 }
             }

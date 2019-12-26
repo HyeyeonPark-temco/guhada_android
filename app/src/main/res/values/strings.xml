@@ -1407,5 +1407,6 @@
 
     <string name="first_purchase_dialog_stop">그만보기</string>
 
+    <string name="price_title">가격</string>
 
 </resources>

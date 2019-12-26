@@ -114,6 +114,7 @@ class TimeDealListLayout constructor(
         } else {
             mBinding.scrollView.scrollTo(0,0)
         }
+        changeTopFloatingButton(false)
     }
 
     // Floating Button

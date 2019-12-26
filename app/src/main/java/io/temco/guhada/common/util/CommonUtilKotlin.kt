@@ -89,9 +89,8 @@ object CommonUtilKotlin {
 
 
     /**
-     * 첫구매 관련 팝업
-     * FIRST_VIEW - 첫구매 안내 팝업
-     * FIRST_PURCHASE - 첫구매 후 팝업
+     * 팝업
+     * POPUP_VIEW_STOP - 그만보기 버튼
      */
     @JvmStatic
     fun startActivityPopupDialog(activity: Activity, imgPath: String, state: PopupViewType) {

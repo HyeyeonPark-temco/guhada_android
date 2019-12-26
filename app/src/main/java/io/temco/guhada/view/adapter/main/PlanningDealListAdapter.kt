@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.text.TextUtils
 import android.util.DisplayMetrics
@@ -11,11 +12,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
@@ -133,15 +141,48 @@ class PlanningDealListAdapter(private val model : PlanningDealListViewModel, lis
      * 메인 리스트에 더미 화면 view holder
      */
     class EventListViewHolder(private val containerView: View, val binding: CustomlayoutMainItemPlanningBinding) : ListViewHolder(containerView, binding){
+        internal var width = 0
+        internal var height = 0
+        internal lateinit var request : RequestOptions
+
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: PlanningDealListViewModel, position: Int, item: MainBaseModel) {
             if(item is PlanningList){
-                if(TextUtils.isEmpty(item.planningData.bgColor)){
+                if(!::request.isInitialized){
+                    request = RequestOptions()
+                            .fitCenter()
+                            .format(DecodeFormat.PREFER_ARGB_8888)
+                            .override(width,width)
+                            .downsample(DownsampleStrategy.AT_MOST)
+                }
+                if(width == 0 && height == 0){
+                    Glide.with(viewModel.context).load(item.planningData.imgUrlM)
+                            .apply(RequestOptions().format(DecodeFormat.PREFER_ARGB_8888).downsample(DownsampleStrategy.AT_MOST))
+                            .into(object : SimpleTarget<Drawable>(){
+                                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                                    if(width == 0){
+                                        val matrix = DisplayMetrics()
+                                        (viewModel.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+                                        width = matrix.widthPixels
+                                        var ra : Float = width / resource.minimumWidth.toFloat()
+                                        height  = (ra * resource.minimumHeight.toFloat()).toInt()
+                                        binding.imageviewMaineventEvent.layoutParams = LinearLayout.LayoutParams(width,height)
+                                    }
+                                    //binding.imageBanner.setImageDrawable(resource)
+                                    setImage(binding.imageviewMaineventEvent, item.planningData.imgUrlM)
+                                }
+                            }
+                    )
+                }else{
+                    binding.imageviewMaineventEvent.layoutParams = LinearLayout.LayoutParams(width,height)
+                    setImage(binding.imageviewMaineventEvent, item.planningData.imgUrlM)
+                }
+                /*if(TextUtils.isEmpty(item.planningData.bgColor)){
                     binding.imageviewMaineventEvent.scaleType = ImageView.ScaleType.FIT_XY
                 }else {
                     binding.imageviewMaineventEvent.scaleType = ImageView.ScaleType.CENTER
                 }
-                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageviewMaineventEvent, item.planningData.imgUrlM)
+                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageviewMaineventEvent, item.planningData.imgUrlM)*/
                 binding.textviewMaineventTitle.text = item.planningData.eventTitle
                 binding.textviewMaineventDate.text = (item.planningData.eventStartDate.split(" ")[0] + " ~ " +item.planningData.eventEndDate.split(" ")[0])
                 binding.layoutEventContent.setOnClickListener {
@@ -154,6 +195,10 @@ class PlanningDealListAdapter(private val model : PlanningDealListViewModel, lis
                     if(CustomLog.flag)CustomLog.E(e)
                 }
             }
+        }
+
+        private fun setImage(imageView : ImageView, imgUrl : String){
+            ImageUtil.loadImage(Glide.with(containerView.context as Activity), imageView, imgUrl ,request)
         }
     }
     /**
