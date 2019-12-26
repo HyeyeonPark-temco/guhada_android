@@ -345,6 +345,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                         msg = data.getExtras().getString("resultMsg");
                     EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
                     break;
+                case Flag.RequestCode.PRODUCT_DETAIL:
                 case Flag.RequestCode.SIDE_MENU:
                     if (data != null) {
                         boolean firstAppLogin = data.getBooleanExtra("firstAppLogin", false);

@@ -11,12 +11,16 @@ class Token {
     var firstAppLogin = false
     var savedPointResponse: SavedPointResponse = SavedPointResponse()
 
+    /**
+     * saveTargetType
+     * @see io.temco.guhada.data.model.coupon.CouponConsumption.ConsumptionTargetType
+     */
     class SavedPointResponse {
         var savedPoint = 0
         var dueSavedPoint = 0
         var totalFreePoint = 0
         var totalPaidPoint = 0
-        var saveTargetType: String? = ""
         var message: String? = ""
+        var saveTargetType: String? = ""
     }
 }
