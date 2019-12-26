@@ -250,6 +250,12 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
+                setResult(resultCode);
+                finish();
+            }
+
+            @Override
+            public void closeActivityAfterLogin(int resultCode, boolean firstAppLogin) {
                 if (mViewModel.getEventData() != null) {
                     if (resultCode == RESULT_CANCELED) {
                         setResult(resultCode);
@@ -274,7 +280,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                         }
                     }
                 } else {
-                    setResult(resultCode);
+                    getIntent().putExtra("firstAppLogin", firstAppLogin);
+                    setResult(resultCode, getIntent());
                     finish();
                 }
             }

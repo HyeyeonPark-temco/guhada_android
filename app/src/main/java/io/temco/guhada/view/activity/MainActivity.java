@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,7 +54,7 @@ import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     // -------- LOCAL VALUE --------
-    private final int REQUEST_CODE_LOGIN = 101;
+    private final int REQUEST_CODE_LOGIN = Flag.RequestCode.LOGIN;
     private final int REQUEST_CODE_CATEGORY = 201;
     private final int REQUEST_CODE_BRAND = 202;
 
@@ -113,13 +114,13 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         repository.getMainPopup(new OnCallBackListener() {
             @Override
             public void callBackListener(boolean resultFlag, @NotNull Object value) {
-                if(resultFlag){
+                if (resultFlag) {
                     ArrayList<MainPopup> list = (ArrayList<MainPopup>) value;
-                    for (MainPopup pop : list){
-                        if(("ALL".equalsIgnoreCase(pop.getAgent()) || "APP".equalsIgnoreCase(pop.getAgent())) && "진행중".equals(pop.getEventProgress()))
-                            CommonUtilKotlin.startActivityPopupDialog(MainActivity.this, pop.getImgUrlM() ,PopupViewType.POPUP_VIEW_STOP);
+                    for (MainPopup pop : list) {
+                        if (("ALL".equalsIgnoreCase(pop.getAgent()) || "APP".equalsIgnoreCase(pop.getAgent())) && "진행중".equals(pop.getEventProgress()))
+                            CommonUtilKotlin.startActivityPopupDialog(MainActivity.this, pop.getImgUrlM(), PopupViewType.POPUP_VIEW_STOP);
                     }
-                    if(CustomLog.getFlag())CustomLog.L("MainActivity","value",list.toString());
+                    if (CustomLog.getFlag()) CustomLog.L("MainActivity", "value", list.toString());
                 }
             }
         });
@@ -343,6 +344,14 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
                         msg = data.getExtras().getString("resultMsg");
                     EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
+                    break;
+                case Flag.RequestCode.SIDE_MENU:
+                    if (data != null) {
+                        boolean firstAppLogin = data.getBooleanExtra("firstAppLogin", false);
+                        if (firstAppLogin)
+                            CommonUtilKotlin.startActivityPopupDialog(MainActivity.this, R.drawable.ad_popup_pay_login + "", PopupViewType.POPUP_VIEW_RES);
+                    }
+                    break;
             }
             super.onActivityResult(requestCode, resultCode, data);
         }
