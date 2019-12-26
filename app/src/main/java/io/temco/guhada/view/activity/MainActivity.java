@@ -327,24 +327,23 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
                     EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
                     break;*/
+                case Flag.RequestCode.KAKAO_LOGIN_MY:
                 case Flag.RequestCode.NAVER_LOGIN_MY:
-                    msg = "";
-                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
-                        msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
-                    break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN_MY:
-                    msg = "";
-                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
-                        msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
-                    break;
                 case Flag.RequestCode.FACEBOOK_LOGIN_MY:
-                    msg = "";
-                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
-                        msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
+                    if (data != null) {
+                        boolean firstAppLogin = data.getBooleanExtra("firstAppLogin", false);
+                        if (firstAppLogin) {
+                            CommonUtilKotlin.startActivityPopupDialog(MainActivity.this, R.drawable.ad_popup_pay_login + "", PopupViewType.POPUP_VIEW_RES);
+                        } else {
+                            msg = "";
+                            if (data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
+                                msg = data.getExtras().getString("resultMsg");
+                            EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
+                        }
+                    }
                     break;
+
                 case Flag.RequestCode.PRODUCT_DETAIL:
                 case Flag.RequestCode.SIDE_MENU:
                     if (data != null) {
@@ -357,6 +356,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 
     ////////////////////////////////////////////////
     // PUBLIC
