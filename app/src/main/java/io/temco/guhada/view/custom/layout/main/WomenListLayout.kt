@@ -104,6 +104,7 @@ class WomenListLayout constructor(
         } else {
             mBinding.recyclerView.scrollToPosition(0)
         }
+        changeTopFloatingButton(false)
         mainListListener.requestDataList(1,"scrollToTop")
     }
 

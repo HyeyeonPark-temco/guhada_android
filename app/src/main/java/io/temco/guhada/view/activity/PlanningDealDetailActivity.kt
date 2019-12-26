@@ -159,6 +159,7 @@ class PlanningDealDetailActivity : BindActivity<ActivityPlanningdealdetailBindin
         } else {
             mBinding.recyclerView.scrollToPosition(0)
         }
+        changeTopFloatingButton(false)
     }
 
 

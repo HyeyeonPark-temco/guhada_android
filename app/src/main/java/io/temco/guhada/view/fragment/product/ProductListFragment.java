@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
 
@@ -71,6 +75,7 @@ import io.temco.guhada.view.custom.dialog.BrandListDialog;
 import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
+import io.temco.guhada.view.custom.recycler.MyRecyclerScroll;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 import io.temco.guhada.view.fragment.mypage.MyPageTabType;
 
@@ -123,6 +128,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private List<Category> tabCategoryList;
     private Category filterCategory;
     private HashSet<Integer> filterChildIdSet;
+
+    private Animation animation;
+    private MyRecyclerScroll myRecyclerScroll;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -154,6 +162,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
         mDepthTitle = null;
         mDepthOldTitle = null;
+
+        animation = AnimationUtils.loadAnimation(getContext(), R.anim.simple_grow);
 
         mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
 
@@ -736,7 +746,26 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
             }
         });
+        myRecyclerScroll = new MyRecyclerScroll() {
+            @Override
+            public void show() {
+                showAnimationView();
+            }
+            @Override
+            public void hide() {
+                mBinding.layoutAppbar.animate().translationY(-mBinding.layoutAppbar.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+                mBinding.listFloatingParent.animate().translationY(mBinding.layoutProductfilterTab.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+                mBinding.layoutProductfilterTab.animate().translationY(mBinding.layoutProductfilterTab.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+            }
+        };
+        mBinding.listContents.addOnScrollListener(myRecyclerScroll);
         mBinding.listContents.setAdapter(mListAdapter);
+    }
+
+    private void showAnimationView(){
+        mBinding.layoutAppbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        mBinding.listFloatingParent.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+        mBinding.layoutProductfilterTab.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
     }
 
     private void resetList(boolean notify) {
@@ -794,6 +823,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         } else {
             mBinding.listContents.scrollToPosition(0);
         }
+        changeTopFloatingButton(false);
+        showAnimationView();
+        myRecyclerScroll.setVisible(true);
         mBinding.layoutAppbar.setExpanded(true);
     }
 

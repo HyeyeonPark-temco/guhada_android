@@ -105,6 +105,7 @@ class KidsListLayout constructor(
         } else {
             mBinding.recyclerView.scrollToPosition(0)
         }
+        changeTopFloatingButton(false)
         mainListListener.requestDataList(3,"scrollToTop")
     }
 
