@@ -231,26 +231,30 @@ public class CommonUtil {
     public static boolean validatePassword(String password) {
         int length = password.length();
         if (length >= 8 && length <= 15) {
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("validatePassword 1","length",length);
+            if (CustomLog.INSTANCE.getFlag())
+                CustomLog.INSTANCE.L("validatePassword 1", "length", length);
             final String PASSWORD_PATTERN = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,14}.$";
             Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
             Matcher matcher = pattern.matcher(password);
 
             return matcher.matches();
         } else {
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("validatePassword 2","length",length);
+            if (CustomLog.INSTANCE.getFlag())
+                CustomLog.INSTANCE.L("validatePassword 2", "length", length);
             return false;
         }
     }
 
     /**
      * 이메일 유효성 검사(.io는 안됨)
+     *
      * @param email
      * @return isValid
      * @author Hyeyeon Park
      */
-    public static boolean validateEmail(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    public static boolean validateEmail(@Nullable String email) {
+        if (TextUtils.isEmpty(email)) return false;
+        else return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public static boolean validateNumber(String text) {
@@ -316,7 +320,7 @@ public class CommonUtil {
     }
 
 
-    public static Category createAllCategoryData(String title, String depth, int id, int[] hierarchies, boolean isSelected, int parentId,int depthIndex) {
+    public static Category createAllCategoryData(String title, String depth, int id, int[] hierarchies, boolean isSelected, int parentId, int depthIndex) {
         Category all = new Category();
         all.type = Type.Category.ALL;
         all.id = id;
@@ -349,18 +353,18 @@ public class CommonUtil {
      */
     public static void startSearchWordActivity(Activity act, String text, boolean isNewAct) {
         Intent intent = new Intent(act, SearchWordActivity.class);
-        if(text!=null && !"".equals(text))  intent.putExtra("searchWord",text);
-        else intent.putExtra("searchWord","");
-        intent.putExtra("isNewActivity",isNewAct);
+        if (text != null && !"".equals(text)) intent.putExtra("searchWord", text);
+        else intent.putExtra("searchWord", "");
+        intent.putExtra("isNewActivity", isNewAct);
         act.startActivityForResult(intent, Flag.RequestCode.SEARCH_WORD);
     }
 
 
-    public static void startSearchListActivity(Activity act, String text, boolean isNewAct){
+    public static void startSearchListActivity(Activity act, String text, boolean isNewAct) {
         Intent intent = new Intent(act, ProductFilterListActivity.class);
         intent.putExtra("type", Type.ProductListViewType.SEARCH);
         intent.putExtra("search_word", text);
-        intent.putExtra("isNewActivity",isNewAct);
+        intent.putExtra("isNewActivity", isNewAct);
         act.startActivityForResult(intent, Flag.RequestCode.BASE);
     }
 
@@ -381,7 +385,7 @@ public class CommonUtil {
      * 사이드 메뉴 화면
      */
     public static void startMenuActivity(BindActivity act, int res) {
-        if(act.isClickAble){
+        if (act.isClickAble) {
             act.isClickAble = false;
             Intent intent = new Intent(act, SideMenuActivity.class);
             act.startActivityForResult(intent, res);
@@ -400,56 +404,55 @@ public class CommonUtil {
         act.startActivityForResult(intent, Flag.RequestCode.PRODUCT_DETAIL);
     }
 
-    public static void startCategoryScreen(Activity act,Type.Category type, int[] hierarchies, boolean isFinish) {
+    public static void startCategoryScreen(Activity act, Type.Category type, int[] hierarchies, boolean isFinish) {
         Intent intent = new Intent(act, ProductFilterListActivity.class);
         intent.putExtra("type", Type.ProductListViewType.CATEGORY);
         intent.putExtra("hierarchies", hierarchies);
         intent.putExtra("categoryType", type);
-        act.startActivityForResult(intent,Flag.RequestCode.BASE);
-        if(isFinish){
-            act.overridePendingTransition(0,0);
+        act.startActivityForResult(intent, Flag.RequestCode.BASE);
+        if (isFinish) {
+            act.overridePendingTransition(0, 0);
             act.finish();
-            act.overridePendingTransition(0,0);
+            act.overridePendingTransition(0, 0);
         }
     }
 
-    public static void startBrandScreen(Activity act, Brand brand, boolean isFinish){
+    public static void startBrandScreen(Activity act, Brand brand, boolean isFinish) {
         Intent intent = new Intent(act, ProductFilterListActivity.class);
         intent.putExtra("type", Type.ProductListViewType.BRAND);
         intent.putExtra("brand", brand);
-        act.startActivityForResult(intent,Flag.RequestCode.BASE);
-        if(isFinish){
+        act.startActivityForResult(intent, Flag.RequestCode.BASE);
+        if (isFinish) {
             act.setResult(Activity.RESULT_FIRST_USER);
-            act.overridePendingTransition(0,0);
+            act.overridePendingTransition(0, 0);
             act.finish();
         }
     }
 
-    public static void startImageGallery(Activity act){
+    public static void startImageGallery(Activity act) {
         Intent intent = new Intent(act, ImageGetActivity.class);
-        act.startActivityForResult(intent,Flag.RequestCode.IMAGE_GALLERY);
+        act.startActivityForResult(intent, Flag.RequestCode.IMAGE_GALLERY);
     }
 
 
     /**
-     *
-     * @param act activity
+     * @param act  activity
      * @param type - 0 : 구매확정, 1 : 리뷰작성, 2 : 사이즈 등록
      * @see io.temco.guhada.common.enum.PointPopupType
      */
-    public static void startPointDialogActivity(Activity act, int type, PointPopupInfo pointInfo){
+    public static void startPointDialogActivity(Activity act, int type, PointPopupInfo pointInfo) {
         Intent intent = new Intent(act, ReviewPointDialogActivity.class);
         intent.putExtra("type", type);
         intent.putExtra("pointInfo", pointInfo);
-        act.startActivityForResult(intent,Flag.RequestCode.POINT_RESULT_DIALOG);
+        act.startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG);
     }
 
     public static Boolean checkToken() {
         Token token = Preferences.getToken();
-        if(token == null) return false;
-        else{
+        if (token == null) return false;
+        else {
             int current = (int) (System.currentTimeMillis() / 1000L);
-            try{
+            try {
                 Claim exp = new JWT(token.getAccessToken()).getClaim("exp");
                 if (exp.asInt() > current) {
                     return true;
@@ -457,7 +460,7 @@ public class CommonUtil {
                     Preferences.clearToken(false, BaseApplication.getInstance());
                     return false;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Preferences.clearToken(false, BaseApplication.getInstance());
                 return false;
             }
@@ -465,23 +468,22 @@ public class CommonUtil {
     }
 
 
-
     public static long checkUserId() {
         Token token = Preferences.getToken();
-        if(token == null) return -1;
-        else{
+        if (token == null) return -1;
+        else {
             int current = (int) (System.currentTimeMillis() / 1000L);
-            try{
+            try {
                 Claim exp = new JWT(token.getAccessToken()).getClaim("exp");
                 if (exp.asInt() > current) {
-                    String id =  new JWT(token.getAccessToken()).getClaim("userId").asString();
+                    String id = new JWT(token.getAccessToken()).getClaim("userId").asString();
                     return Long.parseLong(id);
                 } else {
                     Preferences.clearToken(false, BaseApplication.getInstance());
                     return -1;
                 }
-            }catch (Exception e){
-                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+            } catch (Exception e) {
+                if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.E(e);
                 Preferences.clearToken(false, BaseApplication.getInstance());
                 return -1;
             }
@@ -491,70 +493,71 @@ public class CommonUtil {
 
     public static String checkUserEmail() {
         Token token = Preferences.getToken();
-        if(token == null) return "";
-        else{
+        if (token == null) return "";
+        else {
             int current = (int) (System.currentTimeMillis() / 1000L);
-            try{
+            try {
                 Claim exp = new JWT(token.getAccessToken()).getClaim("exp");
                 if (exp.asInt() > current) {
-                    String email =  new JWT(token.getAccessToken()).getClaim("user_name").asString();
+                    String email = new JWT(token.getAccessToken()).getClaim("user_name").asString();
                     return email;
                 } else {
                     Preferences.clearToken(false, BaseApplication.getInstance());
                     return "";
                 }
-            }catch (Exception e){
-                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+            } catch (Exception e) {
+                if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.E(e);
                 Preferences.clearToken(false, BaseApplication.getInstance());
                 return "";
             }
         }
     }
 
-    public static String getUserIp(){
+    public static String getUserIp() {
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-                        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getUserIp", "***** IP="+ inetAddress.getHostAddress());
+                        if (CustomLog.INSTANCE.getFlag())
+                            CustomLog.INSTANCE.L("getUserIp", "***** IP=" + inetAddress.getHostAddress());
                         return inetAddress.getHostAddress();
                     }
                 }
             }
         } catch (SocketException ex) {
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(ex);
+            if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.E(ex);
             return "111.111.111.111";
         }
         return null;
     }
 
 
-    public static void startLoginPage(Activity activity){
+    public static void startLoginPage(Activity activity) {
         activity.startActivityForResult(new Intent(activity, LoginActivity.class), Flag.RequestCode.LOGIN);
     }
 
 
     /**
-     *
      * @param activity current Activity notNull
-     * @param type report type notNull
-     * @param data report data notNull
-     * @param data2 nullable report communityDetail (type:0 셀러이름, type:3 게시글상세)
+     * @param type     report type notNull
+     * @param data     report data notNull
+     * @param data2    nullable report communityDetail (type:0 셀러이름, type:3 게시글상세)
      */
-    public static void startReportActivity(Activity activity, int type, Serializable data, @Nullable Serializable data2){
-        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("startReportActivity","type",type);
+    public static void startReportActivity(Activity activity, int type, Serializable data, @Nullable Serializable data2) {
+        if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.L("startReportActivity", "type", type);
         Intent intent = new Intent(activity, ReportActivity.class);
         intent.putExtra("type", type);
         intent.putExtra("data", data);
-        if(data2!=null) intent.putExtra("data2", data2);
-        activity.startActivityForResult(intent,Flag.RequestCode.REPORT);
+        if (data2 != null) intent.putExtra("data2", data2);
+        activity.startActivityForResult(intent, Flag.RequestCode.REPORT);
     }
 
 
     /**
      * 상단 툴바 장바구니 뱃지
+     *
      * @author Hyeyeon Park
      * @since 2019.11.05
      */
@@ -575,7 +578,6 @@ public class CommonUtil {
             BaseApplication.getInstance().setmCartCount(0);
         }
     }
-
 
 
 }

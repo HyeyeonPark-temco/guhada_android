@@ -19,9 +19,9 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  * @since 2019.08.08
  *
  */
-class MyPageCouponViewModel(val context: Context) : BaseObservableViewModel() {
-    private val UNIT_PER_PAGE = 4
-    var page = 1
+class MyPageCouponViewModel() : BaseObservableViewModel() {
+    private val UNIT_PER_PAGE = 3
+    var page = 0
 
     var enabledCouponResponse: MutableLiveData<CouponResponse> = MutableLiveData()
         @Bindable
@@ -39,7 +39,7 @@ class MyPageCouponViewModel(val context: Context) : BaseObservableViewModel() {
                             if (isAvailable) this.enabledCouponResponse.postValue(response)
                             else this.disabledCouponResponse.postValue(response)
                         })
-            }, accessToken = token, isAvailable = isAvailable, page = page++, unitPerPage = UNIT_PER_PAGE)
+            }, accessToken = token, isAvailable = isAvailable, page = ++page, unitPerPage = UNIT_PER_PAGE)
         })
     }
 
