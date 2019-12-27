@@ -533,7 +533,6 @@ public class CommonUtil {
         return null;
     }
 
-
     public static void startLoginPage(Activity activity) {
         activity.startActivityForResult(new Intent(activity, LoginActivity.class), Flag.RequestCode.LOGIN);
     }

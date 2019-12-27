@@ -146,6 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <TextView
@@ -242,6 +243,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <TextView
@@ -344,13 +346,14 @@
 
 
                     <!-- //////////////////////////////////////////////// -->
-                    <!-- CATEGORY -->
+                    <!-- Price -->
                     <!-- //////////////////////////////////////////////// -->
 
                     <com.github.florent37.expansionpanel.ExpansionHeader
                         android:id="@+id/layout_expand_price_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         app:expansion_layout="@id/layout_expand_price_contents"
                         app:expansion_toggleOnClick="true">
 
@@ -364,6 +367,7 @@
                         android:id="@+id/layout_expand_price_contents"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         app:expansion_expanded="true">
 
                         <LinearLayout
@@ -629,56 +633,46 @@
                         android:layout_marginTop="10dp"
                         android:paddingLeft="20dp"
                         android:paddingRight="18dp"
+                        android:visibility="gone"
                         android:layerType="software"
                         android:src="@drawable/line_dot" />
 
-
                     <!-- //////////////////////////////////////////////// -->
-                    <!-- Product Condition info -->
+                    <!-- Search Condition info -->
                     <!-- //////////////////////////////////////////////// -->
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="70dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="17dp"
                         android:layout_marginTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:orientation="vertical">
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:visibility="gone"
+                        android:background="@drawable/bottom_line"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            style="@style/TextMedium"
+                        <EditText
+                            android:id="@+id/list_search_word"
+                            style="@style/TextMediumSingleLine"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginLeft="20dp"
-                            android:gravity="center_vertical"
-                            android:text="결과 내 검색 "
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
                             android:textColor="@color/text_3"
+                            android:paddingLeft="6dp"
+                            android:paddingRight="6dp"
+                            android:hint="결과 내 재검색"
+                            android:maxLength="30"
+                            android:maxLines="1"
+                            android:textColorHint="@color/text_3"
                             android:textSize="@dimen/text_14"/>
 
-                        <LinearLayout
-                            android:layout_width="246dp"
-                            android:layout_height="38dp"
-                            android:layout_marginLeft="35dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/bottom_line"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/list_search_word"
-                                style="@style/TextMediumSingleLine"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/transparent"
-                                android:textColor="@color/text_3"
-                                android:paddingLeft="6dp"
-                                android:paddingRight="6dp"
-                                android:hint="검색어 입력"
-                                android:maxLength="30"
-                                android:maxLines="1"
-                                android:textColorHint="@color/text_3"
-                                android:textSize="@dimen/text_14"/>
-                        </LinearLayout>
-
-                        <!-- DOT LINE -->
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/btn_search"/>
                     </LinearLayout>
 
                 </LinearLayout>

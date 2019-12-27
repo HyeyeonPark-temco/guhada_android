@@ -113,6 +113,7 @@ class PlanningDealListLayout constructor(
         } else {
             mBinding.recyclerView.scrollToPosition(0)
         }
+        changeTopFloatingButton(false)
     }
 
     // Floating Button

@@ -19,4 +19,6 @@ public interface OnLoginListener extends OnBaseActivityListener {
     void redirectFindAccountActivity();
 
     void redirectLuckyDrawJoinActivity();
+
+    void closeActivityAfterLogin(int resultCode, boolean firstAppLogin);
 }

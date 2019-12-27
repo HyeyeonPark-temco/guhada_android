@@ -103,6 +103,7 @@ class MenListLayout constructor(
         } else {
             mBinding.recyclerView.scrollToPosition(0)
         }
+        changeTopFloatingButton(false)
         mainListListener.requestDataList(2,"scrollToTop")
     }
 

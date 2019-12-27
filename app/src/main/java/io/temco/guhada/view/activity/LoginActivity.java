@@ -250,6 +250,12 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
+                setResult(resultCode);
+                finish();
+            }
+
+            @Override
+            public void closeActivityAfterLogin(int resultCode, boolean firstAppLogin) {
                 if (mViewModel.getEventData() != null) {
                     if (resultCode == RESULT_CANCELED) {
                         setResult(resultCode);
@@ -274,7 +280,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                         }
                     }
                 } else {
-                    setResult(resultCode);
+                    getIntent().putExtra("firstAppLogin", firstAppLogin);
+                    setResult(resultCode, getIntent());
                     finish();
                 }
             }
@@ -380,7 +387,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                             }, token.getAccessToken());
                         } else {
                             // SNS 로그인
-                            setResult(RESULT_OK);
+                            getIntent().putExtra("firstAppLogin", token.getFirstAppLogin());
+                            setResult(RESULT_OK, getIntent());
                             finish();
                         }
                         break;
@@ -402,7 +410,9 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                                     // 로그인 후 fcm 토큰 전송
                                     CommonUtilKotlin.saveDevice(t.getAccessToken(), BaseApplication.getInstance().getFcmToken());
 
-                                    setResult(RESULT_OK);
+                                    // SNS 로그인
+                                    getIntent().putExtra("firstAppLogin", m.data.getFirstAppLogin());
+                                    setResult(RESULT_OK, getIntent());
                                     finish();
                                 } else {
                                     SnsLoginModule.logoutSNS();
