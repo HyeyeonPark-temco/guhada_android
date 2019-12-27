@@ -32,7 +32,7 @@ import io.temco.guhada.view.adapter.category.SideMenuCategoryFirstListAdapter
  * Side Menu Activity
  *
  */
-class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickListener {
+class SideMenuActivity : BindActivity<ActivitySidemenuBinding>(), View.OnClickListener {
     private val REQUEST_CODE_LOGIN = 101
     private val REQUEST_CODE_CATEGORY = 201
     private val REQUEST_CODE_BRAND = 202
@@ -40,7 +40,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
     private lateinit var mViewModel: SideMenuViewModel
 
 
-    private val mSideMenuCategoryAdapter: SideMenuCategoryFirstListAdapter by lazy  {
+    private val mSideMenuCategoryAdapter: SideMenuCategoryFirstListAdapter by lazy {
         SideMenuCategoryFirstListAdapter(this)
     }
     // room database init
@@ -70,13 +70,13 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             }
         })*/
         setViewInit()
-        if(CustomLog.flag)setAppInfo()
+        if (CustomLog.flag) setAppInfo()
     }
 
 
-    private fun setViewInit(){
+    private fun setViewInit() {
         mBinding.listContents.layoutManager = LinearLayoutManager(this)
-        mSideMenuCategoryAdapter.setOnCategoryListener(object : OnCategoryListListener{
+        mSideMenuCategoryAdapter.setOnCategoryListener(object : OnCategoryListListener {
             override fun onEvent(index: Int, category: Category) {
                 startCategoryByHierarchy(category.type, category.hierarchies)
             }
@@ -108,7 +108,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         when (v.id) {
             ////////////////////////////////////////////////
             // Side Menu
-            R.id.image_home ->  gotoMain(true)
+            R.id.image_home -> gotoMain(true)
             R.id.image_setting -> {
             }
             R.id.image_close -> {
@@ -135,11 +135,11 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
 
     private fun checkLogin() {
         if (checkToken()) {
-            if(CustomLog.flag)CustomLog.L("SideMenuActivity","checkLogin",true)
+            if (CustomLog.flag) CustomLog.L("SideMenuActivity", "checkLogin", true)
             changeLoginStatus(true)
         } else {
             // startLoginActivity();
-            if(CustomLog.flag)CustomLog.L("SideMenuActivity","onClick",false)
+            if (CustomLog.flag) CustomLog.L("SideMenuActivity", "onClick", false)
             changeLoginStatus(false)
         }
     }
@@ -153,11 +153,11 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         if (mBinding != null) {
             if (isLogin) {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out))
-                mBinding.layoutHeader.layoutLogin.setOnClickListener{
+                mBinding.layoutHeader.layoutLogin.setOnClickListener {
                     Preferences.clearTokenMain(true, (applicationContext as BaseApplication))
                     changeLoginStatus(false)
                     gotoMain(true)
-                    
+
                     // sns 로그아웃
                     SnsLoginModule.logoutSNS()
                 }
@@ -172,8 +172,8 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         val token = Preferences.getToken() ?: return false
         val current = (System.currentTimeMillis() / 1000L).toInt()
         val exp = JWT(token.accessToken!!).getClaim("exp").asInt()!!
-        if(CustomLog.flag)CustomLog.L("SideMenuActivity","checkToken exp",exp)
-        if(CustomLog.flag)CustomLog.L("SideMenuActivity","checkToken current",current)
+        if (CustomLog.flag) CustomLog.L("SideMenuActivity", "checkToken exp", exp)
+        if (CustomLog.flag) CustomLog.L("SideMenuActivity", "checkToken current", current)
         if (exp > current) {
             return true
         } else {
@@ -196,9 +196,11 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             when (requestCode) {
                 REQUEST_CODE_LOGIN -> {
                     changeLoginStatus(checkToken())
-                    gotoMain(true)
+
+                    val firstAppLogin = data?.getBooleanExtra("firstAppLogin", false) ?: false
+                    gotoMain(true, firstAppLogin)
                 }
-                REQUEST_CODE_CATEGORY ->{
+                REQUEST_CODE_CATEGORY -> {
                     // @TODO MENU
                     if (data != null) {
                         val type = data!!.getSerializableExtra(Info.INTENT_CATEGORY_TYPE) as Type.Category
@@ -206,11 +208,11 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                         startCategoryScreen(type, hierarchies)
                     }
                 }
-                REQUEST_CODE_BRAND ->{
+                REQUEST_CODE_BRAND -> {
                     // @TODO MENU
                     if (data != null) {
                         val brand = data!!.getSerializableExtra(Info.INTENT_BRAND_DATA) as Brand
-                        CommonUtil.startBrandScreen(this@SideMenuActivity, brand,true)
+                        CommonUtil.startBrandScreen(this@SideMenuActivity, brand, true)
                     }
                 }
 
@@ -218,20 +220,21 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         }
     }
 
-    private fun gotoMain(initMain : Boolean){
-        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true,initMain)
-        this@SideMenuActivity.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+    private fun gotoMain(initMain: Boolean, firstAppLogin: Boolean = false) {
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true, initMain)
+        intent.putExtra("firstAppLogin", firstAppLogin)
+        this@SideMenuActivity.setResult(Flag.ResultCode.GO_TO_MAIN_HOME, intent)
         this@SideMenuActivity.onBackPressed()
     }
 
-    private fun setAppInfo(){
+    private fun setAppInfo() {
         var info = ""
-        if(CommonUtil.checkToken()){
-            info += "userId="+CommonUtil.checkUserId()+", "
+        if (CommonUtil.checkToken()) {
+            info += "userId=" + CommonUtil.checkUserId() + ", "
         }
         val pinfo = packageManager.getPackageInfo(packageName, 0)
-        info += "appVer="+pinfo.versionName
-        info += ", server="+ BuildConfig.BuildType.name
+        info += "appVer=" + pinfo.versionName
+        info += ", server=" + BuildConfig.BuildType.name
         mBinding.appInfo.text = info
     }
 
