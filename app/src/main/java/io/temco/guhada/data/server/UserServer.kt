@@ -778,14 +778,14 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
-
 
 
         /**
@@ -796,16 +796,17 @@ class UserServer {
         @JvmStatic
         fun getLikes(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId: Long) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .getLikes(accessToken,target,targetId,userId).enqueue(object : Callback<BaseModel<Any>> {
+                    .getLikes(accessToken, target, targetId, userId).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -821,12 +822,13 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
         /**
@@ -841,14 +843,14 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-             )
+                    )
         }
-
 
 
         /**
@@ -990,11 +992,21 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("passwordCheck", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     })
+        }
+
+        /**
+         * 토큰 갱신
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun refreshTokenAsync(authorization: String, refresh_token: String): Deferred<Token> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).refreshTokenAsync(authorization = authorization, refresh_token = refresh_token, grant_type = "refresh_token").await()
         }
 
 

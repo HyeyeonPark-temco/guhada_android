@@ -303,7 +303,7 @@ object CommonUtilKotlin {
                         ///listener.callBackListener(false, "dataNotFoundTask")
                     },
                     failedTask = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice failedTask","message",it.message)
+                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice failedTask","message",it.message?:"")
                         //listener.callBackListener(false, it.message)
                     },dataIsNull = {
                         if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice failedTask","dataIsNull")
@@ -336,7 +336,7 @@ object CommonUtilKotlin {
                         ///listener.callBackListener(false, "dataNotFoundTask")
                     },
                     failedTask = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice failedTask","message",it.message)
+                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice failedTask","message",it.message?:"")
                         //listener.callBackListener(false, it.message)
                     },dataIsNull = {
                         if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice failedTask","dataIsNull")

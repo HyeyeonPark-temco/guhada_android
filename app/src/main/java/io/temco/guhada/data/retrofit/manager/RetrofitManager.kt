@@ -9,9 +9,12 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
-import okhttp3.Cache
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
+import io.temco.guhada.data.model.Token
+import io.temco.guhada.data.server.UserServer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -146,6 +149,7 @@ class RetrofitManager() {
         builder.addInterceptor(interceptor)
         if (isParseJson) builder.addInterceptor(BaseResponseInterceptor())
         if (isLogging) builder.addInterceptor(getLoggingInterceptor())
+        builder.authenticator(getAuthenticator())
         return builder.build()
     }
 
@@ -184,6 +188,7 @@ class RetrofitManager() {
             // Mobile
             builder.header("x-guhada-model", Build.DEVICE) // Device Model // Build.MANUFACTURER
             builder.header("x-guhada-os-version", Build.VERSION.RELEASE) // Device Version
+
             chain.proceed(builder.build())
         }
     }
@@ -194,6 +199,39 @@ class RetrofitManager() {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return interceptor
     }
+
+
+    private fun getAuthenticator(): Authenticator {
+        return object : Authenticator {
+            override fun authenticate(route: Route?, response: Response): Request? {
+                if (response.code() == 401) {
+                    var token = Preferences.getToken()
+                    if (token != null) {
+                        val refreshToken = token.refreshToken
+                        val authorization = "Basic Z3VoYWRhOmd1aGFkYWNsaWVudHNlY3JldA=="
+                        CoroutineScope(Dispatchers.Default).launch {
+                            if (!refreshToken.isNullOrEmpty()) {
+                                val newToken = getNewToken(authorization, refreshToken)
+                                if (newToken != null) token = newToken
+                                return@launch
+                            }
+                        }
+                        return if (token?.accessToken.isNullOrEmpty()) null
+                        else response.request().newBuilder().header("Authorization", token?.accessToken
+                                ?: "").build()
+                    }
+                }
+                return null
+            }
+        }
+    }
+
+    private suspend fun getNewToken(authorization: String, refreshToken: String): Token? {
+        val newToken: Token? = UserServer.refreshTokenAsync(authorization = authorization, refresh_token = refreshToken).await()
+        if (newToken != null) Preferences.setToken(newToken)
+        return newToken
+    }
+
 
     ////////////////////////////////////////////////
 }
