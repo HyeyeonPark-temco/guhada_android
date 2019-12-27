@@ -6,229 +6,243 @@
             name="item"
             type="io.temco.guhada.data.model.Deal" />
     </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_default"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="10dp">
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="130dp"
-            android:layout_gravity="center_vertical"
-            android:layout_height="130dp">
+        <View
+            android:id="@+id/padding_top"
+            android:layout_width="10dp"
+            android:layout_height="54dp"
+            android:visibility="gone"
+            android:background="@color/transparent"/>
 
-            <!-- THUMBNAIL -->
-            <ImageView
-                style="@style/ProductImageType"
-                android:id="@+id/image_thumb"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <!-- COLOR -->
-            <LinearLayout
-                android:id="@+id/layout_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="3dp"
-                android:gravity="bottom"
-                android:orientation="horizontal"
-                android:padding="1dp" />
-
-            <!-- SHIP -->
-            <TextView
-                android:id="@+id/text_ship_free"
-                style="@style/TextMedium"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:layout_marginLeft="9dp"
-                android:layout_marginTop="9dp"
-                android:background="@color/common_blue_purple"
-                android:gravity="center"
-                android:text="@string/product_ship_free_split"
-                android:textColor="@color/common_white"
-                android:textSize="@dimen/text_9" />
-        </RelativeLayout>
-
-        <!-- INFO -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:paddingTop="8dp"
-            android:orientation="vertical">
+            android:background="@color/background_default"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp">
 
-            <!-- 중고, 해외배송 여부 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:visibility="@{item == null ? View.INVISIBLE : View.VISIBLE, default=invisible}"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <RelativeLayout
+                android:layout_width="130dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="130dp">
 
-
-                <TextView
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/product_old"
-                    android:visibility="@{item.brandNew ? View.GONE : View.VISIBLE, default=gone}"
-                    android:textColor="@color/dark_tan"
-                    android:textSize="@dimen/text_11" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="@{!item.brandNew &amp;&amp; item.internationalShipping ? View.VISIBLE : View.GONE, default=gone}"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/white_three" />
-
+                <!-- THUMBNAIL -->
                 <ImageView
+                    style="@style/ProductImageType"
+                    android:id="@+id/image_thumb"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <!-- COLOR -->
+                <LinearLayout
+                    android:id="@+id/layout_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/airplane_icon"
-                    android:visibility="@{item.internationalShipping ? View.VISIBLE: View.GONE, default = gone}" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="3dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:padding="1dp" />
 
+                <!-- SHIP -->
                 <TextView
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/product_international"
-                    android:textColor="@color/black_four"
-                    android:layout_marginEnd="10dp"
-                    android:textSize="@dimen/text_11"
-                    android:visibility="@{item.internationalShipping ? View.VISIBLE: View.INVISIBLE, default = invisible}" />
-
-                <!-- [19.12.06] 현재 "쿠폰" 미노출 -->
-                <TextView
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="gone"
-                    android:text="@string/product_coupon"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_11" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- BRAND -->
-                <TextView
-                    android:id="@+id/text_brand"
-                    style="@style/TextBold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_3"
-                    android:textSize="@dimen/text_14" />
-
-                <!-- SEASON -->
-                <TextView
-                    android:id="@+id/text_season"
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:layout_weight="0"
-                    android:textColor="@color/text_3"
-                    android:textSize="@dimen/text_11" />
-            </LinearLayout>
-
-            <!-- TITLE -->
-            <TextView
-                android:id="@+id/text_title"
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="32dp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:layout_marginTop="3dp"
-                android:textColor="@color/text_3"
-                android:textSize="@dimen/text_12" />
-
-            <!-- SIZE -->
-            <TextView
-                android:id="@+id/text_size"
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginTop="9dp"
-                android:textColor="@color/text_3"
-                android:textSize="@dimen/text_9" />
-
-            <!-- PRICE -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="bottom"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/text_price"
+                    android:id="@+id/text_ship_free"
                     style="@style/TextMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text_3"
-                    android:textSize="@dimen/text_15" />
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="9dp"
+                    android:background="@color/common_blue_purple"
+                    android:gravity="center"
+                    android:text="@string/product_ship_free_split"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_9" />
+            </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/text_pricediscount"
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
-                    android:textColor="@color/warm_grey_two"
-                    android:textSize="@dimen/text_11" />
-
-                <TextView
-                    android:id="@+id/text_price_sale_per"
-                    style="@style/TextBold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:textColor="@color/common_blue_purple"
-                    android:textSize="@dimen/text_15" />
-            </LinearLayout>
-
+            <!-- INFO -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
-                android:layout_marginTop="3dp"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:paddingTop="8dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/text_seller_rate"
-                    android:visibility="gone"
-                    style="@style/MainHomeListProductItemSellerRateTextStyle"
-                    android:text="1" />
-
-                <TextView
-                    style="@style/TextRegular"
-                    android:id="@+id/text_seller_name"
-                    android:textColor="@color/greyish_brown_two"
-                    android:textSize="@dimen/text_10"
+                <!-- 중고, 해외배송 여부 -->
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="24dp"/>
+                    android:layout_marginBottom="7dp"
+                    android:visibility="@{item == null ? View.INVISIBLE : View.VISIBLE, default=invisible}"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/product_old"
+                        android:visibility="@{item.brandNew ? View.GONE : View.VISIBLE, default=gone}"
+                        android:textColor="@color/dark_tan"
+                        android:textSize="@dimen/text_11" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="@{!item.brandNew &amp;&amp; item.internationalShipping ? View.VISIBLE : View.GONE, default=gone}"
+                        android:layout_marginStart="10dp"
+                        android:background="@color/white_three" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/airplane_icon"
+                        android:visibility="@{item.internationalShipping ? View.VISIBLE: View.GONE, default = gone}" />
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/product_international"
+                        android:textColor="@color/black_four"
+                        android:layout_marginEnd="10dp"
+                        android:textSize="@dimen/text_11"
+                        android:visibility="@{item.internationalShipping ? View.VISIBLE: View.INVISIBLE, default = invisible}" />
+
+                    <!-- [19.12.06] 현재 "쿠폰" 미노출 -->
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone"
+                        android:text="@string/product_coupon"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- BRAND -->
+                    <TextView
+                        android:id="@+id/text_brand"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_3"
+                        android:textSize="@dimen/text_14" />
+
+                    <!-- SEASON -->
+                    <TextView
+                        android:id="@+id/text_season"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="0"
+                        android:textColor="@color/text_3"
+                        android:textSize="@dimen/text_11" />
+                </LinearLayout>
+
+                <!-- TITLE -->
+                <TextView
+                    android:id="@+id/text_title"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="32dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_12" />
+
+                <!-- SIZE -->
+                <TextView
+                    android:id="@+id/text_size"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginTop="9dp"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_9" />
+
+                <!-- PRICE -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/text_price"
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_3"
+                        android:textSize="@dimen/text_15" />
+
+                    <TextView
+                        android:id="@+id/text_pricediscount"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:textColor="@color/warm_grey_two"
+                        android:textSize="@dimen/text_11" />
+
+                    <TextView
+                        android:id="@+id/text_price_sale_per"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:textColor="@color/common_blue_purple"
+                        android:textSize="@dimen/text_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/text_seller_rate"
+                        android:visibility="gone"
+                        style="@style/MainHomeListProductItemSellerRateTextStyle"
+                        android:text="1" />
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:id="@+id/text_seller_name"
+                        android:textColor="@color/greyish_brown_two"
+                        android:textSize="@dimen/text_10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"/>
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 </layout>

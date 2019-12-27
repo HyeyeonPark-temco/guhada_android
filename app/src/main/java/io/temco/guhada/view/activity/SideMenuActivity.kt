@@ -113,6 +113,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             }
             R.id.image_close -> {
                 onBackPressed()
+                //startActivityForResult(Intent(this@SideMenuActivity, AppSettingActivity::class.java), 0)
             }
             R.id.layout_brand -> BrandSubActivity.startActivityForResult(this, REQUEST_CODE_BRAND)
 

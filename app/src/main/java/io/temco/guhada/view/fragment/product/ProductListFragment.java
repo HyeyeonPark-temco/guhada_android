@@ -245,6 +245,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 filterBody.maxPrice = etcBody.getPriceConditionMax();
             }
 
+            if (mIsCategory == Type.ProductListViewType.SEARCH)  {
+                if(filterBody.searchQueries == null)filterBody.searchQueries = new ArrayList<>();
+                else filterBody.searchQueries.clear();
+                filterBody.searchQueries.add(mText);
+            }else{
+                if(filterBody.searchQueries == null) filterBody.searchQueries = new ArrayList<>();
+                else filterBody.searchQueries.clear();
+            }
             if(!TextUtils.isEmpty(etcBody.getSearchWord())){
                 filterBody.searchQueries.add(etcBody.getSearchWord());
             }
