@@ -89,6 +89,16 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    /**
+     * NDK 추가
+     * @Author Hyeyeon Park
+     */
+    externalNativeBuild {
+        ndkBuild {
+            path 'src/main/jni/Android.mk'
+        }
+    }
 }
 
 dependencies {
@@ -144,7 +154,7 @@ dependencies {
 
     // KOTLIN
     implementation libraryDependencies.stringUtils
-    implementation androidDependencies.coreKtx
+    implementation 'androidx.core:core-ktx:+'
     implementation libraryDependencies.kotlinJdk7
     kapt androidDependencies.dataBindingCompiler
 

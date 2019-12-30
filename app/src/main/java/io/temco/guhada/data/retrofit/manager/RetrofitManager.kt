@@ -2,6 +2,7 @@ package io.temco.guhada.data.retrofit.manager
 
 import android.app.Application
 import android.os.Build
+import android.util.Base64
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import io.temco.guhada.BuildConfig
 import io.temco.guhada.common.BaseApplication
@@ -64,6 +65,10 @@ class RetrofitManager() {
     companion object {
         private var instance: RetrofitManager? = null
         private var parseJsonInstance: RetrofitManager? = null
+
+        init {
+            System.loadLibrary("privateKeys")
+        }
 
         @JvmStatic
         fun <S> createService(type: Type.Server, service: Class<S>): S {
@@ -208,7 +213,7 @@ class RetrofitManager() {
                     var token = Preferences.getToken()
                     if (token != null) {
                         val refreshToken = token.refreshToken
-                        val authorization = "Basic Z3VoYWRhOmd1aGFkYWNsaWVudHNlY3JldA=="
+                        val authorization = "Basic ${String(Base64.decode(getAuthKey(), Base64.DEFAULT))}"
 
                         runBlocking {
                             if (!refreshToken.isNullOrEmpty()) {
@@ -235,6 +240,7 @@ class RetrofitManager() {
         return newToken
     }
 
-
     ////////////////////////////////////////////////
+
+    private external fun getAuthKey(): String
 }
