@@ -11,9 +11,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.server.UserServer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -149,7 +147,9 @@ class RetrofitManager() {
         builder.addInterceptor(interceptor)
         if (isParseJson) builder.addInterceptor(BaseResponseInterceptor())
         if (isLogging) builder.addInterceptor(getLoggingInterceptor())
-        builder.authenticator(getAuthenticator())
+
+        val authenticator = getAuthenticator()
+        builder.authenticator(authenticator)
         return builder.build()
     }
 
@@ -209,16 +209,19 @@ class RetrofitManager() {
                     if (token != null) {
                         val refreshToken = token.refreshToken
                         val authorization = "Basic Z3VoYWRhOmd1aGFkYWNsaWVudHNlY3JldA=="
-                        CoroutineScope(Dispatchers.Default).launch {
+
+                        runBlocking {
                             if (!refreshToken.isNullOrEmpty()) {
                                 val newToken = getNewToken(authorization, refreshToken)
                                 if (newToken != null) token = newToken
-                                return@launch
                             }
                         }
-                        return if (token?.accessToken.isNullOrEmpty()) null
-                        else response.request().newBuilder().header("Authorization", token?.accessToken
-                                ?: "").build()
+
+                        val accessToken = token.accessToken
+                        return if (accessToken.isNullOrEmpty())
+                            null
+                        else
+                            response.request().newBuilder().header("Authorization", "Bearer $accessToken").build()
                     }
                 }
                 return null
