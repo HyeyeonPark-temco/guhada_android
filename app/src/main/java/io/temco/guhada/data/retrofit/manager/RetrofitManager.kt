@@ -152,9 +152,8 @@ class RetrofitManager() {
         builder.addInterceptor(interceptor)
         if (isParseJson) builder.addInterceptor(BaseResponseInterceptor())
         if (isLogging) builder.addInterceptor(getLoggingInterceptor())
-
-        val authenticator = getAuthenticator()
-        builder.authenticator(authenticator)
+        if (Preferences.getAutoLogin())
+            builder.authenticator(getAuthenticator())
         return builder.build()
     }
 

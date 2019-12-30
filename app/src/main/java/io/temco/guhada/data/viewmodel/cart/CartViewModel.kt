@@ -8,17 +8,20 @@ import com.google.gson.internal.LinkedTreeMap
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.callWithToken
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.*
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import retrofit2.HttpException
 
 class CartViewModel : BaseObservableViewModel() {
     var cartResponse: MutableLiveData<CartResponse> = MutableLiveData()
@@ -90,6 +93,8 @@ class CartViewModel : BaseObservableViewModel() {
             notifyPropertyChanged(BR.totalItemCount)
         }
 
+    var mCloseActivityTask: () -> Unit = {}
+
     // CLICK EVENT
     fun onClickDiscountContent() {
         totalDiscountVisible = ObservableBoolean(!totalDiscountVisible.get())
@@ -159,8 +164,27 @@ class CartViewModel : BaseObservableViewModel() {
     fun getCart(invalidTokenTask: () -> Unit = {}) {
         callWithToken({ accessToken ->
             OrderServer.getCart(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = { setCartItemList(it.data as CartResponse) })
+                if (success && o is BaseModel<*>) {
+                    if (o.resultCode == ResultCode.SUCCESS.flag)
+                        setCartItemList(o.data as CartResponse)
+                    else {
+                        ToastUtil.showMessage(o.message)
+                        mCloseActivityTask()
+                    }
+                } else {
+                    if (o is Throwable || o is HttpException) {
+                        if ((o as HttpException).code() == 401 || o.code() == 403) {
+                            // 토큰 만료
+                            invalidTokenTask()
+                        } else {
+                            ToastUtil.showMessage(o.message())
+                            mCloseActivityTask()
+                        }
+                    } else {
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                        mCloseActivityTask()
+                    }
+                }
             }, accessToken)
         }, { invalidTokenTask() })
     }

@@ -153,7 +153,7 @@ class OrderServer {
                 }
 
                 override fun onFailure(call: Call<BaseModel<CartResponse>>, t: Throwable) {
-                    listener.onResult(false, t.message)
+                    listener.onResult(false, t)
                 }
             })
         }

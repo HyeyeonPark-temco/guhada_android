@@ -453,12 +453,18 @@ public class CommonUtil {
         else {
             int current = (int) (System.currentTimeMillis() / 1000L);
             try {
-                Claim exp = new JWT(token.getAccessToken()).getClaim("exp");
-                if (exp.asInt() > current) {
+                if(Preferences.getAutoLogin()){
                     return true;
-                } else {
-                    Preferences.clearToken(false, BaseApplication.getInstance());
-                    return false;
+                }else {
+                    String accessToken = token.getAccessToken() != null ? token.getAccessToken() : "";
+                    Claim exp = new JWT(accessToken).getClaim("exp");
+                    int expInt = exp.asInt() == null ? 0 : exp.asInt();
+                    if (expInt > current) {
+                        return true;
+                    } else {
+                        Preferences.clearToken(false, BaseApplication.getInstance());
+                        return false;
+                    }
                 }
             } catch (Exception e) {
                 Preferences.clearToken(false, BaseApplication.getInstance());
@@ -479,12 +485,12 @@ public class CommonUtil {
                     String id = new JWT(token.getAccessToken()).getClaim("userId").asString();
                     return Long.parseLong(id);
                 } else {
-                    Preferences.clearToken(false, BaseApplication.getInstance());
+//                    Preferences.clearToken(false, BaseApplication.getInstance());
                     return -1;
                 }
             } catch (Exception e) {
                 if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.E(e);
-                Preferences.clearToken(false, BaseApplication.getInstance());
+//                Preferences.clearToken(false, BaseApplication.getInstance());
                 return -1;
             }
         }
@@ -502,12 +508,12 @@ public class CommonUtil {
                     String email = new JWT(token.getAccessToken()).getClaim("user_name").asString();
                     return email;
                 } else {
-                    Preferences.clearToken(false, BaseApplication.getInstance());
+//                    Preferences.clearToken(false, BaseApplication.getInstance());
                     return "";
                 }
             } catch (Exception e) {
                 if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.E(e);
-                Preferences.clearToken(false, BaseApplication.getInstance());
+//                Preferences.clearToken(false, BaseApplication.getInstance());
                 return "";
             }
         }

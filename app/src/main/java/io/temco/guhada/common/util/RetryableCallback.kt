@@ -14,6 +14,7 @@ import retrofit2.Response
  *  @param call Retrofit Call<T>
  *  @param recall Retrofit Call<T> 실패 시 호출할 call (optional)
  *  @param totalRetries 재시도 횟수
+ *  @author Hyeyeon Park
  */
 abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
     private var retryCount = 0
@@ -39,7 +40,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
      */
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (!APIHelper.isCallSuccess(response = response)) {
-            if (response.code() == 401 || response.code() == 403) {
+            if ((response.code() == 401 || response.code() == 403) && !Preferences.getAutoLogin()) {
                 //Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
                 if (retryCount++ < totalRetries) {
                     retry()
@@ -47,16 +48,18 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                     Preferences.clearToken(true, BaseApplication.getInstance())
                     if (::recall.isInitialized) {
                         recall.clone().enqueue(this)
+                    } else {
+                        this@RetryableCallback.onFinalFailure(call, HttpException(response))
                     }
                 }
             } else {
                 // modify 19.07.18 --------------------
-                if(CustomLog.flag)CustomLog.L("HomeListRepository GetBaseModelDeserializer onResponse","response code",response.code() )
-                if(response.code() in 200..400) this@RetryableCallback.onFinalResponse(call, response)
+                if (CustomLog.flag) CustomLog.L("HomeListRepository GetBaseModelDeserializer onResponse", "response code", response.code())
+                if (response.code() in 200..400) this@RetryableCallback.onFinalResponse(call, response)
                 else {
-                    val body : ResponseBody = response.errorBody()!!
+                    val body: ResponseBody = response.errorBody()!!
                     val bodyString = body.string()
-                    if(CustomLog.flag)CustomLog.L("HomeListRepository GetBaseModelDeserializer onResponse","jsonData",bodyString)
+                    if (CustomLog.flag) CustomLog.L("HomeListRepository GetBaseModelDeserializer onResponse", "jsonData", bodyString)
                     this@RetryableCallback.onFinalFailure(call, Throwable(bodyString))
                 }
                 // ------------------------------------
@@ -115,7 +118,8 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                     override fun onFinalResponse(call: Call<T>, response: Response<T>) {
                         callback.onResponse(call, response)
                     }
-                    override fun onFinalFailure(call: Call<T>, t: Throwable){
+
+                    override fun onFinalFailure(call: Call<T>, t: Throwable) {
                         callback.onFailure(call, t)
                     }
                 })
