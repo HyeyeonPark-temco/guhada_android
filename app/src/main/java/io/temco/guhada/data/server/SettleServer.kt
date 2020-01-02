@@ -95,7 +95,7 @@ class SettleServer {
          */
         @JvmStatic
         fun getMainBanner(listener: OnServerListener) {
-            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getMainBanner().enqueue(object : Callback<BaseModel<MainBanner>> {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, false).getMainBanner().enqueue(object : Callback<BaseModel<MainBanner>> {
                 override fun onResponse(call: Call<BaseModel<MainBanner>>, response: Response<BaseModel<MainBanner>>) {
                     resultListener(listener, call, response)
                 }

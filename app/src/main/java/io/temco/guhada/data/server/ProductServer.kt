@@ -56,7 +56,7 @@ class ProductServer {
         @JvmStatic
         fun getCategories(listener: OnServerListener?) {
             if (listener != null) {
-                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true)
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false)
                         .categories
                         .enqueue(object : Callback<BaseModel<Category>> {
                             override fun onResponse(call: Call<BaseModel<Category>>, response: Response<BaseModel<Category>>) {
@@ -86,7 +86,7 @@ class ProductServer {
         @JvmStatic
         fun getAllBrands(listener: OnServerListener?) {
             if (listener != null) {
-                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true)
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false)
                         .allBrands
                         .enqueue(object : Callback<BaseModel<Brand>> {
                             override fun onResponse(call: Call<BaseModel<Brand>>, response: Response<BaseModel<Brand>>) {

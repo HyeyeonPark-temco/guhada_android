@@ -5,6 +5,7 @@ import android.content.Intent
 import android.text.TextUtils
 import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
+import com.auth0.android.jwt.JWT
 import com.kakao.plusfriend.PlusFriendService
 import com.kakao.util.exception.KakaoException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,6 +23,7 @@ import io.temco.guhada.data.server.NotificationServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.view.activity.*
 import kotlinx.coroutines.runBlocking
+import java.util.*
 
 object CommonUtilKotlin {
 
@@ -362,24 +364,28 @@ object CommonUtilKotlin {
     @JvmStatic
     fun getNewAccessToken(): String? {
         System.loadLibrary("privateKeys")
-
         var token = Preferences.getToken()
         if (token != null) {
             val refreshToken = token.refreshToken
-            val authorization = "Basic ${String(Base64.decode(getAuthKey(), Base64.DEFAULT))}"
-
-            runBlocking {
-                if (!refreshToken.isNullOrEmpty()) {
-                    val newToken: Token? = UserServer.refreshTokenAsync(authorization = authorization, refresh_token = refreshToken).await()
-                    if (newToken != null) {
-                        token = newToken
-                        Preferences.setToken(newToken)
+            if (!refreshToken.isNullOrEmpty()) {
+                val refreshTokenExp = JWT(refreshToken).getClaim("exp")?.asLong() ?: 0
+                val current = System.currentTimeMillis() / 1000
+                if (current <= refreshTokenExp) {
+                    runBlocking {
+                        val authorization = "Basic ${String(Base64.decode(getAuthKey(), Base64.DEFAULT))}"
+                        val newToken: Token? = UserServer.refreshTokenAsync(authorization = authorization, refresh_token = refreshToken).await()
+                        if (newToken != null) {
+                            token = newToken
+                            Preferences.setToken(newToken)
+                        }
                     }
+                    return token.accessToken
                 }
             }
+        }
 
-            return token.accessToken
-        } else return null
+        Preferences.clearToken(false, BaseApplication())
+        return null
     }
 
     private external fun getAuthKey(): String
