@@ -201,7 +201,7 @@ class RetrofitManager() {
     }
 
     /**
-     * 401, 403 error 발생 시, accessToken을 갱신하고 갱신된 accessToken으로 재호출
+     * 401, 403 error 발생 시, accessToken 및 refreshToken을 갱신하고 새로운 accessToken으로 재호출
      * @author Hyeyeon Park
      */
     private fun getAuthenticator(): Authenticator {
