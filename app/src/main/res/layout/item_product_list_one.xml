@@ -14,7 +14,7 @@
         <View
             android:id="@+id/padding_top"
             android:layout_width="10dp"
-            android:layout_height="54dp"
+            android:layout_height="62dp"
             android:visibility="gone"
             android:background="@color/transparent"/>
 
