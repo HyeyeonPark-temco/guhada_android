@@ -200,6 +200,10 @@ class RetrofitManager() {
         return interceptor
     }
 
+    /**
+     * 401, 403 error 발생 시, accessToken을 갱신하고 갱신된 accessToken으로 재호출
+     * @author Hyeyeon Park
+     */
     private fun getAuthenticator(): Authenticator {
         return object : Authenticator {
             override fun authenticate(route: Route?, response: Response): Request? {
