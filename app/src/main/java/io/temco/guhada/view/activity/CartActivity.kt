@@ -50,7 +50,12 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
     }
 
     private fun initViewModel() {
-        mViewModel = CartViewModel()
+        mViewModel = CartViewModel().apply {
+            this.mCloseActivityTask = { message ->
+                if (message.isNotEmpty()) ToastUtil.showMessage(message)
+                finish()
+            }
+        }
         mViewModel.showDeleteDialog = {
             CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete_select),
                     cancelButtonVisible = true,
@@ -88,7 +93,6 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             mCartProductAdapter.setCartItemOptionList(it)
         })
 
-
         mViewModel.getCart(invalidTokenTask = {
             LoadingIndicatorUtil(BaseApplication.getInstance()).hide()
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
@@ -103,6 +107,7 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mCartProductAdapter = CartProductAdapter(mViewModel)
         mBinding.recyclerviewCartProduct.adapter = mCartProductAdapter
         (mBinding.recyclerviewCartProduct.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
     }
 
     private fun setTotalPrice(cartResponse: CartResponse) {

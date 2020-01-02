@@ -1,7 +1,12 @@
 package io.temco.guhada.common.util
 
+import android.util.Log
+import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.util.CommonUtilKotlin.getNewAccessToken
+import io.temco.guhada.data.model.Token
+import io.temco.guhada.data.server.UserServer
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,16 +45,20 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
      */
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (!APIHelper.isCallSuccess(response = response)) {
-            if ((response.code() == 401 || response.code() == 403) && !Preferences.getAutoLogin()) {
-                //Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
-                if (retryCount++ < totalRetries) {
+            if ((response.code() == 401 || response.code() == 403)) {
+//                Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
+                if (retryCount++ < totalRetries)
                     retry()
-                } else {
-                    Preferences.clearToken(true, BaseApplication.getInstance())
-                    if (::recall.isInitialized) {
-                        recall.clone().enqueue(this)
+                else {
+                    if (Preferences.getAutoLogin()) {
+                        if (getNewAccessToken().isNullOrEmpty())
+                            this@RetryableCallback.onFinalFailure(call, Throwable(message = BaseApplication.getInstance().getString(R.string.common_message_expiretoken), cause = HttpException(response)))
                     } else {
-                        this@RetryableCallback.onFinalFailure(call, HttpException(response))
+                        Preferences.clearToken(false, BaseApplication.getInstance())
+                        if (::recall.isInitialized)
+                            retry()
+                        else
+                            this@RetryableCallback.onFinalFailure(call, Throwable(message = BaseApplication.getInstance().getString(R.string.common_message_expiretoken), cause = HttpException(response)))
                     }
                 }
             } else {
@@ -67,6 +76,12 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
         } else {
             this@RetryableCallback.onFinalResponse(call, response)
         }
+    }
+
+    private suspend fun getNewToken(authorization: String, refreshToken: String): Token? {
+        val newToken: Token? = UserServer.refreshTokenAsync(authorization = authorization, refresh_token = refreshToken).await()
+        if (newToken != null) Preferences.setToken(newToken)
+        return newToken
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {

@@ -93,7 +93,7 @@ class CartViewModel : BaseObservableViewModel() {
             notifyPropertyChanged(BR.totalItemCount)
         }
 
-    var mCloseActivityTask: () -> Unit = {}
+    var mCloseActivityTask: (message: String) -> Unit = {}
 
     // CLICK EVENT
     fun onClickDiscountContent() {
@@ -165,25 +165,16 @@ class CartViewModel : BaseObservableViewModel() {
         callWithToken({ accessToken ->
             OrderServer.getCart(OnServerListener { success, o ->
                 if (success && o is BaseModel<*>) {
-                    if (o.resultCode == ResultCode.SUCCESS.flag)
-                        setCartItemList(o.data as CartResponse)
-                    else {
-                        ToastUtil.showMessage(o.message)
-                        mCloseActivityTask()
-                    }
+                    if (o.resultCode == ResultCode.SUCCESS.flag) setCartItemList(o.data as CartResponse)
+                    else mCloseActivityTask(o.message)
                 } else {
-                    if (o is Throwable || o is HttpException) {
-                        if ((o as HttpException).code() == 401 || o.code() == 403) {
-                            // 토큰 만료
-                            invalidTokenTask()
-                        } else {
-                            ToastUtil.showMessage(o.message())
-                            mCloseActivityTask()
-                        }
-                    } else {
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-                        mCloseActivityTask()
+                    val defaultMessage = BaseApplication.getInstance().getString(R.string.common_message_servererror)
+                    val message = when (o) {
+                        is Throwable -> o.message ?: defaultMessage
+                        is HttpException -> o.message()
+                        else -> defaultMessage
                     }
+                    mCloseActivityTask(message)
                 }
             }, accessToken)
         }, { invalidTokenTask() })
