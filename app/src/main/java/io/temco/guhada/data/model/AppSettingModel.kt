@@ -8,7 +8,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class AppSettingModel(val context : Context) : BaseObservableViewModel(){
 
-    var version = "1.0.17"
+    var version = ""
 
     var appSettingFlag01 = ObservableBoolean(false)
         @Bindable

@@ -71,6 +71,9 @@ public class Flag {
 
         public static final int GUHADA_TOKEN_ADDRESS = 20005;
         public static final int PLANNING_DEAL_DETAIL = 20006;
+
+        public static final int APP_SETTING = 20008;
+
     }
 
     public static class ResultCode {

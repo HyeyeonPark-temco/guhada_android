@@ -154,6 +154,7 @@
 
                     <io.temco.guhada.view.custom.HtmlTextView
                         style="@style/TextBold"
+                        android:id="@+id/imageview_appSetting_logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -436,6 +437,7 @@
                         android:textColor="@color/common_white"
                         android:lineSpacingExtra="6sp"
                         android:gravity="center"
+                        android:onClick="@{clickListener}"
                         android:background="@drawable/background_color_round_blue_purple"
                         android:visibility="@{viewModel.appSettingFlagVersionCheck ? View.GONE : View.VISIBLE, default = gone}"
                         android:text="@string/app_setting_text_11"/>

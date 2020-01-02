@@ -110,10 +110,10 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>(), View.OnClickLi
             // Side Menu
             R.id.image_home -> gotoMain(true)
             R.id.image_setting -> {
+                startActivityForResult(Intent(this@SideMenuActivity, AppSettingActivity::class.java), Flag.RequestCode.APP_SETTING)
             }
             R.id.image_close -> {
                 onBackPressed()
-                //startActivityForResult(Intent(this@SideMenuActivity, AppSettingActivity::class.java), 0)
             }
             R.id.layout_brand -> BrandSubActivity.startActivityForResult(this, REQUEST_CODE_BRAND)
 
@@ -154,18 +154,22 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>(), View.OnClickLi
             if (isLogin) {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out))
                 mBinding.layoutHeader.layoutLogin.setOnClickListener {
-                    Preferences.clearTokenMain(true, (applicationContext as BaseApplication))
-                    changeLoginStatus(false)
-                    gotoMain(true)
-
-                    // sns 로그아웃
-                    SnsLoginModule.logoutSNS()
+                    logout()
                 }
             } else {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_need))
                 mBinding.layoutHeader.layoutLogin.setOnClickListener({ v -> startLoginActivity() })
             }
         }
+    }
+
+    private fun logout(){
+        Preferences.clearTokenMain(true, (applicationContext as BaseApplication))
+        changeLoginStatus(false)
+        gotoMain(true)
+
+        // sns 로그아웃
+        SnsLoginModule.logoutSNS()
     }
 
     private fun checkToken(): Boolean {
@@ -215,7 +219,9 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>(), View.OnClickLi
                         CommonUtil.startBrandScreen(this@SideMenuActivity, brand, true)
                     }
                 }
-
+                Flag.RequestCode.APP_SETTING ->{
+                    logout()
+                }
             }
         }
     }

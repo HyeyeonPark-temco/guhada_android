@@ -1,5 +1,8 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
@@ -11,14 +14,17 @@ class AppSettingActivity : BindActivity<ActivityAppsettingBinding>(), View.OnCli
 
     private lateinit var mViewModel : AppSettingModel
 
-    override fun getBaseTag(): String = ReceiptActivity::class.java.simpleName
+    override fun getBaseTag(): String = AppSettingActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_appsetting
     override fun getViewType(): Type.View = Type.View.APP_SETTING
 
     override fun init() {
         mViewModel = AppSettingModel(this)
+        val pInfo = this@AppSettingActivity.getPackageManager().getPackageInfo(packageName, 0)
+        mViewModel.version = pInfo.versionName
         mBinding.viewModel = mViewModel
         mBinding.clickListener = this
+        setResult(Activity.RESULT_CANCELED)
         mBinding.setOnClickBackButton { finish() }
     }
 
@@ -41,6 +47,18 @@ class AppSettingActivity : BindActivity<ActivityAppsettingBinding>(), View.OnCli
             }
             R.id.imageview_appSetting_toggle_06 ->{
                 mViewModel.appSettingFlag06.set(!mViewModel.appSettingFlag06.get())
+            }
+            R.id.imageview_appSetting_logout ->{
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+            R.id.textview_appSetting_update ->{
+                val appPackageName = "io.temco.guhada"
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+                } catch (anfe: android.content.ActivityNotFoundException) {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+                }
             }
         }
     }

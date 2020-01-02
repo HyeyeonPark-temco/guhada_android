@@ -38,12 +38,12 @@ class FcmMessagingService : FirebaseMessagingService() {
                     if(remoteMessage?.data!!.containsKey("scheme")) message.scheme = remoteMessage?.data?.get("scheme") ?: ""
                     if(remoteMessage?.data!!.containsKey("image")) message.image = remoteMessage?.data?.get("image") ?: ""
                     if(remoteMessage?.data!!.containsKey("message")) message.message = remoteMessage?.data?.get("message") ?: ""
-                    if(remoteMessage?.data!!.containsKey("title")) message.title = remoteMessage?.data?.get("title") ?: ""
+                    if(remoteMessage?.data!!.containsKey("title")) message.title = remoteMessage?.data?.get("title") ?: TITLE_IS_EMPTY
                     /*var json = remoteMessage!!.data!!.toString()
                     var message = Gson().fromJson<GuhadaNotiMessage>(json, GuhadaNotiMessage::class.java)
                     if(CustomLog.flag)CustomLog.L("showNotification","message",message.toString())*/
                     if(CustomLog.flag)CustomLog.L("showNotification","message",message.toString())
-                    showNotification(if(TextUtils.isEmpty(message.title)) TITLE_IS_EMPTY else message.title ?: "", message.message ?: CONTENT_IS_EMPTY)
+                    showNotification(message)
                 }
             }
 
@@ -57,8 +57,8 @@ class FcmMessagingService : FirebaseMessagingService() {
         }
     }
 
-    private fun showNotification(title: String, content: String) {
-        if(CustomLog.flag)CustomLog.L("showNotification","title",title,"content",content)
+    private fun showNotification(message: GuhadaNotiMessage) {
+        if(CustomLog.flag)CustomLog.L("showNotification","title",message.title,"content",message.message)
         val channelId = applicationContext.getString(R.string.fcm_channel_id)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -73,13 +73,15 @@ class FcmMessagingService : FirebaseMessagingService() {
         val pendingIntent = PendingIntent.getActivities(applicationContext, requestId, arrayOf(intent), PendingIntent.FLAG_UPDATE_CURRENT)
 
         NotificationCompat.Builder(applicationContext, channelId).let { builder ->
-            builder.setContentTitle(title)
-                    .setContentText(content)
+            builder.setContentTitle(message.title)
+                    .setContentText(message.message)
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
                     .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
+                    .setStyle(NotificationCompat.BigTextStyle().bigText(message.message))
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentIntent(pendingIntent)
             notificationManager.notify(0, builder.build())
         }
