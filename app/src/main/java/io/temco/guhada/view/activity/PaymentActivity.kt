@@ -14,6 +14,8 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.kakao.ad.common.json.Purchase
+import com.kakao.ad.tracker.send
 import com.kochava.base.Tracker
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -36,6 +38,7 @@ import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.model.product.BaseProduct
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
@@ -45,6 +48,9 @@ import io.temco.guhada.view.adapter.payment.PaymentOrderItemAdapter
 import io.temco.guhada.view.adapter.payment.PaymentProductAdapter
 import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 import io.temco.guhada.view.custom.CustomSpinnerView
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  * 주문 결제 화면
@@ -202,8 +208,12 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
 
-            for (item in it.orderList)
-            // [Tracking] 결제 성공
+            val event = Purchase()
+            event.tag = TrackingEvent.Product.Buy_Product.eventName // 분류
+            var productList = arrayListOf<com.kakao.ad.common.json.Product>()
+
+            for (item in it.orderList) {
+                // [Tracking] 결제 성공
                 Tracker.Event(TrackingEvent.Product.Buy_Product.eventName).let { event ->
                     event.addCustom("dealId", item.dealId.toString())
                     event.addCustom("sellerId", item.sellerId.toString())
@@ -214,7 +224,17 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     if (!TextUtils.isEmpty(item.season)) event.addCustom("season", item.season)
                     TrackingUtil.sendKochavaEvent(event)
                 }
-
+                productList.add(com.kakao.ad.common.json.Product().also { product ->
+                    product.name = item.productName // 상품명
+                    product.quantity = 1 // 개수
+                    product.price = item.originalPrice.toDouble() // 금액
+                })
+            }
+            event.products = productList
+            event.currency = Currency.getInstance(Locale.KOREA) // 통화코드(ISO-4217)
+            event.total_quantity = event.products?.sumBy { it.quantity } // 총 개수
+            event.total_price = event.products?.sumByDouble { it.price } // 총 금액
+            event.send()
 
             mLoadingIndicatorUtil.hide()
             Intent(this@PaymentActivity, PaymentResultActivity::class.java).let { intent ->

@@ -9,14 +9,18 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.kakao.ad.common.json.ViewCart
+import com.kakao.ad.tracker.send
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.common.util.TrackingUtil
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
@@ -44,6 +48,8 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
 
         initViewModel()
         initCartAdapter()
+
+        TrackingUtil.sendViewCart()
 
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
