@@ -2,6 +2,7 @@ package io.temco.guhada.data.server
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
@@ -28,13 +29,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
 
 class OrderServer {
     companion object {
 
         @JvmStatic
-        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+        fun <C, R> resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>) {
             if (response.code() in 200..400 && response.body() != null) {
                 listener.onResult(true, response.body())
             } else {
@@ -90,7 +92,9 @@ class OrderServer {
                 }
 
                 override fun onFailure(call: Call<BaseModel<Cart>>, t: Throwable) {
-                    listener.onResult(false, t.message)
+                    val message = t.message
+                            ?: (t as HttpException).response().errorBody().toString()
+                    listener.onResult(false, message)
                 }
             })
 
@@ -108,7 +112,9 @@ class OrderServer {
                 }
 
                 override fun onFailure(call: Call<BaseModel<PGResponse>>, t: Throwable) {
-                    listener.onResult(false, t.message)
+                    val message = t.message
+                            ?: (t as HttpException).response().errorBody().toString()
+                    listener.onResult(false, message)
                 }
             })
         }
@@ -122,7 +128,9 @@ class OrderServer {
                 }
 
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    listener.onResult(false, t.message)
+                    val message = t.message
+                            ?: (t as HttpException).response().errorBody().toString()
+                    listener.onResult(false, message)
                 }
             })
         }
@@ -136,7 +144,9 @@ class OrderServer {
                 }
 
                 override fun onFailure(call: Call<BaseModel<PurchaseOrderResponse>>, t: Throwable) {
-                    listener.onResult(false, t.message)
+                    val message = t.message
+                            ?: (t as HttpException).response().errorBody().toString()
+                    listener.onResult(false, message)
                 }
             })
         }
@@ -153,7 +163,7 @@ class OrderServer {
                 }
 
                 override fun onFailure(call: Call<BaseModel<CartResponse>>, t: Throwable) {
-                    listener.onResult(false, t.message)
+                    listener.onResult(false, t)
                 }
             })
         }
@@ -357,7 +367,7 @@ class OrderServer {
          * @since 2019.10.01
          */
         @JvmStatic
-        fun getCalculatePaymentInfo(listener: OnServerListener,accessToken : String, jsonObject: JsonObject) =
+        fun getCalculatePaymentInfo(listener: OnServerListener, accessToken: String, jsonObject: JsonObject) =
                 RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCalculatePaymentInfo(accessToken = accessToken, jsonObject = jsonObject).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<CalculatePaymentInfo>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
     }

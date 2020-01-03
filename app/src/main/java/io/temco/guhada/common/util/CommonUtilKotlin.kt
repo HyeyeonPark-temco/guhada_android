@@ -5,6 +5,7 @@ import android.content.Intent
 import android.text.TextUtils
 import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
+import com.auth0.android.jwt.JWT
 import com.kakao.plusfriend.PlusFriendService
 import com.kakao.util.exception.KakaoException
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,9 +18,12 @@ import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.data.db.GuhadaDB
-import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.server.NotificationServer
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.view.activity.*
+import kotlinx.coroutines.runBlocking
+import java.util.*
 
 object CommonUtilKotlin {
 
@@ -67,14 +71,15 @@ object CommonUtilKotlin {
      *7. 채무 보증확인 /terms/guarantee
      */
 
-    fun startTermsPurchase(activity: Activity)=startActivityWebview(activity,activity.resources.getString(R.string.join_agreebuy), Type.Server.getUrl(Type.Server.WEB)+"terms/purchase")
-    fun startTermsSale(activity: Activity)=startActivityWebview(activity,activity.resources.getString(R.string.join_agreesell), Type.Server.getUrl(Type.Server.WEB)+"terms/sale")
-    fun startTermsPersonal(activity: Activity)=startActivityWebview(activity,activity.resources.getString(R.string.join_agreeprivacy), Type.Server.getUrl(Type.Server.WEB)+"terms/personal")
-    fun startTermsLocation(activity: Activity)=startActivityWebview(activity,"위치 기반 이용 약관", Type.Server.getUrl(Type.Server.WEB)+"terms/location")
-    fun startTermsYouth(activity: Activity)=startActivityWebview(activity,"청소년 보호법 이용 약관", Type.Server.getUrl(Type.Server.WEB)+"terms/youth")
-    fun startTermsPrivacy(activity: Activity)=startActivityWebview(activity,"개인 정보 보호 조치", Type.Server.getUrl(Type.Server.WEB)+"terms/privacy")
-    fun startTermsGuarantee(activity: Activity)=startActivityWebview(activity,"채무 보증확인", Type.Server.getUrl(Type.Server.WEB)+"terms/guarantee")
-    fun startTermsCompany(activity: Activity)=startActivityWebview(activity,"사업자정보확인", "http://ftc.go.kr/bizCommPop.do?wrkr_no=8768601259")
+    fun startTermsPurchase(activity: Activity) = startActivityWebview(activity, activity.resources.getString(R.string.join_agreebuy), Type.Server.getUrl(Type.Server.WEB) + "terms/purchase")
+
+    fun startTermsSale(activity: Activity) = startActivityWebview(activity, activity.resources.getString(R.string.join_agreesell), Type.Server.getUrl(Type.Server.WEB) + "terms/sale")
+    fun startTermsPersonal(activity: Activity) = startActivityWebview(activity, activity.resources.getString(R.string.join_agreeprivacy), Type.Server.getUrl(Type.Server.WEB) + "terms/personal")
+    fun startTermsLocation(activity: Activity) = startActivityWebview(activity, "위치 기반 이용 약관", Type.Server.getUrl(Type.Server.WEB) + "terms/location")
+    fun startTermsYouth(activity: Activity) = startActivityWebview(activity, "청소년 보호법 이용 약관", Type.Server.getUrl(Type.Server.WEB) + "terms/youth")
+    fun startTermsPrivacy(activity: Activity) = startActivityWebview(activity, "개인 정보 보호 조치", Type.Server.getUrl(Type.Server.WEB) + "terms/privacy")
+    fun startTermsGuarantee(activity: Activity) = startActivityWebview(activity, "채무 보증확인", Type.Server.getUrl(Type.Server.WEB) + "terms/guarantee")
+    fun startTermsCompany(activity: Activity) = startActivityWebview(activity, "사업자정보확인", "http://ftc.go.kr/bizCommPop.do?wrkr_no=8768601259")
 
 
     fun startActivityWebview(activity: Activity, title: String, url: String, param: String = "") {
@@ -96,7 +101,7 @@ object CommonUtilKotlin {
     fun startActivityPopupDialog(activity: Activity, imgPath: String, state: PopupViewType) {
         if (state == PopupViewType.POPUP_VIEW_STOP) {
             var str = Preferences.getMainBannerViewDialog(imgPath)
-            if(TextUtils.isEmpty(str)){
+            if (TextUtils.isEmpty(str)) {
                 val intent = Intent(activity, MainBannerPopupActivity::class.java)
                 intent.putExtra("state", state)
                 intent.putExtra("imgPath", imgPath)
@@ -267,19 +272,18 @@ object CommonUtilKotlin {
         try {
             PlusFriendService.getInstance().chat(activity, scheme)
         } catch (e: KakaoException) {
-            if(CustomLog.flag) CustomLog.E(e.message?:"카카오 오픈채팅 에러")
+            if (CustomLog.flag) CustomLog.E(e.message ?: "카카오 오픈채팅 에러")
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
         }
     }
 
 
-    fun movePlanningDealDetail(act : Activity, id : Int, url : String){
+    fun movePlanningDealDetail(act: Activity, id: Int, url: String) {
         val intent = Intent(act, PlanningDealDetailActivity::class.java)
-        intent.putExtra("planningDealDetailId",id)
-        intent.putExtra("url",url)
-        act.startActivityForResult(intent,Flag.RequestCode.PLANNING_DEAL_DETAIL)
+        intent.putExtra("planningDealDetailId", id)
+        intent.putExtra("url", url)
+        act.startActivityForResult(intent, Flag.RequestCode.PLANNING_DEAL_DETAIL)
     }
-
 
 
     /**
@@ -288,27 +292,28 @@ object CommonUtilKotlin {
     @JvmStatic
     fun deleteDevice(accessToken: String, token: String?) {
         // 아직 실서버에 적용안함
-        if(BuildConfig.BuildType != Type.Build.DEV) return
-        if(TextUtils.isEmpty(token)) {
-            if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice","isEmpty(token)")
+        if (BuildConfig.BuildType != Type.Build.DEV) return
+        if (TextUtils.isEmpty(token)) {
+            if (CustomLog.flag) CustomLog.L("NotificationServer deleteDevice", "isEmpty(token)")
             return
         }
         NotificationServer.deleteDevice(accessToken, token!!, OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice successTask","o",o.toString())
+                        if (CustomLog.flag) CustomLog.L("NotificationServer deleteDevice successTask", "o", o.toString())
                     },
                     dataNotFoundTask = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice dataNotFoundTask","o",o.toString())
+                        if (CustomLog.flag) CustomLog.L("NotificationServer deleteDevice dataNotFoundTask", "o", o.toString())
                         ///listener.callBackListener(false, "dataNotFoundTask")
                     },
                     failedTask = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice failedTask","message",it.message)
+                        if (CustomLog.flag) CustomLog.L("NotificationServer deleteDevice failedTask", "message", it.message
+                                ?: "")
                         //listener.callBackListener(false, it.message)
-                    },dataIsNull = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer deleteDevice failedTask","dataIsNull")
-                        //listener.callBackListener(false, "dataIsNull")
-                    }
+                    }, dataIsNull = {
+                if (CustomLog.flag) CustomLog.L("NotificationServer deleteDevice failedTask", "dataIsNull")
+                //listener.callBackListener(false, "dataIsNull")
+            }
             )
         })
     }
@@ -320,33 +325,69 @@ object CommonUtilKotlin {
     @JvmStatic
     fun saveDevice(accessToken: String?, token: String?) {
         // 아직 실서버에 적용안함
-        if(BuildConfig.BuildType != Type.Build.DEV) return
-        if(TextUtils.isEmpty(token)) {
-            if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice","isEmpty(token)")
+        if (BuildConfig.BuildType != Type.Build.DEV) return
+        if (TextUtils.isEmpty(token)) {
+            if (CustomLog.flag) CustomLog.L("NotificationServer saveDevice", "isEmpty(token)")
             return
         }
-        if (CustomLog.flag) CustomLog.L("NotificationServer saveDevice", "accessToken",accessToken?:"", "token",token?:"")
+        if (CustomLog.flag) CustomLog.L("NotificationServer saveDevice", "accessToken", accessToken
+                ?: "", "token", token ?: "")
         NotificationServer.saveDeviceToken(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice successTask","o",o.toString())
+                        if (CustomLog.flag) CustomLog.L("NotificationServer saveDevice successTask", "o", o.toString())
                     },
                     dataNotFoundTask = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice dataNotFoundTask","o",o.toString())
+                        if (CustomLog.flag) CustomLog.L("NotificationServer saveDevice dataNotFoundTask", "o", o.toString())
                         ///listener.callBackListener(false, "dataNotFoundTask")
                     },
                     failedTask = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice failedTask","message",it.message)
+                        if (CustomLog.flag) CustomLog.L("NotificationServer saveDevice failedTask", "message", it.message
+                                ?: "")
                         //listener.callBackListener(false, it.message)
-                    },dataIsNull = {
-                        if(CustomLog.flag)CustomLog.L("NotificationServer saveDevice failedTask","dataIsNull")
-                        //listener.callBackListener(false, "dataIsNull")
-                    }
+                    }, dataIsNull = {
+                if (CustomLog.flag) CustomLog.L("NotificationServer saveDevice failedTask", "dataIsNull")
+                //listener.callBackListener(false, "dataIsNull")
+            }
             )
-        },accessToken, token!!)
+        }, accessToken, token!!)
     }
 
 
+    ////////////////////////////////////////////////////
 
+    /**
+     * Get new access token by using refresh token
+     * @return accessToken
+     * @author Hyeyeon Park
+     */
+    @JvmStatic
+    fun getNewAccessToken(): String? {
+        System.loadLibrary("privateKeys")
+        var token = Preferences.getToken()
+        if (token != null) {
+            val refreshToken = token.refreshToken
+            if (!refreshToken.isNullOrEmpty()) {
+                val refreshTokenExp = JWT(refreshToken).getClaim("exp")?.asLong() ?: 0
+                val current = System.currentTimeMillis() / 1000
+                if (current <= refreshTokenExp) {
+                    runBlocking {
+                        val authorization = "Basic ${String(Base64.decode(getAuthKey(), Base64.DEFAULT))}"
+                        val newToken: Token? = UserServer.refreshTokenAsync(authorization = authorization, refresh_token = refreshToken).await()
+                        if (newToken != null) {
+                            token = newToken
+                            Preferences.setToken(newToken)
+                        }
+                    }
+                    return token.accessToken
+                }
+            }
+        }
+
+        Preferences.clearToken(false, BaseApplication())
+        return null
+    }
+
+    private external fun getAuthKey(): String
 
 }

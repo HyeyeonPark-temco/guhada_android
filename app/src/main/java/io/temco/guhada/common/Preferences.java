@@ -217,7 +217,8 @@ public class Preferences {
 
     /**
      * @author park jungho
-     * 토큰 클리이시 마이페이지 갱신을 위한 값 설정
+     * 토큰 클리어시 마이페이지 갱신을 위한 값 설정
+     * 사이드 메뉴-로그아웃 시 호출
      *
      * @param isShowToast
      * @param application

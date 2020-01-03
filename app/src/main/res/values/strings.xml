@@ -76,7 +76,7 @@
     <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string>
     <string name="common_message_timeout">서버 응답이 없습니다. 다시 시도해주세요.</string>
     <string name="common_message_ing">준비중입니다.</string>
-    <string name="common_message_expiretoken">다시 로그인해주세요.</string><!-- fix (토큰이 만료되었습니다. 다시 로그인해주세요.) -->
+    <string name="common_message_expiretoken">다시 로그인해주세요.</string>
 
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>

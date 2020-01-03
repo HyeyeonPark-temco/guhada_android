@@ -663,4 +663,11 @@ interface UserService {
     @POST("/users/{userId}/password")
     fun passwordCheck(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body body: JsonObject) : Call<BaseModel<Any>>
 
+    /**
+     * 토큰 갱신 api
+     * @author Hyeyeon Park
+     */
+    @FormUrlEncoded
+    @POST("/oauth/token")
+    fun refreshTokenAsync(@Header("Authorization") authorization : String, @Field("refresh_token") refresh_token: String, @Field("grant_type") grant_type : String) : Deferred<Token>
 }
