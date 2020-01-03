@@ -23,6 +23,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CommonViewUtil;
 import io.temco.guhada.common.util.CustomLog;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
@@ -120,7 +121,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                         changeDataEvent();
                         dismiss();
                     }else{
-                        CommonViewUtil.INSTANCE.showDialog((BaseActivity)getContext(), "입력한 검색 가격값을 확인해 주세요.",false,false);
+                        CommonViewUtil.INSTANCE.showDialog((BaseActivity)getContext(), "입력한 가격값을 확인해 주세요.",false,false);
                     }
                 }else{
                     changeDataEvent();
@@ -209,6 +210,23 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             case R.id.list_price5:
                 if(mViewModel.getDetailSearchDialogPriceInfo().get() != 5){
                     mViewModel.getDetailSearchDialogPriceInfo().set(5);
+                }
+                break;
+            case R.id.list_price_ok:
+                if(mViewModel.getDetailSearchDialogPriceInfo().get() == 5){
+                    String min = mBinding.listPriceMin.getText().toString().replace(".","").replace(",","").replace("-","");
+                    String max = mBinding.listPriceMax.getText().toString().replace(".","").replace(",","").replace("-","");
+                    if(!TextUtils.isEmpty(min) && !TextUtils.isEmpty(max) && min.matches("^[0-9]*$") && max.matches("^[0-9]*$") && Integer.parseInt(max) > Integer.parseInt(min)){
+                        if(mEtcBody == null) mEtcBody = new FilterEtcBody();
+                        mEtcBody.setPriceConditionIndex(5);
+                        mEtcBody.setPriceConditionMin(Integer.parseInt(min));
+                        mEtcBody.setPriceConditionMax(Integer.parseInt(max));
+                        mIsChangeData = true;
+                        ToastUtil.showMessage("입력한 최소 최대 금액이 적용되었습니다.");
+                        CommonUtil.hideKeyboard(getContext(),mBinding.listPriceMax);
+                    }else{
+                        CommonViewUtil.INSTANCE.showDialog((BaseActivity)getContext(), "입력한 가격값을 확인해 주세요.",false,false);
+                    }
                 }
                 break;
 
@@ -524,8 +542,6 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 mBinding.listSearchWord.setText(mEtcBody.getSearchWord());
             }
         }
-        mBinding.layoutHeaderPrice.imageExpand.setVisibility(View.VISIBLE);
-        mBinding.layoutExpandPriceHeader.setToggleOnClick(true);
     }
 
     private void initBrandList(List<Brand> data) {

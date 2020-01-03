@@ -329,6 +329,12 @@
             android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="adjustUnspecified" />
 
+        <!-- 앱 설정 -->
+        <activity
+            android:name=".view.activity.AppSettingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
 
         <activity
             android:name=".view.activity.SchemeActivity"

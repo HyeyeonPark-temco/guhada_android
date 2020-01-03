@@ -61,10 +61,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHold
         switch (Type.Grid.getType(viewType)) {
             case TWO:
                 return new ProductTwoViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_two, parent, false));
-
             case THREE:
                 return new ProductThreeViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_three, parent, false));
-
             default:
                 return new ProductOneViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_one, parent, false));
         }

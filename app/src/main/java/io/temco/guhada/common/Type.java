@@ -79,6 +79,7 @@ public class Type {
         LUCKY_DRAW_JOIN,
         GUHADA_TOKEN,
         PLANNING_DEAL,
+        APP_SETTING,
         MYPAGE_TOKEN
     }
 

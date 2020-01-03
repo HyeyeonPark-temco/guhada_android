@@ -115,6 +115,10 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
                 setResult(ResultCode.GO_TO_MAIN.flag)
                 finish()
             }*/
+            Flag.ResultCode.GO_TO_MAIN_HOME -> {
+                setResult(resultCode, data)
+                finish()
+            }
             Activity.RESULT_OK -> when (requestCode) {
                 Flag.RequestCode.WRITE_CLAIM -> if (mProductDetailFragment != null) mProductDetailFragment!!.refreshClaims()
                 RequestCode.COUPON_DOWNLOAD.flag -> if (mProductDetailFragment != null) mProductDetailFragment!!.setSaveCouponDisabled()

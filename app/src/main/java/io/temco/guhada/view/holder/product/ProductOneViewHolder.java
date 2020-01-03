@@ -36,6 +36,10 @@ public class ProductOneViewHolder extends BaseProductViewHolder<ItemProductListO
     @Override
     public void init(Context context, RequestManager manager, Deal data, int position) {
         if (data != null) {
+            if(position == 0){
+                mBinding.paddingTop.setVisibility(View.VISIBLE);
+            }else mBinding.paddingTop.setVisibility(View.GONE);
+
             // Thumbnail
             ImageUtil.loadImage(manager, mBinding.imageThumb, data.productImage.getUrl());
 
