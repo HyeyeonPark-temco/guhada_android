@@ -150,6 +150,9 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             override fun redirectLuckyDrawJoinActivity() {
 
             }
+            override fun closeActivityAfterLogin(resultCode: Int, firstAppLogin: Boolean) {
+
+            }
         })
         mBinding.viewModel = mViewModel
         mBinding.includeLoginHeader.viewModel = mViewModel

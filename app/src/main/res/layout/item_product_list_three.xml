@@ -16,6 +16,13 @@
         android:paddingBottom="25dp"
         android:orientation="vertical">
 
+        <View
+            android:id="@+id/padding_top"
+            android:layout_width="10dp"
+            android:layout_height="62dp"
+            android:visibility="gone"
+            android:background="@color/transparent"/>
+
         <RelativeLayout
             android:id="@+id/layout_image"
             android:layout_width="match_parent"
@@ -154,5 +161,6 @@
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_14"  />
         </LinearLayout>
+
     </LinearLayout>
 </layout>

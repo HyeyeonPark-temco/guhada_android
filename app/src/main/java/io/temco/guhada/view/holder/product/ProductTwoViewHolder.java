@@ -43,6 +43,10 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
     @Override
     public void init(Context context, RequestManager manager, Deal data, int position) {
         if (data != null) {
+            if(position == 0 || position == 1){
+                mBinding.paddingTop.setVisibility(View.VISIBLE);
+            }else mBinding.paddingTop.setVisibility(View.GONE);
+
             if(width == 0){
                 DisplayMetrics matrix = new DisplayMetrics();
                 ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(matrix);

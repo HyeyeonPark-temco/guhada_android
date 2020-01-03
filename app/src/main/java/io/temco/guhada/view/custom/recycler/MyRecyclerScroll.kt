@@ -37,7 +37,7 @@ abstract class MyRecyclerScroll : RecyclerView.OnScrollListener() {
     abstract fun hide()
 
     companion object {
-        private val HIDE_THRESHOLD = 100f
+        private val HIDE_THRESHOLD = 50f
         private val SHOW_THRESHOLD = 50f
     }
 }

@@ -1406,7 +1406,24 @@
     <string name="mypage_token_format">%,2d %s</string>
 
     <string name="first_purchase_dialog_stop">그만보기</string>
-
     <string name="price_title">가격</string>
+
+    <!-- 앱 설정 -->
+    <string name="app_setting_text_title">설정</string>
+    <string name="app_setting_text_00">로그인 정보</string>
+    <string name="app_setting_text_01"><![CDATA[<u>로그아웃</u>]]></string>
+    <string name="app_setting_text_02">자동 로그인</string>
+    <string name="app_setting_text_03">알림 설정</string>
+    <string name="app_setting_text_04">알림 모두 끔</string>
+    <string name="app_setting_text_05">주문</string>
+    <string name="app_setting_text_06">문의</string>
+    <string name="app_setting_text_07">포인트 소멸</string>
+    <string name="app_setting_text_08">마케팅</string>
+    <string name="app_setting_text_09">진행중인 이벤트 및 프로모션, 내 혜택 정보</string>
+    <string name="app_setting_text_10">버전 정보</string>
+    <string name="app_setting_text_11">업데이트</string>
+    <string name="app_setting_text_12">V%s</string>
+    <string name="app_setting_text_13">최신 버전입니다.</string>
+
 
 </resources>

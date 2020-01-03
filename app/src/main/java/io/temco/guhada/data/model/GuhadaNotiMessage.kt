@@ -9,7 +9,7 @@ import io.temco.guhada.common.util.CustomLog
 class GuhadaNotiMessage {
 
     var scheme = ""
-    var title : String ? = ""
+    var title : String = ""
     var message = ""
     var image : String ?  = ""
 

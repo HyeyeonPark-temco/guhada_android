@@ -118,7 +118,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                             if (mIsIdSaved.get())
                                 Preferences.setSavedId(email)
 
-                            loginListener.closeActivity(RESULT_OK)
+                            loginListener.closeActivityAfterLogin(RESULT_OK, token.firstAppLogin)
                             CommonUtil.debug(token.accessToken)
                             return@OnServerListener
                         }

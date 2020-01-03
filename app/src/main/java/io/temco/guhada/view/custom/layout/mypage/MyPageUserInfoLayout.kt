@@ -145,7 +145,7 @@ class MyPageUserInfoLayout constructor(
     override fun onNaverLogin() {}
     override fun redirectJoinActivity() {}
     override fun redirectFindAccountActivity() {}
-
+    override fun closeActivityAfterLogin(resultCode: Int, firstAppLogin: Boolean) {}
 
     override fun showMessage(message: String) {
         CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
