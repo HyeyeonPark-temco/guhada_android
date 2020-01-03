@@ -81,7 +81,5 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
 
     }
 
-    fun onClickMore() = getCommunityList()
-
     fun onClickItem(item: CommunityBoard) = mRedirectDetailTask(item)
 }

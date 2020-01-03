@@ -8,9 +8,6 @@
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel" />
 
-        <variable
-            name="totalProductPrice"
-            type="Integer" />
     </data>
 
     <FrameLayout
@@ -59,7 +56,8 @@
                 android:layout_height="2dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="20dp"
+                android:background="@color/black_four" />
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -93,7 +91,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="25dp"
                             android:layout_marginTop="28dp"
-                            android:text="@{@string/couponselect_productcount_format(viewModel.mProductList.size()), default=@string/couponselect_productcount_default}"
+                            android:text="@{@string/couponselect_productcount_format(viewModel.mTotalProductCount), default=@string/couponselect_productcount_default}"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -115,7 +113,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="25dp"
-                            android:text="@{@string/common_priceunit_format(totalProductPrice), default ='0'}"
+                            android:text="@{@string/common_priceunit_format(viewModel.mTotalProductPrice), default =0}"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totaltitle" />
 
@@ -137,7 +135,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="25dp"
-                            android:text="@{@string/common_priceunit_format(viewModel.mTotalDiscountPrice)}"
+                            android:text="@{@string/common_minus + ` ` + @string/common_priceunit_format(viewModel.mTotalDiscountPrice), default = 0}"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totalorderpricecontent" />
 
@@ -180,7 +178,7 @@
                                 style="@style/TextBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{@string/common_price_format(totalProductPrice - viewModel.mTotalDiscountPrice)}"
+                                android:text="@{@string/common_price_format(viewModel.mTotalProductPrice - viewModel.mTotalDiscountPrice), default = 0}"
                                 android:textColor="@color/common_blue_purple"
                                 android:textSize="@dimen/text_21" />
 
@@ -202,6 +200,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@color/common_blue_purple"
+                        android:onClick="@{() -> viewModel.calculatePaymentInfo()}"
                         android:text="@string/couponselect_button"
                         android:textColor="@color/common_white"
                         android:textSize="@dimen/text_18" />

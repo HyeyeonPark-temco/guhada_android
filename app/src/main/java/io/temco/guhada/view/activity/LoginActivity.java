@@ -288,7 +288,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         });
         //mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", false));
         LuckyDrawList luckyDrawList = (LuckyDrawList) getIntent().getSerializableExtra("eventData");
-        mViewModel.setEventData(luckyDrawList);
+        mViewModel.setEventData(new LuckyDrawList());
         mViewModel.setToolBarTitle(getResources().getString(R.string.login_title));
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);

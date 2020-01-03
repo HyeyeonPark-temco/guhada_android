@@ -91,7 +91,7 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     }
 
     override fun notifyDeleteItem() {
-        (mFragmentPagerAdapter.getItem(0) as ShippingAddressListFragment).mListAdapter.deleteItem()
+        (mFragmentPagerAdapter.getItem(0) as ShippingAddressListFragment).deleteItem()
     }
 
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {
@@ -129,6 +129,5 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
 
     // NOT USED
     override fun redirectAddShippingAddressActivity() {}
-    override fun getSelectedPos(): Int = 0
 
 }

@@ -115,7 +115,9 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
                         mVerifyEmailVisibility = ObservableInt(View.VISIBLE)
                         notifyPropertyChanged(BR.mVerifyEmailVisibility)
 
-                        val expire = model.data as Double
+                        val expire =
+                                if (model.data is Long) model.data as Long
+                                else 600000
                         val minute = (expire / 60000).toInt()
                         if (minute.toString().length == 1) {
                             mTimerSecond = ObservableField("60")

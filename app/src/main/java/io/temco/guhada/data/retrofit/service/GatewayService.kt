@@ -3,6 +3,7 @@ package io.temco.guhada.data.retrofit.service
 import io.temco.guhada.data.model.BookMarkProduct
 import io.temco.guhada.data.model.ImageResponse
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.coupon.CouponInfo
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -38,5 +39,12 @@ interface GatewayService {
     @Multipart
     @POST("/upload/image/path/{uploadPath}")
     fun uploadImagePath2(@Path("uploadPath") uploadPath: String, @Part file : MultipartBody.Part): Call<BaseModel<ImageResponse>>
+
+    /**
+     * 주문서 쿠폰 정보
+     * @author Hyeyeon Park
+     */
+    @GET("/benefits/order/coupon")
+    fun getCouponInfo(@Header("Authorization") accessToken: String, @Query("cartItemIdSet") cartItemIdSet : IntArray) : Call<BaseModel<CouponInfo>>
 
 }

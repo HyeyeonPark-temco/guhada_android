@@ -7,7 +7,7 @@ import android.os.Parcelable
  * 쿠폰 model
  * @author Hyeyeon Park
  */
-class Coupon() : Parcelable {
+open class Coupon() : Parcelable {
     var userId: Long = 0L
     var serviceType: String? = ""
     var applyType: String? = ""
