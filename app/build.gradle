@@ -94,11 +94,11 @@ android {
      * NDK 추가
      * @Author Hyeyeon Park
      */
-    externalNativeBuild {
-        ndkBuild {
-            path 'src/main/jni/Android.mk'
-        }
-    }
+//    externalNativeBuild {
+//        ndkBuild {
+//            path 'src/main/jni/Android.mk'
+//        }
+//    }
 }
 
 dependencies {

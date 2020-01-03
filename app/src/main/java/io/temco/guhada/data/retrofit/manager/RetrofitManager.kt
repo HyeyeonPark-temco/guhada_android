@@ -63,9 +63,9 @@ class RetrofitManager() {
         private var instance: RetrofitManager? = null
         private var parseJsonInstance: RetrofitManager? = null
 
-        init {
-            System.loadLibrary("privateKeys")
-        }
+//        init {
+//            System.loadLibrary("privateKeys")
+//        }
 
         @JvmStatic
         fun <S> createService(type: Type.Server, service: Class<S>): S {

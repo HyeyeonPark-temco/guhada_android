@@ -21,6 +21,7 @@
     <string name="appcenter_dev_secret">4a626301-2fa4-4e3b-bdce-25bb4ea8e730</string>
     <string name="fcm_channel_id">GUHADA</string>
     <string name="fcm_channel_name">GUHADA</string>
+    <string name="refresh_token_basic_key">Z3VoYWRhOmd1aGFkYWNsaWVudHNlY3JldA==</string>
 
     <!-- COMMON -->
     <!--<string name="app_name">Guhada</string>-->

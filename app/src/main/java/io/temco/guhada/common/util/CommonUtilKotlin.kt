@@ -363,7 +363,7 @@ object CommonUtilKotlin {
      */
     @JvmStatic
     fun getNewAccessToken(): String? {
-        System.loadLibrary("privateKeys")
+//        System.loadLibrary("privateKeys")
         var token = Preferences.getToken()
         if (token != null) {
             val refreshToken = token.refreshToken
@@ -372,7 +372,7 @@ object CommonUtilKotlin {
                 val current = System.currentTimeMillis() / 1000
                 if (current <= refreshTokenExp) {
                     runBlocking {
-                        val authorization = "Basic ${String(Base64.decode(getAuthKey(), Base64.DEFAULT))}"
+                        val authorization = "Basic ${getAuthKey()}"//"Basic ${String(Base64.decode(getAuthKey(), Base64.DEFAULT))}"
                         val newToken: Token? = UserServer.refreshTokenAsync(authorization = authorization, refresh_token = refreshToken).await()
                         if (newToken != null) {
                             token = newToken
@@ -388,6 +388,8 @@ object CommonUtilKotlin {
         return null
     }
 
-    private external fun getAuthKey(): String
+//    private external fun getAuthKey(): String
+
+    public fun getAuthKey() = BaseApplication.getInstance().getString(R.string.refresh_token_basic_key)
 
 }
