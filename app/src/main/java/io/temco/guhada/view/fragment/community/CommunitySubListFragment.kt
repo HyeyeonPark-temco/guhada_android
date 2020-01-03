@@ -3,6 +3,7 @@ package io.temco.guhada.view.fragment.community
 import android.app.Activity
 import android.content.Intent
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -46,6 +47,16 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         initViewModel()
         initFilters()
 
+        mBinding.scrollviewCommunitylist.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (v != null && scrollY == (v.getChildAt(0)?.measuredHeight!! - v.measuredHeight)) {
+                val currentListSize = mViewModel.mCommunityResponse.value?.bbs?.size ?: 0
+                val totalListSize = mViewModel.mCommunityResponse.value?.totalCount ?: 0
+
+                if (currentListSize < totalListSize)
+                    mViewModel.getCommunityList()
+            }
+        }
+
         mViewModel.getCommunityList()
         mBinding.executePendingBindings()
     }
@@ -62,11 +73,6 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         mViewModel.mCommunityResponse.observe(this, Observer {
             if (it.bbs.isNotEmpty()) {
                 initList(it.bbs)
-                mBinding.linearlayoutCommunitylistMore.visibility = if (it.bbs.size < it.totalCount) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
             }
 
             mBinding.recyclerviewCommunityist.visibility = if (it.bbs.isEmpty()) View.GONE else View.VISIBLE

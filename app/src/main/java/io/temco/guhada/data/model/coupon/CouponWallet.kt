@@ -12,7 +12,7 @@ import java.io.Serializable
  * @author Hyeyeon Park
  * @since 2019.09.11
  */
-class CouponWallet : Serializable {
+open class CouponWallet : Serializable {
     var userId: Long = 0L
     var serviceType: String? = ""
     var applyType: String? = ""
@@ -41,7 +41,7 @@ class CouponWallet : Serializable {
     var startAtTimestamp = 0L
     var endAtTimestamp = 0L
 
-    var createdAt: String? = ""
+   // var createdAt = 0L
     var expireDueDay: Int = 0
 
     // SELLER

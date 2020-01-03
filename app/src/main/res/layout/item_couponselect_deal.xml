@@ -4,9 +4,11 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+
         <variable
             name="product"
-            type="io.temco.guhada.data.model.product.BaseProduct" />
+            type="io.temco.guhada.data.model.coupon.CouponInfo.BenefitOrderProductResponse" />
 
         <variable
             name="viewModel"
@@ -15,26 +17,26 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/linearlayout_couponselect_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linearlayout_couponselect_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <io.temco.guhada.common.SquareImageView
+            <ImageView
                 android:layout_width="80dp"
-                android:layout_height="match_parent"
+                android:layout_height="80dp"
                 android:layout_gravity="center_vertical"
                 android:background="@color/common_white"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{product.profileUrl}" />
+                app:imageUrl="@{product.imageUrl}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,49 +56,30 @@
                     style="@style/PaymentContentBlackTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
                     android:ellipsize="end"
+                    android:layout_marginTop="2dp"
                     android:maxLines="1"
-                    android:text="@{product.season != null &amp;&amp; !product.season.isEmpty() ? product.season + ` ` + product.name : product.name}" />
+                    android:text="@{TextUtils.isEmpty(product.season) ? product.dealName : product.season + ` ` + product.dealName}" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textview_couponselect_price"
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="2dp"
+                    android:text="@{@string/common_priceunit_format(product.productPrice)}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13" />
 
-                    <TextView
-                        android:id="@+id/textview_couponselect_price"
-                        style="@style/TextBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{@string/common_price_format(product.totalPrice)}"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_14" />
-
-                    <TextView
-                        style="@style/TextBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/common_unit_price"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_14" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textview_couponselect_option"
+                    style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:text="@{product.optionStr}" />
 
-                    <TextView
-                        android:id="@+id/textview_couponselect_option"
-                        style="@style/PaymentContentGreyTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@{product.optionStr}" />
-
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
@@ -105,11 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
-            android:background="@color/pinkish_grey" />
-
-        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+            android:background="@color/white_four" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_couponselect_coupon"
@@ -119,11 +98,5 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintHeight_max="200dp"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
     </LinearLayout>
 </layout>

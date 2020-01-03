@@ -103,7 +103,7 @@ interface UserService {
      * 이메일로 인증번호 발송 API
      */
     @POST("/verify/sendEmail")
-    fun verifyEmail(@Body user: User): Call<BaseModel<Any>>
+    fun verifyEmail(@Body user: User): Call<BaseModel<Long>>
 
     /**
      * 휴대폰 번호로 인증번호 발송 API

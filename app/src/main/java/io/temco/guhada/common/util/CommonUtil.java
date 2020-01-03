@@ -453,7 +453,9 @@ public class CommonUtil {
         else {
             int current = (int) (System.currentTimeMillis() / 1000L);
             try {
+
                 if(Preferences.getAutoLogin()){
+
                     return true;
                 }else {
                     String accessToken = token.getAccessToken() != null ? token.getAccessToken() : "";
@@ -490,7 +492,9 @@ public class CommonUtil {
                 }
             } catch (Exception e) {
                 if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.E(e);
+
 //                Preferences.clearToken(false, BaseApplication.getInstance());
+
                 return -1;
             }
         }
@@ -513,7 +517,9 @@ public class CommonUtil {
                 }
             } catch (Exception e) {
                 if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.E(e);
+
 //                Preferences.clearToken(false, BaseApplication.getInstance());
+
                 return "";
             }
         }
