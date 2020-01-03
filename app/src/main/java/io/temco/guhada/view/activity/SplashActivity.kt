@@ -227,6 +227,7 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
      *  @author Hyeyeon Park
      */
     private fun checkToken() {
+        Preferences.setAutoLogin(true)
         if (Preferences.getAutoLogin()) getNewAccessToken()
     }
 
