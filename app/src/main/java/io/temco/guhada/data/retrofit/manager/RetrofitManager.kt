@@ -88,6 +88,7 @@ class RetrofitManager() {
          * @param <S>
          * @return
         </S> */
+        @JvmStatic
         fun <S> createService(type: Type.Server, service: Class<S>, isLogged: Boolean): S {
             if (instance == null) {
                 instance = RetrofitManager(type, CustomLog.flag && isLogged)
@@ -109,6 +110,7 @@ class RetrofitManager() {
          * @param <S>
          * @return
         </S> */
+        @JvmStatic
         fun <S> createService(type: Type.Server, service: Class<S>, isLogged: Boolean, isParseJson: Boolean): S {
             if (parseJsonInstance == null) {
                 parseJsonInstance = RetrofitManager(type, CustomLog.flag && isLogged, isParseJson)
