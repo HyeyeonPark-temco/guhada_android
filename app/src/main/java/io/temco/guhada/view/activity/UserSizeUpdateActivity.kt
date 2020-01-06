@@ -77,6 +77,35 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
         }
     }
 
+    /**
+     *
+    initSpinnerSub1(mViewModel.userHeightTxtList)
+
+    mBinding.spinnerUsersizeupdateSub2.setItems(mViewModel.userWeightTxtList)
+    mBinding.spinnerUsersizeupdateSub2.setOnItemSelectedListener { view, position, id, item ->
+    mViewModel.onShippingSub2Selected(position)
+    }
+
+    mBinding.spinnerUsersizeupdateSub3.setItems(mViewModel.userFootTxtList)
+    mBinding.spinnerUsersizeupdateSub3.setOnItemSelectedListener { view, position, id, item ->
+    mViewModel.onShippingSub3Selected(position)
+    }
+    }
+
+
+    private fun initSpinnerSub1(list : MutableList<String>) {
+    var adapter = CommonSpinnerViewAdapter(context = mBinding.root.context, layoutRes = R.layout.item_common_spinner, list = list).apply {
+    this.mItemCount = list.size
+    }
+
+    //mBinding.spinnerUsersizeupdateSub1.setPlaceHolder(list[list.size/2+1])
+    mBinding.spinnerUsersizeupdateSub1.setAdapter(adapter)
+    mBinding.spinnerUsersizeupdateSub1.setOnItemClickTask { position ->
+    mBinding.spinnerUsersizeupdateSub1.setPlaceHolder(list[position])
+    mViewModel.onShippingSub1Selected(position)
+    }
+    }
+     */
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

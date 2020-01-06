@@ -119,12 +119,12 @@ class UserClaimSellerViewModel(val context : Context) : BaseObservableViewModel(
     }
 
 
-    fun userClaimSellerDescriptionMessage(position : Int){
+    /*fun userClaimSellerDescriptionMessage(position : Int){
         if(position != userClaimSellerDescriptionIndex.get() && initUserClaimSellerDescription){
             userClaimSellerDescriptionIndex.set(position)
             userClaimSellerDescriptionMessage.set(userClaimSellerDescriptionList.get()!!.get(position))
         }else initUserClaimSellerDescription = true
-    }
+    }*/
 
 
     fun getUserClaimSellerData(){

@@ -35,8 +35,6 @@ class UserClaimGuhadaViewModel(val context : Context) : BaseObservableViewModel(
     var userClaimGuhadaImages: MutableLiveData<MutableList<String>> = MutableLiveData()
 
     var userClaimDescriptionData = mutableListOf<UserClaimGuhadaType>()
-    var initUserClaimDescription = false
-    var initUserClaimDescriptionChild = false
 
     var userClaimDescriptionList = ObservableField<MutableList<String>>(mutableListOf()) // 스피너 표시 메세지
         @Bindable
@@ -116,7 +114,7 @@ class UserClaimGuhadaViewModel(val context : Context) : BaseObservableViewModel(
     }
 
 
-    fun onUserClaimDescriptionSelected(position : Int){
+    /*fun onUserClaimDescriptionSelected(position : Int){
         if(position != userClaimDescriptionIndex.get() && initUserClaimDescription){
             userClaimDescriptionMessage.set(userClaimDescriptionList.get()!!.get(position))
             userClaimDescriptionIndex.set(position)
@@ -130,14 +128,14 @@ class UserClaimGuhadaViewModel(val context : Context) : BaseObservableViewModel(
             userClaimDescriptionChildMessage.set(userClaimDescriptionChildList.get()!!.get(position))
             userClaimDescriptionChildIndex.set(position)
         }else initUserClaimDescriptionChild = true
-    }
+    }*/
 
     fun onClickCheckTermUserClaim(){
         checkTermUserClaimGuhada.set(!checkTermUserClaimGuhada.get())
     }
 
 
-    private fun setUserClaimDescriptionChildList(){
+    fun setUserClaimDescriptionChildList(){
         if(userClaimDescriptionChildList.get().isNullOrEmpty()) userClaimDescriptionChildList.set(mutableListOf())
         else userClaimDescriptionChildList.get()!!.clear()
         for (i in userClaimDescriptionData.get(userClaimDescriptionIndex.get()).children!!){

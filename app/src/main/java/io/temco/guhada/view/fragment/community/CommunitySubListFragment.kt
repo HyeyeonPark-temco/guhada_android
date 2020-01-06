@@ -35,6 +35,9 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         TEXT("TEXT"), IMAGE("IMAGE")
     }
 
+    var linearlayoutCommunitylistFilter1Index = -1
+    var linearlayoutCommunitylistFilter2Index = 0
+
     lateinit var info: CommunityInfo
     private lateinit var mViewModel: CommunitySubListViewModel
 
@@ -109,8 +112,10 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
             val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
                 this.mList = mViewModel.mCategoryFilterList
                 this.mTitle = mBinding.root.context.getString(R.string.community_filter_title1)
+                this.selectedIndex = linearlayoutCommunitylistFilter1Index
                 this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
                     override fun onItemClick(position: Int) {
+                        linearlayoutCommunitylistFilter1Index = position
                         val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
                         mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
                         mViewModel.mPage = 0
@@ -132,8 +137,10 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
             val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
                 this.mList = mViewModel.mSortFilterList
                 this.mTitle = mBinding.root.context.getString(R.string.community_filter_title2)
+                this.selectedIndex = linearlayoutCommunitylistFilter2Index
                 this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
                     override fun onItemClick(position: Int) {
+                        linearlayoutCommunitylistFilter2Index = position
                         val selectedSort = mViewModel.mSortFilterList[position]
                         mBinding.textviewCommunitylistFilter2.text = selectedSort
                         mViewModel.mOrder = when (selectedSort) {

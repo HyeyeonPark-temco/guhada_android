@@ -211,7 +211,12 @@ object CommonUtilKotlin {
             }
             SchemeMoveType.PLANNING.code -> { // 기획전 리스트
                 if (isMainActivity) {
-                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.PLANNING_LIST))
+                    if(TextUtils.isEmpty(param2)){
+                        EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.HOME_MOVE, Info.MainHomeIndex.PLANNING_LIST))
+                    }else{
+                        if (param2.matches("^[0-9]*$".toRegex()))
+                            movePlanningDealDetail(act,param2.toInt(),"")
+                    }
                 } else {
                     BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, Info.MainHomeIndex.PLANNING_LIST, true, isMainActivity)
                     act.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
@@ -237,7 +242,7 @@ object CommonUtilKotlin {
             }
             SchemeMoveType.SEARCH.code -> { // 검색목록
                 if (isMainActivity) {
-                    var deStr: String = if (param2.matches(Regex(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))) param2 else String(Base64.decode(param2, Base64.URL_SAFE))
+                    var deStr: String = if (param2.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*".toRegex())) param2 else String(Base64.decode(param2, Base64.URL_SAFE))
                     if (CustomLog.flag) CustomLog.L("CommonUtilKotlin", "moveEventPage SEARCH param2", param2, "deStr", deStr)
                     CommonUtil.startSearchListActivity(act, deStr, true)
                 } else {

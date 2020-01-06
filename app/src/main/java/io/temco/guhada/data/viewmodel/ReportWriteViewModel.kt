@@ -124,12 +124,16 @@ class ReportWriteViewModel(val context : Context) : BaseObservableViewModel() {
     var reportTypeMessage = ObservableField<String>("") // 스피너 표시 메세지
         @Bindable
         get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.reportTypeMessage)
+        }
 
     var reportTypeMessages = ObservableField<MutableList<String>>(mutableListOf()) // 스피너 표시 메세지
         @Bindable
         get() = field
 
-    fun onReportTypeSelected(position: Int) {
+    /*fun onReportTypeSelected(position: Int) {
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onReportTypeSelected ", "position -----",position, "reportTypeMessage",reportTypeMessage)
         if (selectReportTypeIndex != position) {
             selectReportTypeIndex = position
@@ -137,7 +141,7 @@ class ReportWriteViewModel(val context : Context) : BaseObservableViewModel() {
             reportTypeMessage.set(message)
             notifyPropertyChanged(BR.reportTypeMessage)
         }
-    }
+    }*/
 
 
     fun saveReport(reportResponse: ReportResponse, listener: OnCallBackListener){
@@ -211,7 +215,9 @@ class ReportWriteRepository(val viewModel: ReportWriteViewModel){
                         viewModel.reportTypeMessages.set(nameList)
                         viewModel.notifyPropertyChanged(BR.reportTypeMessages)
                         viewModel.reportTypeList.value = typeList
-                        viewModel.onReportTypeSelected(0)
+                        viewModel.selectReportTypeIndex = 0
+                        viewModel.reportTypeMessage.set(nameList[0])
+                        //viewModel.onReportTypeSelected(0)
                         if(CustomLog.flag)CustomLog.L("getReportTypeData typeList size",typeList)
                     },
                     dataNotFoundTask = { },

@@ -24,6 +24,7 @@ import io.temco.guhada.data.viewmodel.ReportWriteViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonImageAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
+import io.temco.guhada.view.fragment.ListBottomSheetFragment
 
 /**
  * @author park jungho
@@ -39,6 +40,7 @@ import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBinding>(), View.OnClickListener , OnClickSelectItemListener {
     private lateinit var mViewModel : ReportWriteViewModel
     private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
+
     // ----------------------------------------------------------
 
     ////////////////////////////////////////////////
@@ -142,6 +144,28 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
 
         mBinding.setOnClickWriteButton {
             sendReportData()
+        }
+
+        mBinding.setOnReportTypeSelected {
+            val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
+                this.mList = mViewModel.reportTypeMessages.get()!!
+                this.mTitle = mBinding.root.context.getString(R.string.community_filter_title1)
+                this.selectedIndex = mViewModel.selectReportTypeIndex
+                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                    override fun onItemClick(position: Int) {
+                        if (mViewModel.selectReportTypeIndex != position) {
+                            mViewModel.selectReportTypeIndex = position
+                            val message = mViewModel.reportTypeMessages.get()!![position]
+                            mViewModel.reportTypeMessage.set(message)
+                        }
+                    }
+
+                    override fun onClickClose() {
+                        this@apply.dismiss()
+                    }
+                }
+            }
+            bottomSheet.show(supportFragmentManager, baseTag)
         }
     }
 

@@ -101,6 +101,11 @@
                     app:ms_dropdown_height="50dp"
                     app:ms_background_color="@drawable/border_all_whitethree"/>
 
+                <!--<io.temco.guhada.view.custom.CustomSpinnerView
+                    android:id="@+id/spinner_usersizeupdate_sub1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:maxVisibleCount="4"  />-->
 
                 <TextView
                     style="@style/TextRegular"

@@ -18,6 +18,7 @@ import io.temco.guhada.data.viewmodel.UserClaimGuhadaViewModel
 import io.temco.guhada.databinding.ActivityUserclaimguhadaBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonImageAdapter
+import io.temco.guhada.view.fragment.ListBottomSheetFragment
 
 class UserClaimGuhadaActivity : BindActivity<ActivityUserclaimguhadaBinding>(), OnClickSelectItemListener {
 
@@ -72,6 +73,50 @@ class UserClaimGuhadaActivity : BindActivity<ActivityUserclaimguhadaBinding>(), 
                 ToastUtil.showMessage(resources.getString(R.string.review_activity_maximage_desc))
             }
         }
+
+        mBinding.setOnClickUserClaimDescription {
+            val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
+                this.mList = mViewModel.userClaimDescriptionList.get()!!
+                this.mTitle = mBinding.root.context.getString(R.string.community_filter_title1)
+                this.selectedIndex = mViewModel.userClaimDescriptionIndex.get()
+                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                    override fun onItemClick(position: Int) {
+                        if(position != mViewModel.userClaimDescriptionIndex.get()){
+                            mViewModel.userClaimDescriptionMessage.set(mViewModel.userClaimDescriptionList.get()!![position])
+                            mViewModel.userClaimDescriptionIndex.set(position)
+                            mViewModel.setUserClaimDescriptionChildList()
+                        }
+                    }
+
+                    override fun onClickClose() {
+                        this@apply.dismiss()
+                    }
+                }
+            }
+            bottomSheet.show(supportFragmentManager, baseTag)
+        }
+
+        mBinding.setOnClickUserClaimDescriptionChild {
+            val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
+                this.mList = mViewModel.userClaimDescriptionChildList.get()!!
+                this.mTitle = mBinding.root.context.getString(R.string.community_filter_title1)
+                this.selectedIndex = mViewModel.userClaimDescriptionChildIndex.get()
+                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                    override fun onItemClick(position: Int) {
+                        if(position != mViewModel.userClaimDescriptionChildIndex.get()){
+                            mViewModel.userClaimDescriptionChildMessage.set(mViewModel.userClaimDescriptionChildList.get()!![position])
+                            mViewModel.userClaimDescriptionChildIndex.set(position)
+                        }
+                    }
+
+                    override fun onClickClose() {
+                        this@apply.dismiss()
+                    }
+                }
+            }
+            bottomSheet.show(supportFragmentManager, baseTag)
+        }
+
         setViewInit()
     }
 

@@ -208,7 +208,6 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                         } catch (e: PackageManager.NameNotFoundException) {
                             e.printStackTrace()
                         }
-
                     },
                     dataNotFoundTask = {initData()},
                     failedTask = {initData()},
