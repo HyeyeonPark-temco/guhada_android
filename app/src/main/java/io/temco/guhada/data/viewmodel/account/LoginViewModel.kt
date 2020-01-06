@@ -193,19 +193,21 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     }
 
     fun joinSnsUser(listener: OnServerListener) {
-        if (tempSnsUser.snsType != null && snsUser != null) {
+        if (tempSnsUser.snsType != null) {
             when (tempSnsUser.snsType) {
-                "KAKAO" -> createSnsUser(
-                        id = java.lang.Long.toString((snsUser as UserProfile).id),
-                        email = (snsUser as UserProfile).email,
-                        imageUrl = (snsUser as UserProfile).profileImagePath,
-                        name = (snsUser as UserProfile).nickname)
-                "NAVER" -> createSnsUser(
-                        id = (snsUser as NaverUser).id,
-                        email = (snsUser as NaverUser).email,
-                        imageUrl = (snsUser as NaverUser).profileImage,
-                        name = (snsUser as NaverUser).name)
-                "GOOGLE" -> if (snsUser != null) {
+                "KAKAO" -> if (snsUser != null)
+                    createSnsUser(
+                            id = java.lang.Long.toString((snsUser as UserProfile).id),
+                            email = (snsUser as UserProfile).email,
+                            imageUrl = (snsUser as UserProfile).profileImagePath,
+                            name = (snsUser as UserProfile).nickname)
+                "NAVER" -> if (snsUser != null)
+                    createSnsUser(
+                            id = (snsUser as NaverUser).id,
+                            email = (snsUser as NaverUser).email,
+                            imageUrl = (snsUser as NaverUser).profileImage,
+                            name = (snsUser as NaverUser).name)
+                "GOOGLE" -> if (snsUser != null)
                     createSnsUser(
                             id = (snsUser as GoogleSignInAccount).id,
                             email = (snsUser as GoogleSignInAccount).email,
@@ -214,7 +216,6 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                                 (snsUser as GoogleSignInAccount).photoUrl!!.toString()
                             else null,
                             name = (snsUser as GoogleSignInAccount).displayName)
-                }
                 "FACEBOOK" -> {
                     createSnsUser(
                             id = tempSnsUser.snsId,
@@ -288,13 +289,13 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
      */
     fun onClickPasswordCheck() {
         val email = Preferences.getToken().let { token ->
-                JWT(token.accessToken ?: "").getClaim("user_name").asString()
-            }
+            JWT(token.accessToken ?: "").getClaim("user_name").asString()
+        }
         if (CommonUtil.validateEmail(email)) {
             ServerCallbackUtil.callWithToken(task = { accessToken ->
                 var body = JsonObject()
-                body.addProperty("email",email)
-                body.addProperty("password",pwd)
+                body.addProperty("email", email)
+                body.addProperty("password", pwd)
                 UserServer.passwordCheck(OnServerListener { success, o ->
                     if (CustomLog.flag) CustomLog.L("LoginViewModel onClickPasswordCheck", "success", success)
                     if (success) {
@@ -313,8 +314,8 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                         loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.common_message_servererror))
                         CommonUtil.debug(o as String)
                     }
-                },accessToken = accessToken, userId = CommonUtil.checkUserId(), body = body)
-            },invalidTokenTask = {})
+                }, accessToken = accessToken, userId = CommonUtil.checkUserId(), body = body)
+            }, invalidTokenTask = {})
         } else {
             loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.login_message_wrongidformat))
         }
