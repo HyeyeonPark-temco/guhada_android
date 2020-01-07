@@ -43,6 +43,8 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
         initExpectedRefundPrice()
     }
 
+
+
     private fun initViewModel() {
         mViewModel = CancelOrderViewModel()
 
@@ -81,6 +83,10 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             finish()
         }
 
+        mViewModel.mCloseActivityTask = {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
     }
 
     private fun showIndicator() {

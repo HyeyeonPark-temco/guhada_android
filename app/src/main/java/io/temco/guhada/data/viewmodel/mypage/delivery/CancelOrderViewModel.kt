@@ -27,6 +27,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
     var mShowIndicatorTask: () -> Unit = {}
     var mSuccessCancelOrderTask: (result: PurchaseOrder) -> Unit = {}
     var mFailCancelOrderTask: () -> Unit = {}
+    var mCloseActivityTask: () -> Unit = {}
 
     // 취소 신청 api call 여부
     private var mIsCancelCallFinished = false
@@ -49,7 +50,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                             }
                         })
             }, accessToken = token, orderProdGroupId = orderProdGroupId)
-        })
+        }, invalidTokenTask = { mCloseActivityTask() })
     }
 
     fun getExpectedRefundPriceForRequest(quantity: Int) {
@@ -59,7 +60,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                     mExpectedRefundPrice.postValue(it.data as ExpectedRefundPrice)
                 })
             }, accessToken = accessToken, orderProdGroupId = mOrderProdGroupId, quantity = quantity)
-        })
+        }, invalidTokenTask = { mCloseActivityTask() })
     }
 
     fun cancelOrder() {
@@ -115,6 +116,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                 mIsCancelCallFinished = false
                 ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
                 mFailCancelOrderTask()
+                mCloseActivityTask()
             })
         }
     }
