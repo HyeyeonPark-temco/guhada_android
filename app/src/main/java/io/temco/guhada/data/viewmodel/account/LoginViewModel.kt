@@ -29,6 +29,7 @@ import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
 
