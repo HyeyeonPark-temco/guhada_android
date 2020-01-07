@@ -72,10 +72,12 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                     mSelectedCausePos < 0 -> {
                         mFailCancelOrderTask()
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_cause))
+                        mIsCancelCallFinished = false
                         return
                     }
                     mCause.isEmpty() -> {
                         mFailCancelOrderTask()
+                        mIsCancelCallFinished = false
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_hint_cause))
                         return
                     }
