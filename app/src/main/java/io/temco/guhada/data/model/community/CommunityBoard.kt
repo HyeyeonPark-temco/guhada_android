@@ -9,10 +9,10 @@ import org.joda.time.DateTime
  * @author Hyeyeon Park
  * @since 2019.08.21
  */
-class CommunityBoard {
+data class CommunityBoard(var contents: String = "") {
     var bbsId = 0L
     var categoryId = 0L
-    var categoryFilterName : String? = null
+    var categoryFilterName: String? = null
     var is_use = true
     var is_delete = false
 
@@ -20,7 +20,7 @@ class CommunityBoard {
     var title = ""
     var userName = ""
     var imageUrl = ""
-    var contents = ""
+//    var contents = ""
 
     // DATE
     var now = 0L
@@ -36,7 +36,6 @@ class CommunityBoard {
 
     fun getDateStr(): String = DateTime(date).toString("MM.dd")
     fun getDateDiff(): String = DateUtil.getDateDiff(now = now, date = date)
-
 
     class CommunityResponse {
         var bbs = mutableListOf<CommunityBoard>()

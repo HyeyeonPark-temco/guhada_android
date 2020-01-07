@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonViewUtil
@@ -36,14 +37,20 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
     override fun getItemCount(): Int = mList.size
     override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(mList[position])
 
+    fun clearList() {
+        mList.clear()
+        notifyDataSetChanged()
+    }
+
     fun addItems(list: MutableList<CommunityBoard>) {
-        if (mViewModel.mPage > 1) {
-            this.mList.addAll(list)
-            this.notifyItemRangeInserted(mList.size, mList.size)
-        } else {
-            this.mList = list
-            notifyDataSetChanged()
-        }
+        val new = mutableListOf<CommunityBoard>()
+        new.addAll(mList)
+        new.addAll(list)
+
+        val diffCallback = ListDiffCallback(oldList = mList, newList = new)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        mList.addAll(list)
+        diffResult.dispatchUpdatesTo(this@CommunityBoardAdapter)
     }
 
     class Holder(binding: ViewDataBinding, val mViewModel: CommunitySubListViewModel, val type: String) : BaseViewHolder<ViewDataBinding>(binding.root) {
@@ -107,6 +114,22 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
                     (mBinding as ItemCommunityPhotoBinding).constraintlayoutCommunityphotoContainer.layoutParams = it
                 }
             }
+        }
+    }
+
+    class ListDiffCallback(private val oldList: MutableList<CommunityBoard>, private val newList: MutableList<CommunityBoard>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = oldList[oldItemPosition].bbsId == newList[newItemPosition].bbsId
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val (content1) = oldList[oldItemPosition]
+            val (content2) = newList[newItemPosition]
+            return content1 == content2
+        }
+
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            return super.getChangePayload(oldItemPosition, newItemPosition)
         }
     }
 }
