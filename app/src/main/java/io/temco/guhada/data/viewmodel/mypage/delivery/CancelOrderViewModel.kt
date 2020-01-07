@@ -3,6 +3,7 @@ package io.temco.guhada.data.viewmodel.mypage.delivery
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
@@ -95,22 +96,18 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                 ClaimServer.cancelOrder(OnServerListener { success, o ->
                     mIsCancelCallFinished = false
                     mFailCancelOrderTask()
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                val result = it.data as PurchaseOrder
-                                mSuccessCancelOrderTask(result)
-                            },
-                            failedTask = {
-                                ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
-                            },
-                            dataIsNull = {
-                                if (it is BaseModel<*>) {
-                                    CommonUtil.debug(it.message)
-                                    ToastUtil.showMessage(it.message)
-                                } else {
-                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-                                }
-                            })
+
+                    if (success && o is BaseModel<*>) {
+                        if (o.resultCode == ResultCode.SUCCESS.flag) {
+                            val result = o.data as PurchaseOrder
+                            mSuccessCancelOrderTask(result)
+                        } else {
+                            CommonUtil.debug(o.message)
+                            ToastUtil.showMessage(o.message)
+                        }
+                    } else
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+
                 }, accessToken = token, cancelRequest = cancelRequest)
             }, invalidTokenTask = {
                 mIsCancelCallFinished = false
