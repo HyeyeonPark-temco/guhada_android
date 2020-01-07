@@ -34,6 +34,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
             ClaimServer.getClaimForm(OnServerListener { success, o ->
+                mFailCancelOrderTask()
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             if (it.data != null)
@@ -90,6 +91,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
             ServerCallbackUtil.callWithToken(task = { token ->
                 ClaimServer.cancelOrder(OnServerListener { success, o ->
                     mIsCancelCallFinished = false
+                    mFailCancelOrderTask()
                     ServerCallbackUtil.executeByResultCode(success, o,
                             successTask = {
                                 val result = it.data as PurchaseOrder
@@ -110,6 +112,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
             }, invalidTokenTask = {
                 mIsCancelCallFinished = false
                 ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                mFailCancelOrderTask()
             })
         }
     }

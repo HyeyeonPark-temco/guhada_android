@@ -69,10 +69,8 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             }
         })
 
-        mViewModel.mShowIndicatorTask = {
-            if (!::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil = LoadingIndicatorUtil(this@RequestCancelOrderActivity)
-            loadingIndicatorUtil.show()
-        }
+        mViewModel.mShowIndicatorTask = { showIndicator() }
+        mViewModel.mFailCancelOrderTask = { hideIndicator() }
 
         mViewModel.mSuccessCancelOrderTask = {
             loadingIndicatorUtil.dismiss()
@@ -82,9 +80,18 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             setResult(Activity.RESULT_OK)
             finish()
         }
-        mViewModel.mFailCancelOrderTask = {
+
+    }
+
+    private fun showIndicator() {
+        if (!::loadingIndicatorUtil.isInitialized)
+            loadingIndicatorUtil = LoadingIndicatorUtil(this@RequestCancelOrderActivity)
+        loadingIndicatorUtil.show()
+    }
+
+    private fun hideIndicator() {
+        if (::loadingIndicatorUtil.isInitialized)
             loadingIndicatorUtil.dismiss()
-        }
     }
 
     private fun initExpectedRefundPrice() {
