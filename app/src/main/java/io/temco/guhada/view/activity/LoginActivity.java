@@ -400,7 +400,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                         // SNS 회원가입
                         mViewModel.joinSnsUser((success1, o1) -> {
                             if (success1) {
-                                TrackingUtil.sendKochavaEvent("SignUp_Success", mViewModel.getTempSnsUser().getSnsType() != null ? mViewModel.getTempSnsUser().getSnsType() : "SNS");
+                                TrackingUtil.sendSignupEvent("SignUp_Success", mViewModel.getTempSnsUser().getSnsType() != null ? mViewModel.getTempSnsUser().getSnsType() : "SNS");
 
                                 BaseModel<Token> m = (BaseModel<Token>) o1;
                                 if (m.resultCode == Flag.ResultCode.SUCCESS) {

@@ -500,6 +500,7 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService"
             android:enabled="true"
             android:exported="false" />
@@ -519,7 +520,29 @@
         </receiver>-->
         <!-- //////////////////////////////// -->
 
+        <!-- Track ID 정보 추가 https://github.com/KakaoAd/kakao-ad-android -->
+        <meta-data
+            android:name="com.kakao.ad.tracker.TRACK_ID"
+            android:value="@string/kakao_ad_track_id" />
 
+        <!-- "KakaoAdInstallReferrerReceiver"를 BroadcastReceiver 중 가장 먼저 추가!!! -->
+        <receiver
+            android:name="com.kakao.ad.tracker.KakaoAdInstallReferrerReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+
+            <!-- "com.android.vending.INSTALL_REFERRER"를 수신할 BroadcastReceiver 추가 -->
+            <meta-data
+                android:name="receiver1"
+                android:value="com.kakao.ad.tracker.sample.receiver.InstallReferrerReceiver1" />
+
+            <!-- "com.android.vending.INSTALL_REFERRER"를 수신할 BroadcastReceiver 추가 -->
+            <meta-data
+                android:name="receiver2"
+                android:value="com.kakao.ad.tracker.sample.receiver.InstallReferrerReceiver2" />
+        </receiver>
     </application>
 
     <!--dddd -->

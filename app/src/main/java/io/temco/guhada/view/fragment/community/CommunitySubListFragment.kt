@@ -36,6 +36,9 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         TEXT("TEXT"), IMAGE("IMAGE")
     }
 
+    var linearlayoutCommunitylistFilter1Index = -1
+    var linearlayoutCommunitylistFilter2Index = 0
+
     lateinit var info: CommunityInfo
     private lateinit var mViewModel: CommunitySubListViewModel
     private lateinit var mAdapter: CommunityBoardAdapter
@@ -126,6 +129,7 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
 
         // 말머리 필터
         mBinding.linearlayoutCommunitylistFilter1.setOnClickListener {
+
             showBottomSheet(filterList = mViewModel.mCategoryFilterList,
                     title = mBinding.root.context.getString(R.string.community_filter_title1),
                     onClickTask = { position ->

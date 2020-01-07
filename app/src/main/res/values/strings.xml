@@ -22,6 +22,7 @@
     <string name="fcm_channel_id">GUHADA</string>
     <string name="fcm_channel_name">GUHADA</string>
     <string name="refresh_token_basic_key">Z3VoYWRhOmd1aGFkYWNsaWVudHNlY3JldA==</string>
+    <string name="kakao_ad_track_id">510406075635482875</string>
 
     <!-- COMMON -->
     <!--<string name="app_name">Guhada</string>-->

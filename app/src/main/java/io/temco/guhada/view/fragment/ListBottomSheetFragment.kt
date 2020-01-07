@@ -42,6 +42,7 @@ class ListBottomSheetFragment(val mContext: Context) : BottomSheetDialogFragment
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_listbottomsheet, container, false)
         mBinding.title = mTitle
         mBinding.imagebuttonListbottomsheetClose.setOnClickListener { dismiss() }
+        mBinding.layoutListbottomsheetClose.setOnClickListener { dismiss() }
         mBinding.recyclerView.adapter = ListBottomSheetAdapter().apply {
             this.mList = this@ListBottomSheetFragment.mList
             this.mListener = this@ListBottomSheetFragment.mListener

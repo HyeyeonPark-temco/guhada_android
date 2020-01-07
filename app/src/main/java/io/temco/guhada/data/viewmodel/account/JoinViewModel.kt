@@ -58,7 +58,7 @@ class JoinViewModel : BaseObservableViewModel() {
     private fun signUp() {
         UserServer.signUp(OnServerListener { success, o ->
             if (success) {
-                TrackingUtil.sendKochavaEvent(TrackingEvent.SignUp.SUCCESS_SIGNUP.eventName, "EMAIL")
+                TrackingUtil.sendSignupEvent(TrackingEvent.SignUp.SUCCESS_SIGNUP.eventName, "EMAIL")
 
                 val model = o as BaseModel<*>
                 when (model.resultCode) {

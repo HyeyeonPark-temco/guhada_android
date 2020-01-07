@@ -10,6 +10,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.kakao.ad.tracker.KakaoAdTracker;
 import com.kakao.auth.KakaoSDK;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
@@ -83,6 +84,11 @@ public class BaseApplication extends MultiDexApplication   {
         // FACEBOOK
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        // KakaoAdTracker 초기화 하기
+        if (!KakaoAdTracker.isInitialized()) {
+            KakaoAdTracker.getInstance().init(getApplicationContext(), getString(R.string.kakao_ad_track_id));
+        }
 
         if (CustomLog.getFlag())CustomLog.L("BaseApplication activityState onCreate", "new WeakHashMap");
         activityState = new HashMap<>();
