@@ -156,6 +156,9 @@ interface UserService {
     @GET("/users/sns")
     fun checkExistSnsUser(@Query("sns-type") snsType: String, @Query("uid") snsId: String, @Query("email") email: String): Call<BaseModel<Any>>
 
+    @GET("/users/sns")
+    fun checkExistSnsUserAsync(@Query("sns-type") snsType: String, @Query("uid") snsId: String, @Query("email") email: String): Deferred<BaseModel<Any>>
+
     /**
      * 연동된 sns 종류 불러오기
      * @param userId

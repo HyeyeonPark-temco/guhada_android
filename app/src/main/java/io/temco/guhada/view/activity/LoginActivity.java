@@ -82,13 +82,13 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
 
             @Override
-            public void redirectTermsActivity(int type, Object data, String email) {
+            public void redirectTermsActivity(int snsTypee, Object data, String email) {
                 mViewModel.setSnsUser(data);
 
                 if (mViewModel.getEventData() != null) {
                     String snsId = "", name = "", familyName = "", givenName = "", imageUrl = "", snsType = "";
 
-                    switch (type) {
+                    switch (snsTypee) {
                         case Flag.RequestCode.KAKAO_LOGIN: {
                             snsId = (String.valueOf(((UserProfile) data).getId()));
                             givenName = familyName = name = ((UserProfile) data).getNickname();
@@ -155,7 +155,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 } else {
                     Intent intent = new Intent(LoginActivity.this, TermsActivity.class);
                     intent.putExtra("email", email);
-                    startActivityForResult(intent, type);
+                    startActivityForResult(intent, snsTypee);
                 }
             }
 
@@ -286,6 +286,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 }
             }
         });
+        mViewModel.setMSnsLoginListener(mLoginListener);
         //mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", false));
         LuckyDrawList luckyDrawList = (LuckyDrawList) getIntent().getSerializableExtra("eventData");
         mViewModel.setEventData(luckyDrawList);
@@ -347,6 +348,9 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 case Flag.RequestCode.FACEBOOK_LOGIN:
                     mViewModel.getTempSnsUser().setSnsType("FACEBOOK");
 
+                    break;
+                case Flag.RequestCode.FACEBOOK_TERSM:
+                    mViewModel.joinSnsUser(getSnsLoginServerListener());
                     break;
 
                 case Flag.RequestCode.LUCKY_DIALOG:

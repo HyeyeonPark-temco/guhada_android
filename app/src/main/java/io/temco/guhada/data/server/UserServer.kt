@@ -192,12 +192,19 @@ class UserServer {
          */
         @JvmStatic
         fun facebookLogin(listener: OnServerListener, user: SnsUser) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
 
         @JvmStatic
         fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String, email: String?) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).checkExistSnsUser(snsType, snsId, email
                         ?: "").enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        @JvmStatic
+        suspend fun checkExistSnsUserAsync(snsType: String, snsId: String, email: String?): Deferred<BaseModel<Any>> = GlobalScope.async {
+            val mail = email ?: ""
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).checkExistSnsUserAsync(snsType, snsId, mail).await()
+        }
+
 
         /**
          * 개별 유저 정보 조회

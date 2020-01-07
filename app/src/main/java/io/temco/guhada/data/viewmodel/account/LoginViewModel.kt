@@ -15,9 +15,11 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.enum.SnsLoginType
 import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.listener.OnSnsLoginListener
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.model.base.BaseModel
@@ -36,6 +38,8 @@ import org.json.JSONObject
  * @since 2019.10.22
  */
 class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservableViewModel() {
+    lateinit var mSnsLoginListener: OnSnsLoginListener
+
     var toolBarTitle = ""
     var id = if (Preferences.isIdSaved()) Preferences.getSavedId() else ""
         @Bindable
@@ -245,7 +249,10 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
         tempSnsUser.userProfile!!.email = email
     }
 
-    // 페이스북 로그인
+    /**
+     * facebook login sdk success > (here) facebookLogin
+     * @author Hyeyeon Park
+     */
     fun facebookLogin(`object`: JSONObject, serverListener: OnServerListener) {
         try {
             val email = `object`.getString("email")
@@ -273,13 +280,34 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
             user.userProfile = profile
 
             this.tempSnsUser = user
-            UserServer.facebookLogin(serverListener, user)
+
+            runBlocking {
+                val isExist = checkExistSnsUser(type = SnsLoginType.FACEBOOK.type, snsId = snsId, email = email)
+                if (isExist != null) {
+                    if (isExist) UserServer.facebookLogin(serverListener, user)
+                    else mSnsLoginListener.redirectTermsActivity(Flag.RequestCode.FACEBOOK_TERSM, tempSnsUser, email)
+                }
+            }
+
         } catch (e: JSONException) {
             CommonUtil.debug("[FACEBOOK] EXCEPTION: " + e.message)
         }
-
     }
 
+    /**
+     * @return isExist
+     * @author Hyeyeon Park
+     */
+    private suspend fun checkExistSnsUser(type: String, snsId: String, email: String): Boolean? {
+        var isExist: Boolean? = null
+        val model = UserServer.checkExistSnsUserAsync(snsType = type, snsId = snsId, email = email).await()
+        when (model.resultCode) {
+            Flag.ResultCode.SUCCESS -> isExist = true
+            Flag.ResultCode.DATA_NOT_FOUND -> isExist = false
+            else -> ToastUtil.showMessage(model.message)
+        }
+        return isExist
+    }
 
     /**
      *
