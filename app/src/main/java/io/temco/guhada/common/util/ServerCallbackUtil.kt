@@ -56,12 +56,15 @@ class ServerCallbackUtil {
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
-            if (response.isSuccessful) {
-                successTask(response)
-            } else {
-                CommonUtil.debug("RESPONSE CODE: [${response.code()}]")
-                ToastUtil.showMessage(failedMessage)
-            }
+            successTask(response)
+
+//            if (response.isSuccessful) {
+//                successTask(response)
+//            } else {
+//                CommonUtil.debug("RESPONSE CODE: [${response.code()}]")
+//                ToastUtil.showMessage(failedMessage)
+//                successTask(response)
+//            }
         }
     }
 
