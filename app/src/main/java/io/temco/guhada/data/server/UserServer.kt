@@ -100,7 +100,7 @@ class UserServer {
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).verifyEmail(user = user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).verifyEmail(user = user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Long>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
 
         /**
          * 핸드폰 번호로 인증번호 전송하기
@@ -192,12 +192,19 @@ class UserServer {
          */
         @JvmStatic
         fun facebookLogin(listener: OnServerListener, user: SnsUser) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
 
         @JvmStatic
         fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String, email: String?) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).checkExistSnsUser(snsType, snsId, email
                         ?: "").enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        @JvmStatic
+        suspend fun checkExistSnsUserAsync(snsType: String, snsId: String, email: String?): Deferred<BaseModel<Any>> = GlobalScope.async {
+            val mail = email ?: ""
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).checkExistSnsUserAsync(snsType, snsId, mail).await()
+        }
+
 
         /**
          * 개별 유저 정보 조회
@@ -778,14 +785,14 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
-
 
 
         /**
@@ -796,16 +803,17 @@ class UserServer {
         @JvmStatic
         fun getLikes(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId: Long) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .getLikes(accessToken,target,targetId,userId).enqueue(object : Callback<BaseModel<Any>> {
+                    .getLikes(accessToken, target, targetId, userId).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -821,12 +829,13 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
         /**
@@ -841,14 +850,14 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-             )
+                    )
         }
-
 
 
         /**
@@ -990,11 +999,21 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("passwordCheck", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     })
+        }
+
+        /**
+         * 토큰 갱신
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun refreshTokenAsync(authorization: String, refresh_token: String): Deferred<Token> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).refreshTokenAsync(authorization = authorization, refresh_token = refresh_token, grant_type = "refresh_token").await()
         }
 
 

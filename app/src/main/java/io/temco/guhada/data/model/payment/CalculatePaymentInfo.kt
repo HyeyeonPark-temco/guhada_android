@@ -24,7 +24,7 @@ class CalculatePaymentInfo : Serializable {
 
         enum class DiscountType(val type: String, val label: String) {
             PRODUCT_DISCOUNT("PRODUCT_DISCOUNT", "상품 할인"),
-            COUPON_DISCOUNT("COUPON_DISCOUNT ", "쿠폰 할인")
+            COUPON_DISCOUNT("COUPON_DISCOUNT", "쿠폰 할인")
         }
     }
 
@@ -32,6 +32,5 @@ class CalculatePaymentInfo : Serializable {
         var totalPoint = 0
         var dueSaveType = ""
     }
-
 
 }

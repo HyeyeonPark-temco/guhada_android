@@ -166,7 +166,12 @@ class CustomSpinnerView : LinearLayout {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.item_customspinner, parent, false)
             mBinding.textviewCustomspinnerList.text = list[position]
-            (mBinding.textviewCustomspinnerList.layoutParams as LinearLayout.LayoutParams).height = mItemHeight
+            /**
+             * @author park jungho
+             * 수정
+             */
+            mBinding.textviewCustomspinnerList.minHeight = mItemHeight
+            //(mBinding.textviewCustomspinnerList.layoutParams as LinearLayout.LayoutParams).height = mItemHeight
             return mBinding.root
         }
 

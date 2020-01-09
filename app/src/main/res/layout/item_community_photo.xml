@@ -36,7 +36,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:roundCornerImageUrl="@{item.imageUrl}"
-            app:roundCornerRadius="@{5}" />
+            app:roundCornerRadius="@{20}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearlayout_communityphoto_title"

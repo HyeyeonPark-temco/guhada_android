@@ -428,7 +428,7 @@ class SearchServer {
         @JvmStatic
         fun getProductByPlusItem(unitPerPage: Int, listener: OnServerListener?) {
             if (listener != null) {
-                val call = RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getProductByPlusItem(unitPerPage)
+                val call = RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, false).getProductByPlusItem(unitPerPage)
                 RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
                     override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
                         //listener.onResult(response.isSuccessful, response.body())

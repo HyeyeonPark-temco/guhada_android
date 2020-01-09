@@ -3,13 +3,15 @@ package io.temco.guhada.common;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -40,17 +42,19 @@ public class BindAdapter {
     }
 
     @BindingAdapter("ovalProfileImageUrl")
-    public static void loadOvalProfileImage(ImageView view, String url) {
-        if (url != null && url != "")
-            GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
-        else
+    public static void loadOvalProfileImage(ImageView view, @Nullable String url) {
+        if (TextUtils.isEmpty(url))
             GlideApp.with(view.getContext()).load(R.drawable.profile_non_square).apply(RequestOptions.circleCropTransform()).into(view);
+        else
+            GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
     }
 
     @BindingAdapter(value = {"roundCornerImageUrl", "roundCornerRadius"})
-    public static void loadRoundCornerImage(ImageView view, String url, int radius) {
-        if (url != null && !url.equals(""))
-            GlideApp.with(view.getContext()).load(url).apply(new RequestOptions().transform(new FitCenter(), new RoundedCorners(radius))).into(view);
+    public static void loadRoundCornerImage(ImageView view, @Nullable String url, int radius) {
+        if (TextUtils.isEmpty(url))
+            GlideApp.with(view.getContext()).load(R.drawable.background_color_whitefour).transform(new CenterCrop(), new RoundedCorners(radius)).into(view);
+        else
+            GlideApp.with(view.getContext()).load(url).transform(new CenterCrop(), new RoundedCorners(radius)).into(view);
     }
 
     @BindingAdapter("android:visibility")

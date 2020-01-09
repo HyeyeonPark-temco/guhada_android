@@ -30,7 +30,7 @@ import io.temco.guhada.view.adapter.main.PlanningDealListAdapter
 class PlanningDealListViewModel(val context : Context) : BaseObservableViewModel() {
     var mSortFilterType: MutableList<PlanningProgressType> = mutableListOf(PlanningProgressType.ALL,PlanningProgressType.PROGRESS,PlanningProgressType.END)
     var mSortFilterLabel: MutableList<String> = mutableListOf(PlanningProgressType.ALL.label, PlanningProgressType.PROGRESS.label,PlanningProgressType.END.label)
-    var mFilterIndex = 0
+    var mFilterIndex = 1
 
     val listData: ArrayList<MainBaseModel> = arrayListOf()
     lateinit var adapter: PlanningDealListAdapter

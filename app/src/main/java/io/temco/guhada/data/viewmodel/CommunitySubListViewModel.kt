@@ -14,7 +14,7 @@ import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class CommunitySubListViewModel : BaseObservableViewModel() {
-    val UNIT_PER_PAGE = 10
+    private val UNIT_PER_PAGE = 20
     var mCommunityInfo: CommunityInfo = CommunityInfo()
     var mCommunityResponse: MutableLiveData<CommunityBoard.CommunityResponse> = MutableLiveData()
     var mCategoryFilterList: MutableList<String> = mutableListOf()
@@ -35,53 +35,21 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
             mFilterId = if (filterList.isEmpty()) 0 else filterList[0].id
         }
 
-        val categoryId = mCommunityInfo.communityCategoryId.toLong()
-        if (categoryId > 0) {
-            CommunityCriteria().apply {
-                this.categoryId = mCommunityInfo.communityCategoryId.toLong()
-                this.filterId = mFilterId
-                this.deleted = false
-                this.inUse = true
-                this.query = ""
-                this.searchType = CommunityCriteria.SearchType.TITLE_CONTENTS.type
-            }.let { criteria ->
-                SearchServer.getCommunityBoardList(OnServerListener { success, o ->
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                if (mPage > 1) {
-                                    val newList = (it.data as CommunityBoard.CommunityResponse).bbs
-                                    this.mCommunityResponse.value?.bbs?.addAll(newList)
-                                    this.mCommunityResponse.postValue(this.mCommunityResponse.value)
-                                } else {
-                                    this.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
-                                }
-                            })
-                }, criteria = criteria, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
-            }
-        } else {
-            // 전체글 조회
-            val jsonObject = JsonObject()
-            jsonObject.addProperty("deleted", false)
-            jsonObject.addProperty("inUse", true)
-            jsonObject.addProperty("searchType", "CONTENTS")
+        JsonObject().let { criteria ->
+            if (mCommunityInfo.communityCategoryId.toLong() > 0) {
+                criteria.addProperty("searchType", CommunityCriteria.SearchType.TITLE_CONTENTS.type)
+                criteria.addProperty("categoryId", mCommunityInfo.communityCategoryId.toLong())
+                criteria.addProperty("filterId", mFilterId)
+                criteria.addProperty("query", "")
+            } else
+                criteria.addProperty("searchType", CommunityCriteria.SearchType.CONTENTS.type) // 전체글 조회
 
             SearchServer.getCommunityBoardList(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            if (mPage > 1) {
-                                val newList = (it.data as CommunityBoard.CommunityResponse).bbs
-                                this.mCommunityResponse.value?.bbs?.addAll(newList)
-                                this.mCommunityResponse.postValue(this.mCommunityResponse.value)
-                            } else {
-                                this.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
-                            }
-                        })
-            }, criteria = jsonObject, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
+                        successTask = { this.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse) })
+            }, criteria = criteria, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
         }
-
     }
-
-    fun onClickMore() = getCommunityList()
 
     fun onClickItem(item: CommunityBoard) = mRedirectDetailTask(item)
 }

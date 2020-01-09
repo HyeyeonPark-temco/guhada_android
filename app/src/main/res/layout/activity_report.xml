@@ -12,6 +12,9 @@
         <variable
             name="onClickGetImage"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="onReportTypeSelected"
+            type="android.view.View.OnClickListener" />
 
         <variable name="email" type="String" />
         <variable name="type" type="Integer" />
@@ -106,7 +109,33 @@
                     android:visibility="@{type==3 ? View.VISIBLE : View.GONE , default = gone}"
                     layout="@layout/layout_reportdetail_community"/>
 
-                <FrameLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/common_white"
+                    android:orientation="horizontal"
+                    android:onClick="@{onReportTypeSelected}"
+                    android:popupBackground="@null">
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/black_four"
+                        android:text="@{viewModel.reportTypeMessage}"
+                        android:textSize="@dimen/text_15" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/payment_icon_selectbox_open"
+                        android:layout_marginRight="20dp"/>
+                </LinearLayout>
+                <!--<FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/white_five" >
@@ -155,7 +184,7 @@
                                 android:layout_marginRight="20dp"/>
                         </LinearLayout>
                     </FrameLayout>
-                </FrameLayout>
+                </FrameLayout>-->
 
                 <View
                     android:layout_width="match_parent"

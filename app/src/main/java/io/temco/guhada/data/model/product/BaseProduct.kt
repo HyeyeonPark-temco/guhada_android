@@ -12,9 +12,9 @@ import java.io.Serializable
 open class BaseProduct : Serializable {
     var season: String = ""
 
-    var productId: Long = 0
+    var productId: Long = 0L
 
-    var dealId: Long = 0
+    var dealId: Long = 0L
 
     var brandName: String = ""
 

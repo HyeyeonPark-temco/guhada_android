@@ -181,7 +181,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>(), View.OnClickLi
         if (exp > current) {
             return true
         } else {
-            Preferences.clearToken(true, BaseApplication.getInstance())
+//            Preferences.clearToken(true, BaseApplication.getInstance())
             return false
         }
     }

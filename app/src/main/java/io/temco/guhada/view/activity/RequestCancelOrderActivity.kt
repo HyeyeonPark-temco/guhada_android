@@ -43,23 +43,26 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
         initExpectedRefundPrice()
     }
 
+
+
     private fun initViewModel() {
         mViewModel = CancelOrderViewModel()
-        if (!::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil = LoadingIndicatorUtil(this)
+
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mOrderProdGroupId = it
                 mViewModel.getClaimForm(it)
             }
         }
-        mViewModel.purchaseOrder.observe(this, Observer {
+
+        mViewModel.mPurchaseOrder.observe(this, Observer {
             if (it.purchaseId > 0) {
                 initOrderInfo(it)
                 initProductInfo(it)
                 initCauseInfo(it)
                 initButton()
 
-                mViewModel.quantity = it.quantity
+                mViewModel.mQuantity = it.quantity
                 mBinding.includeRequestcancelorderRefund.constraintlayoutRequestcancelorderRefund.visibility = if (it.orderStatus == PurchaseStatus.WAITING_PAYMENT.status) View.GONE else View.VISIBLE
                 mViewModel.mOrderProdGroupId = it.orderProdGroupId
                 mViewModel.getExpectedRefundPriceForRequest(it.quantity)
@@ -68,7 +71,10 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             }
         })
 
-        mViewModel.successCancelOrderTask = {
+        mViewModel.mShowIndicatorTask = { showIndicator() }
+        mViewModel.mFailCancelOrderTask = { hideIndicator() }
+
+        mViewModel.mSuccessCancelOrderTask = {
             loadingIndicatorUtil.dismiss()
             val intent = Intent(this, SuccessCancelOrderActivity::class.java)
             intent.putExtra("purchaseOrder", it)
@@ -76,9 +82,22 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             setResult(Activity.RESULT_OK)
             finish()
         }
-        mViewModel.failCancelOrderTask = {
-            loadingIndicatorUtil.dismiss()
+
+        mViewModel.mCloseActivityTask = {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
         }
+    }
+
+    private fun showIndicator() {
+        if (!::loadingIndicatorUtil.isInitialized)
+            loadingIndicatorUtil = LoadingIndicatorUtil(this@RequestCancelOrderActivity)
+        loadingIndicatorUtil.show()
+    }
+
+    private fun hideIndicator() {
+        if (::loadingIndicatorUtil.isInitialized)
+            loadingIndicatorUtil.dismiss()
     }
 
     private fun initExpectedRefundPrice() {
@@ -118,7 +137,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             if (quantity + 1 > purchaseOrder.quantity) ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overmaxquantity))
             else {
                 mBinding.includeRequestcancelorderCause.quantity = quantity + 1
-                mViewModel.quantity = quantity + 1
+                mViewModel.mQuantity = quantity + 1
                 mViewModel.getExpectedRefundPriceForRequest(quantity + 1)
             }
         }
@@ -127,7 +146,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             if (quantity - 1 <= 0) ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overminquantity))
             else {
                 mBinding.includeRequestcancelorderCause.quantity = quantity - 1
-                mViewModel.quantity = quantity - 1
+                mViewModel.mQuantity = quantity - 1
                 mViewModel.getExpectedRefundPriceForRequest(quantity - 1)
             }
         }
@@ -143,7 +162,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
         mBinding.includeRequestcancelorderCause.spinnerRequestorderstatusCause1.setPlaceHolder(getString(R.string.requestorderstatus_cancel_cause))
         mBinding.includeRequestcancelorderCause.spinnerRequestorderstatusCause1.setItems(list)
         mBinding.includeRequestcancelorderCause.spinnerRequestorderstatusCause1.setOnItemClickTask { position ->
-            mViewModel.selectedCausePos = position
+            mViewModel.mSelectedCausePos = position
         }
     }
 
@@ -152,15 +171,14 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
         mBinding.includeRequestcancelorderButton.confirmText = getString(R.string.requestorderstatus_cancel_button_submit)
         mBinding.includeRequestcancelorderButton.setOnClickCancel { finish() }
         mBinding.includeRequestcancelorderButton.setOnClickConfirm {
-            loadingIndicatorUtil.show()
-            mViewModel.cause = mBinding.includeRequestcancelorderCause.edittextRequestorderstatusCause.text.toString()
+            mViewModel.mCause = mBinding.includeRequestcancelorderCause.edittextRequestorderstatusCause.text.toString()
             mViewModel.cancelOrder()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (!::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil.dismiss()
+        if (::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil.dismiss()
     }
 
     companion object {

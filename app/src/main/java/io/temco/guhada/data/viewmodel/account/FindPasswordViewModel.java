@@ -276,10 +276,10 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             case 200:
                                 verifyEmailVisibility = View.VISIBLE;
                                 notifyPropertyChanged(BR.verifyEmailVisibility);
-                                Double result = (Double) ((BaseModel) o).data;
+                                Long result = (Long) ((BaseModel) o).data;
 
                                 int second;
-                                if (result != null) second = (int) Math.round(result);
+                                if (result != null) second = result.intValue();
                                 else second = 600000;
                                 int minute = second / 60000;
 

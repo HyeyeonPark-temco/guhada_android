@@ -9,14 +9,18 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.kakao.ad.common.json.ViewCart
+import com.kakao.ad.tracker.send
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.common.util.TrackingUtil
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
@@ -45,12 +49,19 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         initViewModel()
         initCartAdapter()
 
+        TrackingUtil.sendViewCart()
+
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
 
     private fun initViewModel() {
-        mViewModel = CartViewModel()
+        mViewModel = CartViewModel().apply {
+            this.mCloseActivityTask = { message ->
+                if (message.isNotEmpty()) ToastUtil.showMessage(message)
+                finish()
+            }
+        }
         mViewModel.showDeleteDialog = {
             CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete_select),
                     cancelButtonVisible = true,
@@ -88,7 +99,6 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             mCartProductAdapter.setCartItemOptionList(it)
         })
 
-
         mViewModel.getCart(invalidTokenTask = {
             LoadingIndicatorUtil(BaseApplication.getInstance()).hide()
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
@@ -103,6 +113,7 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mCartProductAdapter = CartProductAdapter(mViewModel)
         mBinding.recyclerviewCartProduct.adapter = mCartProductAdapter
         (mBinding.recyclerviewCartProduct.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
     }
 
     private fun setTotalPrice(cartResponse: CartResponse) {

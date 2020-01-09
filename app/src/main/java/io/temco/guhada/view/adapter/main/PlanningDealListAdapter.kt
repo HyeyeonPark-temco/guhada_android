@@ -26,6 +26,7 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonUtilKotlin
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.data.model.Deal
@@ -186,7 +187,11 @@ class PlanningDealListAdapter(private val model : PlanningDealListViewModel, lis
                 binding.textviewMaineventTitle.text = item.planningData.eventTitle
                 binding.textviewMaineventDate.text = (item.planningData.eventStartDate.split(" ")[0] + " ~ " +item.planningData.eventEndDate.split(" ")[0])
                 binding.layoutEventContent.setOnClickListener {
-                    CommonUtilKotlin.movePlanningDealDetail(viewModel.context as Activity,item.planningData.id,"")
+                    if(!TextUtils.isEmpty(item.planningData.eventProgress) && "진행중" == item.planningData.eventProgress){
+                        CommonUtilKotlin.movePlanningDealDetail(viewModel.context as Activity,item.planningData.id,"")
+                    }else if(!TextUtils.isEmpty(item.planningData.eventProgress) && "종료" == item.planningData.eventProgress){
+                        CommonViewUtil.showDialog(viewModel.context as BaseActivity,"종료된 기획전 입니다.",isCancelBtn = false,isFinish = false)
+                    }
                 }
                 try{
                     if(!TextUtils.isEmpty(item.planningData.bgColor))

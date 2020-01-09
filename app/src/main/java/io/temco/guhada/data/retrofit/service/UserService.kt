@@ -103,7 +103,7 @@ interface UserService {
      * 이메일로 인증번호 발송 API
      */
     @POST("/verify/sendEmail")
-    fun verifyEmail(@Body user: User): Call<BaseModel<Any>>
+    fun verifyEmail(@Body user: User): Call<BaseModel<Long>>
 
     /**
      * 휴대폰 번호로 인증번호 발송 API
@@ -155,6 +155,9 @@ interface UserService {
      */
     @GET("/users/sns")
     fun checkExistSnsUser(@Query("sns-type") snsType: String, @Query("uid") snsId: String, @Query("email") email: String): Call<BaseModel<Any>>
+
+    @GET("/users/sns")
+    fun checkExistSnsUserAsync(@Query("sns-type") snsType: String, @Query("uid") snsId: String, @Query("email") email: String): Deferred<BaseModel<Any>>
 
     /**
      * 연동된 sns 종류 불러오기
@@ -663,4 +666,11 @@ interface UserService {
     @POST("/users/{userId}/password")
     fun passwordCheck(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body body: JsonObject) : Call<BaseModel<Any>>
 
+    /**
+     * 토큰 갱신 api
+     * @author Hyeyeon Park
+     */
+    @FormUrlEncoded
+    @POST("/oauth/token")
+    fun refreshTokenAsync(@Header("Authorization") authorization : String, @Field("refresh_token") refresh_token: String, @Field("grant_type") grant_type : String) : Deferred<Token>
 }

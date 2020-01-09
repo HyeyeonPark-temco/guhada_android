@@ -21,6 +21,8 @@
     <string name="appcenter_dev_secret">4a626301-2fa4-4e3b-bdce-25bb4ea8e730</string>
     <string name="fcm_channel_id">GUHADA</string>
     <string name="fcm_channel_name">GUHADA</string>
+    <string name="refresh_token_basic_key">Z3VoYWRhOmd1aGFkYWNsaWVudHNlY3JldA==</string>
+    <string name="kakao_ad_track_id">510406075635482875</string>
 
     <!-- COMMON -->
     <!--<string name="app_name">Guhada</string>-->
@@ -76,7 +78,7 @@
     <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string>
     <string name="common_message_timeout">서버 응답이 없습니다. 다시 시도해주세요.</string>
     <string name="common_message_ing">준비중입니다.</string>
-    <string name="common_message_expiretoken">다시 로그인해주세요.</string><!-- fix (토큰이 만료되었습니다. 다시 로그인해주세요.) -->
+    <string name="common_message_expiretoken">다시 로그인해주세요.</string>
 
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
@@ -1020,9 +1022,9 @@
 
     <!-- COUPON SELECT -->
     <string name="couponselect_title">쿠폰 적용</string>
-    <string name="couponselect_totalorderprice">상품 할인 적용금액</string>
-    <string name="couponselect_totaldiscountprice">쿠폰 할인</string>
-    <string name="couponselect_totalprice">할인 후 구매금액</string>
+    <string name="couponselect_totalorderprice">총 주문상품금액</string>
+    <string name="couponselect_totaldiscountprice">총 할인금액</string>
+    <string name="couponselect_totalprice">총 상품금액</string>
     <string name="couponselect_button">적용하기</string>
     <string name="couponselect_productcount_format">총 %d개 상품</string>
     <string name="couponselect_productcount_default">총 0개 상품</string>

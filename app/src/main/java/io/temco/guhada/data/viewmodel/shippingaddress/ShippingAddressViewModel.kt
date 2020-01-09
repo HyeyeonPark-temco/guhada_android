@@ -39,11 +39,6 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
             notifyPropertyChanged(BR.viewpagerPos)
         }
 
-    /**
-     * @exception IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 36 path $.data
-     *
-     * TODO 결과 값이 서로 달라 확인 필요 - 배송지 목록 관련 확인
-     */
     fun getUserShippingAddress() {
         if (Preferences.getToken() != null) {
             val accessToken = Preferences.getToken().accessToken

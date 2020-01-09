@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+
         <import type="android.view.View" />
 
         <variable
@@ -16,77 +18,76 @@
         android:id="@+id/linearlayout_paymentproduct_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@color/common_white"
-            android:scaleType="centerCrop"
-            app:imageUrl="@{orderItem.imageUrl}" />
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="25dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textview_paymentproduct_brandname"
-                style="@style/PaymentContentBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{orderItem.brandName}" />
-
-            <TextView
-                android:id="@+id/textview_paymentproduct_name"
-                style="@style/PaymentContentBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@{orderItem.season != null ? orderItem.season + ` ` + orderItem.dealName : orderItem.dealName}" />
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@color/common_white"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{orderItem.imageUrl}" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_paymentproduct_brandname"
+                    style="@style/PaymentContentBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{orderItem.brandName}" />
+
+                <TextView
+                    android:id="@+id/textview_paymentproduct_name"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{TextUtils.isEmpty(orderItem.season) ? orderItem.dealName : orderItem.season + ` ` + orderItem.dealName}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13" />
 
                 <TextView
                     android:id="@+id/textview_paymentproduct_price"
-                    style="@style/TextBold"
+                    style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/common_price_format(orderItem.sellPrice)}"
+                    android:layout_marginTop="6dp"
+                    android:text="@{@string/common_priceunit_format(orderItem.sellPrice)}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_14" />
-
-                <TextView
-                    style="@style/TextBold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/common_unit_price"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_14" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textview_paymentproduct_option"
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:text="@{orderItem.getOptionText()}" />
+
             </LinearLayout>
+
         </LinearLayout>
 
+        <View
+            android:id="@+id/view_paymentproduct_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white_four" />
     </LinearLayout>
+
 
 </layout>

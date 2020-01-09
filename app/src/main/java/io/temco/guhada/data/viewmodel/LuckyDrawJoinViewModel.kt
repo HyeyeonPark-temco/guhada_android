@@ -159,9 +159,8 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                         mEmailVerifyVisible.set(true)
                         notifyPropertyChanged(BR.mEmailVerifyVisible)
 
-                        val result = (o.data as LinkedTreeMap<*, *>)["data"]
                         val second =
-                                if (result != null) Math.round((result as Double?)!!).toInt()
+                                if (o.data is Long) o.data as Long
                                 else 180000
                         val minute = second / 60000
 

@@ -13,7 +13,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 
 class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBinding>() {
     lateinit var mViewModel: ShippingAddressViewModel
-    lateinit var mListAdapter: ShippingAddressListAdapter
+    private lateinit var mListAdapter: ShippingAddressListAdapter
     var radioButtonVisible = true
     private lateinit var mLoadingIndicator: LoadingIndicatorUtil
 
@@ -67,6 +67,20 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
         if (::mViewModel.isInitialized)
             mViewModel.getUserShippingAddress()
     }
+
+    fun initAdapter() {
+        if (::mListAdapter.isInitialized)
+            mListAdapter.initPoses()
+    }
+
+    fun deleteItem() {
+        if (::mListAdapter.isInitialized) {
+            mListAdapter.deleteItem()
+            mListAdapter.currentPos = -1
+        }
+    }
+
+    fun getItemCount(): Int = if (::mListAdapter.isInitialized) mListAdapter.itemCount else -1
 
     companion object {
         @JvmStatic
