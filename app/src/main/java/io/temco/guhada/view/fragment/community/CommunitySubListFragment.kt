@@ -36,9 +36,6 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         TEXT("TEXT"), IMAGE("IMAGE")
     }
 
-    var linearlayoutCommunitylistFilter1Index = -1
-    var linearlayoutCommunitylistFilter2Index = 0
-
     lateinit var info: CommunityInfo
     private lateinit var mViewModel: CommunitySubListViewModel
     private lateinit var mAdapter: CommunityBoardAdapter
@@ -60,6 +57,12 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
 
     override fun onRefresh() {
         mBinding.swipeRefreshLayout.isRefreshing = false
+        refreshList()
+    }
+
+    private fun refreshList() {
+        if (mBinding.recyclerviewCommunityist.adapter != null)
+            (mBinding.recyclerviewCommunityist.adapter as CommunityBoardAdapter).clearList()
         mViewModel.mPage = 0
         mViewModel.getCommunityList()
     }
@@ -135,9 +138,8 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
                     onClickTask = { position ->
                         val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
                         mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
-                        mViewModel.mPage = 0
                         mViewModel.mFilterId = selectedCategory.id
-                        mViewModel.getCommunityList()
+                        refreshList()
                     })
         }
 
@@ -155,8 +157,7 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
                             CommunityOrderType.COMMENT_DESC.label -> CommunityOrderType.COMMENT_DESC.type
                             else -> CommunityOrderType.DATE_DESC.type
                         }
-                        mViewModel.mPage = 0
-                        mViewModel.getCommunityList()
+                        refreshList()
                     })
         }
 
@@ -178,7 +179,10 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         (mBinding.recyclerviewCommunityist.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         mBinding.recyclerviewCommunityist.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (mIsCalled && recyclerView.adapter?.itemCount!! - (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() < 5) {
+                val visibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                val itemCount = recyclerView.adapter?.itemCount ?: 0
+
+                if (mIsCalled && visibleItemPosition > 0 && itemCount - visibleItemPosition < 5) {
                     val currentListSize = mViewModel.mCommunityResponse.value?.bbs?.size ?: 0
                     val totalListSize = mViewModel.mCommunityResponse.value?.totalCount ?: 0
 
