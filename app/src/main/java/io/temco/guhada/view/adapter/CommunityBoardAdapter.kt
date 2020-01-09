@@ -34,9 +34,16 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
     }
 
     override fun getItemCount(): Int = mList.size
+    override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(mList[position])
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(mList[position])
+    fun addItems(list: MutableList<CommunityBoard>) {
+        if (mViewModel.mPage > 1) {
+            this.mList.addAll(list)
+            this.notifyItemRangeInserted(mList.size, mList.size)
+        } else {
+            this.mList = list
+            notifyDataSetChanged()
+        }
     }
 
     class Holder(binding: ViewDataBinding, val mViewModel: CommunitySubListViewModel, val type: String) : BaseViewHolder<ViewDataBinding>(binding.root) {
@@ -53,7 +60,6 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
             }
 
             setSpacing()
-            mBinding.executePendingBindings()
         }
 
         private fun checkEllipsized(isTextType: Boolean) {

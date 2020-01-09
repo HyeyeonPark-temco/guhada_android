@@ -14,6 +14,10 @@
             name="onClickOkButton"
             type="android.view.View.OnClickListener" />
         <variable
+            name="onClickUserClaimSeller"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.UserClaimSellerViewModel" />
     </data>
@@ -172,7 +176,34 @@
                             android:layout_height="1dp"
                             android:background="@color/white_four"/>
 
-                        <FrameLayout
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/common_white"
+                            android:orientation="horizontal"
+                            android:onClick="@{onClickUserClaimSeller}"
+                            android:popupBackground="@null">
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="1"
+                                android:textColor="@{viewModel.userClaimSellerDescriptionIndex == -1 ? @color/pinkish_grey : @color/black_four}"
+                                android:text="@{viewModel.userClaimSellerDescriptionMessage}"
+                                android:textSize="@dimen/text_15" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/payment_icon_selectbox_open"
+                                android:layout_marginRight="20dp"/>
+                        </LinearLayout>
+
+                        <!--<FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:background="@color/white_five" >
@@ -221,7 +252,7 @@
                                         android:layout_marginRight="20dp"/>
                                 </LinearLayout>
                             </FrameLayout>
-                        </FrameLayout>
+                        </FrameLayout>-->
 
                         <View
                             android:layout_width="match_parent"

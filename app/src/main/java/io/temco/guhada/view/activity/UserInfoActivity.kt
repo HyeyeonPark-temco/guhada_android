@@ -6,11 +6,7 @@ import android.content.Intent
 import android.text.Editable
 import android.text.TextUtils
 import android.view.View
-import android.widget.AdapterView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
 import io.temco.guhada.BR
@@ -27,10 +23,8 @@ import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.UserUpdateInfo
 import io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel
 import io.temco.guhada.databinding.ActivityUserinfoBinding
-import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.CommonSpinnerAdapter
-import io.temco.guhada.view.adapter.cart.CartProductAdapter
+import io.temco.guhada.view.adapter.CommonSpinnerViewAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import java.util.*
@@ -292,7 +286,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         setEditTextFocusListener()
 
         // 스피너 드롭다운 Max Height 5개 높이로 설정
-        val popup = AppCompatSpinner::class.java.getDeclaredField("mPopup")
+        /*val popup = AppCompatSpinner::class.java.getDeclaredField("mPopup")
         popup.isAccessible = true
         val popupWindow = popup.get(mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank) as androidx.appcompat.widget.ListPopupWindow
         popupWindow.height = CommonViewUtil.convertDpToPixel(200, mBinding.root.context)
@@ -304,7 +298,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             override fun onSpinnerClosed() {
                 mViewModel.userBankSpinnerArrow.set(false)
             }
-        }
+        }*/
 
         mBinding.buttonMypageuserinfoSizeinsert.setOnClickListener {
             var intent = Intent(this@UserInfoActivity, UserSizeUpdateActivity::class.java)
@@ -498,9 +492,9 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     }.subscribe {
                         bankNameList.add(it)
                     }.dispose()
-
-            bankNameList.add(mBinding.root.context.getString(R.string.requestorderstatus_refund_bankhint1))
-            mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.adapter = CommonSpinnerAdapter(context = mBinding.root.context, layoutRes = R.layout.item_common_spinner, list = bankNameList).apply {
+            //bankNameList.add(mBinding.root.context.getString(R.string.requestorderstatus_refund_bankhint1))
+            initMenuSpinner(banks, bankNameList)
+            /*mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.adapter = CommonSpinnerAdapter(context = mBinding.root.context, layoutRes = R.layout.item_common_spinner, list = bankNameList).apply {
                 this.mItemCount = bankNameList.size - 1
             }
             mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -517,7 +511,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                         }
                     }
                 }
-            }
+            }*/
 
             mViewModel.mBankAccount.observe(this, Observer {
                 // 환불 계좌 정보
@@ -531,14 +525,39 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     mViewModel.mUser.value!!.userDetail.accountNumber = accountNumber
                     mViewModel.mUser.value!!.userDetail.bankCode = accountBankCode
                     mViewModel.mUser.value!!.userDetail.bankName = mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString()
+
                     if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "mBankAccount observe",
                             accountOwner, accountNumber, accountBankCode, mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString())
                     mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
                 }
             })
 
-            mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)
+            //mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)
         })
+    }
+
+    private fun initMenuSpinner(bank : MutableList<PurchaseOrder.Bank>, bankNameList : MutableList<String>) {
+        if (bankNameList.isNotEmpty())
+            mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setPlaceHolder(bankNameList[0])
+
+        var mMenuSpinnerAdapter = CommonSpinnerViewAdapter(context = mBinding.root.context, layoutRes = R.layout.item_common_spinner, list = bankNameList).apply {
+            this.mItemCount = bankNameList.size
+        }
+
+        mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setAdapter(mMenuSpinnerAdapter)
+        mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setOnItemClickTask { position ->
+            mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setPlaceHolder(bankNameList[position])
+            if (position < bankNameList.size) {
+                val selectedBank: PurchaseOrder.Bank? = bank[position]
+                if (selectedBank != null) {
+                    mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text = selectedBank.bankName
+                    mViewModel.mRefundRequest.refundBankCode = selectedBank.bankCode
+
+                    mViewModel.mIsCheckAccountAvailable = ObservableBoolean(true)
+                    mViewModel.notifyPropertyChanged(BR.mIsCheckAccountAvailable)
+                }
+            }
+        }
     }
 
     /**

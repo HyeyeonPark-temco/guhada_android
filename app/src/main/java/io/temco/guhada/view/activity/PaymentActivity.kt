@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.databinding.BindingAdapter
@@ -14,6 +15,12 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.reflect.TypeToken
+import com.kakao.ad.common.json.Purchase
+import com.kakao.ad.tracker.send
 import com.kochava.base.Tracker
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -28,7 +35,6 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.common.util.TrackingUtil
 import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.RequestOrder
@@ -36,15 +42,20 @@ import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.model.product.BaseProduct
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentOrderItemAdapter
-import io.temco.guhada.view.adapter.payment.PaymentProductAdapter
 import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 import io.temco.guhada.view.custom.CustomSpinnerView
+
+import org.json.JSONArray
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  * 주문 결제 화면
@@ -89,6 +100,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         // 배송메세지
         initShippingMessage()
+
+        // 사용 가능 쿠폰 정보
+        initCouponInfo()
 
         // 상품 리스트
         mBinding.recyclerviewPaymentProduct.adapter = PaymentOrderItemAdapter()
@@ -202,8 +216,12 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
 
-            for (item in it.orderList)
-            // [Tracking] 결제 성공
+            val event = Purchase()
+            event.tag = TrackingEvent.Product.Buy_Product.eventName // 분류
+            var productList = arrayListOf<com.kakao.ad.common.json.Product>()
+
+            for (item in it.orderList) {
+                // [Tracking] 결제 성공
                 Tracker.Event(TrackingEvent.Product.Buy_Product.eventName).let { event ->
                     event.addCustom("dealId", item.dealId.toString())
                     event.addCustom("sellerId", item.sellerId.toString())
@@ -214,7 +232,17 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     if (!TextUtils.isEmpty(item.season)) event.addCustom("season", item.season)
                     TrackingUtil.sendKochavaEvent(event)
                 }
-
+                productList.add(com.kakao.ad.common.json.Product().also { product ->
+                    product.name = item.productName // 상품명
+                    product.quantity = 1 // 개수
+                    product.price = item.originalPrice.toDouble() // 금액
+                })
+            }
+            event.products = productList
+            event.currency = Currency.getInstance(Locale.KOREA) // 통화코드(ISO-4217)
+            event.total_quantity = event.products?.sumBy { it.quantity } // 총 개수
+            event.total_price = event.products?.sumByDouble { it.price } // 총 금액
+            event.send()
 
             mLoadingIndicatorUtil.hide()
             Intent(this@PaymentActivity, PaymentResultActivity::class.java).let { intent ->
@@ -228,7 +256,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 intent.putExtra("usedPoint", mViewModel.usedPointNumber.toInt())
 
                 // 적립 예정 포인트
-                intent.putExtra("expectedPoint", mViewModel.mExpectedPoint.value)
+                intent.putExtra("expectedPoint", mViewModel.mExpectedPoint)
                 intent.putExtra("calculatePaymentInfo", mViewModel.mCalculatePaymentInfo.value)
 
                 this@PaymentActivity.startActivityForResult(intent, RequestCode.PAYMENT_RESULT.flag)
@@ -349,8 +377,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     private fun redirectCouponSelectDialogActivity() {
         val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
-        intent.putExtra("productList", mViewModel.productList)
         intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
+        intent.putExtra("consumptionPoint", mViewModel.usedPointNumber.toInt())
         startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
     }
 
@@ -451,25 +479,40 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     }
 
-    // 사용 가능 쿠폰, 포인트 조회 (미사용)
-    private fun initAvailableBenefitCount() {
-        mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), mViewModel.order.availableCouponCount, mViewModel.order.totalCouponCount))
-        mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint, mViewModel.order.totalPoint))
-    }
+    // 사용 가능 쿠폰 조회
+    private fun initCouponInfo() {
+        mViewModel.mCouponInfo.observe(this, Observer {
+            mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), it.availableCouponCount, it.savedCouponCount))
+            mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.text = Html.fromHtml(String.format(getString(R.string.payment_coupon_format), it.totalCouponDiscountPrice, it.selectedCouponCount))
 
-    private fun initDueSavePoint() {
-        mViewModel.mExpectedPoint.observe(this, Observer {
-            var dusSaveTotalPoint = 0
-            for (item in it.dueSavePointList) {
-                dusSaveTotalPoint += item.freePoint
-                when (item.pointType) {
-                    PointProcessParam.PointSave.BUY.type -> mBinding.includePaymentDiscountresult.textviewPaymentBuypoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
-                    PointProcessParam.PointSave.TEXT_REVIEW.type -> mBinding.includePaymentDiscountresult.textviewPaymentTextreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
-                    PointProcessParam.PointSave.IMG_REVIEW.type -> mBinding.includePaymentDiscountresult.textviewPaymentPhotoreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+            if (it.availableCouponCount > 0) {
+                mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.isClickable = true
+                mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setTextColor(resources.getColor(R.color.black_four))
+            } else {
+                mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.isClickable = false
+                mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setTextColor(resources.getColor(R.color.pinkish_grey))
+            }
+
+            val list = mutableListOf<RequestOrder.CartItemPayment>()
+            for (seller in it.benefitSellerResponseList) {
+                for (deal in seller.benefitOrderProductResponseList) {
+                    val item =
+                            RequestOrder.CartItemPayment().apply {
+                                this.cartItemId = deal.cartId
+                            }
+
+                    for (coupon in deal.benefitProductCouponResponseList)
+                        if (coupon.selected) {
+                            item.couponNumber = coupon.couponNumber
+                            break
+                        }
+                    list.add(item)
                 }
             }
-            mBinding.includePaymentDiscountresult.textviewPaymentExpectedtotalpoint.text = String.format(getString(R.string.common_price_format), dusSaveTotalPoint)
+            mViewModel.mSelectedCouponArray = list
+            mViewModel.getCalculatePaymentInfo()
         })
+
     }
 
     private fun redirectVerifyActivity() {
@@ -555,12 +598,17 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
             RequestCode.COUPON_SELECT.flag -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    // 쿠폰 선택
-                    data?.getSerializableExtra("selectedCouponMap").let { selectedCouponMap ->
-                        if (selectedCouponMap != null) {
-                            mViewModel.mSelectedCouponMap = selectedCouponMap as HashMap<Long, CouponWallet?>
-                            mViewModel.getCalculatePaymentInfo()
-                        }
+                    val couponCount = data?.getIntExtra("couponCount", 0)
+                    val discountPrice = data?.getIntExtra("discountPrice", 0)
+                    mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.text = Html.fromHtml(String.format(getString(R.string.payment_coupon_format), discountPrice, couponCount))
+
+                    data?.getStringExtra("selectedCouponArray").let { array ->
+                        if (!array.isNullOrEmpty())
+                            mViewModel.mSelectedCouponArray = Gson().fromJson(array, Array<RequestOrder.CartItemPayment>::class.java).toMutableList()
+                    }
+                    data?.getSerializableExtra("calculatePaymentInfo").let {
+                        if (it != null)
+                            mViewModel.mCalculatePaymentInfo.postValue(it as CalculatePaymentInfo)
                     }
                 }
             }
@@ -590,14 +638,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         fun RecyclerView.bindPaymentWay(list: MutableList<PaymentMethod>?) {
             if (this.adapter != null && list != null) {
                 (this.adapter as PaymentWayAdapter).setItems(list)
-            }
-        }
-
-        @JvmStatic
-        @BindingAdapter("paymentProduct")
-        fun RecyclerView.bindPaymentProduct(list: ArrayList<BaseProduct>?) {
-            if (this.adapter != null && list != null) {
-                (this.adapter as PaymentProductAdapter).setItems(list)
             }
         }
 

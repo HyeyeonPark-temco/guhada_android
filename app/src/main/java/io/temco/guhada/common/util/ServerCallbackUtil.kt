@@ -1,6 +1,5 @@
 package io.temco.guhada.common.util
 
-import com.google.gson.Gson
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
@@ -57,12 +56,15 @@ class ServerCallbackUtil {
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
-            if (response.isSuccessful) {
-                successTask(response)
-            } else {
-                CommonUtil.debug("RESPONSE CODE: [${response.code()}]")
-                ToastUtil.showMessage(failedMessage)
-            }
+            successTask(response)
+
+//            if (response.isSuccessful) {
+//                successTask(response)
+//            } else {
+//                CommonUtil.debug("RESPONSE CODE: [${response.code()}]")
+//                ToastUtil.showMessage(failedMessage)
+//                successTask(response)
+//            }
         }
     }
 
@@ -120,15 +122,8 @@ class ServerCallbackUtil {
                 } else {
                     // modify ------------------------------------
                     if (o is String) {
-                        try {
-                            var gson = Gson()
-                            if (CustomLog.flag) CustomLog.L("executeByResultCode", o)
-                            var base = gson.fromJson<BaseModel<*>>(o, BaseModel::class.java)
-                            failedTask(base)
-                        } catch (e: Exception) {
-                            CustomLog.L("Gson Parser Exception", o.toString())
-                        }
-
+                        val base: BaseModel<*> = BaseModel<Any>().apply { this.message = o }
+                        failedTask(base)
                     } else {
                         if (o is BaseErrorModel) {
                             var base = BaseModel<Any>()
@@ -167,7 +162,7 @@ class ServerCallbackUtil {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
         }) {
             Preferences.getToken().let { token ->
-                if (token != null && token.accessToken != null) task("Bearer ${token.accessToken}")
+                if (token?.accessToken != null) task("Bearer ${token.accessToken}")
                 else invalidTokenTask()
             }
         }

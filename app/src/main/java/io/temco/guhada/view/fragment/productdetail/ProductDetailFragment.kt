@@ -31,6 +31,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
+import com.kakao.ad.common.json.ViewContent
+import com.kakao.ad.tracker.send
 import com.kochava.base.Tracker
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -199,6 +201,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             if (!TextUtils.isEmpty(product.season)) it.addCustom("season", product.season)
             TrackingUtil.sendKochavaEvent(it)
         }
+        val event = ViewContent()
+        event.tag = TrackingEvent.Product.View_Product.eventName // 분류
+        event.content_id = product.dealId.toString() // 상품 코드
+        event.send()
     }
 
     /**

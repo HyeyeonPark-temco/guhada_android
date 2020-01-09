@@ -99,5 +99,5 @@ class AddShippingAddressActivity : AppCompatActivity(), OnShippingAddressListene
 
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {}
     override fun redirectAddShippingAddressActivity() {}
-    override fun getSelectedPos(): Int = 0
+
 }

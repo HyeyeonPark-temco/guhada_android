@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -49,32 +50,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp">
 
-                <io.temco.guhada.view.CustomSpinner
+                <io.temco.guhada.view.custom.CustomSpinnerView
                     android:id="@+id/spinner_requestorderstatus_bank"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@drawable/border_all_whitethree"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@null"
-                    android:popupElevation="0dp"
-                    android:spinnerMode="dropdown" />
+                    android:layout_height="wrap_content"
+                    app:maxVisibleCount="4"  />
 
                 <FrameLayout
                     android:id="@+id/framelayout_requestorderstatus_causebutton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white_three"
-                    android:padding="1dp">
+                    android:layout_marginRight="30dp"
+                    android:background="@color/transparent"
+                    android:padding="2dp">
 
                     <LinearLayout
                         android:id="@+id/linearlayout_requestorderstatus_cause"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="40dp"
                         android:background="@color/common_white"
                         android:orientation="horizontal"
-                        android:paddingStart="15dp"
+                        android:paddingStart="13dp"
                         android:paddingEnd="15dp"
                         android:popupBackground="@null">
 
@@ -93,6 +89,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:visibility="gone"
                             android:src="@{viewModel.userBankSpinnerArrow ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
                     </LinearLayout>
                 </FrameLayout>

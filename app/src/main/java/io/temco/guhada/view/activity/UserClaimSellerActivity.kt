@@ -22,6 +22,7 @@ import io.temco.guhada.databinding.ActivityUserclaimsellerBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonImageAdapter
 import io.temco.guhada.view.adapter.UserClaimSellerProductAdapter
+import io.temco.guhada.view.fragment.ListBottomSheetFragment
 
 class UserClaimSellerActivity : BindActivity<ActivityUserclaimsellerBinding>(), OnClickSelectItemListener {
 
@@ -73,6 +74,26 @@ class UserClaimSellerActivity : BindActivity<ActivityUserclaimsellerBinding>(), 
                 }
             })
         }else onBackPressed()
+
+        mBinding.setOnClickUserClaimSeller {
+            val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
+                this.mList = mViewModel.userClaimSellerDescriptionList.get()!!
+                this.mTitle = mBinding.root.context.getString(R.string.community_filter_title1)
+                this.selectedIndex = mViewModel.userClaimSellerDescriptionIndex.get()
+                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                    override fun onItemClick(position: Int) {
+                        if (mViewModel.userClaimSellerDescriptionIndex.get() != position) {
+                            mViewModel.userClaimSellerDescriptionIndex.set(position)
+                            mViewModel.userClaimSellerDescriptionMessage.set(mViewModel.userClaimSellerDescriptionList.get()!![position])
+                        }
+                    }
+                    override fun onClickClose() {
+                        this@apply.dismiss()
+                    }
+                }
+            }
+            bottomSheet.show(supportFragmentManager, baseTag)
+        }
     }
 
 

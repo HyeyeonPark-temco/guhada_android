@@ -228,6 +228,10 @@ public class SnsLoginModule {
         }
     }
 
+    public static void facebookLogin(SnsUser user, OnServerListener serverListener) {
+        UserServer.facebookLogin(serverListener, user);
+    }
+
     private static SnsUser createSnsUser(String email, String snsId, String snsType, String name, String profileUrl) {
         SnsUser user = new SnsUser();
         user.setEmail(email);

@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -35,16 +36,23 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         TEXT("TEXT"), IMAGE("IMAGE")
     }
 
+    var linearlayoutCommunitylistFilter1Index = -1
+    var linearlayoutCommunitylistFilter2Index = 0
+
     lateinit var info: CommunityInfo
     private lateinit var mViewModel: CommunitySubListViewModel
+    private lateinit var mAdapter: CommunityBoardAdapter
+    private var mIsCalled = true
 
     override fun getBaseTag(): String = CommunitySubListFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.fragment_community_sub_list
 
     override fun init() {
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
+
         initViewModel()
         initFilters()
+        setScrollListener()
 
         mViewModel.getCommunityList()
         mBinding.executePendingBindings()
@@ -62,16 +70,12 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         mViewModel.mCommunityResponse.observe(this, Observer {
             if (it.bbs.isNotEmpty()) {
                 initList(it.bbs)
-                mBinding.linearlayoutCommunitylistMore.visibility = if (it.bbs.size < it.totalCount) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
             }
 
             mBinding.recyclerviewCommunityist.visibility = if (it.bbs.isEmpty()) View.GONE else View.VISIBLE
             mViewModel.mEmptyViewVisible = ObservableBoolean(it.bbs.isEmpty())
             mViewModel.notifyPropertyChanged(BR.mEmptyViewVisible)
+            mIsCalled = true
         })
 
         mViewModel.mRedirectDetailTask = {
@@ -97,7 +101,26 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
             intent.putExtra("categoryId", mViewModel.mCommunityInfo.communityCategoryId.toLong())
             (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
         }
+
         mBinding.viewModel = mViewModel
+    }
+
+    private fun initList(bbs: MutableList<CommunityBoard>) {
+        val listType = info.communityCategorySub.type
+        val lm = when (listType) {
+            CommunityListType.IMAGE.type -> GridLayoutManager(context, 2)
+            else -> LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        }
+
+        if (mBinding.recyclerviewCommunityist.adapter == null) {
+            mBinding.recyclerviewCommunityist.layoutManager = lm
+            mAdapter = CommunityBoardAdapter(listType).apply {
+                this.mViewModel = this@CommunitySubListFragment.mViewModel
+            }
+            mBinding.recyclerviewCommunityist.adapter = mAdapter
+        }
+
+        (mBinding.recyclerviewCommunityist.adapter as CommunityBoardAdapter).addItems(bbs)
     }
 
     private fun initFilters() {
@@ -106,34 +129,23 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
 
         // 말머리 필터
         mBinding.linearlayoutCommunitylistFilter1.setOnClickListener {
-            val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
-                this.mList = mViewModel.mCategoryFilterList
-                this.mTitle = mBinding.root.context.getString(R.string.community_filter_title1)
-                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
-                    override fun onItemClick(position: Int) {
+
+            showBottomSheet(filterList = mViewModel.mCategoryFilterList,
+                    title = mBinding.root.context.getString(R.string.community_filter_title1),
+                    onClickTask = { position ->
                         val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
                         mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
                         mViewModel.mPage = 0
                         mViewModel.mFilterId = selectedCategory.id
                         mViewModel.getCommunityList()
-                    }
-
-                    override fun onClickClose() {
-                        this@apply.dismiss()
-                    }
-                }
-            }
-
-            if (fragmentManager != null) bottomSheet.show(fragmentManager!!, baseTag)
+                    })
         }
 
         // 정렬  필터
         mBinding.linearlayoutCommunitylistFilter2.setOnClickListener {
-            val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
-                this.mList = mViewModel.mSortFilterList
-                this.mTitle = mBinding.root.context.getString(R.string.community_filter_title2)
-                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
-                    override fun onItemClick(position: Int) {
+            showBottomSheet(filterList = mViewModel.mSortFilterList,
+                    title = mBinding.root.context.getString(R.string.community_filter_title2),
+                    onClickTask = { position ->
                         val selectedSort = mViewModel.mSortFilterList[position]
                         mBinding.textviewCommunitylistFilter2.text = selectedSort
                         mViewModel.mOrder = when (selectedSort) {
@@ -145,36 +157,41 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
                         }
                         mViewModel.mPage = 0
                         mViewModel.getCommunityList()
-                    }
+                    })
+        }
 
-                    override fun onClickClose() {
-                        this@apply.dismiss()
+    }
+
+    private fun showBottomSheet(filterList: MutableList<String>, title: String, onClickTask: (position: Int) -> Unit) {
+        if (fragmentManager != null)
+            ListBottomSheetFragment(mBinding.root.context).apply {
+                this.mList = filterList
+                this.mTitle = title
+                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                    override fun onItemClick(position: Int) = onClickTask(position)
+                    override fun onClickClose() = this@apply.dismiss()
+                }
+            }.let { bottomSheet -> bottomSheet.show(fragmentManager!!, baseTag) }
+    }
+
+    private fun setScrollListener() {
+        (mBinding.recyclerviewCommunityist.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        mBinding.recyclerviewCommunityist.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (mIsCalled && recyclerView.adapter?.itemCount!! - (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() < 5) {
+                    val currentListSize = mViewModel.mCommunityResponse.value?.bbs?.size ?: 0
+                    val totalListSize = mViewModel.mCommunityResponse.value?.totalCount ?: 0
+
+                    if (currentListSize < totalListSize) {
+                        mIsCalled = false
+                        mViewModel.getCommunityList()
                     }
                 }
             }
 
-            if (fragmentManager != null) bottomSheet.show(fragmentManager!!, baseTag)
-        }
-    }
-
-    private fun initList(bbs: MutableList<CommunityBoard>) {
-        val SPAN_COUNT = 2
-        val listType = info.communityCategorySub.type
-        when (listType) {
-            CommunityListType.IMAGE.type -> mBinding.recyclerviewCommunityist.layoutManager = GridLayoutManager(context, SPAN_COUNT)
-            else -> mBinding.recyclerviewCommunityist.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        }
-
-        if (mBinding.recyclerviewCommunityist.adapter == null)
-            mBinding.recyclerviewCommunityist.adapter = CommunityBoardAdapter(listType).apply {
-                this.mList = bbs
-                this.mViewModel = this@CommunitySubListFragment.mViewModel
-            }
-        else {
-            (mBinding.recyclerviewCommunityist.adapter as CommunityBoardAdapter).mList = bbs
-            (mBinding.recyclerviewCommunityist.adapter as CommunityBoardAdapter).notifyDataSetChanged()
-        }
-        mBinding.executePendingBindings()
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {}
+        })
     }
 
 }
+

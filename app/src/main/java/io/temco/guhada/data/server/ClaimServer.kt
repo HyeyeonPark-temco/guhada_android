@@ -32,7 +32,7 @@ open class ClaimServer {
          * 서버 result null 오류 나는 경우 error Result 만들기
          */
         @JvmStatic
-        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+        fun <C, R> resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>) {
             if (response.code() in 200..400 && response.body() != null) {
                 listener.onResult(true, response.body())
             } else {
@@ -52,7 +52,6 @@ open class ClaimServer {
                 }
             }
         }
-
 
 
         /**
@@ -108,20 +107,21 @@ open class ClaimServer {
                     override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
                         resultListener(listener, call, response)
                     }
-                    override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
-                        listener.onResult(false, t.message)
-                    }
-                })
-               /* RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(
-                        accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
-                    override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
-                        listener.onResult(response.isSuccessful, response.body())
-                    }
 
                     override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
-                })*/
+                })
+                /* RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(
+                         accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
+                     override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
+                         listener.onResult(response.isSuccessful, response.body())
+                     }
+
+                     override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
+                         listener.onResult(false, t.message)
+                     }
+                 })*/
             }
         }
 
@@ -209,7 +209,7 @@ open class ClaimServer {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
                         .deleteSellerClaim(accessToken = "Bearer $accessToken", userId = userId, id = id).enqueue(object : Callback<BaseModel<JsonObject>> {
                             override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
-                                resultListener(listener,call,response)
+                                resultListener(listener, call, response)
                             }
 
                             override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
@@ -220,24 +220,23 @@ open class ClaimServer {
         }
 
 
-
-
         /**
          * 마이페이지 판매자 문의 리스트 조회
          */
         @JvmStatic
-        fun getMyPageSellerClaimList(listener: OnServerListener, accessToken: String, id : Int, page: Int, status: String) {
-            if(CustomLog.flag)CustomLog.L("getMyPageSellerClaimList","accessToken",accessToken)
+        fun getMyPageSellerClaimList(listener: OnServerListener, accessToken: String, id: Int, page: Int, status: String) {
+            if (CustomLog.flag) CustomLog.L("getMyPageSellerClaimList", "accessToken", accessToken)
             RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
                     .getMySellerClaimList(accessToken = accessToken, userId = id, pageNo = page).enqueue(object : Callback<BaseModel<MyPageClaimSeller>> {
                         override fun onResponse(call: Call<BaseModel<MyPageClaimSeller>>, response: Response<BaseModel<MyPageClaimSeller>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<MyPageClaimSeller>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -266,7 +265,7 @@ open class ClaimServer {
         fun cancelOrder(listener: OnServerListener, accessToken: String, cancelRequest: CancelRequest) =
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
                         .cancelOrder(accessToken = accessToken, cancelRequest = cancelRequest).enqueue(
-                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(it.isSuccessful, it.body()) }, failedTask = { listener.onResult(false, it.message) }))
 
         /**
          * 교환 신청
