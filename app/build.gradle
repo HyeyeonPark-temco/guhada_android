@@ -104,6 +104,13 @@ android {
     		resolutionStrategy.force "org.antlr:antlr4-tool:4.7.1"
 	}
 */
+
+	kapt {
+		useBuildCache true
+	}
+	dexOptions {
+		preDexLibraries true
+	}
 }
 
 dependencies {
