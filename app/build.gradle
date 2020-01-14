@@ -110,7 +110,9 @@ android {
 	}
 	dexOptions {
 		preDexLibraries true
+		jumboMode false
 	}
+
 }
 
 dependencies {
