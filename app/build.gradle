@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-// apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
@@ -70,9 +69,9 @@ android {
         enabled = true
     }
     buildToolsVersion = '28.0.3'
-    kapt {
+    /* kapt {
         generateStubs = true
-    }
+    } */
 
     lintOptions {
         checkReleaseBuilds false
